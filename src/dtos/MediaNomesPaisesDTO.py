@@ -2,16 +2,13 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/05 00:05:39.061676
+#+ Creado: 	2023/01/04 23:58:42.990911
+#+ Editado:	2023/01/05 00:01:25.346608
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNomesDTO:
-    nome: str
-    id_media: str = None
-    id_media_agrupacion: str = None
-    id_media_fasciculo: str = None
-    id_: int = None
+class MediaNomesPaisesDTO:
+    id_media_nomes: int
+    id_pais: str
 # ------------------------------------------------------------------------------

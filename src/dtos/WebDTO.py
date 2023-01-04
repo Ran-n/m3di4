@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/05 00:05:39.061676
+#+ Creado: 	2023/01/05 00:08:25.622146
+#+ Editado:	2023/01/05 00:08:49.934530
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+
+from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNomesDTO:
+class MediaDTO:
     nome: str
-    id_media: str = None
-    id_media_agrupacion: str = None
-    id_media_fasciculo: str = None
-    id_: int = None
+    siglas: str
+    ligazon: str
+    id_: str = field(default_factory=crear_chave)
 # ------------------------------------------------------------------------------
