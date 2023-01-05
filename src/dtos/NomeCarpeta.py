@@ -2,17 +2,14 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/05 00:05:39.061676
+#+ Creado: 	2023/01/05 00:04:14.716403
+#+ Editado:	2023/01/05 19:11:09.606673
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNomesDTO:
-    nome_taboa: str = field(init=False, default='Media Nomes')
+class NomeCarpeta:
+    nome_taboa: str = field(init=False, default='Nome Carpeta')
     nome: str
-    id_media: str = None
-    id_media_agrupacion: str = None
-    id_media_fasciculo: str = None
     id_: int = None
 # ------------------------------------------------------------------------------

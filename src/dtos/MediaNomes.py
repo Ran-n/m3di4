@@ -2,21 +2,17 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/01/05 19:08:36.821173
+#+ Creado: 	2023/01/04 23:45:45.121317
+#+ Editado:	2023/01/05 00:05:39.061676
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-
-from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaFasciculoDTO:
-    nome_taboa: str = field(init=False, default='Media Fascículo')
-    num_total: int
-    num_agrupacion: int
+class MediaNomes:
+    nome_taboa: str = field(init=False, default='Media Nomes')
     nome: str
-    data: str
-    id_media: str
-    id_media_agrupacion: str
-    id_: str = field(default_factory=crear_chave)
+    id_media: str = None
+    id_media_agrupacion: str = field(default=None)
+    id_media_fasciculo: str = field(default=None)
+    id_: int = None
 # ------------------------------------------------------------------------------
