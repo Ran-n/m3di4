@@ -2,20 +2,17 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/01/04 23:17:07.739163
+#+ Creado: 	2023/01/05 19:48:30.957751
+#+ Editado:	2023/01/05 19:50:37.546484
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-
-from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaDTO:
-    nome_taboa: str = field(init=False, default='Media')
+class ArquivoAdxuntoDTO:
+    id_arquivo: str = field(default=None)
+    id_codec: str = field(default='ttf')
     nome: str
-    ano_ini: int
-    ano_fin: int
-    id_tipo: str
-    id_situacion: str
-    id_: str = field(default_factory=crear_chave)
+    inicio: float
+    duracion: float
+    id_: int = field(default=None)
 # ------------------------------------------------------------------------------

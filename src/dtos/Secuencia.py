@@ -2,20 +2,14 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/01/04 23:17:07.739163
+#+ Creado: 	2023/01/05 19:03:40.041474
+#+ Editado:	2023/01/05 19:59:05.049099
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-
-from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaDTO:
-    nome_taboa: str = field(init=False, default='Media')
+class Secuencia:
+    nome_taboa: str = field(init=False, default='sqlite_sequence')
     nome: str
-    ano_ini: int
-    ano_fin: int
-    id_tipo: str
-    id_situacion: str
-    id_: str = field(default_factory=crear_chave)
+    seq: int
 # ------------------------------------------------------------------------------

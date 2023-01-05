@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaNomesPaisesDTO:
+    nome_taboa: str = field(init=False, default='Media Nomes Países')
     id_media_nomes: int
     id_pais: str
 # ------------------------------------------------------------------------------

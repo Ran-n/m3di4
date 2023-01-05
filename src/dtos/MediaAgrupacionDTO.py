@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:41:42.686442
-#+ Editado:	2023/01/04 23:44:32.343774
+#+ Editado:	2023/01/05 19:07:32.177855
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -11,6 +11,7 @@ from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaDTO:
+    nome_taboa: str = field(init=False, default='Media Agrupación')
     nome: str
     numero: int
     ano_ini: int

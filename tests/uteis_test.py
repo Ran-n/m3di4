@@ -3,11 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:43:24.409946
-#+ Editado:	2023/01/05 18:50:30.678404
+#+ Editado:	2023/01/05 20:33:38.716538
 # ------------------------------------------------------------------------------
 import unittest
 
 from src.uteis import *
+from src.dtos.Secuencia import Secuencia
 # ------------------------------------------------------------------------------
 class TestUteis(unittest.TestCase):
 
@@ -29,5 +30,22 @@ class TestUteis(unittest.TestCase):
         Proba sobre o tipo creado.
         """
         self.assertEqual(type(crear_chave_num()), int)
+
+    def test_seqseg(self):
+        """
+        Proba do funcionamento
+        """
+        seqs = [
+            Secuencia(nome='a', seq=1),
+            Secuencia(nome='b', seq=10),
+            Secuencia(nome='c', seq=-1),
+            Secuencia(nome='d', seq=-6),
+        ]
+
+        self.assertEqual(seqseg('a', seqs), 2)
+        self.assertEqual(seqseg('b', seqs), 11)
+        self.assertEqual(seqseg('c', seqs), 0)
+        self.assertEqual(seqseg('d', seqs), -5)
+        self.assertEqual(seqseg('e', seqs), None)
 
 # ------------------------------------------------------------------------------

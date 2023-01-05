@@ -11,6 +11,7 @@ from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaWebDTO:
+    nome_taboa: str = field(init=False, default='Media Web')
     id_media: str
     id_web: str
     ligazon: str
