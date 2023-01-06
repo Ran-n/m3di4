@@ -3,12 +3,18 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/06 18:04:43.191566
+#+ Editado:	2023/01/06 23:33:21.250873
 # ------------------------------------------------------------------------------
+from src.operations.info import main
+from uteis.imprimir import jprint
+
 from src.db.db import DB
 
 from src.dtos.Media import Media
 from src.dtos.MediaAgrupacion import MediaAgrupacion
+# ------------------------------------------------------------------------------
+# non moi ben que esta info este aqui soamente
+MEDIAS_AGRUPABLES = ['serie', 'miniserie']
 # ------------------------------------------------------------------------------
 def loop_variable(db: DB, variable: str) -> str:
     if variable == 'Tipo':
@@ -38,7 +44,8 @@ def validar_numero(variable: str) -> str:
             break
     return numero
 # ------------------------------------------------------------------------------
-def get_media(db: DB) -> None:
+def get_media(db: DB) -> Media:
+    print('> Media')
     media = Media(
             nome=input('* Nome da Media: '),
             ano_ini=validar_numero('Ano Inicio'),
@@ -50,13 +57,31 @@ def get_media(db: DB) -> None:
     media.id_tipo = loop_variable(db, 'Tipo')
     media.id_situacion = loop_variable(db, 'Situación')
 
-def get_agrupacion(db: DB, media: Media) -> None:
-    pass
+    return media
+
+def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
+    print('> Agrupación')
+    return MediaAgrupacion(
+            nome=input('* Nome da Agrupación: '),
+            numero=validar_numero('Número'),
+            ano_ini=validar_numero('Ano Inicio'),
+            ano_fin=validar_numero('Ano Fin'),
+            id_media=media.id_,
+    )
 # ------------------------------------------------------------------------------
 def insertar(db: DB):
     print('\n*** INSERTAR ***')
+
+    info = main(input('* Path do ficheiro: '))
+    jprint(info)
+
     media = get_media(db)
     print()
-    agrupacion = get_agrupacion(db, media)
+    if media.id_tipo in MEDIAS_AGRUPABLES:
+        agrupacion = get_agrupacion(db, media)
+        print()
+
+
+
     print('*** INSERTAR ***\n')
 # ------------------------------------------------------------------------------

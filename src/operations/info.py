@@ -3,16 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2022/12/29 01:43:44.566474
-#+ Editado:	2023/01/04 22:21:45.969253
+#+ Editado:	2023/01/06 23:34:30.874319
 # ------------------------------------------------------------------------------
 import sys
 import ffmpeg
 import pathlib
 from datetime import datetime
 from dateutil import parser
-from typing import List, Union
-
 from uteis.imprimir import jprint
+from typing import List, Union
 # ------------------------------------------------------------------------------
 def formato_lingua(lingua: Union[List[str], str]) -> str:
     if (type(lingua) == str): return lingua
@@ -329,46 +328,19 @@ def get_info(fich: str, unidades: bool) -> dict:
 
     return datos
 # ------------------------------------------------------------------------------
-def main_aux(ficheiro: str, info_orixinal: bool, unidades: bool) -> None:
-    print(ficheiro)
+def main(ficheiro: str, info_orixinal: bool = False, unidades: bool = False) -> dict:
     # se é un directorio
     if (pathlib.Path(ficheiro).is_dir()):
         temp_path = pathlib.Path(ficheiro).glob('**/*')
         fichs = [x for x in temp_path if x.is_file()]
+        saida = []
         for fich in fichs[::-1]:
             if (fich.suffix not in get_ignored_files()):
-                main_aux(fich, info_orixinal, unidades)
+                saida.append(main(fich, info_orixinal, unidades))
     else:
         if (info_orixinal):
             saida = ffmpeg.probe(ficheiro)
         else:
             saida = get_info(ficheiro, unidades)
-
-        if (type(saida) == str):
-            print(saida)
-        else:
-            jprint(saida)
-
-        print('----------------------------------------------------------')
-
-def main() -> None:
-    MARCA_INFO_ORIXINAL = '.'
-    # long or short info indicator xFCR
-    info_orixinal = False
-    UNIDADES = False
-
-    if ((len(sys.argv) < 2) and (sys.argv[1] != MARCA_INFO_ORIXINAL)):
-        print('Mete argumento/s')
-    else:
-        ficheiros = sys.argv[1:]
-        if (ficheiros[-1] == MARCA_INFO_ORIXINAL):
-            ficheiros.pop()
-            info_orixinal = True
-
-        print('----------------------------------------------------------')
-        for ficheiro in ficheiros[::-1]:
-            main_aux(ficheiro, info_orixinal, unidades)
-# ------------------------------------------------------------------------------
-if __name__ == "__main__":
-    main()
+    return saida
 # ------------------------------------------------------------------------------
