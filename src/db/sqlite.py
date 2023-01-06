@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/06 01:38:53.668080
+#+ Editado:	2023/01/06 17:45:49.189107
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -39,31 +39,18 @@ class Sqlite(idb.DB):
         return (self.conn, self.cur)
 
     def desconectar(self, commit: bool = True) -> None:
-        if commit:
-            self.conn.commit()
-        self.conn.close()
-        self.conn = None
-        self.cur = None
+        if self.conn:
+            if commit:
+                self.conn.commit()
+            self.conn.close()
+            self.conn = None
+            self.cur = None
 
-    def select_taboa(self, taboa: str) -> List[Union[MediaTipo, MediaSituacion]]:
+    def select_taboa_id_nome(self, taboa: str) -> List[Union[MediaTipo, MediaSituacion]]:
         results = self.get_cur().execute(f'select ID, Nome from "{taboa}"').fetchall()
         valores = []
         for result in results:
             valores.append(MediaTipo(id_=result[0], nome=result[1]))
-        return valores
-
-    def select_tipos(self) -> List[MediaTipo]:
-        results = self.get_cur().execute('select ID, Nome from "_Media Tipo"').fetchall()
-        valores = []
-        for result in results:
-            valores.append(MediaTipo(id_=result[0], nome=result[1]))
-        return valores
-
-    def select_situacions(self) -> List[MediaSituacion]:
-        results = self.get_cur().execute('select ID, Nome from "_Media Situación"').fetchall()
-        valores = []
-        for result in results:
-            valores.append(MediaSituacion(id_=result[0], nome=result[1]))
         return valores
 
     def select(self, elemento: object) -> List[object]:

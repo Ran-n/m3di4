@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/06 01:36:37.818333
+#+ Editado:	2023/01/06 16:50:38.637300
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -30,14 +30,6 @@ class DB(ABC):
 
     @abstractmethod
     def desconectar(self, commit: bool = True) -> None:
-        pass
-
-    @abstractmethod
-    def select_tipos(self) -> List[MediaTipo]:
-        pass
-
-    @abstractmethod
-    def select_situacions(self) -> List[MediaSituacion]:
         pass
 
     @abstractmethod

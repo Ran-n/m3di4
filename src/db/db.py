@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/06 01:35:59.198740
+#+ Editado:	2023/01/06 16:51:43.833134
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -36,12 +36,10 @@ class DB:
         return self.db.desconectar(commit)
 
     def select_tipos(self) -> List[MediaTipo]:
-        #return self.db.select_tipos()
-        return self.db.select_taboa('_Media Tipo')
+        return self.db.select_taboa_id_nome('_Media Tipo')
 
     def select_situacions(self) -> List[MediaSituacion]:
-        #return self.db.select_situacions()
-        return self.db.select_taboa('_Media Situación')
+        return self.db.select_taboa_id_nome('_Media Situación')
 
     def select(self, elemento: object) -> List[object]:
         return self.db.select(elemento)
