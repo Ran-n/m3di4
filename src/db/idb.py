@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/06 16:50:38.637300
+#+ Editado:	2023/01/07 01:33:00.185989
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -14,6 +14,9 @@ from typing import List, Tuple, Union
 
 from src.dtos.MediaTipo import MediaTipo
 from src.dtos.MediaSituacion import MediaSituacion
+from src.dtos.Almacen import Almacen
+from src.dtos.NomeCarpeta import NomeCarpeta
+from src.dtos.Secuencia import Secuencia
 # ------------------------------------------------------------------------------
 class DB(ABC):
     @abstractmethod
@@ -30,6 +33,26 @@ class DB(ABC):
 
     @abstractmethod
     def desconectar(self, commit: bool = True) -> None:
+        pass
+
+    @abstractmethod
+    def select_tipos(self) -> List[MediaTipo]:
+        pass
+
+    @abstractmethod
+    def select_situacions(self) -> List[MediaSituacion]:
+        pass
+
+    @abstractmethod
+    def select_almacens(self) -> List[Almacen]:
+        pass
+
+    @abstractmethod
+    def select_carpetas(self) -> List[NomeCarpeta]:
+        pass
+
+    @abstractmethod
+    def select_secuencias(self) -> List[Secuencia]:
         pass
 
     @abstractmethod
