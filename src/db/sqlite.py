@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/07 01:33:36.252156
+#+ Editado:	2023/01/07 14:59:36.842404
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -19,6 +19,9 @@ from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.Almacen import Almacen
 from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.Secuencia import Secuencia
+from src.dtos.Lingua import Lingua
+from src.dtos.Codec import Codec
+from src.dtos.CompartirLugar import CompartirLugar
 # ------------------------------------------------------------------------------
 class Sqlite(idb.DB):
     def __init__(self, ficheiro: str) -> None:
@@ -84,6 +87,24 @@ class Sqlite(idb.DB):
             valores.append(Secuencia(nome=result[0], seq=result[1]))
         return valores
 
-    def select(self, elemento: object) -> List[object]:
-        return ['a', 'b']
+    def select_lugares(self) -> List[CompartirLugar]:
+        results = self.get_cur().execute(f'select ID, Nome, Privado, Ligazón, Tipo, Plataforma from "_Compartir Lugar"').fetchall()
+        valores = []
+        for result in results:
+            valores.append(CompartirLugar(id_=result[0], nome=result[1], privado=result[2], ligazon=result[3], tipo=result[4], plataforma=result[5]))
+        return valores
+
+    def get_lingua_by_code(self, code: str) -> Lingua:
+        if code != None:
+            result = self.get_cur().execute(f'select l.ID, l.Nome, l.Desc from "_Lingua Códigos" lc left join "_Lingua" l on l.ID=lc."ID Lingua" where lc."Código" like "{code}"').fetchone()
+            if result != None:
+                return Lingua(id_=result[0], nome=result[1], desc=result[2])
+        return None
+
+    def get_codec_by_name(self, name: str) -> Codec:
+        if name != None:
+            result = self.get_cur().execute(f'select ID, Nome, Nome Longo, Desc from "_Codec" where Nome like "{name}"').fetchone()
+            if result != None:
+                return Codec(id_=result[0], nome=result[1], nome_longo=result[2], desc=result[3])
+        return None
 # ------------------------------------------------------------------------------

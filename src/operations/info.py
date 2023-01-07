@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2022/12/29 01:43:44.566474
-#+ Editado:	2023/01/06 23:34:30.874319
+#+ Editado:	2023/01/07 14:22:25.649683
 # ------------------------------------------------------------------------------
 import sys
 import ffmpeg
@@ -128,7 +128,8 @@ def canle(datos: dict, stream: dict, unidades: bool) -> dict:
         nova_canle['Comentario'] = tags['comment']
     # Lingua
     if (tags and 'language' in tags):
-        nova_canle['Lingua'] = get_lingua(tags['language'])
+        nova_canle['Lingua'] = tags['language']
+        nova_canle['Lingua2'] = get_lingua(tags['language'])
     # Resolución
     if (('width' in stream) and ('height' in stream)):
         #nova_canle['Resolución'] = str(stream['width']) + 'x' + str(stream['height'])

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/07 01:33:00.185989
+#+ Editado:	2023/01/07 14:55:58.788999
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,6 +17,9 @@ from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.Almacen import Almacen
 from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.Secuencia import Secuencia
+from src.dtos.Lingua import Lingua
+from src.dtos.Codec import Codec
+from src.dtos.CompartirLugar import CompartirLugar
 # ------------------------------------------------------------------------------
 class DB(ABC):
     @abstractmethod
@@ -56,6 +59,14 @@ class DB(ABC):
         pass
 
     @abstractmethod
-    def select(elemento: object) -> List[object]:
+    def select_lugares(self) -> List[CompartirLugar]:
+        pass
+
+    @abstractmethod
+    def get_lingua_by_code(self, code: str) -> Lingua:
+        pass
+
+    @abstractmethod
+    def get_codec_by_name(self, name: str) -> Codec:
         pass
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/07 01:33:18.650809
+#+ Editado:	2023/01/07 14:56:03.852885
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,6 +17,9 @@ from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.Almacen import Almacen
 from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.Secuencia import Secuencia
+from src.dtos.Lingua import Lingua
+from src.dtos.Codec import Codec
+from src.dtos.CompartirLugar import CompartirLugar
 # ------------------------------------------------------------------------------
 class DB:
     def __init__(self, db: idb.DB):
@@ -53,6 +56,12 @@ class DB:
     def select_secuencias(self) -> List[Secuencia]:
         return self.db.select_secuencias()
 
-    def select(self, elemento: object) -> List[object]:
-        return self.db.select(elemento)
+    def select_lugares(self) -> List[CompartirLugar]:
+        return self.db.select_lugares()
+
+    def get_lingua_by_code(self, code: str) -> Lingua:
+        return self.db.get_lingua_by_code(code)
+
+    def get_codec_by_name(self, name: str) -> Codec:
+        return self.db.get_codec_by_name(name)
 # ------------------------------------------------------------------------------

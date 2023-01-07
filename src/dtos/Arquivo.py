@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/01/05 20:51:01.879925
+#+ Editado:	2023/01/07 13:11:42.701763
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -19,8 +19,6 @@ class Arquivo:
     bit_rate: int
     titulo: str
     data_creacion: str
-    mudo: int = field(default=0)
-    cor: int = field(default=1)
     id_almacen: str = field(default=None)
     id_carpeta: str = field(default=None)
     id_media: str = field(default=None)
