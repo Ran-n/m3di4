@@ -16,5 +16,5 @@ class ArquivoAdxunto:
     duracion: float
     id_arquivo: str = field(default=None)
     id_codec: str = field(default='ttf')
-    id_: int = field(init=False, default=None)
+    #id_: int = field(init=False, default=None)
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/08 01:37:33.931469
+#+ Editado:	2023/01/08 15:38:53.013061
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,6 +23,12 @@ from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Web import Web
 from src.dtos.Media import Media
 from src.dtos.MediaWeb import MediaWeb
+from src.dtos.Arquivo import Arquivo
+from src.dtos.ArquivoAdxunto import ArquivoAdxunto
+from src.dtos.ArquivoAudio import ArquivoAudio
+from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
+from src.dtos.Compartido import Compartido
+from src.dtos.ArquivoVideo import ArquivoVideo
 # ------------------------------------------------------------------------------
 class DB:
     def __init__(self, db: idb.DB):
@@ -68,9 +74,23 @@ class DB:
         return self.db.get_codec_by_name(name)
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaWeb]) -> None:
+    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido]) -> None:
         if type(obj) == Media:
             return self.db.insert_media(obj)
         elif type(obj) == MediaWeb:
             return self.db.insert_mediaweb(obj)
+        elif type(obj) == NomeCarpeta:
+            return self.db.insert_nomecarpeta(obj)
+        elif type(obj) == Arquivo:
+            return self.db.insert_arquivo(obj)
+        elif type(obj) == ArquivoAdxunto:
+            return self.db.insert_arquivoadxunto(obj)
+        elif type(obj) == ArquivoAudio:
+            return self.db.insert_arquivoaudio(obj)
+        elif type(obj) == ArquivoSubtitulo:
+            return self.db.insert_arquivosub(obj)
+        elif type(obj) == ArquivoVideo:
+            return self.db.insert_arquivovideo(obj)
+        elif type(obj) == Compartido:
+            return self.db.insert_compartido(obj)
 # ------------------------------------------------------------------------------

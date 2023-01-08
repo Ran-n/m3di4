@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/08 01:40:30.814921
+#+ Editado:	2023/01/08 15:53:46.106926
 # ------------------------------------------------------------------------------
 from src.operations.info import main
 from uteis.imprimir import jprint
@@ -26,6 +26,7 @@ from src.dtos.MediaWeb import MediaWeb
 from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Web import Web
+from src.dtos.Compartido import Compartido
 # ------------------------------------------------------------------------------
 # non moi ben que esta info este aqui soamente
 MEDIAS_AGRUPABLES = ['serie', 'miniserie']
@@ -101,9 +102,12 @@ def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
             id_media=media.id_,
     )
 
-def get_carpeta(db: DB, fich: str) -> NomeCarpeta:
+def get_carpeta(db: DB, fich: str, media: Media) -> NomeCarpeta:
     carpetas = db.select(NomeCarpeta.nome_taboa)
-    nome_carpeta = NomeCarpeta(nome=pathlib.Path(fich).parent.name)
+    nome_carpeta = NomeCarpeta(
+            nome=pathlib.Path(fich).parent.name,
+            id_media=media.id_,
+    )
 
     for carpeta in carpetas:
         if carpeta.nome == nome_carpeta.nome:
@@ -132,7 +136,7 @@ def get_arquivo(db: DB, media: Media, info: dict, fich: str) -> tuple[Arquivo, N
     )
 
     arquivo.id_almacen = loop_variable(db, 'Almacén')
-    carpeta = get_carpeta(db, fich)
+    carpeta = get_carpeta(db, fich, media)
     arquivo.id_carpeta = carpeta.id_
 
     if media.id_tipo in MEDIAS_AGRUPABLES:
@@ -290,29 +294,29 @@ def insertar(db: DB):
     print()
     while True:
         fich = input('* Path do ficheiro: ')
-        if pathlib.Path(fich).exists():
+        if fich != "" and pathlib.Path(fich).exists():
             break
     info = main(fich)
 
     arquivo, carpeta = get_arquivo(db, media, info, fich)
 
+    videos = []
     if info.get('videos'):
-        videos = []
         for video in info['videos']:
             videos.append(get_video(db, arquivo, video))
 
+    audios = []
     if info.get('audios'):
-        audios = []
         for audio in info['audios']:
             audios.append(get_audio(db, arquivo, audio))
 
+    subs = []
     if info.get('subtitulos'):
-        subs = []
         for sub in info['subtitulos']:
             subs.append(get_sub(db, arquivo, sub))
 
+    attachments = []
     if info.get('adxuntos'):
-        attachments = []
         for attachment in info['adxuntos']:
             attachments.append(get_attachment(db, arquivo, attachment))
 
@@ -338,15 +342,26 @@ def insertar(db: DB):
     # media web
     for web in webs:
         db.insert(web)
-
     # carpeta
+    db.insert(carpeta)
 
     # arquivo
+    db.insert(arquivo)
     # arquivo adxunto
+    for attachment in attachments:
+        db.insert(attachment)
     # arquivo audio
+    for audio in audios:
+        db.insert(audio)
     # arquivo subtitulo
+    for sub in subs:
+        db.insert(sub)
     # arquivo video
+    for video in videos:
+        db.insert(video)
     # compartido
+    for share in shared:
+        db.insert(share)
 
     print('*** INSERTAR ***\n')
 # ------------------------------------------------------------------------------

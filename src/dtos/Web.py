@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:08:25.622146
-#+ Editado:	2023/01/08 01:42:28.755242
+#+ Editado:	2023/01/08 15:43:22.483682
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -18,5 +18,8 @@ class Web:
     id_: str = field(default_factory=crear_chave)
 
     def __repr__(self) -> str:
-        return f'{self.nome}\t[{self.id_}]'
+        repetir = 1
+        if len(self.nome) < 22:
+            repetir = 2
+        return f'{self.nome}' + repetir*'\t' + f'[{self.id_}]'
 # ------------------------------------------------------------------------------

@@ -23,5 +23,5 @@ class ArquivoAudio:
     xdefecto: int = field(default=0)
     forzado: int = field(default=0)
     comentario: int = field(default=0)
-    id_: int = field(init=False, default=None)
+    #id_: int = field(init=False, default=None)
 # ------------------------------------------------------------------------------

@@ -3,11 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:57:18.314541
-#+ Editado:	2023/01/07 13:38:14.407277
+#+ Editado:	2023/01/08 15:30:53.297033
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-
-from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
 class ArquivoVideo:
@@ -28,5 +26,5 @@ class ArquivoVideo:
     id_codec: str = field(default=None)
     id_arquivo: str = field(default=None)
     id_lingua: str = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+    #id_: str = field(default=None)
 # ------------------------------------------------------------------------------

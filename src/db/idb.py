@@ -23,6 +23,12 @@ from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Web import Web
 from src.dtos.Media import Media
 from src.dtos.MediaWeb import MediaWeb
+from src.dtos.Arquivo import Arquivo
+from src.dtos.ArquivoAdxunto import ArquivoAdxunto
+from src.dtos.ArquivoAudio import ArquivoAudio
+from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
+from src.dtos.Compartido import Compartido
+from src.dtos.ArquivoVideo import ArquivoVideo
 # ------------------------------------------------------------------------------
 class DB(ABC):
     @abstractmethod
@@ -54,6 +60,6 @@ class DB(ABC):
         pass
 
     @abstractmethod
-    def insert(self, obj: Union[Media, MediaWeb]) -> None:
+    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido]) -> None:
         pass
 # ------------------------------------------------------------------------------

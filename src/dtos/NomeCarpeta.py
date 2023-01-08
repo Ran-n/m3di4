@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:04:14.716403
-#+ Editado:	2023/01/07 01:42:57.183765
+#+ Editado:	2023/01/08 15:10:54.835811
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -13,6 +13,7 @@ from src.uteis import crear_chave
 class NomeCarpeta:
     nome_taboa: str = field(init=False, default='Nome Carpeta')
     nome: str
+    id_media: str = field(default=None)
     id_: int = field(default_factory=crear_chave)
 
     def __repr__(self) -> str:

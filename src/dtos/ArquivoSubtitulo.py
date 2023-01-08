@@ -20,5 +20,5 @@ class ArquivoSubtitulo:
     xdefecto: int = field(default=0)
     forzado: int = field(default=0)
     texto: int = field(default=0)
-    id_: int = field(default=None)
+    #id_: int = field(default=None)
 # ------------------------------------------------------------------------------
