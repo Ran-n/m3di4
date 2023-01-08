@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/07 14:59:36.842404
+#+ Editado:	2023/01/08 01:44:47.179015
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,6 +22,9 @@ from src.dtos.Secuencia import Secuencia
 from src.dtos.Lingua import Lingua
 from src.dtos.Codec import Codec
 from src.dtos.CompartirLugar import CompartirLugar
+from src.dtos.Web import Web
+from src.dtos.Media import Media
+from src.dtos.MediaWeb import MediaWeb
 # ------------------------------------------------------------------------------
 class Sqlite(idb.DB):
     def __init__(self, ficheiro: str) -> None:
@@ -51,6 +54,10 @@ class Sqlite(idb.DB):
             self.conn.close()
             self.conn = None
             self.cur = None
+
+    # SELECT
+    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
+        pass
 
     def select_tipos(self) -> List[MediaTipo]:
         results = self.get_cur().execute(f'select ID, Nome from "_Media Tipo"').fetchall()
@@ -94,6 +101,13 @@ class Sqlite(idb.DB):
             valores.append(CompartirLugar(id_=result[0], nome=result[1], privado=result[2], ligazon=result[3], tipo=result[4], plataforma=result[5]))
         return valores
 
+    def select_webs(self) -> List[Web]:
+        results = self.get_cur().execute(f'select ID, Nome, Siglas, Ligazón from "_Web"').fetchall()
+        valores = []
+        for result in results:
+            valores.append(Web(id_=result[0], nome=result[1], siglas=result[2], ligazon=result[3]))
+        return valores
+
     def get_lingua_by_code(self, code: str) -> Lingua:
         if code != None:
             result = self.get_cur().execute(f'select l.ID, l.Nome, l.Desc from "_Lingua Códigos" lc left join "_Lingua" l on l.ID=lc."ID Lingua" where lc."Código" like "{code}"').fetchone()
@@ -107,4 +121,14 @@ class Sqlite(idb.DB):
             if result != None:
                 return Codec(id_=result[0], nome=result[1], nome_longo=result[2], desc=result[3])
         return None
+
+    # INSERT
+    def insert(self, obj: Union[Media, MediaWeb]) -> None:
+        pass
+
+    def insert_media(self, obj: Media) -> None:
+        self.get_cur().execute(f'insert into {Media.nome_taboa} ("ID", "Nome", "Ano Inicio", "Ano Fin", "ID Tipo", "ID Situación") values ("{obj.id_}", "{obj.nome}", "{obj.ano_ini}", "{obj.ano_fin}", "{obj.id_tipo}", "{obj.id_situacion}")')
+
+    def insert_mediaweb(self, obj: MediaWeb) -> None:
+        self.get_cur().execute(f'insert into "{MediaWeb.nome_taboa}" ("ID Media", "ID Web", "Ligazón") values ("{obj.id_media}", "{obj.id_web}", "{obj.ligazon}")')
 # ------------------------------------------------------------------------------

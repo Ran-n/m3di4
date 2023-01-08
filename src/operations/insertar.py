@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/07 15:00:23.970092
+#+ Editado:	2023/01/08 01:40:30.814921
 # ------------------------------------------------------------------------------
 from src.operations.info import main
 from uteis.imprimir import jprint
@@ -11,29 +11,36 @@ from src.db.db import DB
 from typing import Union
 import pathlib
 
+from src.dtos.Almacen import Almacen
+from src.dtos.Arquivo import Arquivo
+from src.dtos.ArquivoAdxunto import ArquivoAdxunto
+from src.dtos.ArquivoAudio import ArquivoAudio
+from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
+from src.dtos.ArquivoVideo import ArquivoVideo
 from src.dtos.Media import Media
 from src.dtos.MediaAgrupacion import MediaAgrupacion
 from src.dtos.MediaFasciculo import MediaFasciculo
-from src.dtos.Arquivo import Arquivo
-from src.dtos.Almacen import Almacen
+from src.dtos.MediaSituacion import MediaSituacion
+from src.dtos.MediaTipo import MediaTipo
+from src.dtos.MediaWeb import MediaWeb
 from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.ArquivoVideo import ArquivoVideo
-from src.dtos.ArquivoAudio import ArquivoAudio
-from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
-from src.dtos.ArquivoAdxunto import ArquivoAdxunto
+from src.dtos.CompartirLugar import CompartirLugar
+from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
 # non moi ben que esta info este aqui soamente
 MEDIAS_AGRUPABLES = ['serie', 'miniserie']
 # ------------------------------------------------------------------------------
 def loop_variable(db: DB, variable: str) -> str:
     if variable == 'Tipo':
-        posibilidades = db.select_tipos()
+        posibilidades = db.select(MediaTipo.nome_taboa)
     elif variable == 'Situación':
-        posibilidades = db.select_situacions()
+        posibilidades = db.select(MediaSituacion.nome_taboa)
     elif variable == 'Almacén':
-        posibilidades = db.select_almacens()
+        posibilidades = db.select(Almacen.nome_taboa)
     elif variable == 'Lugar':
-        posibilidades = db.select_lugares()
+        posibilidades = db.select(CompartirLugar.nome_taboa)
+    elif variable == 'Web':
+        posibilidades = db.select(Web.nome_taboa)
 
     posibilidades_ids = []
     for ele in posibilidades:
@@ -78,7 +85,7 @@ def get_media(db: DB) -> Media:
     if media.id_tipo in MEDIAS_AGRUPABLES:
         media.id_situacion = loop_variable(db, 'Situación')
     else:
-        for ele in db.select_situacions():
+        for ele in db.select(MediaSituacion.nome_taboa):
             if ele.nome == 'Estreada':
                 media.id_situacion = ele.id_
                 break
@@ -95,7 +102,7 @@ def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
     )
 
 def get_carpeta(db: DB, fich: str) -> NomeCarpeta:
-    carpetas = db.select_carpetas()
+    carpetas = db.select(NomeCarpeta.nome_taboa)
     nome_carpeta = NomeCarpeta(nome=pathlib.Path(fich).parent.name)
 
     for carpeta in carpetas:
@@ -255,7 +262,36 @@ def insertar(db: DB):
         agrupacion = get_agrupacion(db, media)
         print()
 
-    fich = input('* Path do ficheiro: ')
+    webs = []
+    while True:
+        link = input('* Ligazón da media (. para finalizar): ')
+        if link == '.':
+            break
+        elif link != '':
+            webs.append(MediaWeb(
+                ligazon=link,
+                id_media=media.id_,
+                id_web=loop_variable(db, 'Web'),
+            ))
+
+    """
+    # media nomes
+    names = []
+    while True:
+        name = input('* Nome alternativo da media (. para finalizar): ')
+        if link == '.':
+            break
+        lang = input('* Idioma no que está este nome: ')
+        country = input('* País no que se usou este nome: ')
+
+        names.append()
+    """
+
+    print()
+    while True:
+        fich = input('* Path do ficheiro: ')
+        if pathlib.Path(fich).exists():
+            break
     info = main(fich)
 
     arquivo, carpeta = get_arquivo(db, media, info, fich)
@@ -280,14 +316,37 @@ def insertar(db: DB):
         for attachment in info['adxuntos']:
             attachments.append(get_attachment(db, arquivo, attachment))
 
-    links = []
+    print()
+    shared = []
     while True:
         link = input('* Ligazón de compartido (. para finalizar): ')
         if link == '.':
             break
-        else:
-            links.append(link)
-        lugar = loop_variable(db, 'Lugar')
+        elif link != '':
+            shared.append(Compartido(
+                ligazon=link,
+                id_lugar=loop_variable(db, 'Lugar'),
+                id_arquivo=arquivo.id_
+            ))
+
+    ## gardar
+    # media
+    db.insert(media)
+    # media nomes
+    # media nomes linguas
+    # media nomes paises
+    # media web
+    for web in webs:
+        db.insert(web)
+
+    # carpeta
+
+    # arquivo
+    # arquivo adxunto
+    # arquivo audio
+    # arquivo subtitulo
+    # arquivo video
+    # compartido
 
     print('*** INSERTAR ***\n')
 # ------------------------------------------------------------------------------

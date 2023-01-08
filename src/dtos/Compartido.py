@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/06 17:48:47.889120
-#+ Editado:	2023/01/08 01:08:22.889008
+#+ Creado: 	2023/01/08 00:36:14.914271
+#+ Editado:	2023/01/08 00:39:15.860725
 # ------------------------------------------------------------------------------
-import sys
-
-from src.db.db import DB
-from src.uteis import print_fin
+from dataclasses import dataclass, field
 # ------------------------------------------------------------------------------
-def sair(db: DB):
-    db.desconectar(commit=True)
-    print_fin()
-    sys.exit()
+@dataclass
+class Compartido:
+    nome_taboa: str = field(init=False, default='Compartido')
+    ligazon: str
+    id_lugar: str = field(default=None)
+    id_arquivo: str = field(default=None)
+    #id_: int = field(default=None)
 # ------------------------------------------------------------------------------
