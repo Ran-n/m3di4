@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/08 15:53:46.106926
+#+ Editado:	2023/01/08 16:41:07.048441
 # ------------------------------------------------------------------------------
 from src.operations.info import main
 from uteis.imprimir import jprint
@@ -155,7 +155,7 @@ def get_video(db: DB, arquivo: Arquivo, info: dict) -> ArquivoVideo:
     else:
         cor = 1
 
-    return ArquivoVideo(
+    arquivovideo = ArquivoVideo(
             calidade=calidade,
             resolucion=info.get('Resolucion'),
             aspecto_sample=info.get('Ratio aspecto sample'),
@@ -170,9 +170,17 @@ def get_video(db: DB, arquivo: Arquivo, info: dict) -> ArquivoVideo:
             nome=info.get('Nome'),
             cor=cor,
             id_arquivo=arquivo.id_,
-            id_lingua=db.get_lingua_by_code(get_x_info(info, 'Lingua')),
-            id_codec=db.get_codec_by_name(get_x_info(info, 'Codec')),
     )
+
+    codec = db.get_codec_by_name(info.get('Codec'))
+    lingua = db.get_lingua_by_code(info.get('Lingua'))
+
+    if codec:
+        arquivovideo.id_codec = codec.id_
+    if lingua:
+        arquivovideo.id_lingua = lingua.id_
+
+    return arquivovideo
 
 def get_audio(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAudio:
     print(f"\n#{info.get('Posicion')} (Audio), lingua: {info.get('Lingua2')}, nome: {info.get('Nome')}")
@@ -198,7 +206,7 @@ def get_audio(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAudio:
     if not canles:
         canles = info.get('Numero canles')
 
-    return ArquivoAudio(
+    arquivoaudio = ArquivoAudio(
             canles=canles,
             sample_rate=info.get('Sample Rate'),
             bit_rate=info.get('Bit Rate'),
@@ -207,12 +215,20 @@ def get_audio(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAudio:
             inicio=info.get('Inicio'),
             duracion=info.get('Duracion'),
             id_arquivo=arquivo.id_,
-            id_codec=db.get_codec_by_name(info.get('Codec')).id_,
-            id_lingua=db.get_lingua_by_code(info.get('Lingua')).id_,
             xdefecto=xdefecto,
             forzado=forzado,
             comentario=comentario,
     )
+
+    codec = db.get_codec_by_name(info.get('Codec'))
+    lingua = db.get_lingua_by_code(info.get('Lingua'))
+
+    if codec:
+        arquivoaudio.id_codec = codec.id_
+    if lingua:
+        arquivoaudio.id_lingua = lingua.id_
+
+    return arquivoaudio
 
 def get_sub(db: DB, arquivo: Arquivo, info: dict) -> ArquivoSubtitulo:
     print(f"\n#{info.get('Posicion')} (Subtítulo), lingua: {info.get('Lingua2')}, nome: {info.get('Nome')}")
@@ -234,28 +250,42 @@ def get_sub(db: DB, arquivo: Arquivo, info: dict) -> ArquivoSubtitulo:
     else:
         texto = 0
 
-    return ArquivoSubtitulo(
+    arquivosub = ArquivoSubtitulo(
             nome=info.get('Nome'),
             tamanho=info.get('Tamanho'),
             inicio=info.get('Inicio'),
             duracion=info.get('Duracion'),
             id_arquivo=arquivo.id_,
-            id_codec=db.get_codec_by_name(info.get('Codec')).id_,
-            id_lingua=db.get_lingua_by_code(info.get('Lingua')).id_,
             xdefecto=xdefecto,
             forzado=forzado,
             texto=texto,
     )
 
+    codec = db.get_codec_by_name(info.get('Codec'))
+    lingua = db.get_lingua_by_code(info.get('Lingua'))
+
+    if codec:
+        arquivosub.id_codec = codec.id_
+    if lingua:
+        arquivosub.id_lingua = lingua.id_
+
+    return arquivosub
+
 def get_attachment(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAdxunto:
-    return ArquivoAdxunto(
+    arquivoadxunto = ArquivoAdxunto(
         nome=info.get('Nome'),
         tamanho=info.get('Tamanho'),
         inicio=info.get('Inicio'),
         duracion=info.get('Duracion'),
         id_arquivo=arquivo.id_,
-        id_codec=db.get_codec_by_name(info.get('Codec')).id_,
     )
+
+    codec = db.get_codec_by_name(info.get('Codec'))
+
+    if codec:
+        arquivoadxunto.id_codec=codec.id_
+
+    return arquivoadxunto
 # ------------------------------------------------------------------------------
 def insertar(db: DB):
     print('\n*** INSERTAR ***')
