@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/08 15:50:59.650394
+#+ Editado:	2023/01/09 18:19:36.216523
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -133,29 +133,29 @@ class Sqlite(idb.DB):
         pass
 
     def insert_media(self, obj: Media) -> None:
-        self.get_cur().execute(f'insert into {Media.nome_taboa} ("ID", "Nome", "Ano Inicio", "Ano Fin", "ID Tipo", "ID Situación") values ("{obj.id_}", "{obj.nome}", "{obj.ano_ini}", "{obj.ano_fin}", "{obj.id_tipo}", "{obj.id_situacion}")')
+        self.get_cur().execute(f'insert into {Media.nome_taboa} ("ID", "Nome", "Ano Inicio", "Ano Fin", "ID Tipo", "ID Situación") values (?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.ano_ini, obj.ano_fin, obj.id_tipo, obj.id_situacion))
 
     def insert_mediaweb(self, obj: MediaWeb) -> None:
-        self.get_cur().execute(f'insert into "{MediaWeb.nome_taboa}" ("ID Media", "ID Web", "Ligazón") values ("{obj.id_media}", "{obj.id_web}", "{obj.ligazon}")')
+        self.get_cur().execute(f'insert into "{MediaWeb.nome_taboa}" ("ID Media", "ID Web", "Ligazón") values (?, ?, ?)', (obj.id_media, obj.id_web, obj.ligazon))
 
     def insert_nomecarpeta(self, obj: NomeCarpeta) -> None:
-        self.get_cur().execute(f'insert into "{NomeCarpeta.nome_taboa}" ("ID", "Nome", "ID Media") values ("{obj.id_}", "{obj.nome}", "{obj.id_media}")')
+        self.get_cur().execute(f'insert into "{NomeCarpeta.nome_taboa}" ("ID", "Nome", "ID Media") values (?, ?, ?)', (obj.id_, obj.nome, obj.id_media))
 
     def insert_arquivo(self, obj: Arquivo) -> None:
-        self.get_cur().execute(f'insert into "{Arquivo.nome_taboa}" ("ID", "Nome", "Extensión", "Tamanho", "Duración", "Bit Rate", "Título", "Data Creación", "ID Almacén", "ID Carpeta", "ID Media", "ID Media Fascículo") values ("{obj.id_}", "{obj.nome}", "{obj.extension}", "{obj.tamanho}", "{obj.duracion}", "{obj.bit_rate}", "{obj.titulo}", "{obj.data_creacion}", "{obj.id_almacen}", "{obj.id_carpeta}", "{obj.id_media}", "{obj.id_media_fasciculo}")')
+        self.get_cur().execute(f'insert into "{Arquivo.nome_taboa}" ("ID", "Nome", "Extensión", "Tamanho", "Duración", "Bit Rate", "Título", "Data Creación", "ID Almacén", "ID Carpeta", "ID Media", "ID Media Fascículo") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.extension, obj.tamanho, obj.duracion, obj.bit_rate, obj.titulo, obj.data_creacion, obj.id_almacen, obj.id_carpeta, obj.id_media, obj.id_media_fasciculo))
 
     def insert_arquivoadxunto(self, obj: ArquivoAdxunto) -> None:
-        self.get_cur().execute(f'insert into "{ArquivoAdxunto.nome_taboa}" ("ID Arquivo", "ID Codec", "Nome", "Inicio", "Tamanho", "Duración") values ("{obj.id_arquivo}", "{obj.id_codec}", "{obj.nome}", "{obj.tamanho}", "{obj.inicio}", "{obj.duracion}")')
+        self.get_cur().execute(f'insert into "{ArquivoAdxunto.nome_taboa}" ("ID Arquivo", "ID Codec", "Nome", "Inicio", "Tamanho", "Duración") values (?, ?, ?, ?, ?, ?)', (obj.id_arquivo, obj.id_codec, obj.nome, obj.tamanho, obj.inicio, obj.duracion))
 
     def insert_arquivoaudio(self, obj: ArquivoAudio) -> None:
-        self.get_cur().execute(f'insert into "{ArquivoAudio.nome_taboa}" ("ID Arquivo", "ID Codec", "Canles", "Sample Rate", "Bit Rate", "ID Lingua", "xDefecto", "Forzado", "Comentario", "Nome", "Tamanho", "Inicio", "Duración") values ("{obj.id_arquivo}", "{obj.id_codec}", "{obj.canles}", "{obj.sample_rate}", "{obj.bit_rate}", "{obj.id_lingua}", "{obj.xdefecto}", "{obj.forzado}", "{obj.comentario}", "{obj.nome}", "{obj.tamanho}", "{obj.inicio}", "{obj.duracion}")')
+        self.get_cur().execute(f'insert into "{ArquivoAudio.nome_taboa}" ("ID Arquivo", "ID Codec", "Canles", "Sample Rate", "Bit Rate", "ID Lingua", "xDefecto", "Forzado", "Comentario", "Nome", "Tamanho", "Inicio", "Duración") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (obj.id_arquivo, obj.id_codec, obj.canles, obj.sample_rate, obj.bit_rate, obj.id_lingua, obj.xdefecto, obj.forzado, obj.comentario, obj.nome, obj.tamanho, obj.inicio, obj.duracion))
 
     def insert_arquivosub(self, obj: ArquivoSubtitulo) -> None:
-        self.get_cur().execute(f'insert into "{ArquivoSubtitulo.nome_taboa}" ("ID Arquivo", "ID Codec", "ID Lingua", "xDefecto", "Forzado", "Texto", "Nome", "Tamanho", "Inicio", "Duración") values ("{obj.id_arquivo}", "{obj.id_codec}", "{obj.id_lingua}", "{obj.xdefecto}", "{obj.forzado}", "{obj.texto}", "{obj.nome}", "{obj.tamanho}", "{obj.inicio}", "{obj.duracion}")')
+        self.get_cur().execute(f'insert into "{ArquivoSubtitulo.nome_taboa}" ("ID Arquivo", "ID Codec", "ID Lingua", "xDefecto", "Forzado", "Texto", "Nome", "Tamanho", "Inicio", "Duración") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (obj.id_arquivo, obj.id_codec, obj.id_lingua, obj.xdefecto, obj.forzado, obj.texto, obj.nome, obj.tamanho, obj.inicio, obj.duracion))
 
     def insert_arquivovideo(self, obj: ArquivoVideo) -> None:
-        self.get_cur().execute(f'insert into "{ArquivoVideo.nome_taboa}" ("ID Arquivo", "ID Lingua", "Calidade", "Resolución", "ID Codec", "Aspecto Sample", "Aspecto Display", "Formato Pixel", "Sample Rate", "Bit Rate", "FPS", "Tamanho", "Inicio", "Duración", "Cor", "Nome") values ("{obj.id_arquivo}", "{obj.id_lingua}", "{obj.calidade}", "{obj.resolucion}", "{obj.id_codec}", "{obj.aspecto_sample}", "{obj.aspecto_display}", "{obj.formato_pixel}", "{obj.sample_rate}", "{obj.bit_rate}", "{obj.fps}", "{obj.tamanho}", "{obj.inicio}", "{obj.duracion}", "{obj.cor}", "{obj.nome}")')
+        self.get_cur().execute(f'insert into "{ArquivoVideo.nome_taboa}" ("ID Arquivo", "ID Lingua", "Calidade", "Resolución", "ID Codec", "Aspecto Sample", "Aspecto Display", "Formato Pixel", "Sample Rate", "Bit Rate", "FPS", "Tamanho", "Inicio", "Duración", "Cor", "Nome") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (obj.id_arquivo, obj.id_lingua, obj.calidade, obj.resolucion, obj.id_codec, obj.aspecto_sample, obj.aspecto_display, obj.formato_pixel, obj.sample_rate, obj.bit_rate, obj.fps, obj.tamanho, obj.inicio, obj.duracion, obj.cor, obj.nome))
 
     def insert_compartido(self, obj: Compartido) -> None:
-        self.get_cur().execute(f'insert into "{Compartido.nome_taboa}" ("ID Arquivo", "ID Lugar", "Ligazón") values ("{obj.id_arquivo}", "{obj.id_lugar}", "{obj.ligazon}")')
+        self.get_cur().execute(f'insert into "{Compartido.nome_taboa}" ("ID Arquivo", "ID Lugar", "Ligazón") values (?, ?, ?)', (obj.id_arquivo, obj.id_lugar, obj.ligazon))
 # ------------------------------------------------------------------------------
