@@ -3,13 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/09 23:20:01.625563
+#+ Editado:	2023/01/09 23:33:50.245804
 # ------------------------------------------------------------------------------
-from src.operations.info import main
-from uteis.imprimir import jprint
-from src.db.db import DB
 from typing import Union
 import pathlib
+
+from uteis.imprimir import jprint
+
+from src.controller.info import main
+from src.model.db import DB
 
 from src.dtos.Almacen import Almacen
 from src.dtos.Arquivo import Arquivo

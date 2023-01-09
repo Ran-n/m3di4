@@ -3,15 +3,16 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2022/12/29 01:43:44.566474
-#+ Editado:	2023/01/07 14:22:25.649683
+#+ Editado:	2023/01/09 23:34:00.255312
 # ------------------------------------------------------------------------------
 import sys
 import ffmpeg
 import pathlib
 from datetime import datetime
 from dateutil import parser
-from uteis.imprimir import jprint
 from typing import List, Union
+
+from uteis.imprimir import jprint
 # ------------------------------------------------------------------------------
 def formato_lingua(lingua: Union[List[str], str]) -> str:
     if (type(lingua) == str): return lingua

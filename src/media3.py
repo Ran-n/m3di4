@@ -3,15 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/09 23:28:56.590617
+#+ Editado:	2023/01/09 23:36:03.233794
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson
 
-from src.db.db import DB
-from src.db.sqlite import Sqlite
+from src.model.db import DB
+from src.model.sqlite import Sqlite
+from src.controller.sair import sair
+from src.controller.insertar import insertar
 
-from src.operations.sair import sair
-from src.operations.insertar import insertar
 from src.uteis import print_fin
 
 from src.dtos.Media import Media
@@ -21,7 +21,6 @@ def print_inicio():
     print('----------------------------------------')
     print('Media3 Manager')
     print('----------------------------------------')
-
 # ------------------------------------------------------------------------------
 def opcions_menu(opcions: dict) -> int:
     print('\n*** MENÚ ***')
