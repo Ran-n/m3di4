@@ -3,8 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/06 23:22:13.421056
+#+ Editado:	2023/01/09 23:28:56.590617
 # ------------------------------------------------------------------------------
+from uteis.ficheiro import cargarJson
+
 from src.db.db import DB
 from src.db.sqlite import Sqlite
 
@@ -44,7 +46,8 @@ def menu(db: DB):
 
 # ------------------------------------------------------------------------------
 def main():
-    db = DB(Sqlite('./media/db/Media32.db'))
+    cnf = cargarJson('.cnf')
+    db = DB(Sqlite(cnf['db']))
 
     print_inicio()
 
