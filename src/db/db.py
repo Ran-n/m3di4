@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/08 15:38:53.013061
+#+ Editado:	2023/01/09 23:19:46.588106
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -50,6 +50,9 @@ class DB:
     def desconectar(self, commit: bool = True) -> None:
         return self.db.desconectar(commit)
 
+    def save(self) -> None:
+        return self.db.save()
+
     # SELECT
     def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
         if nome_taboa == MediaTipo.nome_taboa:
@@ -67,11 +70,17 @@ class DB:
         elif nome_taboa == Web.nome_taboa:
             return self.db.select_webs()
 
+    def get_situacion_by_name(self, name: str) -> MediaSituacion:
+        return self.db.get_situacion_by_name(name)
+
     def get_lingua_by_code(self, code: str) -> Lingua:
         return self.db.get_lingua_by_code(code)
 
     def get_codec_by_name(self, name: str) -> Codec:
         return self.db.get_codec_by_name(name)
+
+    def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
+        return self.db.get_nomecarpeta_by_name(name)
 
     # INSERT
     def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido]) -> None:

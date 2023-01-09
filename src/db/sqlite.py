@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/09 18:19:36.216523
+#+ Editado:	2023/01/09 23:19:55.697603
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -61,6 +61,10 @@ class Sqlite(idb.DB):
             self.conn = None
             self.cur = None
 
+    def save(self) -> None:
+        if self.conn:
+            self.conn.commit()
+
     # SELECT
     def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
         pass
@@ -114,18 +118,33 @@ class Sqlite(idb.DB):
             valores.append(Web(id_=result[0], nome=result[1], siglas=result[2], ligazon=result[3]))
         return valores
 
+    # GET BY X
     def get_lingua_by_code(self, code: str) -> Lingua:
-        if code != None:
+        if code:
             result = self.get_cur().execute(f'select l.ID, l.Nome, l.Desc from "_Lingua Códigos" lc left join "_Lingua" l on l.ID=lc."ID Lingua" where lc."Código" like "{code}"').fetchone()
-            if result != None:
+            if result:
                 return Lingua(id_=result[0], nome=result[1], desc=result[2])
         return None
 
     def get_codec_by_name(self, name: str) -> Codec:
-        if name != None:
+        if name:
             result = self.get_cur().execute(f'select ID, Nome, Nome Longo, Desc from "_Codec" where Nome like "{name}"').fetchone()
-            if result != None:
+            if result:
                 return Codec(id_=result[0], nome=result[1], nome_longo=result[2], desc=result[3])
+        return None
+
+    def get_situacion_by_name(self, name: str) -> MediaSituacion:
+        if name:
+            result = self.get_cur().execute(f'select "ID", "Nome" from "{MediaSituacion.nome_taboa}" where "Nome" like ?', (name,)).fetchone()
+            if result:
+                return MediaSituacion(id_=result[0], nome=result[1])
+        return None
+
+    def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
+        if name:
+            result = self.get_cur().execute(f'select "ID", "Nome" from "{NomeCarpeta.nome_taboa}" where "Nome" like ?', (name,)).fetchone()
+            if result:
+                return NomeCarpeta(id_=result[0], nome=result[1])
         return None
 
     # INSERT
@@ -139,7 +158,7 @@ class Sqlite(idb.DB):
         self.get_cur().execute(f'insert into "{MediaWeb.nome_taboa}" ("ID Media", "ID Web", "Ligazón") values (?, ?, ?)', (obj.id_media, obj.id_web, obj.ligazon))
 
     def insert_nomecarpeta(self, obj: NomeCarpeta) -> None:
-        self.get_cur().execute(f'insert into "{NomeCarpeta.nome_taboa}" ("ID", "Nome", "ID Media") values (?, ?, ?)', (obj.id_, obj.nome, obj.id_media))
+        self.get_cur().execute(f'insert or ignore into "{NomeCarpeta.nome_taboa}" ("ID", "Nome") values (?, ?)', (obj.id_, obj.nome))
 
     def insert_arquivo(self, obj: Arquivo) -> None:
         self.get_cur().execute(f'insert into "{Arquivo.nome_taboa}" ("ID", "Nome", "Extensión", "Tamanho", "Duración", "Bit Rate", "Título", "Data Creación", "ID Almacén", "ID Carpeta", "ID Media", "ID Media Fascículo") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.extension, obj.tamanho, obj.duracion, obj.bit_rate, obj.titulo, obj.data_creacion, obj.id_almacen, obj.id_carpeta, obj.id_media, obj.id_media_fasciculo))

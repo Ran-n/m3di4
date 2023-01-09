@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/08 16:41:07.048441
+#+ Editado:	2023/01/09 23:20:01.625563
 # ------------------------------------------------------------------------------
 from src.operations.info import main
 from uteis.imprimir import jprint
@@ -86,10 +86,15 @@ def get_media(db: DB) -> Media:
     if media.id_tipo in MEDIAS_AGRUPABLES:
         media.id_situacion = loop_variable(db, 'Situación')
     else:
+        situacion = db.get_situacion_by_name('Estreada')
+        if situacion:
+            media.id_situacion = situacion.id_
+        """
         for ele in db.select(MediaSituacion.nome_taboa):
             if ele.nome == 'Estreada':
                 media.id_situacion = ele.id_
                 break
+        """
     return media
 
 def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
@@ -103,17 +108,10 @@ def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
     )
 
 def get_carpeta(db: DB, fich: str, media: Media) -> NomeCarpeta:
-    carpetas = db.select(NomeCarpeta.nome_taboa)
-    nome_carpeta = NomeCarpeta(
-            nome=pathlib.Path(fich).parent.name,
-            id_media=media.id_,
-    )
-
-    for carpeta in carpetas:
-        if carpeta.nome == nome_carpeta.nome:
-            nome_carpeta = carpeta
-            break
-
+    nome = pathlib.Path(fich).parent.name
+    nome_carpeta = db.get_nomecarpeta_by_name(nome)
+    if not nome_carpeta:
+        nome_carpeta = NomeCarpeta(nome=nome)
     return nome_carpeta
 
 def get_arquivo(db: DB, media: Media, info: dict, fich: str) -> tuple[Arquivo, NomeCarpeta]:
@@ -392,6 +390,8 @@ def insertar(db: DB):
     # compartido
     for share in shared:
         db.insert(share)
+
+    db.save()
 
     print('*** INSERTAR ***\n')
 # ------------------------------------------------------------------------------

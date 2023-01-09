@@ -48,7 +48,15 @@ class DB(ABC):
         pass
 
     @abstractmethod
+    def save(self) -> None:
+        pass
+
+    @abstractmethod
     def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
+        pass
+
+    @abstractmethod
+    def get_situacion_by_name(self, name: str) -> MediaSituacion:
         pass
 
     @abstractmethod
@@ -57,6 +65,10 @@ class DB(ABC):
 
     @abstractmethod
     def get_codec_by_name(self, name: str) -> Codec:
+        pass
+
+    @abstractmethod
+    def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
         pass
 
     @abstractmethod
