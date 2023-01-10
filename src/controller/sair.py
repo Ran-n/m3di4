@@ -3,15 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:47.889120
-#+ Editado:	2023/01/09 23:33:20.080550
+#+ Editado:	2023/01/10 19:00:53.815720
 # ------------------------------------------------------------------------------
 import sys
 
-from src.model.db import DB
+from src.model.model import Model
 from src.uteis import print_fin
 # ------------------------------------------------------------------------------
-def sair(db: DB):
-    db.desconectar(commit=True)
+def sair(model: Model):
+    model.desconectar(commit=True)
     print_fin()
     sys.exit()
 # ------------------------------------------------------------------------------

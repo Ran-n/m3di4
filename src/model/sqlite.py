@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/09 23:35:07.332520
+#+ Editado:	2023/01/10 18:57:58.260744
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
-import src.model.idb as idb
+from src.model.imodel import iModel
 # ------------------------------------------------------------------------------
 import sqlite3
 from sqlite3 import Connection, Cursor
@@ -32,7 +32,7 @@ from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
 from src.dtos.ArquivoVideo import ArquivoVideo
 from src.dtos.Compartido import Compartido
 # ------------------------------------------------------------------------------
-class Sqlite(idb.DB):
+class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
         self.ficheiro = ficheiro
         self.conn = None

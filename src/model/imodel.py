@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/09 23:34:57.039342
+#+ Editado:	2023/01/10 18:56:45.147286
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
 from src.dtos.Compartido import Compartido
 from src.dtos.ArquivoVideo import ArquivoVideo
 # ------------------------------------------------------------------------------
-class DB(ABC):
+class iModel(ABC):
     @abstractmethod
     def get_conn(self) -> Connection:
         pass

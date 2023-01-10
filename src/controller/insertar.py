@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/09 23:33:50.245804
+#+ Editado:	2023/01/10 19:01:37.977617
 # ------------------------------------------------------------------------------
 from typing import Union
 import pathlib
@@ -11,7 +11,7 @@ import pathlib
 from uteis.imprimir import jprint
 
 from src.controller.info import main
-from src.model.db import DB
+from src.model.model import Model
 
 from src.dtos.Almacen import Almacen
 from src.dtos.Arquivo import Arquivo
@@ -33,17 +33,17 @@ from src.dtos.Compartido import Compartido
 # non moi ben que esta info este aqui soamente
 MEDIAS_AGRUPABLES = ['serie', 'miniserie']
 # ------------------------------------------------------------------------------
-def loop_variable(db: DB, variable: str) -> str:
+def loop_variable(model: Model, variable: str) -> str:
     if variable == 'Tipo':
-        posibilidades = db.select(MediaTipo.nome_taboa)
+        posibilidades = model.select(MediaTipo.nome_taboa)
     elif variable == 'Situación':
-        posibilidades = db.select(MediaSituacion.nome_taboa)
+        posibilidades = model.select(MediaSituacion.nome_taboa)
     elif variable == 'Almacén':
-        posibilidades = db.select(Almacen.nome_taboa)
+        posibilidades = model.select(Almacen.nome_taboa)
     elif variable == 'Lugar':
-        posibilidades = db.select(CompartirLugar.nome_taboa)
+        posibilidades = model.select(CompartirLugar.nome_taboa)
     elif variable == 'Web':
-        posibilidades = db.select(Web.nome_taboa)
+        posibilidades = model.select(Web.nome_taboa)
 
     posibilidades_ids = []
     for ele in posibilidades:
@@ -74,7 +74,7 @@ def get_x_info(info: dict, key: str) -> Union[None, float, int, str]:
         x = None
     return x
 # ------------------------------------------------------------------------------
-def get_media(db: DB) -> Media:
+def get_media(model: Model) -> Media:
     print('> Media')
     media = Media(
             nome=input('* Nome da Media: '),
@@ -84,22 +84,22 @@ def get_media(db: DB) -> Media:
     if media.ano_fin == '=':
         media.ano_fin = media.ano_ini
 
-    media.id_tipo = loop_variable(db, 'Tipo')
+    media.id_tipo = loop_variable(model, 'Tipo')
     if media.id_tipo in MEDIAS_AGRUPABLES:
-        media.id_situacion = loop_variable(db, 'Situación')
+        media.id_situacion = loop_variable(model, 'Situación')
     else:
-        situacion = db.get_situacion_by_name('Estreada')
+        situacion = model.get_situacion_by_name('Estreada')
         if situacion:
             media.id_situacion = situacion.id_
         """
-        for ele in db.select(MediaSituacion.nome_taboa):
+        for ele in model.select(MediaSituacion.nome_taboa):
             if ele.nome == 'Estreada':
                 media.id_situacion = ele.id_
                 break
         """
     return media
 
-def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
+def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
     print('> Agrupación')
     return MediaAgrupacion(
             nome=input('* Nome da Agrupación: '),
@@ -109,14 +109,14 @@ def get_agrupacion(db: DB, media: Media) -> MediaAgrupacion:
             id_media=media.id_,
     )
 
-def get_carpeta(db: DB, fich: str, media: Media) -> NomeCarpeta:
+def get_carpeta(model: Model, fich: str, media: Media) -> NomeCarpeta:
     nome = pathlib.Path(fich).parent.name
-    nome_carpeta = db.get_nomecarpeta_by_name(nome)
+    nome_carpeta = model.get_nomecarpeta_by_name(nome)
     if not nome_carpeta:
         nome_carpeta = NomeCarpeta(nome=nome)
     return nome_carpeta
 
-def get_arquivo(db: DB, media: Media, info: dict, fich: str) -> tuple[Arquivo, NomeCarpeta]:
+def get_arquivo(model: Model, media: Media, info: dict, fich: str) -> tuple[Arquivo, NomeCarpeta]:
     nome = get_x_info(info, 'Nome ficheiro')
     extension = get_x_info(info, 'Extension')
     tamanho = get_x_info(info, 'Tamanho')
@@ -135,8 +135,8 @@ def get_arquivo(db: DB, media: Media, info: dict, fich: str) -> tuple[Arquivo, N
             data_creacion=data_creacion,
     )
 
-    arquivo.id_almacen = loop_variable(db, 'Almacén')
-    carpeta = get_carpeta(db, fich, media)
+    arquivo.id_almacen = loop_variable(model, 'Almacén')
+    carpeta = get_carpeta(model, fich, media)
     arquivo.id_carpeta = carpeta.id_
 
     if media.id_tipo in MEDIAS_AGRUPABLES:
@@ -147,7 +147,7 @@ def get_arquivo(db: DB, media: Media, info: dict, fich: str) -> tuple[Arquivo, N
 
     return arquivo, carpeta
 
-def get_video(db: DB, arquivo: Arquivo, info: dict) -> ArquivoVideo:
+def get_video(model: Model, arquivo: Arquivo, info: dict) -> ArquivoVideo:
     calidade = input('* Calidade: ')
     cor = input('* Ten cor? ([s]/n): ').lower()
     if cor == 'n':
@@ -172,8 +172,8 @@ def get_video(db: DB, arquivo: Arquivo, info: dict) -> ArquivoVideo:
             id_arquivo=arquivo.id_,
     )
 
-    codec = db.get_codec_by_name(info.get('Codec'))
-    lingua = db.get_lingua_by_code(info.get('Lingua'))
+    codec = model.get_codec_by_name(info.get('Codec'))
+    lingua = model.get_lingua_by_code(info.get('Lingua'))
 
     if codec:
         arquivovideo.id_codec = codec.id_
@@ -182,7 +182,7 @@ def get_video(db: DB, arquivo: Arquivo, info: dict) -> ArquivoVideo:
 
     return arquivovideo
 
-def get_audio(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAudio:
+def get_audio(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAudio:
     print(f"\n#{info.get('Posicion')} (Audio), lingua: {info.get('Lingua2')}, nome: {info.get('Nome')}")
     xdefecto = input('* Por defecto? (s/[n]): ').lower()
     if xdefecto == 's':
@@ -220,8 +220,8 @@ def get_audio(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAudio:
             comentario=comentario,
     )
 
-    codec = db.get_codec_by_name(info.get('Codec'))
-    lingua = db.get_lingua_by_code(info.get('Lingua'))
+    codec = model.get_codec_by_name(info.get('Codec'))
+    lingua = model.get_lingua_by_code(info.get('Lingua'))
 
     if codec:
         arquivoaudio.id_codec = codec.id_
@@ -230,7 +230,7 @@ def get_audio(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAudio:
 
     return arquivoaudio
 
-def get_sub(db: DB, arquivo: Arquivo, info: dict) -> ArquivoSubtitulo:
+def get_sub(model: Model, arquivo: Arquivo, info: dict) -> ArquivoSubtitulo:
     print(f"\n#{info.get('Posicion')} (Subtítulo), lingua: {info.get('Lingua2')}, nome: {info.get('Nome')}")
     xdefecto = input('* Por defecto? (s/[n]): ').lower()
     if xdefecto == 's':
@@ -261,8 +261,8 @@ def get_sub(db: DB, arquivo: Arquivo, info: dict) -> ArquivoSubtitulo:
             texto=texto,
     )
 
-    codec = db.get_codec_by_name(info.get('Codec'))
-    lingua = db.get_lingua_by_code(info.get('Lingua'))
+    codec = model.get_codec_by_name(info.get('Codec'))
+    lingua = model.get_lingua_by_code(info.get('Lingua'))
 
     if codec:
         arquivosub.id_codec = codec.id_
@@ -271,7 +271,7 @@ def get_sub(db: DB, arquivo: Arquivo, info: dict) -> ArquivoSubtitulo:
 
     return arquivosub
 
-def get_attachment(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAdxunto:
+def get_attachment(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAdxunto:
     arquivoadxunto = ArquivoAdxunto(
         nome=info.get('Nome'),
         tamanho=info.get('Tamanho'),
@@ -280,20 +280,20 @@ def get_attachment(db: DB, arquivo: Arquivo, info: dict) -> ArquivoAdxunto:
         id_arquivo=arquivo.id_,
     )
 
-    codec = db.get_codec_by_name(info.get('Codec'))
+    codec = model.get_codec_by_name(info.get('Codec'))
 
     if codec:
         arquivoadxunto.id_codec=codec.id_
 
     return arquivoadxunto
 # ------------------------------------------------------------------------------
-def insertar(db: DB):
+def insertar(model: Model):
     print('\n*** INSERTAR ***')
 
-    media = get_media(db)
+    media = get_media(model)
     print()
     if media.id_tipo in MEDIAS_AGRUPABLES:
-        agrupacion = get_agrupacion(db, media)
+        agrupacion = get_agrupacion(model, media)
         print()
 
     webs = []
@@ -305,7 +305,7 @@ def insertar(db: DB):
             webs.append(MediaWeb(
                 ligazon=link,
                 id_media=media.id_,
-                id_web=loop_variable(db, 'Web'),
+                id_web=loop_variable(model, 'Web'),
             ))
 
     """
@@ -328,27 +328,27 @@ def insertar(db: DB):
             break
     info = main(fich)
 
-    arquivo, carpeta = get_arquivo(db, media, info, fich)
+    arquivo, carpeta = get_arquivo(model, media, info, fich)
 
     videos = []
     if info.get('videos'):
         for video in info['videos']:
-            videos.append(get_video(db, arquivo, video))
+            videos.append(get_video(model, arquivo, video))
 
     audios = []
     if info.get('audios'):
         for audio in info['audios']:
-            audios.append(get_audio(db, arquivo, audio))
+            audios.append(get_audio(model, arquivo, audio))
 
     subs = []
     if info.get('subtitulos'):
         for sub in info['subtitulos']:
-            subs.append(get_sub(db, arquivo, sub))
+            subs.append(get_sub(model, arquivo, sub))
 
     attachments = []
     if info.get('adxuntos'):
         for attachment in info['adxuntos']:
-            attachments.append(get_attachment(db, arquivo, attachment))
+            attachments.append(get_attachment(model, arquivo, attachment))
 
     print()
     shared = []
@@ -359,41 +359,41 @@ def insertar(db: DB):
         elif link != '':
             shared.append(Compartido(
                 ligazon=link,
-                id_lugar=loop_variable(db, 'Lugar'),
+                id_lugar=loop_variable(model, 'Lugar'),
                 id_arquivo=arquivo.id_
             ))
 
     ## gardar
     # media
-    db.insert(media)
+    model.insert(media)
     # media nomes
     # media nomes linguas
     # media nomes paises
     # media web
     for web in webs:
-        db.insert(web)
+        model.insert(web)
     # carpeta
-    db.insert(carpeta)
+    model.insert(carpeta)
 
     # arquivo
-    db.insert(arquivo)
+    model.insert(arquivo)
     # arquivo adxunto
     for attachment in attachments:
-        db.insert(attachment)
+        model.insert(attachment)
     # arquivo audio
     for audio in audios:
-        db.insert(audio)
+        model.insert(audio)
     # arquivo subtitulo
     for sub in subs:
-        db.insert(sub)
+        model.insert(sub)
     # arquivo video
     for video in videos:
-        db.insert(video)
+        model.insert(video)
     # compartido
     for share in shared:
-        db.insert(share)
+        model.insert(share)
 
-    db.save()
+    model.save()
 
     print('*** INSERTAR ***\n')
 # ------------------------------------------------------------------------------
