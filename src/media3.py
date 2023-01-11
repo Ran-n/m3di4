@@ -3,23 +3,20 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/11 22:13:04.197357
+#+ Editado:	2023/01/11 22:58:01.593798
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson
 
 from src.model.model import Model
 from src.model.sqlite import Sqlite
 from src.controller.controller import Controller
+from src.view.view import View
+from src.view.terminal import Terminal
 
 from src.uteis import print_fin
 
 from src.dtos.Media import Media
 from src.dtos.MediaAgrupacion import MediaAgrupacion
-# ------------------------------------------------------------------------------
-def print_inicio():
-    print('----------------------------------------')
-    print('Media3 Manager')
-    print('----------------------------------------')
 # ------------------------------------------------------------------------------
 def opcions_menu(opcions: dict) -> int:
     print('\n*** MENÚ ***')
@@ -41,14 +38,13 @@ def menu(model: Model, controller: Controller):
     }
 
     opcions[opcions_menu(opcions)][1](model)
-
 # ------------------------------------------------------------------------------
 def main():
     cnf = cargarJson('.cnf')
-    model = Model(Sqlite(cnf['db']))
-    controller = Controller()
 
-    print_inicio()
+    model = Model(Sqlite(cnf['db']))
+    view = View(Terminal())
+    controller = Controller()
 
     while True:
         menu(model, controller)

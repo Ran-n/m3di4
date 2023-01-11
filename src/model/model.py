@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/11 22:20:07.178069
+#+ Editado:	2023/01/11 22:49:00.834315
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ class Model:
         if isinstance(model, iModel):
             self.model = model
         else:
-            raise ValueError("Ten que herdar de " + DB.__name__)
+            raise ValueError("Ten que herdar de " + iModel.__name__)
 
     def get_conn_db(self) -> Connection:
         return self.model.get_conn_db()
