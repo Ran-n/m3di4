@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/10 18:56:45.147286
+#+ Editado:	2023/01/11 22:19:16.304987
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -32,23 +32,23 @@ from src.dtos.ArquivoVideo import ArquivoVideo
 # ------------------------------------------------------------------------------
 class iModel(ABC):
     @abstractmethod
-    def get_conn(self) -> Connection:
+    def get_conn_db(self) -> Connection:
         pass
 
     @abstractmethod
-    def get_cur(self) -> Cursor:
+    def get_cur_db(self) -> Cursor:
         pass
 
     @abstractmethod
-    def conectar(self) -> tuple([Connection, Cursor]):
+    def connect_db(self) -> tuple([Connection, Cursor]):
         pass
 
     @abstractmethod
-    def desconectar(self, commit: bool = True) -> None:
+    def disconnect_db(self, commit: bool = True) -> None:
         pass
 
     @abstractmethod
-    def save(self) -> None:
+    def save_db(self) -> None:
         pass
 
     @abstractmethod

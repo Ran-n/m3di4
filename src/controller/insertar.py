@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/10 19:01:37.977617
+#+ Editado:	2023/01/11 22:21:37.625071
 # ------------------------------------------------------------------------------
 from typing import Union
 import pathlib
@@ -287,7 +287,7 @@ def get_attachment(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAdxunto
 
     return arquivoadxunto
 # ------------------------------------------------------------------------------
-def insertar(model: Model):
+def insertar(model: Model) -> None:
     print('\n*** INSERTAR ***')
 
     media = get_media(model)
@@ -393,7 +393,7 @@ def insertar(model: Model):
     for share in shared:
         model.insert(share)
 
-    model.save()
+    model.save_db()
 
     print('*** INSERTAR ***\n')
 # ------------------------------------------------------------------------------

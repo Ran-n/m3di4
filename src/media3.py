@@ -3,14 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/10 19:02:02.238137
+#+ Editado:	2023/01/11 22:13:04.197357
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson
 
 from src.model.model import Model
 from src.model.sqlite import Sqlite
-from src.controller.sair import sair
-from src.controller.insertar import insertar
+from src.controller.controller import Controller
 
 from src.uteis import print_fin
 
@@ -35,10 +34,10 @@ def opcions_menu(opcions: dict) -> int:
     print('*** MENÚ ***\n')
     return opcion
 
-def menu(model: Model):
+def menu(model: Model, controller: Controller):
     opcions = {
-            '0': ['Sair', sair],
-            '1': ['Insertar', insertar],
+            '0': ['Sair', controller.sair],
+            '1': ['Insertar', controller.insertar],
     }
 
     opcions[opcions_menu(opcions)][1](model)
@@ -47,11 +46,12 @@ def menu(model: Model):
 def main():
     cnf = cargarJson('.cnf')
     model = Model(Sqlite(cnf['db']))
+    controller = Controller()
 
     print_inicio()
 
     while True:
-        menu(model)
+        menu(model, controller)
 
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":

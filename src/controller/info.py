@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2022/12/29 01:43:44.566474
-#+ Editado:	2023/01/09 23:34:00.255312
+#+ Editado:	2023/01/11 17:28:21.984551
 # ------------------------------------------------------------------------------
 import sys
 import ffmpeg
@@ -20,32 +20,21 @@ def formato_lingua(lingua: Union[List[str], str]) -> str:
 
 def get_lingua(lingua: str) -> str:
     dic_linguas = {
-            #'eng': ['en', 'Inglés'],
-            'eng': ['en', 'Ingles'],
+            'eng': ['en', 'Inglés'],
             'ita': ['it', 'Italiano'],
-            #'spa': ['cas', 'Castelán'],
-            'spa': ['cas', 'Castelan'],
-            #'fre': ['fr', 'Francés'],
-            'fre': ['fr', 'Frances'],
-            #'jpn': ['ni', 'Xaponés'],
-            'jpn': ['ni', 'Xapones'],
-            #'ger': ['de', 'Alemán'],
-            'ger': ['de', 'Aleman'],
+            'spa': ['cas', 'Castelán'],
+            'fre': ['fr', 'Francés'],
+            'jpn': ['ni', 'Xaponés'],
+            'ger': ['de', 'Alemán'],
             'pol': ['pl', 'Polaco'],
-            #'por': ['po', 'Portugués'],
-            'por': ['po', 'Portugues'],
+            'por': ['po', 'Portugués'],
             'nor': ['no', 'Noruego'],
             'swe': ['sw', 'Sueco'],
-            #'dut': ['nl', 'Neederlandés'],
-            'dut': ['nl', 'Neederlandes'],
-            #'fin': ['sk', 'Finlandés'],
-            'fin': ['sk', 'Finlandes'],
-            #'dan': ['da', 'Danés'],
-            'dan': ['da', 'Danes'],
-            #'ara': ['da', 'Árabe'],
-            'ara': ['arabe', 'Arabe'],
-            #'cat': ['cat', 'Catalán'],
-            'cat': ['cat', 'Catalan'],
+            'dut': ['nl', 'Neederlandés'],
+            'fin': ['sk', 'Finlandés'],
+            'dan': ['da', 'Danés'],
+            'ara': ['da', 'Árabe'],
+            'cat': ['cat', 'Catalán'],
             'cze': ['checo', 'Checo'],
             'gre': ['grego', 'Grego'],
             'baq': ['eu', 'Euskera'],
@@ -53,8 +42,7 @@ def get_lingua(lingua: str) -> str:
             'glg': ['gz', 'Galego'],
             'heb': ['iv', 'Hebreo'],
             'hrv': ['croata', 'Croata'],
-            #'hun': ['mn', 'Húngaro'],
-            'hun': ['mn', 'Hungaro'],
+            'hun': ['mn', 'Húngaro'],
             'ind': ['indonesio', 'Indonesio'],
             'kor': ['ko', 'Koreano'],
             'may': ['me', 'Malai'],

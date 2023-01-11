@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/10 18:57:30.380264
+#+ Editado:	2023/01/11 22:20:07.178069
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,20 +38,20 @@ class Model:
         else:
             raise ValueError("Ten que herdar de " + DB.__name__)
 
-    def get_conn(self) -> Connection:
-        return self.model.get_conn()
+    def get_conn_db(self) -> Connection:
+        return self.model.get_conn_db()
 
-    def get_cur(self) -> Cursor:
-        return self.model.get_cur()
+    def get_cur_db(self) -> Cursor:
+        return self.model.get_cur_db()
 
-    def conectar(self) -> tuple([Connection, Cursor]):
-        return self.model.conectar()
+    def connect_db(self) -> tuple([Connection, Cursor]):
+        return self.model.connect_db()
 
-    def desconectar(self, commit: bool = True) -> None:
-        return self.model.desconectar(commit)
+    def disconnect_db(self, commit: bool = True) -> None:
+        return self.model.disconnect_db(commit)
 
-    def save(self) -> None:
-        return self.model.save()
+    def save_db(self) -> None:
+        return self.model.save_db()
 
     # SELECT
     def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
