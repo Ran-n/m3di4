@@ -3,9 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/11 23:13:19.934690
+#+ Editado:	2023/01/12 18:32:38.594144
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+
+from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaNomes:
@@ -14,4 +16,5 @@ class MediaNomes:
     id_media: str = None
     id_media_agrupacion: str = field(default=None)
     id_media_fasciculo: str = field(default=None)
+    id_: int = field(default_factory=crear_chave)
 # ------------------------------------------------------------------------------

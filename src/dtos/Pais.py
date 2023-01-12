@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:54.400579
-#+ Editado:	2023/01/12 17:41:09.870280
+#+ Editado:	2023/01/12 18:00:40.516364
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -11,7 +11,7 @@ from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
 class Pais:
-    nome_taboa: str = field(init=False, default='País')
+    nome_taboa: str = field(init=False, default='_País')
     nome: str
     reino: int = field(default=None)
     id_: str = field(default_factory=crear_chave)

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/11 22:19:16.304987
+#+ Editado:	2023/01/12 18:22:24.390224
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,23 +12,27 @@ from abc import ABC, abstractmethod
 from sqlite3 import Connection, Cursor
 from typing import List, Tuple, Union
 
-from src.dtos.MediaTipo import MediaTipo
-from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.Almacen import Almacen
-from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.Secuencia import Secuencia
-from src.dtos.Lingua import Lingua
-from src.dtos.Codec import Codec
-from src.dtos.CompartirLugar import CompartirLugar
-from src.dtos.Web import Web
-from src.dtos.Media import Media
-from src.dtos.MediaWeb import MediaWeb
 from src.dtos.Arquivo import Arquivo
 from src.dtos.ArquivoAdxunto import ArquivoAdxunto
 from src.dtos.ArquivoAudio import ArquivoAudio
 from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
-from src.dtos.Compartido import Compartido
 from src.dtos.ArquivoVideo import ArquivoVideo
+from src.dtos.Codec import Codec
+from src.dtos.Compartido import Compartido
+from src.dtos.CompartirLugar import CompartirLugar
+from src.dtos.Lingua import Lingua
+from src.dtos.Media import Media
+from src.dtos.MediaNomes import MediaNomes
+from src.dtos.MediaNomesLinguas import MediaNomesLinguas
+from src.dtos.MediaNomesPaises import MediaNomesPaises
+from src.dtos.MediaSituacion import MediaSituacion
+from src.dtos.MediaTipo import MediaTipo
+from src.dtos.MediaWeb import MediaWeb
+from src.dtos.NomeCarpeta import NomeCarpeta
+from src.dtos.Pais import Pais
+from src.dtos.Secuencia import Secuencia
+from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
 class iModel(ABC):
     @abstractmethod
@@ -52,7 +56,7 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
+    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         pass
 
     @abstractmethod
@@ -72,6 +76,6 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido]) -> None:
+    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
         pass
 # ------------------------------------------------------------------------------

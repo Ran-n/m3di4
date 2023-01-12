@@ -3,9 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/11 23:33:08.964605
+#+ Editado:	2023/01/12 18:56:01.079981
 # ------------------------------------------------------------------------------
-from typing import Union
+from typing import Union, List
 import pathlib
 
 from uteis.imprimir import jprint
@@ -21,6 +21,7 @@ from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
 from src.dtos.ArquivoVideo import ArquivoVideo
 from src.dtos.Compartido import Compartido
 from src.dtos.CompartirLugar import CompartirLugar
+from src.dtos.Lingua import Lingua
 from src.dtos.Media import Media
 from src.dtos.MediaAgrupacion import MediaAgrupacion
 from src.dtos.MediaFasciculo import MediaFasciculo
@@ -31,6 +32,7 @@ from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.MediaTipo import MediaTipo
 from src.dtos.MediaWeb import MediaWeb
 from src.dtos.NomeCarpeta import NomeCarpeta
+from src.dtos.Pais import Pais
 from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
 # non moi ben que esta info este aqui soamente
@@ -47,10 +49,8 @@ def loop_variable(model: Model, variable: str, msg: str = None) -> str:
         posibilidades = model.select(CompartirLugar.nome_taboa)
     elif variable == 'Web':
         posibilidades = model.select(Web.nome_taboa)
-    # xFCR make
     elif variable == 'Lingua':
         posibilidades = model.select(Lingua.nome_taboa)
-    # xFCR make
     elif variable == 'Pais':
         posibilidades = model.select(Pais.nome_taboa)
 
@@ -74,9 +74,9 @@ def loop_variable(model: Model, variable: str, msg: str = None) -> str:
 def loop_variable_until(model: Model, variable: str, msg: str = None) -> List[str]:
     variables = []
     while True:
-        variables.append(loop_variable_until)
-        continue_ = input('* Continue? ([s]/n): ').lower()
-        if continue_ == 's':
+        variables.append(loop_variable(model, variable, msg))
+        continue_ = input('* Máis? (s/[n]): ').lower()
+        if continue_ != 's':
             break
     return variables
 
@@ -328,22 +328,42 @@ def insertar(model: Model) -> None:
                 id_web=loop_variable(model, 'Web'),
             ))
 
+    print()
+
     # media nomes
     names = []
-    # xFCR
-    name_original = MediaNomes(nome=media.nome, id_media=media.id_)
-    lang_original = loop_variable_until(model=model, variable='Lingua', msg='Linguas do nome da Media')
-    country_original = loop_variable_until(model=model, variable='Pais', msg='Países do nome da Media')
-    while True:
-        name = input('* Nome alternativo da media (. para finalizar): ')
-        if name == '.':
-            break
-        lang = input('* Idioma no que está este nome: ')
-        country = input('* País no que se usou este nome: ')
+    langs = []
+    countries = []
 
-        names.append()
+    media_nome = MediaNomes(
+            nome=media.nome,
+            id_media=media.id_,
+    )
+    while True:
+        names.append(media_nome)
+        for id_lang in loop_variable_until(model=model, variable='Lingua', msg='Linguas do nome da Media'):
+            langs.append(MediaNomesLinguas(
+                id_media_nomes=media_nome.id_,
+                id_lingua=id_lang,
+            ))
+
+        for id_country in loop_variable_until(model=model, variable='Pais', msg='Países do nome da Media'):
+            countries.append(MediaNomesPaises(
+                id_media_nomes=media_nome.id_,
+                id_pais=id_country,
+            ))
+
+        print()
+
+        media_nome = MediaNomes(
+                nome=input('* Nome alternativo da media (. para finalizar): '),
+                id_media=media.id_,
+        )
+        if media_nome.nome == '.':
+            break
 
     print()
+
     while True:
         fich = input('* Path do ficheiro: ')
         if fich != "" and pathlib.Path(fich).exists():
@@ -388,9 +408,17 @@ def insertar(model: Model) -> None:
     ## gardar
     # media
     model.insert(media)
+
     # media nomes
+    for name in names:
+        model.insert(name)
     # media nomes linguas
+    for lang in langs:
+        model.insert(lang)
     # media nomes paises
+    for country in countries:
+        model.insert(country)
+
     # media web
     for web in webs:
         model.insert(web)

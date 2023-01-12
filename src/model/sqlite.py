@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/11 22:22:45.542891
+#+ Editado:	2023/01/12 18:46:52.928222
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -14,23 +14,27 @@ from sqlite3 import Connection, Cursor
 
 from typing import List, Tuple, Union
 
-from src.dtos.Arquivo import Arquivo
 from src.dtos.Almacen import Almacen
-from src.dtos.Codec import Codec
-from src.dtos.CompartirLugar import CompartirLugar
-from src.dtos.Lingua import Lingua
-from src.dtos.Media import Media
-from src.dtos.MediaSituacion import MediaSituacion
-from src.dtos.MediaTipo import MediaTipo
-from src.dtos.MediaWeb import MediaWeb
-from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.Secuencia import Secuencia
-from src.dtos.Web import Web
+from src.dtos.Arquivo import Arquivo
 from src.dtos.ArquivoAdxunto import ArquivoAdxunto
 from src.dtos.ArquivoAudio import ArquivoAudio
 from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
 from src.dtos.ArquivoVideo import ArquivoVideo
+from src.dtos.Codec import Codec
 from src.dtos.Compartido import Compartido
+from src.dtos.CompartirLugar import CompartirLugar
+from src.dtos.Lingua import Lingua
+from src.dtos.Media import Media
+from src.dtos.MediaNomes import MediaNomes
+from src.dtos.MediaNomesLinguas import MediaNomesLinguas
+from src.dtos.MediaNomesPaises import MediaNomesPaises
+from src.dtos.MediaSituacion import MediaSituacion
+from src.dtos.MediaTipo import MediaTipo
+from src.dtos.MediaWeb import MediaWeb
+from src.dtos.NomeCarpeta import NomeCarpeta
+from src.dtos.Pais import Pais
+from src.dtos.Secuencia import Secuencia
+from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -66,7 +70,7 @@ class Sqlite(iModel):
             self.conn.commit()
 
     # SELECT
-    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
+    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         pass
 
     def select_tipos(self) -> List[MediaTipo]:
@@ -118,6 +122,21 @@ class Sqlite(iModel):
             valores.append(Web(id_=result[0], nome=result[1], siglas=result[2], ligazon=result[3]))
         return valores
 
+    def select_linguas(self) -> List[Lingua]:
+        results = self.get_cur_db().execute(f'select ID, Nome, Desc from "{Lingua.nome_taboa}"').fetchall()
+        valores = []
+        for result in results:
+            valores.append(Lingua(id_=result[0], nome=result[1], desc=result[2]))
+        return valores
+
+    def select_paises(self) -> List[Pais]:
+        results = self.get_cur_db().execute(f'select ID, Nome, Reino from "{Pais.nome_taboa}"').fetchall()
+        valores = []
+        for result in results:
+            valores.append(Pais(id_=result[0], nome=result[1], reino=result[2]))
+        return valores
+
+
     # GET BY X
     def get_lingua_by_code(self, code: str) -> Lingua:
         if code:
@@ -148,7 +167,7 @@ class Sqlite(iModel):
         return None
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido]) -> None:
+    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
         pass
 
     def insert_media(self, obj: Media) -> None:
@@ -177,4 +196,13 @@ class Sqlite(iModel):
 
     def insert_compartido(self, obj: Compartido) -> None:
         self.get_cur_db().execute(f'insert into "{Compartido.nome_taboa}" ("ID Arquivo", "ID Lugar", "Ligazón") values (?, ?, ?)', (obj.id_arquivo, obj.id_lugar, obj.ligazon))
+
+    def insert_medianomes(self, obj: MediaNomes) -> int:
+        self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID", "Nome", "ID Media", "ID Media Agrupación", "ID Media Fascículo") values (?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.id_media, obj.id_media_agrupacion, obj.id_media_fasciculo))
+
+    def insert_medianomeslinguas(self, obj: MediaNomesLinguas) -> None:
+        self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID Media Nomes", "ID Lingua") values (?, ?)', (obj.id_media_nomes, obj.id_lingua))
+
+    def insert_medianomespaises(self, obj: MediaNomesPaises) -> None:
+        self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID Media Nomes", "ID País") values (?, ?)', (obj.id_media_nomes, obj.id_pais))
 # ------------------------------------------------------------------------------

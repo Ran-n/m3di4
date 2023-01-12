@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/11 22:49:00.834315
+#+ Editado:	2023/01/12 18:22:17.324467
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,23 +12,27 @@ from src.model.imodel import iModel
 from sqlite3 import Connection, Cursor
 from typing import List, Tuple, Union
 
-from src.dtos.MediaTipo import MediaTipo
-from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.Almacen import Almacen
-from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.Secuencia import Secuencia
-from src.dtos.Lingua import Lingua
-from src.dtos.Codec import Codec
-from src.dtos.CompartirLugar import CompartirLugar
-from src.dtos.Web import Web
-from src.dtos.Media import Media
-from src.dtos.MediaWeb import MediaWeb
 from src.dtos.Arquivo import Arquivo
 from src.dtos.ArquivoAdxunto import ArquivoAdxunto
 from src.dtos.ArquivoAudio import ArquivoAudio
 from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
-from src.dtos.Compartido import Compartido
 from src.dtos.ArquivoVideo import ArquivoVideo
+from src.dtos.Codec import Codec
+from src.dtos.Compartido import Compartido
+from src.dtos.CompartirLugar import CompartirLugar
+from src.dtos.Lingua import Lingua
+from src.dtos.Media import Media
+from src.dtos.MediaNomes import MediaNomes
+from src.dtos.MediaNomesLinguas import MediaNomesLinguas
+from src.dtos.MediaNomesPaises import MediaNomesPaises
+from src.dtos.MediaSituacion import MediaSituacion
+from src.dtos.MediaTipo import MediaTipo
+from src.dtos.MediaWeb import MediaWeb
+from src.dtos.NomeCarpeta import NomeCarpeta
+from src.dtos.Pais import Pais
+from src.dtos.Secuencia import Secuencia
+from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, model: iModel):
@@ -54,7 +58,7 @@ class Model:
         return self.model.save_db()
 
     # SELECT
-    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web]]:
+    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         if nome_taboa == MediaTipo.nome_taboa:
             return self.model.select_tipos()
         elif nome_taboa == MediaSituacion.nome_taboa:
@@ -69,6 +73,10 @@ class Model:
             return self.model.select_lugares()
         elif nome_taboa == Web.nome_taboa:
             return self.model.select_webs()
+        elif nome_taboa == Lingua.nome_taboa:
+            return self.model.select_linguas()
+        elif nome_taboa == Pais.nome_taboa:
+            return self.model.select_paises()
 
     def get_situacion_by_name(self, name: str) -> MediaSituacion:
         return self.model.get_situacion_by_name(name)
@@ -83,7 +91,7 @@ class Model:
         return self.model.get_nomecarpeta_by_name(name)
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido]) -> None:
+    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
         if type(obj) == Media:
             return self.model.insert_media(obj)
         elif type(obj) == MediaWeb:
@@ -102,4 +110,10 @@ class Model:
             return self.model.insert_arquivovideo(obj)
         elif type(obj) == Compartido:
             return self.model.insert_compartido(obj)
+        elif type(obj) == MediaNomes:
+            return self.model.insert_medianomes(obj)
+        elif type(obj) == MediaNomesLinguas:
+            return self.model.insert_medianomeslinguas(obj)
+        elif type(obj) == MediaNomesPaises:
+            return self.model.insert_medianomespaises(obj)
 # ------------------------------------------------------------------------------
