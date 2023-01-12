@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:54.400579
-#+ Editado:	2023/01/08 16:48:58.589253
+#+ Editado:	2023/01/12 17:41:09.870280
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -15,4 +15,7 @@ class Pais:
     nome: str
     reino: int = field(default=None)
     id_: str = field(default_factory=crear_chave)
+
+    def __repr__(self) -> str:
+        return f'{self.nome}\t[{self.id_}]'
 # ------------------------------------------------------------------------------

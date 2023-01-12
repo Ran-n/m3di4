@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/11 22:21:37.625071
+#+ Editado:	2023/01/11 23:33:08.964605
 # ------------------------------------------------------------------------------
 from typing import Union
 import pathlib
@@ -19,21 +19,24 @@ from src.dtos.ArquivoAdxunto import ArquivoAdxunto
 from src.dtos.ArquivoAudio import ArquivoAudio
 from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
 from src.dtos.ArquivoVideo import ArquivoVideo
+from src.dtos.Compartido import Compartido
+from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Media import Media
 from src.dtos.MediaAgrupacion import MediaAgrupacion
 from src.dtos.MediaFasciculo import MediaFasciculo
+from src.dtos.MediaNomes import MediaNomes
+from src.dtos.MediaNomesLinguas import MediaNomesLinguas
+from src.dtos.MediaNomesPaises import MediaNomesPaises
 from src.dtos.MediaSituacion import MediaSituacion
 from src.dtos.MediaTipo import MediaTipo
 from src.dtos.MediaWeb import MediaWeb
 from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Web import Web
-from src.dtos.Compartido import Compartido
 # ------------------------------------------------------------------------------
 # non moi ben que esta info este aqui soamente
 MEDIAS_AGRUPABLES = ['serie', 'miniserie']
 # ------------------------------------------------------------------------------
-def loop_variable(model: Model, variable: str) -> str:
+def loop_variable(model: Model, variable: str, msg: str = None) -> str:
     if variable == 'Tipo':
         posibilidades = model.select(MediaTipo.nome_taboa)
     elif variable == 'Situación':
@@ -44,13 +47,21 @@ def loop_variable(model: Model, variable: str) -> str:
         posibilidades = model.select(CompartirLugar.nome_taboa)
     elif variable == 'Web':
         posibilidades = model.select(Web.nome_taboa)
+    # xFCR make
+    elif variable == 'Lingua':
+        posibilidades = model.select(Lingua.nome_taboa)
+    # xFCR make
+    elif variable == 'Pais':
+        posibilidades = model.select(Pais.nome_taboa)
 
     posibilidades_ids = []
     for ele in posibilidades:
         posibilidades_ids.append(ele.id_)
 
     while True:
-        resul = input(f'* {variable}: ')
+        if not msg:
+            msg = variable
+        resul = input(f'* {msg}: ')
         if resul == '?':
             print()
             for ele in posibilidades:
@@ -59,6 +70,15 @@ def loop_variable(model: Model, variable: str) -> str:
         elif resul in posibilidades_ids:
             break
     return resul
+
+def loop_variable_until(model: Model, variable: str, msg: str = None) -> List[str]:
+    variables = []
+    while True:
+        variables.append(loop_variable_until)
+        continue_ = input('* Continue? ([s]/n): ').lower()
+        if continue_ == 's':
+            break
+    return variables
 
 def validar_numero(variable: str) -> str:
     while True:
@@ -308,18 +328,20 @@ def insertar(model: Model) -> None:
                 id_web=loop_variable(model, 'Web'),
             ))
 
-    """
     # media nomes
     names = []
+    # xFCR
+    name_original = MediaNomes(nome=media.nome, id_media=media.id_)
+    lang_original = loop_variable_until(model=model, variable='Lingua', msg='Linguas do nome da Media')
+    country_original = loop_variable_until(model=model, variable='Pais', msg='Países do nome da Media')
     while True:
         name = input('* Nome alternativo da media (. para finalizar): ')
-        if link == '.':
+        if name == '.':
             break
         lang = input('* Idioma no que está este nome: ')
         country = input('* País no que se usou este nome: ')
 
         names.append()
-    """
 
     print()
     while True:
