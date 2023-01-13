@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/12 18:46:52.928222
+#+ Editado:	2023/01/13 23:01:48.140843
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ class Sqlite(iModel):
             self.conn.commit()
 
     # SELECT
-    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
+    def select(self, nome_taboa: str, alfabetic: bool = False) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         pass
 
     def select_tipos(self) -> List[MediaTipo]:
@@ -122,11 +122,12 @@ class Sqlite(iModel):
             valores.append(Web(id_=result[0], nome=result[1], siglas=result[2], ligazon=result[3]))
         return valores
 
-    def select_linguas(self) -> List[Lingua]:
+    def select_linguas(self, alfabetic: bool = False) -> List[Lingua]:
         results = self.get_cur_db().execute(f'select ID, Nome, Desc from "{Lingua.nome_taboa}"').fetchall()
         valores = []
         for result in results:
             valores.append(Lingua(id_=result[0], nome=result[1], desc=result[2]))
+        if alfabetic: valores.sort()
         return valores
 
     def select_paises(self) -> List[Pais]:

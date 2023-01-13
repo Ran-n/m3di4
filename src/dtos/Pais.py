@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:54.400579
-#+ Editado:	2023/01/12 18:00:40.516364
+#+ Editado:	2023/01/13 23:00:12.073364
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -18,4 +18,10 @@ class Pais:
 
     def __repr__(self) -> str:
         return f'{self.nome}\t[{self.id_}]'
+
+    def __gt__(self, other) -> bool:
+        return self.nome > other.nome
+
+    def __lt__(self, other) -> bool:
+        return self.nome < other.nome
 # ------------------------------------------------------------------------------

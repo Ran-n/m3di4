@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:51.038236
-#+ Editado:	2023/01/12 18:00:47.405269
+#+ Editado:	2023/01/13 23:02:20.271119
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -18,4 +18,10 @@ class Lingua:
 
     def __repr__(self) -> str:
         return f'{self.nome}\t[{self.id_}]'
+
+    def __gt__(self, other) -> bool:
+        return self.nome > other.nome
+
+    def __lt__(self, other) -> bool:
+        return self.nome < other.nome
 # ------------------------------------------------------------------------------

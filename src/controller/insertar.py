@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/12 18:56:01.079981
+#+ Editado:	2023/01/13 22:42:10.021181
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -50,7 +50,7 @@ def loop_variable(model: Model, variable: str, msg: str = None) -> str:
     elif variable == 'Web':
         posibilidades = model.select(Web.nome_taboa)
     elif variable == 'Lingua':
-        posibilidades = model.select(Lingua.nome_taboa)
+        posibilidades = model.select(Lingua.nome_taboa, alfabetic=True)
     elif variable == 'Pais':
         posibilidades = model.select(Pais.nome_taboa)
 

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/12 18:22:17.324467
+#+ Editado:	2023/01/13 22:42:46.220855
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ class Model:
         return self.model.save_db()
 
     # SELECT
-    def select(self, nome_taboa: str) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
+    def select(self, nome_taboa: str, alfabetic: bool = False) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         if nome_taboa == MediaTipo.nome_taboa:
             return self.model.select_tipos()
         elif nome_taboa == MediaSituacion.nome_taboa:
@@ -74,7 +74,7 @@ class Model:
         elif nome_taboa == Web.nome_taboa:
             return self.model.select_webs()
         elif nome_taboa == Lingua.nome_taboa:
-            return self.model.select_linguas()
+            return self.model.select_linguas(alfabetic)
         elif nome_taboa == Pais.nome_taboa:
             return self.model.select_paises()
 
