@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/14 22:00:21.254875
+#+ Editado:	2023/01/14 23:21:48.951202
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -128,6 +128,7 @@ def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
             id_media=media.id_,
     )
 
+# xFCR refacer mellor
 def get_carpeta(model: Model, fich: str, media: Media) -> NomeCarpeta:
     nome = pathlib.Path(fich).parent.name
     nome_carpeta = model.get_nomecarpeta_by_name(nome)
@@ -307,17 +308,84 @@ def get_attachment(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAdxunto
 
     return arquivoadxunto
 # ------------------------------------------------------------------------------
+def insert_file(model: Model, medias_agrupables: List[int], media: Media = None, agrup: MediaAgrupacion = None, fasci: MediaFasciculo = None) -> None:
+    while True:
+        fich = input('* Path do ficheiro: ')
+        if fich != "" and pathlib.Path(fich).exists():
+            break
+    info = main(fich)
+
+    arquivo, carpeta = get_arquivo(model, media, info, fich, medias_agrupables)
+
+    id_folder = model.insert(carpeta) # gardar carpeta
+    if id_folder:
+        carpeta.id_ = id_folder
+        arquivo.id_carpeta = id_folder
+    model.insert(arquivo) # gardar arquivo
+
+    videos = []
+    if info.get('videos'):
+        for video in info['videos']:
+            videos.append(get_video(model, arquivo, video))
+    # gardar arquivo video
+    for video in videos:
+        model.insert(video)
+
+    audios = []
+    if info.get('audios'):
+        for audio in info['audios']:
+            audios.append(get_audio(model, arquivo, audio))
+    # gardar arquivo audio
+    for audio in audios:
+        model.insert(audio)
+
+    subs = []
+    if info.get('subtitulos'):
+        for sub in info['subtitulos']:
+            subs.append(get_sub(model, arquivo, sub))
+    # gardar arquivo subtitulo
+    for sub in subs:
+        model.insert(sub)
+
+    attachments = []
+    if info.get('adxuntos'):
+        for attachment in info['adxuntos']:
+            attachments.append(get_attachment(model, arquivo, attachment))
+    # gardar arquivo adxunto
+    for attachment in attachments:
+        model.insert(attachment)
+
+    print()
+
+    # arquivo compartido
+    shared = []
+    while True:
+        link = input('* Ligazón de compartido (. para finalizar): ')
+        if link == '.':
+            break
+        elif link != '':
+            shared.append(Compartido(
+                ligazon=link,
+                id_lugar=loop_variable(model, 'Lugar'),
+                id_arquivo=arquivo.id_
+            ))
+    # compartido
+    for share in shared:
+        model.insert(share)
+
 # ------------------------------------------------------------------------------
 def insertar(model: Model) -> None:
     print('\n*** INSERTAR ***')
 
     medias_agrupables = model.get_mediatipo_agrupables(id_only=True)
 
+    # media
     media = get_media(model, medias_agrupables)
     model.insert(media) # gardar media
 
     print()
 
+    # webs de media
     webs = []
     while True:
         link = input('* Ligazón da media (. para finalizar): ')
@@ -335,25 +403,7 @@ def insertar(model: Model) -> None:
 
     print()
 
-    """
-    if media.id_tipo in medias_agrupables:
-        while True:
-            agrupacion = get_agrupacion(model, media)
-            print()
-            while True:
-                # episodes
-                pass
-                continue_epi = input('* Outro episodio? ([s]/n): ').lower()
-                if continue_epi == 'n':
-                    break
-
-            continue_group = input('* Outra agrupación? (s/[n]): ').lower()
-            if continue_group != 's':
-                break
-        print()
-    """
-
-    # media nomes
+    # media nomes, linguas e paises
     names = []
     langs = []
     countries = []
@@ -397,67 +447,26 @@ def insertar(model: Model) -> None:
 
     print()
 
-    while True:
-        fich = input('* Path do ficheiro: ')
-        if fich != "" and pathlib.Path(fich).exists():
-            break
-    info = main(fich)
-
-    arquivo, carpeta = get_arquivo(model, media, info, fich, medias_agrupables)
-
-    id_folder = model.insert(carpeta) # gardar carpeta
-    if id_folder:
-        carpeta.id_ = id_folder
-        arquivo.id_carpeta = carpeta.id_
-    model.insert(arquivo) # gardar arquivo
-
-    videos = []
-    if info.get('videos'):
-        for video in info['videos']:
-            videos.append(get_video(model, arquivo, video))
-    # gardar arquivo video
-    for video in videos:
-        model.insert(video)
-
-    audios = []
-    if info.get('audios'):
-        for audio in info['audios']:
-            audios.append(get_audio(model, arquivo, audio))
-    # gardar arquivo audio
-    for audio in audios:
-        model.insert(audio)
-
-    subs = []
-    if info.get('subtitulos'):
-        for sub in info['subtitulos']:
-            subs.append(get_sub(model, arquivo, sub))
-    # gardar arquivo subtitulo
-    for sub in subs:
-        model.insert(sub)
-
-    attachments = []
-    if info.get('adxuntos'):
-        for attachment in info['adxuntos']:
-            attachments.append(get_attachment(model, arquivo, attachment))
-    # gardar arquivo adxunto
-    for attachment in attachments:
-        model.insert(attachment)
+    insert_file(model=model, media=media, medias_agrupables=medias_agrupables)
 
     print()
-    shared = []
-    while True:
-        link = input('* Ligazón de compartido (. para finalizar): ')
-        if link == '.':
-            break
-        elif link != '':
-            shared.append(Compartido(
-                ligazon=link,
-                id_lugar=loop_variable(model, 'Lugar'),
-                id_arquivo=arquivo.id_
-            ))
-    # compartido
-    for share in shared:
-        model.insert(share)
+
+    """
+    if media.id_tipo in medias_agrupables:
+        while True:
+            agrupacion = get_agrupacion(model, media)
+            print()
+            while True:
+                # episodes
+                pass
+                continue_epi = input('* Outro episodio? ([s]/n): ').lower()
+                if continue_epi == 'n':
+                    break
+
+            continue_group = input('* Outra agrupación? (s/[n]): ').lower()
+            if continue_group != 's':
+                break
+    """
 
     # save DB
     model.save_db()
