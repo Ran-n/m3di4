@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/14 18:31:17.211047
+#+ Editado:	2023/01/14 21:50:57.210766
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.model.imodel import iModel
 # ------------------------------------------------------------------------------
 import sqlite3
-from sqlite3 import Connection, Cursor
+from sqlite3 import Connection, Cursor, IntegrityError
 
 from typing import List, Tuple, Union
 
@@ -190,8 +190,12 @@ class Sqlite(iModel):
     def insert_mediaweb(self, obj: MediaWeb) -> None:
         self.get_cur_db().execute(f'insert into "{MediaWeb.nome_taboa}" ("ID Media", "ID Web", "Ligazón") values (?, ?, ?)', (obj.id_media, obj.id_web, obj.ligazon))
 
-    def insert_nomecarpeta(self, obj: NomeCarpeta) -> None:
-        self.get_cur_db().execute(f'insert or ignore into "{NomeCarpeta.nome_taboa}" ("ID", "Nome") values (?, ?)', (obj.id_, obj.nome))
+    def insert_nomecarpeta(self, obj: NomeCarpeta) -> Union[None, int]:
+        try:
+            self.get_cur_db().execute(f'insert into "{NomeCarpeta.nome_taboa}" ("ID", "Nome") values (?, ?)', (obj.id_, obj.nome))
+        except IntegrityError:
+            return self.get_nomecarpeta_by_name(obj.nome)
+        return None
 
     def insert_arquivo(self, obj: Arquivo) -> None:
         self.get_cur_db().execute(f'insert into "{Arquivo.nome_taboa}" ("ID", "Nome", "Extensión", "Tamanho", "Duración", "Bit Rate", "Título", "Data Creación", "ID Almacén", "ID Carpeta", "ID Media", "ID Media Fascículo") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.extension, obj.tamanho, obj.duracion, obj.bit_rate, obj.titulo, obj.data_creacion, obj.id_almacen, obj.id_carpeta, obj.id_media, obj.id_media_fasciculo))
