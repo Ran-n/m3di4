@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/14 20:05:03.041116
+#+ Editado:	2023/01/14 22:00:21.254875
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -93,15 +93,23 @@ def get_x_info(info: dict, key: str) -> Union[None, float, int, str]:
 # ------------------------------------------------------------------------------
 def get_media(model: Model, medias_agrupables: List[int]) -> Media:
     print('> Media')
-    media = Media(
-            nome=input('* Nome da Media: '),
-            ano_ini=validar_numero('Ano Inicio'),
-            ano_fin=validar_numero('Ano Fin'),
-    )
-    if media.ano_fin == '=':
-        media.ano_fin = media.ano_ini
 
-    media.id_tipo = loop_variable(model, 'Tipo')
+    media_nome = input('* Nome da Media: ')
+    media_tipo = loop_variable(model, 'Tipo')
+    media_ano_ini = validar_numero('Ano Inicio')
+    media_ano_fin = media_ano_ini
+    if media_tipo in medias_agrupables:
+        media_ano_fin = validar_numero('Ano Fin')
+        if media_ano_fin == '=':
+            media_ano_fin = media_ano_ini
+
+    media = Media(
+            nome = media_nome,
+            ano_ini = media_ano_ini,
+            ano_fin = media_ano_fin,
+            id_tipo = media_tipo,
+    )
+
     if media.id_tipo in medias_agrupables:
         media.id_situacion = loop_variable(model, 'Situación')
     else:
@@ -152,6 +160,7 @@ def get_arquivo(model: Model, media: Media, info: dict, fich: str, medias_agrupa
 
     if media.id_tipo in medias_agrupables:
         #id_media_fasciculo=
+        # xFCR
         pass
     else:
         arquivo.id_media = media.id_
@@ -298,16 +307,16 @@ def get_attachment(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAdxunto
 
     return arquivoadxunto
 # ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 def insertar(model: Model) -> None:
     print('\n*** INSERTAR ***')
 
     medias_agrupables = model.get_mediatipo_agrupables(id_only=True)
 
     media = get_media(model, medias_agrupables)
+    model.insert(media) # gardar media
+
     print()
-    if media.id_tipo in medias_agrupables:
-        agrupacion = get_agrupacion(model, media)
-        print()
 
     webs = []
     while True:
@@ -320,8 +329,29 @@ def insertar(model: Model) -> None:
                 id_media=media.id_,
                 id_web=loop_variable(model, 'Web'),
             ))
+    # gardar media web
+    for web in webs:
+        model.insert(web)
 
     print()
+
+    """
+    if media.id_tipo in medias_agrupables:
+        while True:
+            agrupacion = get_agrupacion(model, media)
+            print()
+            while True:
+                # episodes
+                pass
+                continue_epi = input('* Outro episodio? ([s]/n): ').lower()
+                if continue_epi == 'n':
+                    break
+
+            continue_group = input('* Outra agrupación? (s/[n]): ').lower()
+            if continue_group != 's':
+                break
+        print()
+    """
 
     # media nomes
     names = []
@@ -355,6 +385,16 @@ def insertar(model: Model) -> None:
         if media_nome.nome == '.':
             break
 
+    # gardar media nomes
+    for name in names:
+        model.insert(name)
+    # gardar media nomes linguas
+    for lang in langs:
+        model.insert(lang)
+    # gardar media nomes paises
+    for country in countries:
+        model.insert(country)
+
     print()
 
     while True:
@@ -365,25 +405,43 @@ def insertar(model: Model) -> None:
 
     arquivo, carpeta = get_arquivo(model, media, info, fich, medias_agrupables)
 
+    id_folder = model.insert(carpeta) # gardar carpeta
+    if id_folder:
+        carpeta.id_ = id_folder
+        arquivo.id_carpeta = carpeta.id_
+    model.insert(arquivo) # gardar arquivo
+
     videos = []
     if info.get('videos'):
         for video in info['videos']:
             videos.append(get_video(model, arquivo, video))
+    # gardar arquivo video
+    for video in videos:
+        model.insert(video)
 
     audios = []
     if info.get('audios'):
         for audio in info['audios']:
             audios.append(get_audio(model, arquivo, audio))
+    # gardar arquivo audio
+    for audio in audios:
+        model.insert(audio)
 
     subs = []
     if info.get('subtitulos'):
         for sub in info['subtitulos']:
             subs.append(get_sub(model, arquivo, sub))
+    # gardar arquivo subtitulo
+    for sub in subs:
+        model.insert(sub)
 
     attachments = []
     if info.get('adxuntos'):
         for attachment in info['adxuntos']:
             attachments.append(get_attachment(model, arquivo, attachment))
+    # gardar arquivo adxunto
+    for attachment in attachments:
+        model.insert(attachment)
 
     print()
     shared = []
@@ -397,45 +455,11 @@ def insertar(model: Model) -> None:
                 id_lugar=loop_variable(model, 'Lugar'),
                 id_arquivo=arquivo.id_
             ))
-
-    ## gardar
-    # media
-    model.insert(media)
-
-    # media nomes
-    for name in names:
-        model.insert(name)
-    # media nomes linguas
-    for lang in langs:
-        model.insert(lang)
-    # media nomes paises
-    for country in countries:
-        model.insert(country)
-
-    # media web
-    for web in webs:
-        model.insert(web)
-    # carpeta
-    model.insert(carpeta)
-
-    # arquivo
-    model.insert(arquivo)
-    # arquivo adxunto
-    for attachment in attachments:
-        model.insert(attachment)
-    # arquivo audio
-    for audio in audios:
-        model.insert(audio)
-    # arquivo subtitulo
-    for sub in subs:
-        model.insert(sub)
-    # arquivo video
-    for video in videos:
-        model.insert(video)
     # compartido
     for share in shared:
         model.insert(share)
 
+    # save DB
     model.save_db()
 
     print('*** INSERTAR ***\n')
