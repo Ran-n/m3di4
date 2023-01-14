@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/14 21:50:57.210766
+#+ Editado:	2023/01/14 23:19:09.775927
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ class Sqlite(iModel):
         try:
             self.get_cur_db().execute(f'insert into "{NomeCarpeta.nome_taboa}" ("ID", "Nome") values (?, ?)', (obj.id_, obj.nome))
         except IntegrityError:
-            return self.get_nomecarpeta_by_name(obj.nome)
+            return self.get_nomecarpeta_by_name(obj.nome).id_
         return None
 
     def insert_arquivo(self, obj: Arquivo) -> None:
