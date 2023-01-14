@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/13 22:42:46.220855
+#+ Editado:	2023/01/14 17:36:04.413922
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -35,10 +35,10 @@ from src.dtos.Secuencia import Secuencia
 from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
 class Model:
-    def __init__(self, model: iModel):
+    def __init__(self, strategy: iModel):
         # obrigamos ó uso dunha instancia
-        if isinstance(model, iModel):
-            self.model = model
+        if isinstance(strategy, iModel):
+            self.model = strategy
         else:
             raise ValueError("Ten que herdar de " + iModel.__name__)
 

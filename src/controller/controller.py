@@ -3,20 +3,22 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/11 22:17:39.243715
+#+ Editado:	2023/01/14 17:41:52.198100
 # ------------------------------------------------------------------------------
+from src.model.imodel import iModel
+from src.view.iview import iView
+
 from src.controller.sair import sair
 from src.controller.insertar import insertar
-
-from src.model.model import Model
 # ------------------------------------------------------------------------------
 class Controller:
-    def __init__(self):
-        pass
+    def __init__(self, model: iModel, view: iView):
+        self.model = model
+        self.view = view
 
-    def sair(self, model: Model) -> None:
-        sair(model)
+    def sair(self) -> None:
+        sair(self.model)
 
-    def insertar(self, model: Model) -> None:
-        insertar(model)
+    def insertar(self) -> None:
+        insertar(self.model)
 # ------------------------------------------------------------------------------

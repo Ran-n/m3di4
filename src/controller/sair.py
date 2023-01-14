@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:47.889120
-#+ Editado:	2023/01/11 22:21:44.082938
+#+ Editado:	2023/01/14 17:41:43.871168
 # ------------------------------------------------------------------------------
 import sys
 
-from src.model.model import Model
+from src.model.imodel import iModel
 from src.uteis import print_fin
 # ------------------------------------------------------------------------------
-def sair(model: Model) -> None:
+def sair(model: iModel) -> None:
     model.disconnect_db(commit=True)
     print_fin()
     sys.exit()
