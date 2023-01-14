@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:13:55.315626
-#+ Editado:	2023/01/05 20:33:55.626932
+#+ Editado:	2023/01/14 16:16:55.310542
 # ------------------------------------------------------------------------------
 from secrets import token_urlsafe, randbits
+from unicodedata import normalize, category
 
 from typing import List
 
@@ -32,6 +33,9 @@ def seqseg(nome_taboa: str, secuencias: List[Secuencia]) -> [int, None]:
             seq.seq += 1
             return seq.seq
 
+# ------------------------------------------------------------------------------
+def strip_accents(string: str) -> str:
+    return ''.join(ele for ele in normalize('NFD', string) if category(ele) != 'Mn')
 # ------------------------------------------------------------------------------
 def print_fin():
     print('----------------------------------------')

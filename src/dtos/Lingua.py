@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:51.038236
-#+ Editado:	2023/01/13 23:02:20.271119
+#+ Editado:	2023/01/14 16:16:08.186374
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave
+from src.uteis import crear_chave, strip_accents
 # ------------------------------------------------------------------------------
 @dataclass
 class Lingua:
@@ -20,8 +20,8 @@ class Lingua:
         return f'{self.nome}\t[{self.id_}]'
 
     def __gt__(self, other) -> bool:
-        return self.nome > other.nome
+        return strip_accents(self.nome) > strip_accents(other.nome)
 
     def __lt__(self, other) -> bool:
-        return self.nome < other.nome
+        return strip_accents(self.nome) < strip_accents(other.nome)
 # ------------------------------------------------------------------------------

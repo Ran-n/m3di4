@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:43:24.409946
-#+ Editado:	2023/01/05 20:33:38.716538
+#+ Editado:	2023/01/14 16:29:00.429458
 # ------------------------------------------------------------------------------
 import unittest
 
@@ -33,7 +33,7 @@ class TestUteis(unittest.TestCase):
 
     def test_seqseg(self):
         """
-        Proba do funcionamento
+        Proba do funcionamento.
         """
         seqs = [
             Secuencia(nome='a', seq=1),
@@ -47,5 +47,18 @@ class TestUteis(unittest.TestCase):
         self.assertEqual(seqseg('c', seqs), 0)
         self.assertEqual(seqseg('d', seqs), -5)
         self.assertEqual(seqseg('e', seqs), None)
+
+    def test_strip_accents(self):
+        """
+        Normal use test.
+        """
+
+        tests = zip(
+                ['tést', 'í', 'Ü', 'ñ', 'Ñ'],
+                ['test', 'i', 'U', 'n', 'N']
+        )
+
+        for accent, no_accent in tests:
+            self.assertEqual(strip_accents(accent), no_accent)
 
 # ------------------------------------------------------------------------------
