@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/13 22:42:10.021181
+#+ Editado:	2023/01/14 18:35:34.470729
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -34,9 +34,6 @@ from src.dtos.MediaWeb import MediaWeb
 from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.Pais import Pais
 from src.dtos.Web import Web
-# ------------------------------------------------------------------------------
-# non moi ben que esta info este aqui soamente
-MEDIAS_AGRUPABLES = ['serie', 'miniserie']
 # ------------------------------------------------------------------------------
 def loop_variable(model: Model, variable: str, msg: str = None) -> str:
     if variable == 'Tipo':
@@ -94,7 +91,7 @@ def get_x_info(info: dict, key: str) -> Union[None, float, int, str]:
         x = None
     return x
 # ------------------------------------------------------------------------------
-def get_media(model: Model) -> Media:
+def get_media(model: Model, medias_agrupables: List[int]) -> Media:
     print('> Media')
     media = Media(
             nome=input('* Nome da Media: '),
@@ -105,7 +102,7 @@ def get_media(model: Model) -> Media:
         media.ano_fin = media.ano_ini
 
     media.id_tipo = loop_variable(model, 'Tipo')
-    if media.id_tipo in MEDIAS_AGRUPABLES:
+    if media.id_tipo in medias_agrupables:
         media.id_situacion = loop_variable(model, 'Situación')
     else:
         situacion = model.get_situacion_by_name('Estreada')
@@ -136,7 +133,7 @@ def get_carpeta(model: Model, fich: str, media: Media) -> NomeCarpeta:
         nome_carpeta = NomeCarpeta(nome=nome)
     return nome_carpeta
 
-def get_arquivo(model: Model, media: Media, info: dict, fich: str) -> tuple[Arquivo, NomeCarpeta]:
+def get_arquivo(model: Model, media: Media, info: dict, fich: str, medias_agrupables: List[int]) -> tuple[Arquivo, NomeCarpeta]:
     nome = get_x_info(info, 'Nome ficheiro')
     extension = get_x_info(info, 'Extension')
     tamanho = get_x_info(info, 'Tamanho')
@@ -159,7 +156,7 @@ def get_arquivo(model: Model, media: Media, info: dict, fich: str) -> tuple[Arqu
     carpeta = get_carpeta(model, fich, media)
     arquivo.id_carpeta = carpeta.id_
 
-    if media.id_tipo in MEDIAS_AGRUPABLES:
+    if media.id_tipo in medias_agrupables:
         #id_media_fasciculo=
         pass
     else:
@@ -310,9 +307,11 @@ def get_attachment(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAdxunto
 def insertar(model: Model) -> None:
     print('\n*** INSERTAR ***')
 
-    media = get_media(model)
+    medias_agrupables = model.get_mediatipo_agrupables(id_only=True)
+
+    media = get_media(model, medias_agrupables)
     print()
-    if media.id_tipo in MEDIAS_AGRUPABLES:
+    if media.id_tipo in medias_agrupables:
         agrupacion = get_agrupacion(model, media)
         print()
 
@@ -370,7 +369,7 @@ def insertar(model: Model) -> None:
             break
     info = main(fich)
 
-    arquivo, carpeta = get_arquivo(model, media, info, fich)
+    arquivo, carpeta = get_arquivo(model, media, info, fich, medias_agrupables)
 
     videos = []
     if info.get('videos'):

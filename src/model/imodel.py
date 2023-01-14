@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/13 22:42:53.303654
+#+ Editado:	2023/01/14 18:35:14.962275
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -73,6 +73,10 @@ class iModel(ABC):
 
     @abstractmethod
     def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
+        pass
+
+    @abstractmethod
+    def get_mediatipo_agrupables(self, id_only:bool = False) -> List[Union[MediaTipo, str]]:
         pass
 
     @abstractmethod

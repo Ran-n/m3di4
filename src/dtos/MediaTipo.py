@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:36:45.461301
-#+ Editado:	2023/01/06 01:31:27.022087
+#+ Editado:	2023/01/14 18:22:28.896300
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 import math
@@ -14,6 +14,7 @@ from src.uteis import crear_chave
 class MediaTipo:
     nome_taboa: str = field(init=False, default='_Media Tipo')
     nome: str
+    agrupable: int
     id_: str = field(default_factory=crear_chave)
 
     def __repr__(self) -> str:

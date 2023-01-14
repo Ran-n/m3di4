@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/14 17:36:04.413922
+#+ Editado:	2023/01/14 18:35:10.140607
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ class Model:
     # SELECT
     def select(self, nome_taboa: str, alfabetic: bool = False) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         if nome_taboa == MediaTipo.nome_taboa:
-            return self.model.select_tipos()
+            return self.model.select_mediatipos()
         elif nome_taboa == MediaSituacion.nome_taboa:
             return self.model.select_situacions()
         elif nome_taboa == Almacen.nome_taboa:
@@ -89,6 +89,9 @@ class Model:
 
     def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
         return self.model.get_nomecarpeta_by_name(name)
+
+    def get_mediatipo_agrupables(self, id_only:bool = False) -> List[Union[MediaTipo, str]]:
+        return self.model.get_mediatipo_agrupables(id_only)
 
     # INSERT
     def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:

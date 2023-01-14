@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/13 23:01:48.140843
+#+ Editado:	2023/01/14 18:31:17.211047
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -73,11 +73,11 @@ class Sqlite(iModel):
     def select(self, nome_taboa: str, alfabetic: bool = False) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
         pass
 
-    def select_tipos(self) -> List[MediaTipo]:
-        results = self.get_cur_db().execute(f'select ID, Nome from "_Media Tipo"').fetchall()
+    def select_mediatipos(self) -> List[MediaTipo]:
+        results = self.get_cur_db().execute(f'select ID, Nome, Agrupable from "_Media Tipo"').fetchall()
         valores = []
         for result in results:
-            valores.append(MediaTipo(id_=result[0], nome=result[1]))
+            valores.append(MediaTipo(id_=result[0], nome=result[1], agrupable=result[2]))
         return valores
 
     def select_situacions(self) -> List[MediaSituacion]:
@@ -166,6 +166,19 @@ class Sqlite(iModel):
             if result:
                 return NomeCarpeta(id_=result[0], nome=result[1])
         return None
+
+    def get_mediatipo_agrupables(self, id_only:bool = False) -> List[Union[MediaTipo, str]]:
+        results = self.get_cur_db().execute(f'select ID, Nome, Agrupable from "_Media Tipo"').fetchall()
+        valores = []
+        if id_only:
+            for result in results:
+                if result[2]:
+                    valores.append(result[0])
+        else:
+            for result in results:
+                if result[2]:
+                    valores.append(MediaTipo(id_=result[0], nome=result[1], agrupable=result[2]))
+        return valores
 
     # INSERT
     def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
