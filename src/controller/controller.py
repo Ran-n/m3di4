@@ -3,12 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/14 17:41:52.198100
+#+ Editado:	2023/01/14 19:57:51.398166
 # ------------------------------------------------------------------------------
+import sys
+
 from src.model.imodel import iModel
 from src.view.iview import iView
 
-from src.controller.sair import sair
+#from src.controller.sair import sair
 from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
 class Controller:
@@ -17,7 +19,10 @@ class Controller:
         self.view = view
 
     def sair(self) -> None:
-        sair(self.model)
+        #sair(model=self.model, view=self.view)
+        self.model.disconnect_db(commit=True)
+        self.view.exit()
+        sys.exit()
 
     def insertar(self) -> None:
         insertar(self.model)

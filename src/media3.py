@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/14 17:48:42.573903
+#+ Editado:	2023/01/14 19:56:03.155605
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson
 
@@ -12,8 +12,6 @@ from src.model.sqlite import Sqlite
 from src.controller.controller import Controller
 from src.view.view import View
 from src.view.terminal import Terminal
-
-from src.uteis import print_fin
 
 from src.dtos.Media import Media
 from src.dtos.MediaAgrupacion import MediaAgrupacion

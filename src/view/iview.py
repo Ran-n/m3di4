@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/01/14 17:32:32.007668
+#+ Editado:	2023/01/14 19:57:02.469309
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,6 +12,10 @@ from abc import ABC, abstractmethod
 from src.dtos.Media import Media
 # ------------------------------------------------------------------------------
 class iView(ABC):
+    @abstractmethod
+    def exit(self) -> None:
+        pass
+
     @abstractmethod
     def get_media(self) -> Media:
         pass
