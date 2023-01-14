@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/14 18:35:34.470729
+#+ Editado:	2023/01/14 20:05:03.041116
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -108,12 +108,6 @@ def get_media(model: Model, medias_agrupables: List[int]) -> Media:
         situacion = model.get_situacion_by_name('Estreada')
         if situacion:
             media.id_situacion = situacion.id_
-        """
-        for ele in model.select(MediaSituacion.nome_taboa):
-            if ele.nome == 'Estreada':
-                media.id_situacion = ele.id_
-                break
-        """
     return media
 
 def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
