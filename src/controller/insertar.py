@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/15 23:04:11.049345
+#+ Editado:	2023/01/15 23:28:29.891015
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -100,7 +100,10 @@ def get_x_info(info: dict, key: str) -> Union[None, float, int, str]:
 def get_media(model: Model, medias_agrupables: List[int]) -> Media:
     print('> Media')
 
-    media_nome = input('* Nome da Media: ')
+    while True:
+        media_nome = input('* Nome da Media: ')
+        if media_nome:
+            break
     media_tipo = loop_variable(model, 'Tipo')
     media_ano_ini = validar_numero('Ano Inicio')
     media_ano_fin = media_ano_ini
@@ -126,8 +129,14 @@ def get_media(model: Model, medias_agrupables: List[int]) -> Media:
 
 def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
     print('> Agrupación')
+
+    while True:
+        nome = input('* Nome da Agrupación: ')
+        if nome:
+            break
+
     return MediaAgrupacion(
-            nome=input('* Nome da Agrupación: '),
+            nome=nome,
             numero=validar_numero('Número'),
             ano_ini=validar_numero('Ano Inicio'),
             ano_fin=validar_numero('Ano Fin'),
@@ -137,14 +146,22 @@ def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
 def get_fasciculo(model: Model, media: Media, agrupacion: MediaAgrupacion) -> MediaFasciculo:
     print('> Fascículo')
 
+    num_total = validar_numero('Número total')
+    num_agrupacion = validar_numero('Número agrupación')
+
+    while True:
+        nome = input('* Nome do Fascículo: ')
+        if nome:
+            break
+
     data = input('* Data de publicación (yyyy-mm-dd) (. para saltar): ')
     if data == '.':
         data = None
 
     return MediaFasciculo(
-            num_total=validar_numero('Número total'),
-            num_agrupacion=validar_numero('Número agrupación'),
-            nome=input('* Nome do Fascículo: '),
+            num_total=num_total,
+            num_agrupacion=num_agrupacion,
+            nome=nome,
             data=data,
             id_media=media.id_,
             id_media_agrupacion=agrupacion.id_,
@@ -336,8 +353,14 @@ def insert_media_nome(model: Model, media_element: Union[Media, MediaAgrupacion,
 
     media_nome = MediaNomes(
             nome=media_element.nome,
-            id_media=media_element.id_,
     )
+    if type(media_element) == Media:
+        media_nome.id_media = media_element.id_
+    elif type(media_element) == MediaAgrupacion:
+        media_nome.id_media_agrupacion = media_element.id_
+    elif type(media_element) == MediaFasciculo:
+        media_nome.id_media_fasciculo = media_element.id_
+
     while True:
         names.append(media_nome)
         chosen_langs = loop_variable_until(model=model, variable='Lingua', msg='Linguas do nome (. para saltar)')
@@ -360,8 +383,14 @@ def insert_media_nome(model: Model, media_element: Union[Media, MediaAgrupacion,
 
         media_nome = MediaNomes(
                 nome=input('* Nome alternativo (. para finalizar): '),
-                id_media=media_element.id_,
         )
+        if type(media_element) == Media:
+            media_nome.id_media = media_element.id_
+        elif type(media_element) == MediaAgrupacion:
+            media_nome.id_media_agrupacion = media_element.id_
+        elif type(media_element) == MediaFasciculo:
+            media_nome.id_media_fasciculo = media_element.id_
+
         if media_nome.nome == '.':
             break
 
