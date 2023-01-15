@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/01/05 21:07:51.427449
+#+ Editado:	2023/01/15 23:02:27.813562
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -15,7 +15,7 @@ class MediaFasciculo:
     num_total: int
     num_agrupacion: int
     nome: str
-    data: str
+    data: str = field(default = None)
     id_media: str = field(default=None)
     id_media_agrupacion: str = field(default=None)
     id_: str = field(default_factory=crear_chave)

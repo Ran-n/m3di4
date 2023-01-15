@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/14 23:21:48.951202
+#+ Editado:	2023/01/15 23:04:11.049345
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -35,7 +35,7 @@ from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.Pais import Pais
 from src.dtos.Web import Web
 # ------------------------------------------------------------------------------
-def loop_variable(model: Model, variable: str, msg: str = None) -> str:
+def loop_variable(model: Model, variable: str, msg: str = None) -> Union[str, None]:
     if variable == 'Tipo':
         posibilidades = model.select(MediaTipo.nome_taboa)
     elif variable == 'Situación':
@@ -64,14 +64,20 @@ def loop_variable(model: Model, variable: str, msg: str = None) -> str:
             for ele in posibilidades:
                 print(f'\t {ele}')
             print()
+        elif resul == '.':
+            return None
         elif resul in posibilidades_ids:
             break
     return resul
 
-def loop_variable_until(model: Model, variable: str, msg: str = None) -> List[str]:
+def loop_variable_until(model: Model, variable: str, msg: str = None) -> Union[List[str], None]:
     variables = []
     while True:
-        variables.append(loop_variable(model, variable, msg))
+        variable = loop_variable(model, variable, msg)
+        if variable:
+            variables.append(variable)
+        else:
+            return None
         continue_ = input('* Máis? (s/[n]): ').lower()
         if continue_ != 's':
             break
@@ -128,6 +134,22 @@ def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
             id_media=media.id_,
     )
 
+def get_fasciculo(model: Model, media: Media, agrupacion: MediaAgrupacion) -> MediaFasciculo:
+    print('> Fascículo')
+
+    data = input('* Data de publicación (yyyy-mm-dd) (. para saltar): ')
+    if data == '.':
+        data = None
+
+    return MediaFasciculo(
+            num_total=validar_numero('Número total'),
+            num_agrupacion=validar_numero('Número agrupación'),
+            nome=input('* Nome do Fascículo: '),
+            data=data,
+            id_media=media.id_,
+            id_media_agrupacion=agrupacion.id_,
+    )
+
 # xFCR refacer mellor
 def get_carpeta(model: Model, fich: str, media: Media) -> NomeCarpeta:
     nome = pathlib.Path(fich).parent.name
@@ -136,7 +158,7 @@ def get_carpeta(model: Model, fich: str, media: Media) -> NomeCarpeta:
         nome_carpeta = NomeCarpeta(nome=nome)
     return nome_carpeta
 
-def get_arquivo(model: Model, media: Media, info: dict, fich: str, medias_agrupables: List[int]) -> tuple[Arquivo, NomeCarpeta]:
+def get_arquivo(model: Model, media: Media, media_fasciculo: MediaFasciculo, info: dict, fich: str, medias_agrupables: List[int]) -> tuple[Arquivo, NomeCarpeta]:
     nome = get_x_info(info, 'Nome ficheiro')
     extension = get_x_info(info, 'Extension')
     tamanho = get_x_info(info, 'Tamanho')
@@ -159,12 +181,9 @@ def get_arquivo(model: Model, media: Media, info: dict, fich: str, medias_agrupa
     carpeta = get_carpeta(model, fich, media)
     arquivo.id_carpeta = carpeta.id_
 
-    if media.id_tipo in medias_agrupables:
-        #id_media_fasciculo=
-        # xFCR
-        pass
-    else:
-        arquivo.id_media = media.id_
+    arquivo.id_media = media.id_
+    if media_fasciculo:
+        arquivo.id_fasciculo = media_fasciculo.id_
 
     return arquivo, carpeta
 
@@ -308,14 +327,62 @@ def get_attachment(model: Model, arquivo: Arquivo, info: dict) -> ArquivoAdxunto
 
     return arquivoadxunto
 # ------------------------------------------------------------------------------
-def insert_file(model: Model, medias_agrupables: List[int], media: Media = None, agrup: MediaAgrupacion = None, fasci: MediaFasciculo = None) -> None:
+def insert_media_nome(model: Model, media_element: Union[Media, MediaAgrupacion, MediaFasciculo]) -> None:
+    print('> Media Nomes')
+    # media nomes, linguas e paises
+    names = []
+    langs = []
+    countries = []
+
+    media_nome = MediaNomes(
+            nome=media_element.nome,
+            id_media=media_element.id_,
+    )
+    while True:
+        names.append(media_nome)
+        chosen_langs = loop_variable_until(model=model, variable='Lingua', msg='Linguas do nome (. para saltar)')
+        if chosen_langs:
+            for id_lang in chosen_langs:
+                langs.append(MediaNomesLinguas(
+                    id_media_nomes=media_nome.id_,
+                    id_lingua=id_lang,
+                ))
+
+        chosen_countries = loop_variable_until(model=model, variable='Pais', msg='Países do nome (. para saltar)')
+        if chosen_countries:
+            for id_country in chosen_countries:
+                countries.append(MediaNomesPaises(
+                    id_media_nomes=media_nome.id_,
+                    id_pais=id_country,
+                ))
+
+        print()
+
+        media_nome = MediaNomes(
+                nome=input('* Nome alternativo (. para finalizar): '),
+                id_media=media_element.id_,
+        )
+        if media_nome.nome == '.':
+            break
+
+    # gardar media nomes
+    for name in names:
+        model.insert(name)
+    # gardar media nomes linguas
+    for lang in langs:
+        model.insert(lang)
+    # gardar media nomes paises
+    for country in countries:
+        model.insert(country)
+# ------------------------------------------------------------------------------
+def insert_file(model: Model, medias_agrupables: List[int], media: Media, media_fasciculo: MediaFasciculo = None) -> None:
     while True:
         fich = input('* Path do ficheiro: ')
         if fich != "" and pathlib.Path(fich).exists():
             break
     info = main(fich)
 
-    arquivo, carpeta = get_arquivo(model, media, info, fich, medias_agrupables)
+    arquivo, carpeta = get_arquivo(model, media, media_fasciculo, info, fich, medias_agrupables)
 
     id_folder = model.insert(carpeta) # gardar carpeta
     if id_folder:
@@ -372,7 +439,6 @@ def insert_file(model: Model, medias_agrupables: List[int], media: Media = None,
     # compartido
     for share in shared:
         model.insert(share)
-
 # ------------------------------------------------------------------------------
 def insertar(model: Model) -> None:
     print('\n*** INSERTAR ***')
@@ -385,7 +451,11 @@ def insertar(model: Model) -> None:
 
     print()
 
+    insert_media_nome(model, media)
+    print()
+
     # webs de media
+    print('> Media Ligazóns')
     webs = []
     while True:
         link = input('* Ligazón da media (. para finalizar): ')
@@ -403,70 +473,33 @@ def insertar(model: Model) -> None:
 
     print()
 
-    # media nomes, linguas e paises
-    names = []
-    langs = []
-    countries = []
-
-    media_nome = MediaNomes(
-            nome=media.nome,
-            id_media=media.id_,
-    )
-    while True:
-        names.append(media_nome)
-        for id_lang in loop_variable_until(model=model, variable='Lingua', msg='Linguas do nome da Media'):
-            langs.append(MediaNomesLinguas(
-                id_media_nomes=media_nome.id_,
-                id_lingua=id_lang,
-            ))
-
-        for id_country in loop_variable_until(model=model, variable='Pais', msg='Países do nome da Media'):
-            countries.append(MediaNomesPaises(
-                id_media_nomes=media_nome.id_,
-                id_pais=id_country,
-            ))
-
-        print()
-
-        media_nome = MediaNomes(
-                nome=input('* Nome alternativo da media (. para finalizar): '),
-                id_media=media.id_,
-        )
-        if media_nome.nome == '.':
-            break
-
-    # gardar media nomes
-    for name in names:
-        model.insert(name)
-    # gardar media nomes linguas
-    for lang in langs:
-        model.insert(lang)
-    # gardar media nomes paises
-    for country in countries:
-        model.insert(country)
-
-    print()
-
-    insert_file(model=model, media=media, medias_agrupables=medias_agrupables)
-
-    print()
-
-    """
     if media.id_tipo in medias_agrupables:
         while True:
             agrupacion = get_agrupacion(model, media)
+            model.insert(agrupacion)
+            print()
+            insert_media_nome(model, agrupacion)
             print()
             while True:
                 # episodes
-                pass
+                fasciculo = get_fasciculo(model, media, agrupacion)
+                model.insert(fasciculo)
+                print()
+                insert_media_nome(model, fasciculo)
+                print()
+                insert_file(model=model, media=media, medias_agrupables=medias_agrupables, media_fasciculo=fasciculo)
+                print()
                 continue_epi = input('* Outro episodio? ([s]/n): ').lower()
                 if continue_epi == 'n':
                     break
 
             continue_group = input('* Outra agrupación? (s/[n]): ').lower()
+            print()
             if continue_group != 's':
                 break
-    """
+    else:
+        insert_file(model=model, media=media, medias_agrupables=medias_agrupables)
+        print()
 
     # save DB
     model.save_db()

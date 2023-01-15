@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/14 23:19:09.775927
+#+ Editado:	2023/01/15 21:25:02.819723
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -25,6 +25,8 @@ from src.dtos.Compartido import Compartido
 from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Lingua import Lingua
 from src.dtos.Media import Media
+from src.dtos.MediaAgrupacion import MediaAgrupacion
+from src.dtos.MediaFasciculo import MediaFasciculo
 from src.dtos.MediaNomes import MediaNomes
 from src.dtos.MediaNomesLinguas import MediaNomesLinguas
 from src.dtos.MediaNomesPaises import MediaNomesPaises
@@ -84,7 +86,7 @@ class Sqlite(iModel):
         results = self.get_cur_db().execute(f'select ID, Nome from "_Media Situación"').fetchall()
         valores = []
         for result in results:
-            valores.append(MediaTipo(id_=result[0], nome=result[1]))
+            valores.append(MediaSituacion(id_=result[0], nome=result[1]))
         return valores
 
     def select_almacens(self) -> List[Almacen]:
@@ -181,11 +183,17 @@ class Sqlite(iModel):
         return valores
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
+    def insert(self, obj: Union[Media, MediaAgrupacion, MediaFasciculo, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
         pass
 
     def insert_media(self, obj: Media) -> None:
-        self.get_cur_db().execute(f'insert into {Media.nome_taboa} ("ID", "Nome", "Ano Inicio", "Ano Fin", "ID Tipo", "ID Situación") values (?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.ano_ini, obj.ano_fin, obj.id_tipo, obj.id_situacion))
+        self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID", "Nome", "Ano Inicio", "Ano Fin", "ID Tipo", "ID Situación") values (?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.ano_ini, obj.ano_fin, obj.id_tipo, obj.id_situacion))
+
+    def insert_mediaagrupacion(self, obj: MediaAgrupacion) -> None:
+        self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID", "Nome", "Número", "Ano Inicio", "Ano Fin", "ID Media") values (?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.numero, obj.ano_ini, obj.ano_fin, obj.id_media))
+
+    def insert_mediafasciculo(self, obj: MediaFasciculo) -> None:
+        self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID", "Número total", "Número en agrupación", "Nome", "Data", "ID Media", "ID Media Agrupación") values (?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.num_total, obj.num_agrupacion, obj.nome, obj.data, obj.id_media, obj.id_media_agrupacion))
 
     def insert_mediaweb(self, obj: MediaWeb) -> None:
         self.get_cur_db().execute(f'insert into "{MediaWeb.nome_taboa}" ("ID Media", "ID Web", "Ligazón") values (?, ?, ?)', (obj.id_media, obj.id_web, obj.ligazon))

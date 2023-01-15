@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/14 18:35:14.962275
+#+ Editado:	2023/01/15 20:15:24.889827
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,6 +23,8 @@ from src.dtos.Compartido import Compartido
 from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Lingua import Lingua
 from src.dtos.Media import Media
+from src.dtos.MediaAgrupacion import MediaAgrupacion
+from src.dtos.MediaFasciculo import MediaFasciculo
 from src.dtos.MediaNomes import MediaNomes
 from src.dtos.MediaNomesLinguas import MediaNomesLinguas
 from src.dtos.MediaNomesPaises import MediaNomesPaises
@@ -80,6 +82,6 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
+    def insert(self, obj: Union[Media, MediaAgrupacion, MediaFasciculo, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
         pass
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/14 18:35:10.140607
+#+ Editado:	2023/01/15 21:04:26.507491
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,6 +23,8 @@ from src.dtos.Compartido import Compartido
 from src.dtos.CompartirLugar import CompartirLugar
 from src.dtos.Lingua import Lingua
 from src.dtos.Media import Media
+from src.dtos.MediaAgrupacion import MediaAgrupacion
+from src.dtos.MediaFasciculo import MediaFasciculo
 from src.dtos.MediaNomes import MediaNomes
 from src.dtos.MediaNomesLinguas import MediaNomesLinguas
 from src.dtos.MediaNomesPaises import MediaNomesPaises
@@ -94,9 +96,13 @@ class Model:
         return self.model.get_mediatipo_agrupables(id_only)
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
+    def insert(self, obj: Union[Media, MediaAgrupacion, MediaFasciculo, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
         if type(obj) == Media:
             return self.model.insert_media(obj)
+        elif type(obj) == MediaAgrupacion:
+            return self.model.insert_mediaagrupacion(obj)
+        elif type(obj) == MediaFasciculo:
+            return self.model.insert_mediafasciculo(obj)
         elif type(obj) == MediaWeb:
             return self.model.insert_mediaweb(obj)
         elif type(obj) == NomeCarpeta:
