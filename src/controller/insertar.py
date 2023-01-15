@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/15 23:40:53.838350
+#+ Editado:	2023/01/15 23:43:56.855806
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -135,11 +135,17 @@ def get_agrupacion(model: Model, media: Media) -> MediaAgrupacion:
         if nome:
             break
 
+    numero = validar_numero('Número')
+    ano_ini = validar_numero('Ano Inicio')
+    ano_fin = validar_numero('Ano Fin')
+    if ano_fin == '=':
+        ano_fin = ano_ini
+
     return MediaAgrupacion(
             nome=nome,
-            numero=validar_numero('Número'),
-            ano_ini=validar_numero('Ano Inicio'),
-            ano_fin=validar_numero('Ano Fin'),
+            numero=numero,
+            ano_ini=ano_ini,
+            ano_fin=ano_fin,
             id_media=media.id_,
     )
 
