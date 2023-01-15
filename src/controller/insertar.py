@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/15 23:28:29.891015
+#+ Editado:	2023/01/15 23:40:53.838350
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -73,9 +73,9 @@ def loop_variable(model: Model, variable: str, msg: str = None) -> Union[str, No
 def loop_variable_until(model: Model, variable: str, msg: str = None) -> Union[List[str], None]:
     variables = []
     while True:
-        variable = loop_variable(model, variable, msg)
-        if variable:
-            variables.append(variable)
+        variable_id = loop_variable(model, variable, msg)
+        if variable_id:
+            variables.append(variable_id)
         else:
             return None
         continue_ = input('* Máis? (s/[n]): ').lower()
