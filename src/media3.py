@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/14 19:56:03.155605
+#+ Editado:	2023/01/16 18:52:26.171606
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson
 
@@ -44,8 +44,8 @@ def main():
     view = View(strategy=Terminal(), model=model)
     controller = Controller(model=model, view=view)
 
-    while True:
-        menu(controller)
+    #while True:
+        #menu(controller)
 
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
