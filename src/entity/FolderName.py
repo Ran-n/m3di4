@@ -2,19 +2,20 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/15 23:02:04.056472
+#+ Creado: 	2023/01/05 00:04:14.716403
+#+ Editado:	2023/01/20 18:00:28.889322
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNomes:
-    nome_taboa: str = field(init=False, default='Media Nomes')
-    nome: str
-    id_media: str = field(default=None)
-    id_media_agrupacion: str = field(default=None)
-    id_media_fasciculo: str = field(default=None)
-    id_: int = field(default_factory=crear_chave)
+class FolderName:
+    table_name: str = field(init=False, default='Nome Carpeta')
+    name: str
+    id_: int = field(default_factory=create_key)
+
+    # xFCR
+    def __repr__(self) -> str:
+        return f'{self.name}\t[{self.id_}]'
 # ------------------------------------------------------------------------------

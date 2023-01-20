@@ -2,22 +2,23 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 00:01:54.400579
-#+ Editado:	2023/01/14 16:17:48.202762
+#+ Creado: 	2023/01/05 00:01:51.038236
+#+ Editado:	2023/01/20 18:05:53.500104
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave, strip_accents
+from src.utils import create_key, strip_accents
 # ------------------------------------------------------------------------------
 @dataclass
-class Pais:
-    nome_taboa: str = field(init=False, default='_País')
-    nome: str
-    reino: int = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+class Lingua:
+    table_name: str = field(init=False, default='_Lingua')
+    name: str
+    desc: str
+    id_: str = field(default_factory=create_key)
 
+    # xFCR
     def __repr__(self) -> str:
-        return f'{self.nome}\t[{self.id_}]'
+        return f'{self.name}\t[{self.id_}]'
 
     def __gt__(self, other) -> bool:
         return strip_accents(self.nome) > strip_accents(other.nome)

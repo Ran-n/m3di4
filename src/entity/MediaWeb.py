@@ -2,21 +2,18 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/01/15 23:02:27.813562
+#+ Creado: 	2023/01/05 00:06:39.547649
+#+ Editado:	2023/01/20 18:08:16.052941
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaFasciculo:
-    nome_taboa: str = field(init=False, default='Media Fascículo')
-    num_total: int
-    num_agrupacion: int
-    nome: str
-    data: str = field(default = None)
+class MediaWeb:
+    table_name: str = field(init=False, default='Media Web')
+    link: str
     id_media: str = field(default=None)
-    id_media_agrupacion: str = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+    id_web: str = field(default=None)
+    id_: str = field(default_factory=create_key)
 # ------------------------------------------------------------------------------

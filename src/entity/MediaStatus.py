@@ -2,24 +2,19 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:36:45.461301
-#+ Editado:	2023/01/14 18:22:28.896300
+#+ Creado: 	2023/01/04 23:38:25.313276
+#+ Editado:	2023/01/20 18:04:32.299792
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-import math
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaTipo:
-    nome_taboa: str = field(init=False, default='_Media Tipo')
-    nome: str
-    agrupable: int
-    id_: str = field(default_factory=crear_chave)
+class MediaStatus:
+    table_name: str = field(init=False, default='_Media Situación')
+    name: str
+    id_: str = field(default_factory=create_key)
 
     def __repr__(self) -> str:
-        repetir = 1
-        if len(self.nome) < 6:
-            repetir = 2
-        return f'{self.nome}' + repetir*'\t' + f'[{self.id_}]'
+        return f'{self.name}\t[{self.id_}]'
 # ------------------------------------------------------------------------------

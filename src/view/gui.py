@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/01/16 23:40:10.262970
+#+ Editado:	2023/01/17 22:40:23.743153
 # ------------------------------------------------------------------------------
 from src.view.iview import iView
 # ------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ class GUI(iView):
         customtkinter.set_default_color_theme("dark-blue")
 
         self.root = customtkinter.CTk()
-        self.root.geometry('500x350')
+        self.root.geometry('800x500')
         self.root.mainloop()
 
     def menu(self, options: dict) -> int:

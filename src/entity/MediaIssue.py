@@ -2,16 +2,21 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/08 00:36:14.914271
-#+ Editado:	2023/01/08 00:39:15.860725
+#+ Creado: 	2023/01/04 23:41:48.278353
+#+ Editado:	2023/01/20 17:57:39.108749
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class Compartido:
-    nome_taboa: str = field(init=False, default='Compartido')
-    ligazon: str
-    id_lugar: str = field(default=None)
-    id_arquivo: str = field(default=None)
-    #id_: int = field(default=None)
+class MediaIssue:
+    table_name: str = field(init=False, default='Media Fascículo')
+    media_number: int
+    group_number: int
+    name: str
+    date: str = field(default = None)
+    id_media: str = field(default=None)
+    id_media_group: str = field(default=None)
+    id_: str = field(default_factory=create_key)
 # ------------------------------------------------------------------------------

@@ -2,14 +2,17 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:58:42.990911
-#+ Editado:	2023/01/11 23:13:34.373599
+#+ Creado: 	2023/01/20 18:18:03.195457
+#+ Editado:	2023/01/20 18:19:02.816946
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNomesPaises:
-    nome_taboa: str = field(init=False, default='Media Nomes Países')
-    id_media_nomes: int = field(default=None)
-    id_pais: str = field(default=None)
+class ShareSiteSubs:
+    table_name: str = field(init=False, default='_Compartir Lugar Subs')
+    subs: int
+    id_site: str = field(default=None)
+    id_: str = field(default_factory=create_key)
 # ------------------------------------------------------------------------------

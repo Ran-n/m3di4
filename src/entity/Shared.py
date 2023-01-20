@@ -2,18 +2,16 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 00:06:39.547649
-#+ Editado:	2023/01/08 00:50:43.738690
+#+ Creado: 	2023/01/08 00:36:14.914271
+#+ Editado:	2023/01/20 17:50:18.942967
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-
-from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaWeb:
-    nome_taboa: str = field(init=False, default='Media Web')
-    ligazon: str
-    id_media: str = field(default=None)
-    id_web: str = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+class Shared:
+    table_name: str = field(init=False, default='Compartido')
+    link: str
+    id_site: str = field(default=None)
+    id_file: str = field(default=None)
+    #id_: int = field(default=None)
 # ------------------------------------------------------------------------------

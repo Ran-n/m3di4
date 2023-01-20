@@ -2,26 +2,24 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/07 14:52:39.247289
-#+ Editado:	2023/01/08 00:30:53.997750
+#+ Creado: 	2023/01/04 23:36:45.461301
+#+ Editado:	2023/01/20 18:05:34.866813
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+import math
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class CompartirLugar:
-    nome_taboa: str = field(init=False, default='_Compartir Lugar')
-    nome: str
-    privado: int
-    ligazon: str
-    tipo: str
-    plataforma: str
-    id_: str = field(default_factory=crear_chave)
+class MediaType:
+    table_name: str = field(init=False, default='_Media Tipo')
+    name: str
+    groupable: int
+    id_: str = field(default_factory=create_key)
 
     def __repr__(self) -> str:
-        times = 1
-        if len(self.nome) < 15:
-            times=2
-        return f'{self.nome}'+times*'\t'+f'[{self.id_}]'
+        repeat = 1
+        if len(self.name) < 6:
+            repeat = 2
+        return f'{self.name}' + repeat*'\t' + f'[{self.id_}]'
 # ------------------------------------------------------------------------------

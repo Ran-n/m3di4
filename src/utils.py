@@ -3,37 +3,44 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:13:55.315626
-#+ Editado:	2023/01/14 19:54:16.229387
+#+ Editado:	2023/01/20 17:27:37.858999
 # ------------------------------------------------------------------------------
 from secrets import token_urlsafe, randbits
 from unicodedata import normalize, category
 
 from typing import List
 
-from src.dtos.Secuencia import Secuencia
+from src.dtos.Sequence import Sequence
 # ------------------------------------------------------------------------------
-def crear_chave(lonxitude: int = 24) -> str:
+def create_key(length: int = 24) -> str:
     """
-    Retorna un catex aleatorio de 32(24) caracteres que se usará como id.
+    en: Returns a random string of 32(24) characters that will be used as an id.
+    gz: Retorna un catex aleatorio de 32(24) caracteres que se usará como id.
     """
-    return token_urlsafe(lonxitude)
+    return token_urlsafe(length)
 # ------------------------------------------------------------------------------
-def crear_chave_num(lonxitude: int = 32) -> str:
+def create_key_num(length: int = 32) -> str:
     """
-    Retorna un número aleatorio de lonxitude bits de forma aleatoria.
+    en: Returns a random number of "length" bits.
+    gz: Retorna un número aleatorio de lonxitude bits de forma aleatoria.
     """
-    return randbits(lonxitude)
+    return randbits(length)
 # ------------------------------------------------------------------------------
-def seqseg(nome_taboa: str, secuencias: List[Secuencia]) -> [int, None]:
+def seqseg(table_name: str, sequences: List[Sequence]) -> [int, None]:
     """
-    Dado un nome de táboa saca o seguinte valor da seq.
+    en: Given a table name returns the next value of the seq.
+    gz: Dado un nome de táboa saca o seguinte valor da seq.
     """
-    for seq in secuencias:
-        if seq.nome == nome_taboa:
+    for seq in sequences:
+        if seq.nome == table_name:
             seq.seq += 1
             return seq.seq
 
 # ------------------------------------------------------------------------------
 def strip_accents(string: str) -> str:
+    """
+    en: Given a string, returns the same without any accents.
+    gz: Dado un catex, retorna o mesmo sen ningún acento.
+    """
     return ''.join(ele for ele in normalize('NFD', string) if category(ele) != 'Mn')
 # ------------------------------------------------------------------------------

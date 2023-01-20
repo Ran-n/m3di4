@@ -3,28 +3,28 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:57:18.314541
-#+ Editado:	2023/01/08 15:30:53.297033
+#+ Editado:	2023/01/20 17:49:34.349617
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 # ------------------------------------------------------------------------------
 @dataclass
-class ArquivoVideo:
-    nome_taboa: str = field(init=False, default='Arquivo Vídeo')
-    calidade: str
-    resolucion: str
-    aspecto_sample: str
-    aspecto_display: str
-    formato_pixel: str
+class FileVideo:
+    table_name: str = field(init=False, default='Arquivo Vídeo')
+    quality: str
+    resolution: str
+    sample_aspect_ratio: str
+    display_aspect_ratio: str
+    pixel_format: str
     sample_rate: int
     bit_rate: int
-    fps: float
-    tamanho: int
-    inicio: float
-    duracion: float
-    nome: str
-    cor: int = field(default=1)
+    frame_rate: float
+    size: int
+    start: float
+    duration: float
+    name: str
+    color: int = field(default=1)
     id_codec: str = field(default=None)
-    id_arquivo: str = field(default=None)
-    id_lingua: str = field(default=None)
+    id_file: str = field(default=None)
+    id_language: str = field(default=None)
     #id_: str = field(default=None)
 # ------------------------------------------------------------------------------

@@ -2,24 +2,27 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 00:08:25.622146
-#+ Editado:	2023/01/08 15:43:22.483682
+#+ Creado: 	2023/01/07 14:52:39.247289
+#+ Editado:	2023/01/20 17:51:23.840025
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class Web:
-    nome_taboa: str = field(init=False, default='_Web')
-    nome: str
-    siglas: str
-    ligazon: str
-    id_: str = field(default_factory=crear_chave)
+class ShareSite:
+    table_name: str = field(init=False, default='_Compartir Lugar')
+    name: str
+    private: int
+    link: str
+    type_: str
+    platform: str
+    id_: str = field(default_factory=create_key)
 
+    # xFCR
     def __repr__(self) -> str:
-        repetir = 1
-        if len(self.nome) < 22:
-            repetir = 2
-        return f'{self.nome}' + repetir*'\t' + f'[{self.id_}]'
+        times = 1
+        if len(self.name) < 15:
+            times=2
+        return f'{self.name}'+times*'\t'+f'[{self.id_}]'
 # ------------------------------------------------------------------------------

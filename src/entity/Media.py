@@ -2,14 +2,20 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:58:36.138946
-#+ Editado:	2023/01/11 23:13:24.778332
+#+ Creado: 	2023/01/04 23:09:59.330936
+#+ Editado:	2023/01/20 18:06:35.426173
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNomesLinguas:
-    nome_taboa: str = field(init=False, default='Media Nomes Linguas')
-    id_media_nomes: int = field(default=None)
-    id_lingua: str = field(default=None)
+class Media:
+    table_name: str = field(init=False, default='Media')
+    name: str
+    year_start: int
+    year_end: int
+    id_type: str = field(default=None)
+    id_estatus: str = field(default=None)
+    id_: str = field(default_factory=crear_chave)
 # ------------------------------------------------------------------------------

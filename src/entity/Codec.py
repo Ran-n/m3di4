@@ -2,20 +2,18 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/01/05 21:07:28.451359
+#+ Creado: 	2023/01/07 13:31:54.424384
+#+ Editado:	2023/01/20 17:40:11.298499
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class Media:
-    nome_taboa: str = field(init=False, default='Media')
-    nome: str
-    ano_ini: int
-    ano_fin: int
-    id_tipo: str = field(default=None)
-    id_situacion: str = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+class Codec:
+    table_name: str = field(init=False, default='_Codec')
+    name: str
+    name_long: str = field(default=None)
+    desc: str = field(default=None)
+    id_: str = field(default_factory=create_key)
 # ------------------------------------------------------------------------------

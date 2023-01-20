@@ -2,18 +2,14 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/07 13:31:54.424384
-#+ Editado:	2023/01/07 13:32:56.928382
+#+ Creado: 	2023/01/04 23:58:42.990911
+#+ Editado:	2023/01/20 17:59:28.978905
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-
-from src.uteis import crear_chave
 # ------------------------------------------------------------------------------
 @dataclass
-class Codec:
-    nome_taboa: str = field(init=False, default='_Codec')
-    nome: str
-    nome_longo: str = field(default=None)
-    desc: str = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+class MediaNameCountry:
+    table_name: str = field(init=False, default='Media Nomes Países')
+    id_media_name: int = field(default=None)
+    id_country: str = field(default=None)
 # ------------------------------------------------------------------------------

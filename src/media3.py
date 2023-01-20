@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/16 23:40:44.369616
+#+ Editado:	2023/01/17 18:56:47.672994
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson
 
@@ -18,7 +18,7 @@ def main():
     cnf = cargarJson('.cnf')
 
     model = Model(strategy=Sqlite(cnf['db']))
-    view = View(strategy=Terminal(), model=model)
+    view = View(strategy=GUI(), model=model)
     controller = Controller(model=model, view=view)
 
 # ------------------------------------------------------------------------------

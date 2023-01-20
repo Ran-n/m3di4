@@ -3,25 +3,25 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/01/07 13:11:42.701763
+#+ Editado:	2023/01/20 17:58:04.497161
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
-from src.uteis import crear_chave
+from src.utils import create_key
 # ------------------------------------------------------------------------------
 @dataclass
-class Arquivo:
-    nome_taboa: str = field(init=False, default='Arquivo')
-    nome: str
+class File:
+    table_name: str = field(init=False, default='Arquivo')
+    name: str
     extension: str
-    tamanho: int
-    duracion: float
+    size: int
+    duration: float
     bit_rate: int
-    titulo: str
-    data_creacion: str
-    id_almacen: str = field(default=None)
-    id_carpeta: str = field(default=None)
+    title: str
+    creation_ts: str
+    id_warehouse: str = field(default=None)
+    id_folder: str = field(default=None)
     id_media: str = field(default=None)
-    id_media_fasciculo: str = field(default=None)
+    id_media_issue: str = field(default=None)
     id_: str = field(default_factory=crear_chave)
 # ------------------------------------------------------------------------------
