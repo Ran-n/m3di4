@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:36:45.461301
-#+ Editado:	2023/01/24 22:05:20.631658
+#+ Editado:	2023/01/28 00:13:45.739578
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 import math
@@ -16,7 +16,7 @@ class MediaType:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaType'))
     name: str
     groupable: Optional[int] = field(default=0)
-    id_: int = field(default=None)
+    id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
