@@ -3,18 +3,31 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/20 18:07:29.752600
+#+ Editado:	2023/01/27 20:19:53.588526
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional, Union
 
-from src.utils import create_key
+from src.utils import Config
+from src.entity import Media, MediaGroup, MediaIssue
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaName:
-    table_name: str = field(init=False, default='Media Nomes')
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaName'))
     name: str
-    id_media: str = field(default=None)
-    id_media_group: str = field(default=None)
-    id_media_issue: str = field(default=None)
-    id_: int = field(default_factory=create_key)
+    media: Optional[Media] = field(default=None)
+    media_group: Optional[MediaGroup] = field(default=None)
+    media_issue: Optional[MediaIssue] = field(default=None)
+    id_: Optional[int] = field(default=None)
+
+    # make either media, media_group or media_issue required on object creation
+    def __post_init__(self) -> None:
+        if not any([self.media, self.media_group, self.media_issue]):
+            raise TypeError(f'{self.__class__.__name__}.__init__() missing 1 required positional argument: "media", "media_group" or "media_issue"')
+
+    # table_name and id_ attributes are frozen
+    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
+        if (attr != 'table_name'):
+            object.__setattr__(self, attr, value)
+
 # ------------------------------------------------------------------------------

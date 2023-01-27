@@ -2,23 +2,18 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/01/28 00:10:06.640563
+#+ Creado: 	2023/01/24 22:20:00.157191
+#+ Editado:	2023/01/24 22:22:37.026565
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.entity import Media, MediaGroup
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaIssue:
-    table_name: str = field(init=False, default='MediaIssue')
-    position: int
-    id_media: Media
-    id_media_group: MediaGroup
-    name: Optional[str] = field(default = None)
-    date: Optional[str] = field(default = None)
+class ShareSiteType:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteType'))
+    name: str
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

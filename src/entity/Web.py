@@ -3,24 +3,32 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:08:25.622146
-#+ Editado:	2023/01/20 18:09:08.831365
+#+ Editado:	2023/01/28 00:10:38.760286
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional, Union
 
-from src.utils import create_key
+from src.utils import Config
 # ------------------------------------------------------------------------------
 @dataclass
 class Web:
-    table_name: str = field(init=False, default='_Web')
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('Web'))
     name: str
-    acronym: str
-    link: str
-    id_: str = field(default_factory=create_key)
+    acronym: Optional[str] = field(default=None)
+    link: Optional[str] = field(default=None)
+    id_: Optional[int] = field(default=None)
 
+    # table_name and id_ attributes are frozen
+    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
+        if (attr != 'table_name'):
+            object.__setattr__(self, attr, value)
+
+    """
     # xFCR
     def __repr__(self) -> str:
         repeat = 1
         if len(self.name) < 22:
             repeat = 2
         return f'{self.name}' + repeat*'\t' + f'[{self.id_}]'
+    """
 # ------------------------------------------------------------------------------

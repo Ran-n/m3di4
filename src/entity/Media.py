@@ -3,19 +3,26 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/01/20 18:06:35.426173
+#+ Editado:	2023/01/24 23:03:07.858522
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional, Union
 
-from src.utils import create_key
+from src.utils import Config
+from src.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 @dataclass
 class Media:
-    table_name: str = field(init=False, default='Media')
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('Media'))
     name: str
+    type_: MediaType
+    estatus: MediaStatus
     year_start: int
-    year_end: int
-    id_type: str = field(default=None)
-    id_estatus: str = field(default=None)
-    id_: str = field(default_factory=crear_chave)
+    year_end: Optional[int] = field(default=None)
+    id_: Optional[int] = field(default=None)
+
+    # table_name and id_ attributes are frozen
+    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
+        if (attr != 'table_name'):
+            object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

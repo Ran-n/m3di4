@@ -2,23 +2,19 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/01/28 00:10:06.640563
+#+ Creado: 	2023/01/21 01:19:35.116684
+#+ Editado:	2023/01/24 22:06:37.699653
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.entity import Media, MediaGroup
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaIssue:
-    table_name: str = field(init=False, default='MediaIssue')
-    position: int
-    id_media: Media
-    id_media_group: MediaGroup
-    name: Optional[str] = field(default = None)
-    date: Optional[str] = field(default = None)
+class Code:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('Code'))
+    name: str
+    desc: Optional[str] = field(default=None)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

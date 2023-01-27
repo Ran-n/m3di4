@@ -1,3 +1,34 @@
 {
-    "db": "media/db/Database.db"
+    "db_file_location": "media/db/Database.db",
+    "db_table_names": {
+        "Code": "Code",
+        "Codec": "Codec",
+        "Country": "Country",
+        "File": "File",
+        "FileAttachment": "FileAttachment",
+        "FileAudio": "FileAudio",
+        "FileShareSite": "FileShareSite",
+        "FileSubtitle": "FileSubtitle",
+        "FileVideo": "FileVideo",
+        "FolderName": "FolderName",
+        "Language": "Language",
+        "LanguageCode": "LanguageCode",
+        "LanguageName": "LanguageName",
+        "LanguageNameLanguage": "LanguageNameLanguage",
+        "Media": "Media",
+        "MediaGroup": "MediaGroup",
+        "MediaIssue": "MediaIssue",
+        "MediaName": "MediaName",
+        "MediaNameCountry": "MediaNameCountry",
+        "MediaNameLanguage": "MediaNameLanguage",
+        "MediaStatus": "MediaStatus",
+        "MediaType": "MediaType",
+        "MediaWeb": "MediaWeb",
+        "ShareSite": "ShareSite",
+        "ShareSiteType": "ShareSiteType",
+        "ShareSiteSubs": "ShareSiteSubs",
+        "Warehouse": "Warehouse",
+        "WarehouseType": "WarehouseType",
+        "Web": "Web"
+    }
 }
