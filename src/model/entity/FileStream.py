@@ -3,12 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/01/27 19:54:23.264878
+#+ Editado:	2023/01/28 00:34:25.871632
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
+from src.model.entity import File, Codec, Language
 # ------------------------------------------------------------------------------
 @dataclass
 class FileStream:

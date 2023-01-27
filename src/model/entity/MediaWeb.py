@@ -2,23 +2,21 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:41:42.686442
-#+ Editado:	2023/01/24 23:06:59.517347
+#+ Creado: 	2023/01/05 00:06:39.547649
+#+ Editado:	2023/01/28 00:31:09.206988
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.entity import Media
+from src.model.entity import Media, Web
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaGroup:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaGroup'))
-    number: int
+class MediaWeb:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaWeb'))
     media: Media
-    name: Optional[str] = field(default=None)
-    year_start: Optional[int] = field(default=None)
-    year_end: Optional[int] = field(default=None)
+    web: Web
+    link: str
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen
@@ -26,4 +24,3 @@ class MediaGroup:
         if (attr != 'table_name'):
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------
-

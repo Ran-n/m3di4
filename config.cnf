@@ -2,8 +2,13 @@
     "db_file_location": "media/db/Database.db",
     "db_table_names": {
         "Code": "Code",
+        "MediaPoster": "MediaPoster",
+        "FileStream": "FileStream",
         "Codec": "Codec",
+        "CodecType": "CodecType",
         "Country": "Country",
+        "Encoder": "Encoder",
+        "Extension": "Extension",
         "File": "File",
         "FileAttachment": "FileAttachment",
         "FileAudio": "FileAudio",
@@ -25,8 +30,8 @@
         "MediaType": "MediaType",
         "MediaWeb": "MediaWeb",
         "ShareSite": "ShareSite",
-        "ShareSiteType": "ShareSiteType",
         "ShareSiteSubs": "ShareSiteSubs",
+        "ShareSiteType": "ShareSiteType",
         "Warehouse": "Warehouse",
         "WarehouseType": "WarehouseType",
         "Web": "Web"

@@ -2,27 +2,36 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/01/24 23:03:07.858522
+#+ Creado: 	2023/01/07 14:52:39.247289
+#+ Editado:	2023/01/28 00:31:13.964386
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.entity import MediaType, MediaStatus
+from src.model.entity import ShareSiteType
 # ------------------------------------------------------------------------------
 @dataclass
-class Media:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('Media'))
+class ShareSite:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSite'))
     name: str
-    type_: MediaType
-    estatus: MediaStatus
-    year_start: int
-    year_end: Optional[int] = field(default=None)
+    type_: ShareSiteType
+    private: Optional[int] = field(default=None)
+    link: Optional[str] = field(default=None)
+    platform: Optional[str] = field(default=None)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
         if (attr != 'table_name'):
             object.__setattr__(self, attr, value)
+
+    """
+    # xFCR
+    def __repr__(self) -> str:
+        times = 1
+        if len(self.name) < 15:
+            times=2
+        return f'{self.name}'+times*'\t'+f'[{self.id_}]'
+    """
 # ------------------------------------------------------------------------------

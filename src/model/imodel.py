@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/15 20:15:24.889827
+#+ Editado:	2023/01/28 00:24:03.851197
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ from abc import ABC, abstractmethod
 from sqlite3 import Connection, Cursor
 from typing import List, Tuple, Union
 
-from src.dtos.Almacen import Almacen
+from .entity.Almacen import Almacen
 from src.dtos.Arquivo import Arquivo
 from src.dtos.ArquivoAdxunto import ArquivoAdxunto
 from src.dtos.ArquivoAudio import ArquivoAudio

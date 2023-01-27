@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/21 01:24:01.546584
-#+ Editado:	2023/01/24 22:48:42.835476
+#+ Creado: 	2023/01/04 23:58:36.138946
+#+ Editado:	2023/01/28 00:30:56.474895
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.entity import Language, LanguageName
+from src.model.entity import MediaName, Language
 # ------------------------------------------------------------------------------
 @dataclass
-class LanguageNameLanguage:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageNameLanguage'))
-    language_name: LanguageName
+class MediaNameLanguage:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaNameLanguage'))
+    media_name: MediaName
     language: Language
     id_: Optional[int] = field(default=None)
 

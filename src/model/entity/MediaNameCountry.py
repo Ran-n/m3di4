@@ -2,20 +2,20 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/20 18:18:03.195457
-#+ Editado:	2023/01/27 20:30:46.256402
+#+ Creado: 	2023/01/04 23:58:42.990911
+#+ Editado:	2023/01/28 00:30:53.697852
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.entity import ShareSite
+from src.model.entity import MediaName, Country
 # ------------------------------------------------------------------------------
 @dataclass
-class ShareSiteSubs:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteSubs'))
-    subs: int
-    share_site: ShareSite
+class MediaNameCountry:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaNameCountry'))
+    media_name: MediaName
+    country: Country
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

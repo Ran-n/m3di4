@@ -2,22 +2,21 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/07 13:31:54.424384
-#+ Editado:	2023/01/28 00:14:57.748973
+#+ Creado: 	2023/01/23 18:39:20.569506
+#+ Editado:	2023/01/28 00:30:59.124844
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
-from src.utils import Config
-from src.entity import CodecType
+from src.utils import create_key, Config
+from src.model.entity import Media, Extension
 # ------------------------------------------------------------------------------
 @dataclass
-class Codec:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('Codec'))
-    name: str
-    type_: CodecType
-    name_long: Optional[str] = field(default=None)
-    desc: Optional[str] = field(default=None)
+class MediaPoster:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaPoster'))
+    media: Media
+    extension: Extension
+    name: Optional[str] = field(default_factory=create_key)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen
