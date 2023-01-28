@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/28 00:55:31.670533
+#+ Editado:	2023/01/28 16:15:50.278223
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ class Model:
         return self.model.save_db()
 
     # SELECT
-    def get(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
+    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
         if table_name == Warehouse.table_name:
             return self.model.get_warehouse()
         elif table_name == WarehouseType.table_name:

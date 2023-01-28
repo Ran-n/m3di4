@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/28 00:53:02.520562
+#+ Editado:	2023/01/28 16:15:41.076530
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def get(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
+    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
         pass
 
     """

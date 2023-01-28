@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/28 00:56:26.315253
+#+ Editado:	2023/01/28 16:39:28.359447
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -11,8 +11,10 @@ from src.model.imodel import iModel
 # ------------------------------------------------------------------------------
 import sqlite3
 from sqlite3 import Connection, Cursor, IntegrityError
-
+from uteis.ficheiro import cargarFich as load_file
 from typing import List, Tuple, Union
+
+from src.utils import Config
 
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue, MediaType, MediaStatus
@@ -23,6 +25,14 @@ class Sqlite(iModel):
         self.ficheiro = ficheiro
         self.conn = None
         self.cur = None
+
+        # if the DB doesnt have all the number of supposed tables, run the creation script.
+        if(self.__get_num_tables_db() < Config().get_num_entities()):
+            self.cur.executescript(''.join(load_file('./src/model/db_creation/sqlite/Media4.db.sql')))
+
+    def __get_num_tables_db(self) -> int:
+        self.connect_db()
+        return self.cur.execute('select count(*) from sqlite_master where type="table"').fetchone()[0];
 
     def get_conn_db(self) -> Connection:
         if self.conn == None:
@@ -52,7 +62,7 @@ class Sqlite(iModel):
             self.conn.commit()
 
     # get
-    def get(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
+    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
         pass
 
     """
