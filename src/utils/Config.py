@@ -3,10 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/01/28 16:36:13.031772
+#+ Editado:	2023/01/28 21:46:25.646566
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson as load_json
 import os
+import pathlib
 
 from src.exception.exception import TableNameException
 # ------------------------------------------------------------------------------
@@ -18,8 +19,12 @@ class Config(object):
             self.instance = super(Config, self).__new__(self)
 
             self.file_content = load_json(self.file)
+            self.log_folder = self.file_content.get('log_folder', '')
             self.database_file = self.file_content.get('db_file_location', '')
             self.database_tables = self.file_content.get('db_table_names', '')
+
+            for folder in [self.log_folder, pathlib.Path(self.database_file).parent]:
+                os.makedirs(folder, exist_ok=True)
 
         return self.instance
 
