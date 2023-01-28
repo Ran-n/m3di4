@@ -3,16 +3,18 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/01/28 01:04:25.598772
+#+ Editado:	2023/01/28 22:14:32.036399
 # ------------------------------------------------------------------------------
 from src.view.iview import iView
 # ------------------------------------------------------------------------------
+import logging
 import customtkinter
 
 from src.model.entity import Media
 # ------------------------------------------------------------------------------
 class GUI(iView):
     def __init__(self) -> None:
+        loggin.info('Starting GUI view')
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("dark-blue")
 
