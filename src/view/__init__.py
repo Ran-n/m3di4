@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/21 17:41:24.677364
-#+ Editado:	2023/01/28 01:28:18.223692
+#+ Creado: 	2023/01/28 01:29:20.163771
+#+ Editado:	2023/01/28 01:30:13.073979
 # ------------------------------------------------------------------------------
-from .imodel import iModel
-from .model import Model
-from .sqlite import Sqlite
+from .iview import iView
+from .view import View
+from .terminal import Terminal
+from .gui import GUI
 # ------------------------------------------------------------------------------

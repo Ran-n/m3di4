@@ -3,18 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/28 01:07:22.825417
+#+ Editado:	2023/01/28 01:31:28.543046
 # ------------------------------------------------------------------------------
 from src.utils import Config
 
-from src.model.model import Model
-from src.model.sqlite import Sqlite
-
-from src.view.view import View
-from src.view.terminal import Terminal
-from src.view.gui import GUI
-
-from src.controller.controller import Controller
+from src.model import Model, Sqlite
+from src.view import View, Terminal, GUI
+from src.controller import Controller
 # ------------------------------------------------------------------------------
 def main():
 
