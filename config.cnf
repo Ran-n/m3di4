@@ -1,4 +1,5 @@
 {
+    "log_folder": "media/logs",
     "db_file_location": "media/db/Database.db",
     "db_table_names": {
         "Code": "Code",
@@ -10,11 +11,8 @@
         "Encoder": "Encoder",
         "Extension": "Extension",
         "File": "File",
-        "FileAttachment": "FileAttachment",
-        "FileAudio": "FileAudio",
         "FileShareSite": "FileShareSite",
-        "FileSubtitle": "FileSubtitle",
-        "FileVideo": "FileVideo",
+        "FileStream": "FileStream",
         "FolderName": "FolderName",
         "Language": "Language",
         "LanguageCode": "LanguageCode",
