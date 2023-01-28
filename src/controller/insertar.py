@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/15 23:43:56.855806
+#+ Editado:	2023/01/28 01:03:15.619672
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -13,6 +13,7 @@ from uteis.imprimir import jprint
 from src.controller.info import main
 from src.model.model import Model
 
+"""
 from src.dtos.Almacen import Almacen
 from src.dtos.Arquivo import Arquivo
 from src.dtos.ArquivoAdxunto import ArquivoAdxunto
@@ -34,6 +35,7 @@ from src.dtos.MediaWeb import MediaWeb
 from src.dtos.NomeCarpeta import NomeCarpeta
 from src.dtos.Pais import Pais
 from src.dtos.Web import Web
+"""
 # ------------------------------------------------------------------------------
 def loop_variable(model: Model, variable: str, msg: str = None) -> Union[str, None]:
     if variable == 'Tipo':

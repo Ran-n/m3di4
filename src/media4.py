@@ -3,22 +3,24 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/17 18:56:47.672994
+#+ Editado:	2023/01/28 01:07:22.825417
 # ------------------------------------------------------------------------------
-from uteis.ficheiro import cargarJson
+from src.utils import Config
 
 from src.model.model import Model
 from src.model.sqlite import Sqlite
-from src.controller.controller import Controller
+
 from src.view.view import View
 from src.view.terminal import Terminal
 from src.view.gui import GUI
+
+from src.controller.controller import Controller
 # ------------------------------------------------------------------------------
 def main():
-    cnf = cargarJson('.cnf')
 
-    model = Model(strategy=Sqlite(cnf['db']))
-    view = View(strategy=GUI(), model=model)
+    model = Model(strategy=Sqlite(Config().file_content['db_file_location']))
+    #view = View(strategy=GUI(), model=model)
+    view = View(strategy=Terminal(), model=model)
     controller = Controller(model=model, view=view)
 
 # ------------------------------------------------------------------------------

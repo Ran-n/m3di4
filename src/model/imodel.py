@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/28 00:24:03.851197
+#+ Editado:	2023/01/28 00:53:02.520562
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,29 +12,9 @@ from abc import ABC, abstractmethod
 from sqlite3 import Connection, Cursor
 from typing import List, Tuple, Union
 
-from .entity.Almacen import Almacen
-from src.dtos.Arquivo import Arquivo
-from src.dtos.ArquivoAdxunto import ArquivoAdxunto
-from src.dtos.ArquivoAudio import ArquivoAudio
-from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
-from src.dtos.ArquivoVideo import ArquivoVideo
-from src.dtos.Codec import Codec
-from src.dtos.Compartido import Compartido
-from src.dtos.CompartirLugar import CompartirLugar
-from src.dtos.Lingua import Lingua
-from src.dtos.Media import Media
-from src.dtos.MediaAgrupacion import MediaAgrupacion
-from src.dtos.MediaFasciculo import MediaFasciculo
-from src.dtos.MediaNomes import MediaNomes
-from src.dtos.MediaNomesLinguas import MediaNomesLinguas
-from src.dtos.MediaNomesPaises import MediaNomesPaises
-from src.dtos.MediaSituacion import MediaSituacion
-from src.dtos.MediaTipo import MediaTipo
-from src.dtos.MediaWeb import MediaWeb
-from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.Pais import Pais
-from src.dtos.Secuencia import Secuencia
-from src.dtos.Web import Web
+from src.model.entity import Warehouse, WarehouseType
+from src.model.entity import Media, MediaGroup, MediaIssue, MediaType, MediaStatus
+from src.model.entity import Language, Codec, FolderName
 # ------------------------------------------------------------------------------
 class iModel(ABC):
     @abstractmethod
@@ -58,15 +38,16 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def select(self, nome_taboa: str, alfabetic: bool = False) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
+    def get(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
+        pass
+
+    """
+    @abstractmethod
+    def get_media_status_by_name(self, name: str) -> MediaStatus:
         pass
 
     @abstractmethod
-    def get_situacion_by_name(self, name: str) -> MediaSituacion:
-        pass
-
-    @abstractmethod
-    def get_lingua_by_code(self, code: str) -> Lingua:
+    def get_language_by_code(self, code: str) -> Language:
         pass
 
     @abstractmethod
@@ -74,14 +55,15 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
+    def get_folder_name_by_name(self, name: str) -> FolderName:
+        pass
+    """
+
+    @abstractmethod
+    def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
         pass
 
     @abstractmethod
-    def get_mediatipo_agrupables(self, id_only:bool = False) -> List[Union[MediaTipo, str]]:
-        pass
-
-    @abstractmethod
-    def insert(self, obj: Union[Media, MediaAgrupacion, MediaFasciculo, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
+    def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:
         pass
 # ------------------------------------------------------------------------------

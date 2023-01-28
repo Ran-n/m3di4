@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------------------
 from src.view.iview import iView
 # ------------------------------------------------------------------------------
-from src.dtos.Media import Media
+from src.model.entity import Media
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:

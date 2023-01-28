@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/15 21:25:02.819723
+#+ Editado:	2023/01/28 00:56:26.315253
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -14,29 +14,9 @@ from sqlite3 import Connection, Cursor, IntegrityError
 
 from typing import List, Tuple, Union
 
-from src.dtos.Almacen import Almacen
-from src.dtos.Arquivo import Arquivo
-from src.dtos.ArquivoAdxunto import ArquivoAdxunto
-from src.dtos.ArquivoAudio import ArquivoAudio
-from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
-from src.dtos.ArquivoVideo import ArquivoVideo
-from src.dtos.Codec import Codec
-from src.dtos.Compartido import Compartido
-from src.dtos.CompartirLugar import CompartirLugar
-from src.dtos.Lingua import Lingua
-from src.dtos.Media import Media
-from src.dtos.MediaAgrupacion import MediaAgrupacion
-from src.dtos.MediaFasciculo import MediaFasciculo
-from src.dtos.MediaNomes import MediaNomes
-from src.dtos.MediaNomesLinguas import MediaNomesLinguas
-from src.dtos.MediaNomesPaises import MediaNomesPaises
-from src.dtos.MediaSituacion import MediaSituacion
-from src.dtos.MediaTipo import MediaTipo
-from src.dtos.MediaWeb import MediaWeb
-from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.Pais import Pais
-from src.dtos.Secuencia import Secuencia
-from src.dtos.Web import Web
+from src.model.entity import Warehouse, WarehouseType
+from src.model.entity import Media, MediaGroup, MediaIssue, MediaType, MediaStatus
+from src.model.entity import Language, Codec, FolderName
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -71,10 +51,11 @@ class Sqlite(iModel):
         if self.conn:
             self.conn.commit()
 
-    # SELECT
-    def select(self, nome_taboa: str, alfabetic: bool = False) -> List[Union[MediaTipo, MediaSituacion, Almacen, NomeCarpeta, Secuencia, CompartirLugar, Web, Lingua, Pais]]:
+    # get
+    def get(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
         pass
 
+    """
     def select_mediatipos(self) -> List[MediaTipo]:
         results = self.get_cur_db().execute(f'select ID, Nome, Agrupable from "_Media Tipo"').fetchall()
         valores = []
@@ -138,9 +119,11 @@ class Sqlite(iModel):
         for result in results:
             valores.append(Pais(id_=result[0], nome=result[1], reino=result[2]))
         return valores
+    """
 
 
     # GET BY X
+    """
     def get_lingua_by_code(self, code: str) -> Lingua:
         if code:
             result = self.get_cur_db().execute(f'select l.ID, l.Nome, l.Desc from "_Lingua Códigos" lc left join "_Lingua" l on l.ID=lc."ID Lingua" where lc."Código" like "{code}"').fetchone()
@@ -168,8 +151,9 @@ class Sqlite(iModel):
             if result:
                 return NomeCarpeta(id_=result[0], nome=result[1])
         return None
+    """
 
-    def get_mediatipo_agrupables(self, id_only:bool = False) -> List[Union[MediaTipo, str]]:
+    def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
         results = self.get_cur_db().execute(f'select ID, Nome, Agrupable from "_Media Tipo"').fetchall()
         valores = []
         if id_only:
@@ -183,9 +167,10 @@ class Sqlite(iModel):
         return valores
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaAgrupacion, MediaFasciculo, MediaWeb, NomeCarpeta, Arquivo, ArquivoAdxunto, ArquivoAudio, ArquivoSubtitulo, ArquivoVideo, Compartido, MediaNomes, MediaNomesLinguas, MediaNomesPaises]) -> Union[None, int]:
+    def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:
         pass
 
+    """
     def insert_media(self, obj: Media) -> None:
         self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID", "Nome", "Ano Inicio", "Ano Fin", "ID Tipo", "ID Situación") values (?, ?, ?, ?, ?, ?)', (obj.id_, obj.nome, obj.ano_ini, obj.ano_fin, obj.id_tipo, obj.id_situacion))
 
@@ -231,4 +216,5 @@ class Sqlite(iModel):
 
     def insert_medianomespaises(self, obj: MediaNomesPaises) -> None:
         self.get_cur_db().execute(f'insert into "{obj.nome_taboa}" ("ID Media Nomes", "ID País") values (?, ?)', (obj.id_media_nomes, obj.id_pais))
+    """
 # ------------------------------------------------------------------------------
