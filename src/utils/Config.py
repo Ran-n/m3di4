@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/01/29 00:35:03.357591
+#+ Editado:	2023/01/29 17:38:50.671346
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson as load_json
 import os
@@ -12,15 +12,19 @@ import pathlib
 from src.exception.exception import TableNameException
 # ------------------------------------------------------------------------------
 class Config(object):
-    file: str = '.cnf'
+    config_file: str = '.cnf'
+    supported_languages_file: str = 'media/i18n/supported_languages.json'
 
     def __new__(self):
         if not hasattr(self, 'instance'):
             self.instance = super(Config, self).__new__(self)
 
-            self.file_content = load_json(self.file)
+            self.supported_languages = load_json(self.supported_languages_file)
+            self.file_content = load_json(self.config_file)
 
             self.language = self.file_content.get('language', '')
+            if self.language not in self.supported_languages.keys():
+                raise ValueError(f'Language not supported yet, try: {self.supported_languages}')
             self.i18n_folder = self.file_content.get('internationalization_folder', '')
             self.log_folder = self.file_content.get('log_folder', '')
             self.database_file = self.file_content.get('db_file_location', '')

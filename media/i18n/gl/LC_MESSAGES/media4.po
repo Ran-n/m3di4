@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 17:12+0100\n"
+"POT-Creation-Date: 2023-01-29 17:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: src/model/sqlite.py:26
 msgid "Starting the sqlite db"
-msgstr "Comezando a bd sqlite"
+msgstr "Abrindo a bd sqlite"
 
 #: src/model/sqlite.py:33
 msgid "Creating the sqlite db"
@@ -27,7 +27,7 @@ msgstr "Creando a bd sqlite"
 
 #: src/model/sqlite.py:53
 msgid "Creating connection and cursor to the sqlite db"
-msgstr "Creando a conexión e o cursor á bd sqlite"
+msgstr "Creando a conexión e cursor á bd sqlite"
 
 #: src/model/sqlite.py:63
 msgid "Disconnecting from the sqlite db"
@@ -52,6 +52,10 @@ msgstr "Manexador Media4"
 #: src/view/terminal.py:25 src/view/terminal.py:35
 msgid "*** MENU ***"
 msgstr "*** MENÚ ***"
+
+#: src/view/terminal.py:31
+msgid "Pick: "
+msgstr "Escolla: "
 
 #: src/controller/controller.py:29
 msgid "Exit"
