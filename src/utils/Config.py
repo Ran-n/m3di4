@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/01/29 17:38:50.671346
+#+ Editado:	2023/01/29 20:16:31.434805
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson as load_json
 import os
@@ -19,9 +19,11 @@ class Config(object):
         if not hasattr(self, 'instance'):
             self.instance = super(Config, self).__new__(self)
 
+            # importing file contents
             self.supported_languages = load_json(self.supported_languages_file)
             self.file_content = load_json(self.config_file)
 
+            # setup of class attributes
             self.language = self.file_content.get('language', '')
             if self.language not in self.supported_languages.keys():
                 raise ValueError(f'Language not supported yet, try: {self.supported_languages}')
