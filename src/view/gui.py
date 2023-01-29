@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/01/28 22:14:32.036399
+#+ Editado:	2023/01/29 00:07:23.004019
 # ------------------------------------------------------------------------------
 from src.view.iview import iView
 # ------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ from src.model.entity import Media
 # ------------------------------------------------------------------------------
 class GUI(iView):
     def __init__(self) -> None:
-        loggin.info('Starting GUI view')
+        logging.info('Starting GUI view')
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("dark-blue")
 
@@ -26,6 +26,7 @@ class GUI(iView):
         pass
 
     def exit(self) -> None:
+        # nothing need to be done here
         pass
 
     def get_media(self) -> Media:

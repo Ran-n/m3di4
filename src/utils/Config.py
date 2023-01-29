@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/01/28 21:46:25.646566
+#+ Editado:	2023/01/29 00:35:03.357591
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson as load_json
 import os
@@ -19,6 +19,9 @@ class Config(object):
             self.instance = super(Config, self).__new__(self)
 
             self.file_content = load_json(self.file)
+
+            self.language = self.file_content.get('language', '')
+            self.i18n_folder = self.file_content.get('internationalization_folder', '')
             self.log_folder = self.file_content.get('log_folder', '')
             self.database_file = self.file_content.get('db_file_location', '')
             self.database_tables = self.file_content.get('db_table_names', '')

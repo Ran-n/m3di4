@@ -1,4 +1,6 @@
 {
+    "language": "gz",
+    "internationalization_folder": "media/i18n",
     "log_folder": "media/logs",
     "db_file_location": "media/db/Database.db",
     "db_table_names": {

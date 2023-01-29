@@ -3,15 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/16 22:34:24.161828
+#+ Editado:	2023/01/29 15:42:58.516404
 # ------------------------------------------------------------------------------
 import sys
+import logging
 
 from src.model.imodel import iModel
 from src.view.iview import iView
 from src.view.terminal import Terminal
 
-#from src.controller.sair import sair
 #from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
 class Controller:
@@ -25,20 +25,22 @@ class Controller:
 
 
     def __terminal_menu(self) -> None:
-        opcions = {
-                '0': ['Sair', self.sair],
-                '1': ['Insertar', self.insertar],
+        options = {
+                '0': [_('Exit'), self.exit],
+                '1': [_('Insert'), self.insert],
         }
 
-        opcions[self.view.menu(opcions)][1]()
+        options[self.view.menu(options)][1]()
 
-    def sair(self) -> None:
-        #sair(model=self.model, view=self.view)
+    def exit(self) -> None:
+        logging.info('Starting the exit process')
         self.model.disconnect_db(commit=True)
         self.view.exit()
+        logging.info('Exiting the program')
         sys.exit()
 
-    def insertar(self) -> None:
+    def insert(self) -> None:
+        logging.info('Starting the insert process')
         #insertar(self.model)
-        print('insertar')
+        print('insert')
 # ------------------------------------------------------------------------------

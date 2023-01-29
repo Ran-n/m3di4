@@ -3,8 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/28 01:31:28.543046
+#+ Editado:	2023/01/29 16:24:32.375904
 # ------------------------------------------------------------------------------
+import logging
+from datetime import datetime
+import gettext
+
 from src.utils import Config
 
 from src.model import Model, Sqlite
@@ -12,6 +16,25 @@ from src.view import View, Terminal, GUI
 from src.controller import Controller
 # ------------------------------------------------------------------------------
 def main():
+    # logging setup
+    logging.basicConfig(
+            filename = f"{Config().log_folder}/{datetime.now().strftime('%Y-%m-%d')}.log",
+            encoding = "utf-8",
+            format = "%(asctime)s - %(levelname)s - [%(filename)s:%(funcName)s:%(lineno)s]: %(message)s",
+            level = logging.DEBUG
+    )
+
+    logging.info("""
+                        _ _       _  _
+     _ __ ___   ___  __| (_) __ _| || |
+    | '_ ` _ \ / _ \/ _` | |/ _` | || |_
+    | | | | | |  __| (_| | | (_| |__   _|
+    |_| |_| |_|\___|\__,_|_|\__,_|  |_|
+    """)
+
+    lang = gettext.translation('media4', localedir=Config().i18n_folder, languages=[Config().language])
+    lang.install()
+    _ = lang.gettext
 
     model = Model(strategy=Sqlite(Config().file_content['db_file_location']))
     #view = View(strategy=GUI(), model=model)

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/01/28 22:16:15.412456
+#+ Editado:	2023/01/29 00:36:19.367796
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,21 +17,23 @@ class Terminal(iView):
         logging.info('Starting Terminal view')
 
         print('----------------------------------------')
-        print('Media3 Manager')
+        print(_('Media3 Manager'))
         print('----------------------------------------')
 
     def menu(self, options: dict) -> int:
-        print('\n*** MENÚ ***')
+        print()
+        print(_('*** MENU ***'))
 
         for key, value in zip(options.keys(), options.values()):
             print(f'{key}. {value[0]}')
 
         while True:
-            option = input('Escolla: ')
+            option = input('Pick: ')
             if option in options:
                 break
 
-        print('*** MENÚ ***\n')
+        print(_('*** MENU ***'))
+        print()
 
         return option
 
