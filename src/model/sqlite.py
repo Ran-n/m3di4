@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 22:31:15.424342
+#+ Editado:	2023/01/29 23:10:24.150187
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,9 +17,9 @@ from typing import List, Union
 
 from src.utils import Config
 
-from src.entity import Warehouse, WarehouseType
-from src.entity import Media, MediaGroup, MediaIssue
-from src.entity import MediaType, MediaStatus
+from src.model.entity import Warehouse, WarehouseType
+from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:

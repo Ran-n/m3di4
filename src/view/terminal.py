@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/01/29 22:42:43.750060
+#+ Editado:	2023/01/29 23:10:50.068790
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ from src.view import iView
 import logging
 from typing import List, Union
 
-from src.entity import Media, MediaType, MediaStatus
+from src.model.entity import Media, MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Terminal(iView):
 
