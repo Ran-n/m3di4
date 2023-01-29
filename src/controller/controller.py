@@ -3,14 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/29 17:08:17.158290
+#+ Editado:	2023/01/29 20:19:54.421342
 # ------------------------------------------------------------------------------
 import sys
 import logging
 
-from src.model.imodel import iModel
-from src.view.iview import iView
-from src.view.terminal import Terminal
+from src.model import iModel
+from src.view import iView, Terminal
 
 #from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
