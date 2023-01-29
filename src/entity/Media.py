@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/01/28 00:30:39.817841
+#+ Editado:	2023/01/29 21:17:03.287621
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -16,7 +16,7 @@ class Media:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Media'))
     name: str
     type_: MediaType
-    estatus: MediaStatus
+    status: MediaStatus
     year_start: int
     year_end: Optional[int] = field(default=None)
     id_: Optional[int] = field(default=None)
