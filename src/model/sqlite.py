@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/28 22:19:53.317657
+#+ Editado:	2023/01/29 17:09:00.155431
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,14 +23,14 @@ from src.model.entity import Language, Codec, FolderName
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
-        logging.info('Starting the sqlite db')
+        logging.info(_('Starting the sqlite db'))
         self.ficheiro = ficheiro
         self.conn = None
         self.cur = None
 
         # if the DB doesnt have all the number of supposed tables, run the creation script.
         if(self.__get_num_tables_db() < Config().get_num_entities()):
-            logging.info('Creating the sqlite db')
+            logging.info(_('Creating the sqlite db'))
             self.cur.executescript(''.join(load_file('./src/model/db_creation/sqlite/Media4.db.sql')))
 
     def __get_num_tables_db(self) -> int:
@@ -50,7 +50,7 @@ class Sqlite(iModel):
     def connect_db(self) -> tuple([Connection, Cursor]):
         self.conn = sqlite3.connect(self.ficheiro)
         self.cur = self.conn.cursor()
-        logging.info('Creating connection and cursor to the sqlite db')
+        logging.info(_('Creating connection and cursor to the sqlite db'))
         return (self.conn, self.cur)
 
     def disconnect_db(self, commit: bool = True) -> None:
@@ -60,12 +60,12 @@ class Sqlite(iModel):
             self.conn.close()
             self.conn = None
             self.cur = None
-        logging.info('Disconnecting from the sqlite db')
+        logging.info(_('Disconnecting from the sqlite db'))
 
     def save_db(self) -> None:
         if self.conn:
             self.conn.commit()
-            logging.info('Saving the sqlite db')
+            logging.info(_('Saving the sqlite db'))
 
     # get
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:

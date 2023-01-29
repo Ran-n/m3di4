@@ -8,17 +8,45 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 15:42+0100\n"
+"POT-Creation-Date: 2023-01-29 17:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/model/sqlite.py:26
+msgid "Starting the sqlite db"
+msgstr ""
+
+#: src/model/sqlite.py:33
+msgid "Creating the sqlite db"
+msgstr ""
+
+#: src/model/sqlite.py:53
+msgid "Creating connection and cursor to the sqlite db"
+msgstr ""
+
+#: src/model/sqlite.py:63
+msgid "Disconnecting from the sqlite db"
+msgstr ""
+
+#: src/model/sqlite.py:68
+msgid "Saving the sqlite db"
+msgstr ""
+
+#: src/view/gui.py:17
+msgid "Starting GUI view"
+msgstr ""
+
+#: src/view/terminal.py:17
+msgid "Starting Terminal view"
+msgstr ""
+
 #: src/view/terminal.py:20
-msgid "Media3 Manager"
+msgid "Media4 Manager"
 msgstr ""
 
 #: src/view/terminal.py:25 src/view/terminal.py:35
@@ -35,4 +63,12 @@ msgstr ""
 
 #: src/controller/controller.py:36
 msgid "Starting the exit process"
+msgstr ""
+
+#: src/controller/controller.py:39
+msgid "Exiting the program"
+msgstr ""
+
+#: src/controller/controller.py:43
+msgid "Starting the insert process"
 msgstr ""

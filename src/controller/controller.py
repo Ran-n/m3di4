@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/29 15:42:58.516404
+#+ Editado:	2023/01/29 17:08:17.158290
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -33,14 +33,14 @@ class Controller:
         options[self.view.menu(options)][1]()
 
     def exit(self) -> None:
-        logging.info('Starting the exit process')
+        logging.info(_('Starting the exit process'))
         self.model.disconnect_db(commit=True)
         self.view.exit()
-        logging.info('Exiting the program')
+        logging.info(_('Exiting the program'))
         sys.exit()
 
     def insert(self) -> None:
-        logging.info('Starting the insert process')
+        logging.info(_('Starting the insert process'))
         #insertar(self.model)
         print('insert')
 # ------------------------------------------------------------------------------

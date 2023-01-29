@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/01/29 00:36:19.367796
+#+ Editado:	2023/01/29 17:12:30.471812
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -14,10 +14,10 @@ from src.model.entity import Media
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
-        logging.info('Starting Terminal view')
+        logging.info(_('Starting Terminal view'))
 
         print('----------------------------------------')
-        print(_('Media3 Manager'))
+        print(_('Media4 Manager'))
         print('----------------------------------------')
 
     def menu(self, options: dict) -> int:
