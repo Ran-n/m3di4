@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 20:54:41.688636
+#+ Editado:	2023/01/29 22:31:15.424342
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ import sqlite3
 from sqlite3 import Connection, Cursor, IntegrityError
 from uteis.ficheiro import cargarFich as load_file
 import logging
-from typing import List, Tuple, Union
+from typing import List, Union
 
 from src.utils import Config
 
@@ -72,10 +72,10 @@ class Sqlite(iModel):
         pass
 
     def get_all_media_type(self, table_name: str, alfabetic: bool) -> List[MediaType]:
-        sql_results = self.get_cur_db().execute(f'select "id", "name", "groupable" from "{table_name}"').fetchall()
+        sql_results = self.get_cur_db().execute(f'select "id", "name", "groupable" from "{MediaType.table_name}"').fetchall()
         results = []
         for result in sql_results:
-            results.append(MediaTipo(
+            results.append(MediaType(
                 id_=result[0],
                 name=result[1],
                 groupable=result[2]
@@ -83,16 +83,16 @@ class Sqlite(iModel):
         return results
 
     def get_all_media_status(self, table_name: str, alfabetic: bool) -> List[MediaStatus]:
-        pass
+        sql_results = self.get_cur_db().execute(f'select "id", "name" from "{MediaStatus.table_name}"').fetchall()
+        results = []
+        for result in sql_results:
+            results.append(MediaStatus(
+                id_=result[0],
+                name=result[1]
+            ))
+        return results
 
     """
-    def select_mediatipos(self) -> List[MediaTipo]:
-        results = self.get_cur_db().execute(f'select ID, Nome, Agrupable from "_Media Tipo"').fetchall()
-        valores = []
-        for result in results:
-            valores.append(MediaTipo(id_=result[0], nome=result[1], agrupable=result[2]))
-        return valores
-
     def select_situacions(self) -> List[MediaSituacion]:
         results = self.get_cur_db().execute(f'select ID, Nome from "_Media Situación"').fetchall()
         valores = []

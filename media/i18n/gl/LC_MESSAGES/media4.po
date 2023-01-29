@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 17:40+0100\n"
+"POT-Creation-Date: 2023-01-29 22:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,38 +41,70 @@ msgstr "Gardando a bd sqlite"
 msgid "Starting GUI view"
 msgstr "Comezando a vista GUI"
 
-#: src/view/terminal.py:17
+#: src/view/terminal.py:22
 msgid "Starting Terminal view"
 msgstr "Comezando a vista Terminal"
 
-#: src/view/terminal.py:20
+#: src/view/terminal.py:25
 msgid "Media4 Manager"
 msgstr "Manexador Media4"
 
-#: src/view/terminal.py:25 src/view/terminal.py:35
-msgid "*** MENU ***"
-msgstr "*** MENÚ ***"
+#: src/view/terminal.py:30 src/view/terminal.py:40
+msgid "MENU"
+msgstr "MENU"
 
-#: src/view/terminal.py:31
+#: src/view/terminal.py:36
 msgid "Pick: "
 msgstr "Escolla: "
 
-#: src/controller/controller.py:29
+#: src/view/terminal.py:67 src/view/terminal.py:103
+msgid "Add Media"
+msgstr "Engadir Media"
+
+#: src/view/terminal.py:69
+msgid "Name"
+msgstr "Nome"
+
+#: src/view/terminal.py:74
+msgid "Types"
+msgstr "Tipos"
+
+#: src/view/terminal.py:75
+msgid "Type"
+msgstr "Tipo"
+
+#: src/view/terminal.py:82
+msgid "Statuses"
+msgstr "Estados"
+
+#: src/view/terminal.py:83
+msgid "Status"
+msgstr "Estado"
+
+#: src/view/terminal.py:90
+msgid "Start Year"
+msgstr "Ano de inicio"
+
+#: src/view/terminal.py:97
+msgid "End Year"
+msgstr "Ano de fin"
+
+#: src/controller/controller.py:28
 msgid "Exit"
 msgstr "Sair"
 
-#: src/controller/controller.py:30
+#: src/controller/controller.py:29
 msgid "Insert"
 msgstr "Insertar"
 
-#: src/controller/controller.py:36
+#: src/controller/controller.py:38
 msgid "Starting the exit process"
 msgstr "Comezando o proceso de saída"
 
-#: src/controller/controller.py:39
+#: src/controller/controller.py:41
 msgid "Exiting the program"
 msgstr "Saíndo do programa"
 
-#: src/controller/controller.py:43
+#: src/controller/controller.py:45
 msgid "Starting the insert process"
 msgstr "Comezando o proceso de inserción"

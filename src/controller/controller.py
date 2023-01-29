@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/29 20:50:28.151931
+#+ Editado:	2023/01/29 22:36:40.781509
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -29,7 +29,10 @@ class Controller:
                 '1': [_('Insert'), self.insert],
         }
 
-        options[self.view.menu(options)][1]()
+        try:
+            options[self.view.menu(options)][1]()
+        except KeyboardInterrupt:
+            pass
 
     def exit(self) -> None:
         logging.info(_('Starting the exit process'))
@@ -41,4 +44,5 @@ class Controller:
     def insert(self) -> None:
         logging.info(_('Starting the insert process'))
         Media = self.view.add_media()
+        print(Media)
 # ------------------------------------------------------------------------------

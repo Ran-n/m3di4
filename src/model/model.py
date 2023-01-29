@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 20:58:36.135423
+#+ Editado:	2023/01/29 22:29:54.240002
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.model import iModel
 # ------------------------------------------------------------------------------
 from sqlite3 import Connection, Cursor
-from typing import List, Tuple, Union
+from typing import List, Union
 
 
 from src.entity import Warehouse, WarehouseType
@@ -44,7 +44,7 @@ class Model:
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         if table_name == MediaType.table_name:
             return self.model.get_all_media_type(table_name, alfabetic)
-        elif table_name == MediaStaus.table_name:
+        elif table_name == MediaStatus.table_name:
             return self.model.get_all_media_status(table_name, alfabetic)
 
     """

@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 20:54:29.523761
+#+ Editado:	2023/01/29 22:10:45.534679
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from abc import ABC, abstractmethod
 # ------------------------------------------------------------------------------
 from sqlite3 import Connection, Cursor
-from typing import List, Tuple, Union
+from typing import List, Union
 
 from src.entity import Warehouse, WarehouseType
 from src.entity import Media, MediaGroup, MediaIssue
