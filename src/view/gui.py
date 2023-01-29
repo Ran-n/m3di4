@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/01/29 20:19:27.142099
+#+ Editado:	2023/01/29 20:55:12.527245
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
 import customtkinter
 
-from src.model.entity import Media
+from src.entity import Media
 # ------------------------------------------------------------------------------
 class GUI(iView):
     def __init__(self) -> None:
@@ -29,6 +29,6 @@ class GUI(iView):
         # nothing need to be done here
         pass
 
-    def get_media(self) -> Media:
+    def add_media(self) -> Media:
         pass
 # ------------------------------------------------------------------------------

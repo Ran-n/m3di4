@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/28 16:15:41.076530
+#+ Editado:	2023/01/29 20:54:29.523761
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,9 +12,9 @@ from abc import ABC, abstractmethod
 from sqlite3 import Connection, Cursor
 from typing import List, Tuple, Union
 
-from src.model.entity import Warehouse, WarehouseType
-from src.model.entity import Media, MediaGroup, MediaIssue, MediaType, MediaStatus
-from src.model.entity import Language, Codec, FolderName
+from src.entity import Warehouse, WarehouseType
+from src.entity import Media, MediaGroup, MediaIssue
+from src.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class iModel(ABC):
     @abstractmethod
@@ -38,7 +38,7 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
+    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
 
     """

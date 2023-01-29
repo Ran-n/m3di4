@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 20:18:39.181401
+#+ Editado:	2023/01/29 20:58:36.135423
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,9 +13,9 @@ from sqlite3 import Connection, Cursor
 from typing import List, Tuple, Union
 
 
-from src.model.entity import Warehouse, WarehouseType
-from src.model.entity import Media, MediaGroup, MediaIssue, MediaType, MediaStatus
-from src.model.entity import Language, Codec, FolderName
+from src.entity import Warehouse, WarehouseType
+from src.entity import Media, MediaGroup, MediaIssue
+from src.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -40,12 +40,12 @@ class Model:
     def save_db(self) -> None:
         return self.model.save_db()
 
-    # SELECT
-    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
-        if table_name == Warehouse.table_name:
-            return self.model.get_warehouse()
-        elif table_name == WarehouseType.table_name:
-            return self.model.get_warehouse_type()
+    # GET
+    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        if table_name == MediaType.table_name:
+            return self.model.get_all_media_type(table_name, alfabetic)
+        elif table_name == MediaStaus.table_name:
+            return self.model.get_all_media_status(table_name, alfabetic)
 
     """
     def get_media_status_by_name(self, name: str) -> MediaStatus:

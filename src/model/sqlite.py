@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 20:18:47.452154
+#+ Editado:	2023/01/29 20:54:41.688636
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,9 +17,9 @@ from typing import List, Tuple, Union
 
 from src.utils import Config
 
-from src.model.entity import Warehouse, WarehouseType
-from src.model.entity import Media, MediaGroup, MediaIssue, MediaType, MediaStatus
-from src.model.entity import Language, Codec, FolderName
+from src.entity import Warehouse, WarehouseType
+from src.entity import Media, MediaGroup, MediaIssue
+from src.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -67,8 +67,22 @@ class Sqlite(iModel):
             self.conn.commit()
             logging.info(_('Saving the sqlite db'))
 
-    # get
-    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[Warehouse, WarehouseType]]:
+    # GET
+    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        pass
+
+    def get_all_media_type(self, table_name: str, alfabetic: bool) -> List[MediaType]:
+        sql_results = self.get_cur_db().execute(f'select "id", "name", "groupable" from "{table_name}"').fetchall()
+        results = []
+        for result in sql_results:
+            results.append(MediaTipo(
+                id_=result[0],
+                name=result[1],
+                groupable=result[2]
+            ))
+        return results
+
+    def get_all_media_status(self, table_name: str, alfabetic: bool) -> List[MediaStatus]:
         pass
 
     """

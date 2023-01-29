@@ -3,16 +3,20 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/01/29 20:19:19.773340
+#+ Editado:	2023/01/29 21:02:41.988306
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
-from src.model.entity import Media
+
+from src.entity import Media, MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Terminal(iView):
+
+    model = None
+
     def __init__(self) -> None:
         logging.info(_('Starting Terminal view'))
 
@@ -40,7 +44,7 @@ class Terminal(iView):
     def exit(self) -> None:
         print('----------------------------------------')
 
-    def get_media(self) -> Media:
-        pass
+    def add_media(self) -> Media:
+        self.model.get_all(MediaType.table_name)
 # ------------------------------------------------------------------------------
 

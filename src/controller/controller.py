@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/29 20:19:54.421342
+#+ Editado:	2023/01/29 20:50:28.151931
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -40,6 +40,5 @@ class Controller:
 
     def insert(self) -> None:
         logging.info(_('Starting the insert process'))
-        #insertar(self.model)
-        print('insert')
+        Media = self.view.add_media()
 # ------------------------------------------------------------------------------
