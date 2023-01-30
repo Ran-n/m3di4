@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 23:10:35.464418
+#+ Editado:	2023/01/30 22:31:33.872128
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -43,9 +43,9 @@ class Model:
     # GET
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         if table_name == MediaType.table_name:
-            return self.model.get_all_media_type(table_name, alfabetic)
+            return self.model.get_all_media_type(alfabetic)
         elif table_name == MediaStatus.table_name:
-            return self.model.get_all_media_status(table_name, alfabetic)
+            return self.model.get_all_media_status(alfabetic)
 
     """
     def get_media_status_by_name(self, name: str) -> MediaStatus:

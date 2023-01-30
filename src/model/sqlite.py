@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 23:10:24.150187
+#+ Editado:	2023/01/30 22:31:23.651490
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ class Sqlite(iModel):
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
 
-    def get_all_media_type(self, table_name: str, alfabetic: bool) -> List[MediaType]:
+    def get_all_media_type(self, alfabetic: bool) -> List[MediaType]:
         sql_results = self.get_cur_db().execute(f'select "id", "name", "groupable" from "{MediaType.table_name}"').fetchall()
         results = []
         for result in sql_results:
@@ -82,7 +82,7 @@ class Sqlite(iModel):
             ))
         return results
 
-    def get_all_media_status(self, table_name: str, alfabetic: bool) -> List[MediaStatus]:
+    def get_all_media_status(self, alfabetic: bool) -> List[MediaStatus]:
         sql_results = self.get_cur_db().execute(f'select "id", "name" from "{MediaStatus.table_name}"').fetchall()
         results = []
         for result in sql_results:
