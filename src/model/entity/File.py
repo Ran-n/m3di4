@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/01/27 18:42:55.803046
+#+ Editado:	2023/01/30 22:42:26.577653
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -31,6 +31,7 @@ class File:
     encoder: Encoder
     media: Optional[Media] = field(default=None)
     media_issue: Optional[MediaIssue] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # make either media or media_issue required on object creation

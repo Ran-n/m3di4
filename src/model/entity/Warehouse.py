@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 00:18:35.149777
-#+ Editado:	2023/01/28 00:31:31.512109
+#+ Editado:	2023/01/30 22:40:15.084770
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -21,6 +21,7 @@ class Warehouse:
     content: Optional[str] = field(default=None)
     health: Optional[str] = field(default=None)
     desc: Optional[str] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

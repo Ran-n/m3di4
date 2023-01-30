@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/01/28 00:30:47.788940
+#+ Editado:	2023/01/30 22:42:09.080756
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -19,6 +19,7 @@ class MediaIssue:
     id_media_group: MediaGroup
     name: Optional[str] = field(default = None)
     date: Optional[str] = field(default = None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/20 18:16:02.918934
-#+ Editado:	2023/01/24 22:08:12.143624
+#+ Editado:	2023/01/30 22:38:26.166232
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,6 +14,7 @@ from src.utils import Config
 class WarehouseType:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseType'))
     name: str
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

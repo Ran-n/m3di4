@@ -3,10 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:36:45.461301
-#+ Editado:	2023/01/28 00:13:45.739578
+#+ Editado:	2023/01/29 23:37:55.194665
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-import math
 from typing import Optional, Union
 
 from src.utils import Config

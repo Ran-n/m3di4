@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/01/28 00:30:50.695065
+#+ Editado:	2023/01/30 22:42:57.056268
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -18,6 +18,7 @@ class MediaName:
     media: Optional[Media] = field(default=None)
     media_group: Optional[MediaGroup] = field(default=None)
     media_issue: Optional[MediaIssue] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # make either media, media_group or media_issue required on object creation

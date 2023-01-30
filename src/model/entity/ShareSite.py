@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 14:52:39.247289
-#+ Editado:	2023/01/28 00:31:13.964386
+#+ Editado:	2023/01/30 22:39:23.669352
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -19,6 +19,7 @@ class ShareSite:
     private: Optional[int] = field(default=None)
     link: Optional[str] = field(default=None)
     platform: Optional[str] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

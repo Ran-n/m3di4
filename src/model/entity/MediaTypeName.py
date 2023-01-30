@@ -2,22 +2,20 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/08 00:36:14.914271
-#+ Editado:	2023/01/30 22:43:10.617614
+#+ Creado: 	2023/01/29 23:20:04.639454
+#+ Editado:	2023/01/29 23:39:56.376749
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import ShareSite, File
+from src.model.entity import MediaType
 # ------------------------------------------------------------------------------
 @dataclass
-class FileShareSite:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('FileShareSite'))
-    link: str
-    share_site: ShareSite
-    file: File
-    active: Optional[int] = field(default=1)
+class MediaTypeName:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaTypeName'))
+    name: str
+    media_type: MediaType
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

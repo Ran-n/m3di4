@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 13:31:54.424384
-#+ Editado:	2023/01/28 00:29:30.335505
+#+ Editado:	2023/01/30 22:39:13.825571
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -18,6 +18,7 @@ class Codec:
     type_: CodecType
     name_long: Optional[str] = field(default=None)
     desc: Optional[str] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

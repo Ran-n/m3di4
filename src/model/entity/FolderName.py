@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:04:14.716403
-#+ Editado:	2023/01/24 22:07:26.905358
+#+ Editado:	2023/01/30 22:36:56.506071
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,6 +14,7 @@ from src.utils import Config
 class FolderName:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('FolderName'))
     name: str
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

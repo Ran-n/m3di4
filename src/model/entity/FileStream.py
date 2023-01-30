@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/01/28 00:34:25.871632
+#+ Editado:	2023/01/30 22:42:33.127791
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -78,6 +78,7 @@ class FileStream:
     frame_number: Optional[int] = field(default=None)
     dmix_mode: Optional[int] = field(default=None)
     text_subtitle: Optional[int] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen
