@@ -3,10 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/29 17:37:39.290277
+#+ Editado:	2023/01/30 23:04:05.602653
 # ------------------------------------------------------------------------------
 import logging
-from datetime import datetime
 import gettext
 
 from src.utils import Config
@@ -18,7 +17,7 @@ from src.controller import Controller
 def main():
     # logging setup
     logging.basicConfig(
-            filename = f"{Config().log_folder}/{datetime.now().strftime('%Y-%m-%d')}.log",
+            filename = f"{Config().log_folder}/{Config().program_start_ts.strftime('%Y-%m-%d')}.log",
             encoding = "utf-8",
             format = "%(asctime)s - %(levelname)s - [%(filename)s:%(funcName)s:%(lineno)s]: %(message)s",
             level = logging.DEBUG

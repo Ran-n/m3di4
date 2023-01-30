@@ -3,11 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/01/29 20:16:31.434805
+#+ Editado:	2023/01/30 23:04:30.035686
 # ------------------------------------------------------------------------------
 from uteis.ficheiro import cargarJson as load_json
 import os
 import pathlib
+from datetime import datetime
 
 from src.exception.exception import TableNameException
 # ------------------------------------------------------------------------------
@@ -18,6 +19,9 @@ class Config(object):
     def __new__(self):
         if not hasattr(self, 'instance'):
             self.instance = super(Config, self).__new__(self)
+
+            # ts of program start
+            self.program_start_ts = datetime.now()
 
             # importing file contents
             self.supported_languages = load_json(self.supported_languages_file)
