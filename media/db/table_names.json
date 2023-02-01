@@ -3,6 +3,8 @@
     "Codec": "Codec",
     "CodecType": "CodecType",
     "Country": "Country",
+    "CountryName": "CountryName",
+    "CountryNameLanguage": "CountryNameLanguage",
     "Encoder": "Encoder",
     "Extension": "Extension",
     "File": "File",
