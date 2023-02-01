@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS "LanguageCode" (
 CREATE TABLE IF NOT EXISTS "Media" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
-	"year_start"	INTEGER NOT NULL,
+	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_type"		INTEGER NOT NULL,
 	"id_status"		INTEGER NOT NULL,
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS "MediaIssue" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"position"			INTEGER NOT NULL,
 	"name"				TEXT,
-	"date"				INTEGER,
+	"date"				TEXT,
 	"id_media"			INTEGER NOT NULL,
 	"id_media_group"	INTEGER NOT NULL,
 	"active"			INTEGER NOT NULL,
@@ -382,6 +382,27 @@ CREATE TABLE IF NOT EXISTS "Country" (
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Country_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "CountryName" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"name"			TEXT NOT NULL,
+	"id_country"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CountryName_FK1" FOREIGN KEY("id_country") REFERENCES "Country"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CountryName_NK" UNIQUE("name", "id_country"),
+	CONSTRAINT "CountryName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "CountryNameLanguage" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"id_country_name"	INTEGER NOT NULL,
+	"id_language"		INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CountryNameLanguage_FK1" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CountryNameLanguage_FK2" FOREIGN KEY("id_country_name") REFERENCES "CountryName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CountryNameLanguage_NK" UNIQUE("id_country_name", "id_language"),
+	CONSTRAINT "CountryNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "MediaName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
@@ -444,6 +465,7 @@ CREATE TABLE IF NOT EXISTS "FileShareSite" (
 	CONSTRAINT "FileShareSite_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "MediaWeb" (
+	"id"			INTEGER UNIQUE NOT NULL,
 	"id_media"		INTEGER NOT NULL,
 	"id_web"		INTEGER NOT NULL,
 	"link"			TEXT NOT NULL,
@@ -452,6 +474,7 @@ CREATE TABLE IF NOT EXISTS "MediaWeb" (
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaWeb_FK1" FOREIGN KEY("id_web") REFERENCES "Web"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "MediaWeb_FK2" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaWeb_PK" PRIMARY KEY("id_media","id_web")
+	CONSTRAINT "MediaWeb_NK" PRIMARY KEY("id_media","id_web", "link"),
+	CONSTRAINT "MediaWeb_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 COMMIT;
