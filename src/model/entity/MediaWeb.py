@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:06:39.547649
-#+ Editado:	2023/01/28 00:31:09.206988
+#+ Editado:	2023/02/01 18:46:24.126815
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -17,6 +17,7 @@ class MediaWeb:
     media: Media
     web: Web
     link: str
+    active: Optional[str] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

@@ -423,7 +423,7 @@ CREATE TABLE IF NOT EXISTS "MediaNameCountry" (
 CREATE TABLE IF NOT EXISTS "ShareSiteSubs" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"id_share_site"	INTEGER NOT NULL,
-	"subs_num"		INTEGER NOT NULL,
+	"sub_num"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "ShareSiteSubs_FK1" FOREIGN KEY("id_share_site") REFERENCES "ShareSite"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/20 18:18:03.195457
-#+ Editado:	2023/01/28 00:31:17.919109
+#+ Editado:	2023/02/01 18:45:27.882647
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,7 +14,7 @@ from src.model.entity import ShareSite
 @dataclass
 class ShareSiteSubs:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteSubs'))
-    subs: int
+    sub_num: int
     share_site: ShareSite
     id_: Optional[int] = field(default=None)
 

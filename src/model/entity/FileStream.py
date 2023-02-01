@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/01/30 22:42:33.127791
+#+ Editado:	2023/02/01 18:36:07.693956
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -18,6 +18,7 @@ class FileStream:
     codec: Codec
     language: Language
     index: int
+    title: Optional[str] = field(default=None)
     profile: Optional[str] = field(default=None)
     quality: Optional[str] = field(default=None)
     width: Optional[int] = field(default=None)
@@ -36,7 +37,6 @@ class FileStream:
     color_space: Optional[str] = field(default=None)
     color_transfer: Optional[str] = field(default=None)
     color_primaries: Optional[str] = field(default=None)
-    color_location: Optional[str] = field(default=None)
     chroma_location: Optional[str] = field(default=None)
     field_order: Optional[str] = field(default=None)
     refs: Optional[int] = field(default=None)
