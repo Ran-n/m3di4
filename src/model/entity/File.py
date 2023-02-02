@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/01/30 22:42:26.577653
+#+ Editado:	2023/02/02 22:57:06.576255
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import Warehouse, FolderName, Media, MediaIssue, Extension, Encoder
+from src.model.entity import Warehouse, FolderName, Media, MediaIssue, Extension, Encoder, AppVersion
 # ------------------------------------------------------------------------------
 @dataclass
 class File:
@@ -27,8 +27,8 @@ class File:
     bit_rate: int
     probe_score: int
     creation_ts: str
-    writing_app: str
-    encoder: Encoder
+    encoder: Optinal[Encoder] = field(default=None)
+    app_version: Optional[AppVersion] = field(default=None)
     media: Optional[Media] = field(default=None)
     media_issue: Optional[MediaIssue] = field(default=None)
     active: Optional[int] = field(default=1)

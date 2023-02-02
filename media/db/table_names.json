@@ -1,4 +1,6 @@
 {
+    "App": "App",
+    "AppVersion": "AppVersion",
     "Code": "Code",
     "Codec": "Codec",
     "CodecType": "CodecType",

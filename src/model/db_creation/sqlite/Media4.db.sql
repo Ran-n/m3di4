@@ -95,6 +95,25 @@ CREATE TABLE IF NOT EXISTS "Web" (
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Web_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "App" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"name"			TEXT NOT NULL UNIQUE,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "App_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "AppVersion" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"id_app"			INTEGER NOT NULL,
+	"number"			TEXT NOT NULL,
+	"name"				TEXT,
+	"num_bit_processor" INTEGER,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "AppVersion_FK1" FOREIGN KEY("id_app") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppVersion_NK" UNIQUE("id_app", "number"),
+	CONSTRAINT "AppVersion_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
@@ -283,7 +302,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	"bit_rate"			INTEGER,
 	"probe_score"		INTEGER,
 	"creation_ts"		TEXT,
-	"writing_app"		TEXT,
+	"id_app_version"	INTEGER,
 	"id_encoder"		INTEGER,
 	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -295,6 +314,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	CONSTRAINT "File_FK4" FOREIGN KEY("id_media_issue") REFERENCES "MediaIssue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK5" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK6" FOREIGN KEY("id_encoder") REFERENCES "Encoder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "File_FK7" FOREIGN KEY("id_app_version") REFERENCES "AppVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_NK" UNIQUE("name", "id_extension", "id_folder", "id_warehouse"),
 	CONSTRAINT "File_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
