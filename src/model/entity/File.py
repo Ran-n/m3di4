@@ -27,7 +27,7 @@ class File:
     bit_rate: int
     probe_score: int
     creation_ts: str
-    encoder: Optinal[Encoder] = field(default=None)
+    encoder: Optional[Encoder] = field(default=None)
     app_version: Optional[AppVersion] = field(default=None)
     media: Optional[Media] = field(default=None)
     media_issue: Optional[MediaIssue] = field(default=None)
