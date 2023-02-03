@@ -86,6 +86,7 @@ class Terminal(iView):
         # status
         status_options = self.model.get_all(MediaStatus.table_name)
         if len(status_options) == 0:
+            logging.info(_('There is no media statuses available, insert one first'))
             pass
         status = self.__pick_from_options(
                         message_title = _('Statuses'),
@@ -120,4 +121,3 @@ class Terminal(iView):
         )
 
 # ------------------------------------------------------------------------------
-
