@@ -468,7 +468,7 @@ CREATE TABLE IF NOT EXISTS "ShareSiteSubs" (
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "ShareSiteSubs_FK1" FOREIGN KEY("id_share_site") REFERENCES "ShareSite"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "ShareSiteSubs_NK" UNIQUE("id_share_site", "subs_num", "added_ts"),
+	CONSTRAINT "ShareSiteSubs_NK" UNIQUE("id_share_site", "sub_num", "added_ts"),
 	CONSTRAINT "ShareSiteSubs_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "FileShareSite" (
@@ -494,7 +494,7 @@ CREATE TABLE IF NOT EXISTS "MediaWeb" (
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaWeb_FK1" FOREIGN KEY("id_web") REFERENCES "Web"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "MediaWeb_FK2" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaWeb_NK" PRIMARY KEY("id_media","id_web", "link"),
+	CONSTRAINT "MediaWeb_NK" UNIQUE("id_media","id_web", "link"),
 	CONSTRAINT "MediaWeb_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 COMMIT;
