@@ -13,4 +13,7 @@ class LanguageException(Exception):
 
 class UserInterfaceException(Exception):
     pass
+
+class InheritException(Exception):
+    pass
 # ------------------------------------------------------------------------------

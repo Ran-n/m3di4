@@ -13,6 +13,8 @@ from sqlite3 import Connection, Cursor
 from typing import List, Union
 
 
+from src.exception import InheritException
+
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
@@ -23,7 +25,7 @@ class Model:
         if isinstance(strategy, iModel):
             self.model = strategy
         else:
-            raise ValueError("Ten que herdar de " + iModel.__name__)
+            raise InheritException(_(f'Must inherit from {iModel.__name__}'))
 
     def get_conn_db(self) -> Connection:
         return self.model.get_conn_db()

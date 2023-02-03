@@ -11,6 +11,8 @@ from src.view import iView
 # ------------------------------------------------------------------------------
 from src.model import iModel
 # ------------------------------------------------------------------------------
+from src.exception import InheritException
+
 from src.model.entity import Media
 # ------------------------------------------------------------------------------
 class View:
@@ -21,7 +23,7 @@ class View:
             self.strategy.model = model
             self.model = model
         else:
-            raise ValueError(f'Must inherit from {iView.__name__}')
+            raise InheritException(_(f'Must inherit from {iView.__name__}'))
 
     def menu(self, options: dict) -> int:
         return self.strategy.menu(options)
