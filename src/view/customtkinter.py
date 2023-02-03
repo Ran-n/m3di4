@@ -12,7 +12,7 @@ import customtkinter
 
 from src.model.entity import Media
 # ------------------------------------------------------------------------------
-class GUI(iView):
+class CustomTKinter(iView):
     def __init__(self) -> None:
         logging.info(_('Starting GUI view'))
         customtkinter.set_appearance_mode("dark")
