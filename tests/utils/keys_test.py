@@ -7,12 +7,10 @@
 # ------------------------------------------------------------------------------
 import unittest
 
-from src.utils import *
-from src.model.entity import Sequence
+from src.utils import create_key, create_key_num
 # ------------------------------------------------------------------------------
-class TestUtils(unittest.TestCase):
+class TestKeys(unittest.TestCase):
 
-    # keys
     def test_create_key_type(self):
         """
         eng: Test of the created type
@@ -34,20 +32,5 @@ class TestUtils(unittest.TestCase):
         glg: Proba sobre o tipo creado
         """
         self.assertEqual(type(create_key_num()), int)
-
-    # strings
-    def test_strip_accents(self):
-        """
-        eng: Normal use test
-        glg: Proba de uso normal
-        """
-
-        tests = zip(
-                ['tést', 'í', 'Ü', 'ñ', 'Ñ'],
-                ['test', 'i', 'U', 'n', 'N']
-        )
-
-        for accent, no_accent in tests:
-            self.assertEqual(strip_accents(accent), no_accent)
 
 # ------------------------------------------------------------------------------
