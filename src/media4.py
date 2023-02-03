@@ -8,6 +8,7 @@
 import logging
 import gettext
 
+from src.enum import UI
 from src.utils import Config
 
 from src.model import Model, Sqlite
@@ -35,9 +36,13 @@ def main():
     lang.install()
     _ = lang.gettext
 
+    if Config().ui == UI.TERMINAL:
+        view_strategy = Terminal
+    elif Config().ui == UI.CUSTOM_TKINTER:
+        view_strategy = CustomTKinter
+
     model = Model(strategy=Sqlite(Config().file_content['db_file_location']))
-    view = View(strategy=CustomTKinter(), model=model)
-    #view = View(strategy=Terminal(), model=model)
+    view = View(strategy=view_strategy(), model=model)
     controller = Controller(model=model, view=view)
 
 # ------------------------------------------------------------------------------

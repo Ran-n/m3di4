@@ -7,4 +7,10 @@
 # ------------------------------------------------------------------------------
 class TableNameException(Exception):
     pass
+
+class LanguageException(Exception):
+    pass
+
+class UserInterfaceException(Exception):
+    pass
 # ------------------------------------------------------------------------------

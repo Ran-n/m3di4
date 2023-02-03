@@ -3,14 +3,16 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/01/30 23:27:58.645575
+#+ Editado:	2023/02/03 16:22:33.889902
 # ------------------------------------------------------------------------------
+from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
 import os
 import pathlib
 from datetime import datetime
 
-from src.exception.exception import TableNameException
+from src.enum import UI
+from src.exception import TableNameException, LanguageException, UserInterfaceException
 # ------------------------------------------------------------------------------
 class Config(object):
     config_file: str = '.cnf'
@@ -25,19 +27,30 @@ class Config(object):
             self.program_start_ts = datetime.now()
 
             # importing file contents
-            #self.database_tables = self.file_content.get('db_table_names', '')
             self.database_tables = load_json(self.table_names_file)
             self.supported_languages = load_json(self.supported_languages_file)
-            self.file_content = load_json(self.config_file)
+            self.file_content = ConfigObj(self.config_file)
+            #
 
             # setup of class attributes
-            self.language = self.file_content.get('language', '')
-            if self.language not in self.supported_languages.keys():
-                raise ValueError(f'Language not supported yet, try: {self.supported_languages}')
-            self.i18n_folder = self.file_content.get('internationalization_folder', '')
-            self.log_folder = self.file_content.get('log_folder', '')
-            self.database_file = self.file_content.get('db_file_location', '')
+            self.language = self.file_content.get('language', 'eng')
+            self.ui = self.file_content.get('user_interface', 'terminal')
+            self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
+            self.log_folder = self.file_content.get('log_folder', 'media/logs')
+            self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
+            #
 
+            # checking of the attributes
+            if self.language not in self.supported_languages.keys():
+                raise LanguageException(f'Language not supported yet, try: {self.supported_languages}')
+
+            try:
+                self.ui = UI(self.ui)
+            except ValueError:
+                raise UserInterfaceException(f'User Interface not supported, try: {[o.value for o in UI]}')
+            #
+
+            # create folders
             for folder in [self.log_folder, pathlib.Path(self.database_file).parent]:
                 os.makedirs(folder, exist_ok=True)
 

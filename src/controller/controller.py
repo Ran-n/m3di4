@@ -26,7 +26,7 @@ class Controller:
     def __terminal_menu(self) -> None:
         options = {
                 '0': [_('Exit'), self.exit],
-                '1': [_('Insert'), self.insert],
+                '1': [_('Add Media'), self.add_media],
         }
 
         try:
@@ -41,8 +41,8 @@ class Controller:
         logging.info(_('Exiting the program'))
         sys.exit()
 
-    def insert(self) -> None:
-        logging.info(_('Starting the insert process'))
+    def add_media(self) -> None:
+        logging.info(_('Starting the "Add Media" process'))
         Media = self.view.add_media()
         print(Media)
 # ------------------------------------------------------------------------------

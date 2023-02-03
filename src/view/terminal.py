@@ -64,24 +64,33 @@ class Terminal(iView):
         return value
 
     def add_media(self) -> Media:
+        logging.info(_('Requesting the user for the information'))
+
         print('** '+_('Add Media')+' **')
         # name
         name = input('> '+_('Name')+': ')
         print()
 
         # type_
+        type_options = self.model.get_all(MediaType.table_name)
+        if len(type_options) == 0:
+            logging.info(_('There is no media type available, insert one first'))
+            pass
         type_ = self.__pick_from_options(
                         message_title = _('Types'),
                         message = _('Type'),
-                        options = self.model.get_all(MediaType.table_name)
+                        options = type_options
         )
         print()
 
         # status
+        status_options = self.model.get_all(MediaStatus.table_name)
+        if len(status_options) == 0:
+            pass
         status = self.__pick_from_options(
                         message_title = _('Statuses'),
                         message = _('Status'),
-                        options = self.model.get_all(MediaStatus.table_name)
+                        options = status_options
         )
         print()
 
