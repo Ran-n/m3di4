@@ -1,6 +1,6 @@
 # media4
 
-Program for automatically adding useful information about media files to a database.
+Program for automatically adding useful information about media files to a database.\
 Allows you to manage a personal library and access information and stats regarding it.
 
 
