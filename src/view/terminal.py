@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/04 13:45:56.182517
+#+ Editado:	2023/02/04 17:16:17.264139
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -64,13 +64,47 @@ class Terminal(iView):
                 break
         return value
 
+    @staticmethod
+    def __yn_question(message: str, as_str: bool = False) -> [str, int]:
+        no_opts = ['n', 'no', 'non']
+        str_answer = {0: _('No'), 1: _('Yes')}
+
+        user_input = input(f'> {message}'+_(' [Y/n]')+': ')
+
+        answer = 1  # yes by default
+        if user_input.lower() in no_opts: answer = 0
+
+        if as_str: return str_answer[answer]
+        return answer
+
+
     def add_media_type(self) -> MediaType:
         logging.info(_('Requesting the user for the information on the media type'))
-        pass
+        print('** '+_('Add Media Type')+' **')
+
+        while True:
+            name = input('> '+_('Name')+': ')
+            if len(self.model.get_by_name(MediaType.table_name, name)) == 0:
+                break
+            print('!! '+_('The given name is already in use'))
+
+        groupable = self.__yn_question(_('Groupable?'))
+
+        print('** '+_('Add Media Type')+' **')
+
+        return MediaType(name = name, groupable = groupable)
 
     def add_media_status(self) -> MediaStatus:
         logging.info(_('Requesting the user for the information on the media status'))
-        pass
+        print('** '+_('Add Media Status')+' **')
+
+        while True:
+            name = input('> '+_('Name')+': ')
+            if len(self.model.get_by_name(MediaStatus.table_name, name)) == 0:
+                break
+            print('!! '+_('The given name is already in use'))
+
+        print('** '+_('Add Media Status')+' **')
 
     def add_media(self) -> Union[Media, NoMediaStatuses, NoMediaTypes]:
         logging.info(_('Requesting the user for the information on the media'))

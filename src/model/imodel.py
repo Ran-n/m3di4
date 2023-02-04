@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/29 23:10:29.903883
+#+ Editado:	2023/02/04 16:56:13.405014
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -41,27 +41,9 @@ class iModel(ABC):
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
 
-    """
     @abstractmethod
-    def get_media_status_by_name(self, name: str) -> MediaStatus:
+    def get_by_name(self, table_name: str, name: str) -> List[Union[MediaType, MediaStatus]]:
         pass
-
-    @abstractmethod
-    def get_language_by_code(self, code: str) -> Language:
-        pass
-
-    @abstractmethod
-    def get_codec_by_name(self, name: str) -> Codec:
-        pass
-
-    @abstractmethod
-    def get_folder_name_by_name(self, name: str) -> FolderName:
-        pass
-
-    @abstractmethod
-    def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
-        pass
-    """
 
     @abstractmethod
     def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:

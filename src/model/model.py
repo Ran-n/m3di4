@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 13:10:31.789674
+#+ Editado:	2023/02/04 17:14:16.349883
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -42,6 +42,7 @@ class Model:
     def save_db(self) -> None:
         return self.model.save_db()
 
+
     # GET
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         if table_name == MediaType.table_name:
@@ -49,27 +50,23 @@ class Model:
         elif table_name == MediaStatus.table_name:
             return self.model.get_all_media_status(alfabetic)
 
-    """
-    def get_media_status_by_name(self, name: str) -> MediaStatus:
-        return self.model.get_situacion_by_name(name)
 
-    def get_lingua_by_code(self, code: str) -> Lingua:
-        return self.model.get_lingua_by_code(code)
+    # GET BY X
+    def get_by_name(self, table_name: str, name: str) -> List[Union[MediaType, MediaStatus]]:
+        if table_name == MediaType.table_name:
+            return self.model.get_by_media_type_name(name)
+        elif table_name == MediaStatus.table_name:
+            return self.model.get_by_media_status_name(name)
 
-    def get_codec_by_name(self, name: str) -> Codec:
-        return self.model.get_codec_by_name(name)
-
-    def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
-        return self.model.get_nomecarpeta_by_name(name)
-
-    def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
-        return self.model.get_mediatipo_agrupables(id_only)
-    """
 
     # INSERT
-    def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:
-        if type(obj) == Media:
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:
+        if isinstance(obj, MediaStatus):
+            return self.model.insert_media_status(obj)
+        elif isinstance(obj, MediaType):
+            return self.model.insert_media_type(obj)
+        elif isinstance(obj, Media):
             return self.model.insert_media(obj)
-        elif type(obj) == MediaGroup:
+        elif isinstance(obj, MediaGroup):
             return self.model.insert_media_group(obj)
 # ------------------------------------------------------------------------------

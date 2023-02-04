@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/04 13:38:56.291353
+#+ Editado:	2023/02/04 17:00:53.467081
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -26,7 +26,9 @@ class Controller:
     def __terminal_menu(self) -> None:
         options = {
                 '0': [_('Exit'), self.exit],
-                '1': [_('Add Media'), self.add_media],
+                '1': [_('Add Media Type'), self.add_media_type],
+                '2': [_('Add Media Status'), self.add_media_status],
+                '3': [_('Add Media'), self.add_media],
         }
 
         try:
@@ -40,6 +42,14 @@ class Controller:
         self.view.exit()
         logging.info(_('Exiting the program'))
         sys.exit()
+
+    def add_media_type(self) -> None:
+        logging.info(_('Starting the "Add Media Type" process'))
+        self.model.insert(self.view.add_media_type())
+
+    def add_media_status(self) -> None:
+        logging.info(_('Starting the "Add Media Status" process'))
+        self.model.insert(self.view.add_media_status())
 
     def add_media(self) -> None:
         logging.info(_('Starting the "Add Media" process'))
