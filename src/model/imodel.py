@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 16:56:13.405014
+#+ Editado:	2023/02/04 20:57:38.620237
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -46,6 +46,6 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:
         pass
 # ------------------------------------------------------------------------------

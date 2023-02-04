@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/04 19:41:39.473829
+#+ Editado:	2023/02/04 21:09:31.643899
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -108,7 +108,8 @@ class Terminal(iView):
 
         return MediaStatus(name= name)
 
-    def add_media(self) -> Union[Media, NoMediaStatuses, NoMediaTypes]:
+    def add_media(self) -> Media:
+    #def add_media(self) -> Union[Media, NoMediaStatuses, NoMediaTypes]:
         logging.info(_('Requesting the user for the information on the media'))
 
         print('** '+_('Add Media')+' **')
@@ -153,7 +154,10 @@ class Terminal(iView):
         while True:
             year_end = input('> '+_('End Year')+': ')
             if year_end.isdigit():
-                break
+                if year_end >= year_start:
+                    break
+                else:
+                    print('!! '+_('The end year can\'t be smaller than the start one'))
             elif year_end == '=':
                 year_end = year_start
                 break

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 20:37:29.770164
+#+ Editado:	2023/02/04 21:05:39.955038
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -95,7 +95,6 @@ class Sqlite(iModel):
 
     # GET BY X
     def get_by_name(self, table_name: str, name: str) -> List[Union[MediaType, MediaStatus]]:
-        logging.info(_(f'Searching on {table_name} table any entries that match the name given'))
         pass
 
     def get_by_media_type_name(self, name: str) -> List[MediaType]:
@@ -115,7 +114,6 @@ class Sqlite(iModel):
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:
-        logging.info(_(f'Inserting new value in the table "{obj.table_name}"'))
         pass
 
     def insert_media_status(self, obj: MediaStatus) -> None:

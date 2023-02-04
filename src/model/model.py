@@ -3,13 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 17:14:16.349883
+#+ Editado:	2023/02/04 20:58:14.466288
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.model import iModel
 # ------------------------------------------------------------------------------
 from sqlite3 import Connection, Cursor
+import logging
 from typing import List, Union
 
 
@@ -45,6 +46,7 @@ class Model:
 
     # GET
     def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        logging.info(_(f'Getting all entries of table {table_name}'))
         if table_name == MediaType.table_name:
             return self.model.get_all_media_type(alfabetic)
         elif table_name == MediaStatus.table_name:
@@ -53,6 +55,7 @@ class Model:
 
     # GET BY X
     def get_by_name(self, table_name: str, name: str) -> List[Union[MediaType, MediaStatus]]:
+        logging.info(_(f'Searching on {table_name} table any entries that match the name given'))
         if table_name == MediaType.table_name:
             return self.model.get_by_media_type_name(name)
         elif table_name == MediaStatus.table_name:
@@ -61,6 +64,7 @@ class Model:
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:
+        logging.info(_(f'Inserting new value in the table "{obj.table_name}"'))
         if isinstance(obj, MediaStatus):
             return self.model.insert_media_status(obj)
         elif isinstance(obj, MediaType):
