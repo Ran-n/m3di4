@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/02 22:59:18.477529
-#+ Editado:	2023/02/02 23:06:38.902157
+#+ Editado:	2023/02/04 19:28:36.108749
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,9 +14,10 @@ from src.model.entity import App
 @dataclass
 class AppVersion:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('AppVersion'))
-    id_app: App
+    app: App
     number: int
     name: Optional[str] = field(default=None)
+    active: Optional[int] = field(default=1)
     num_bit_processor: Optional[int] = field(default=None)
     id_: Optional[int] = field(default=None)
 

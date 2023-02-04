@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/02 22:55:38.799230
-#+ Editado:	2023/02/02 22:55:55.219602
+#+ Editado:	2023/02/04 19:23:40.205842
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,6 +14,8 @@ from src.utils import Config
 class App:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('App'))
     name: str
+    desc: Optional[str] = field(default=None)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

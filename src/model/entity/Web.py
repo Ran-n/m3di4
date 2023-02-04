@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:08:25.622146
-#+ Editado:	2023/01/30 22:39:01.384635
+#+ Editado:	2023/02/04 19:22:27.195973
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -16,6 +16,7 @@ class Web:
     name: str
     acronym: Optional[str] = field(default=None)
     link: Optional[str] = field(default=None)
+    desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 

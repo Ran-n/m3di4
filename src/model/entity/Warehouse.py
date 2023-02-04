@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 00:18:35.149777
-#+ Editado:	2023/01/30 22:40:15.084770
+#+ Editado:	2023/02/04 19:52:55.829373
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -16,6 +16,7 @@ class Warehouse:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Warehouse'))
     name: str
     type_: WarehouseType
+    desc: Optional[str] = field(default=None)
     size: Optional[int] = field(default=None)
     filled: Optional[int] = field(default=None)
     content: Optional[str] = field(default=None)
@@ -28,13 +29,4 @@ class Warehouse:
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
         if (attr != 'table_name'):
             object.__setattr__(self, attr, value)
-
-    """
-    # xFCR
-    def __repr__(self) -> str:
-        times = 1
-        if len(self.name) < 7:
-            times=2
-        return f'{self.name}'+times*'\t'+f'[{self.id_}]'
-    """
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/04 17:16:17.264139
+#+ Editado:	2023/02/04 19:41:39.473829
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -105,6 +105,8 @@ class Terminal(iView):
             print('!! '+_('The given name is already in use'))
 
         print('** '+_('Add Media Status')+' **')
+
+        return MediaStatus(name= name)
 
     def add_media(self) -> Union[Media, NoMediaStatuses, NoMediaTypes]:
         logging.info(_('Requesting the user for the information on the media'))

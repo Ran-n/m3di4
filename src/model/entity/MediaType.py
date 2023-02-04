@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:36:45.461301
-#+ Editado:	2023/01/29 23:37:55.194665
+#+ Editado:	2023/02/04 18:33:03.774362
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,7 +14,9 @@ from src.utils import Config
 class MediaType:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaType'))
     name: str
+    desc: Optional[str] = field(default=None)
     groupable: Optional[int] = field(default=0)
+    active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
     # table_name and id_ attributes are frozen

@@ -8,6 +8,7 @@ Allows you to automatically add useful information about media files to a databa
 
 - [How to Start](#how-to-start)
 - [Frequent Stuff](#frequent-stuff)
+- [Code Features](#code-features)
 - [TODO](#todo)
 
 
@@ -25,6 +26,10 @@ Information about common useful things
 If you comment any, the default (as shown) value will still be used.
 You can not leave the right part of the parameter definition in blank, you either put something or delete it entirely.
 
+## Code features
+
+- Logging
+- Configuration file
 
 ## TODO
 

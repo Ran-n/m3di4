@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 14:52:39.247289
-#+ Editado:	2023/01/30 22:39:23.669352
+#+ Editado:	2023/02/04 19:52:00.895780
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import ShareSiteType
+from src.model.entity import ShareSiteType, Platform
 # ------------------------------------------------------------------------------
 @dataclass
 class ShareSite:
@@ -18,7 +18,7 @@ class ShareSite:
     type_: ShareSiteType
     private: Optional[int] = field(default=None)
     link: Optional[str] = field(default=None)
-    platform: Optional[str] = field(default=None)
+    platform: Optional[Platform] = field(default=None)
     active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
 
@@ -26,13 +26,4 @@ class ShareSite:
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
         if (attr != 'table_name'):
             object.__setattr__(self, attr, value)
-
-    """
-    # xFCR
-    def __repr__(self) -> str:
-        times = 1
-        if len(self.name) < 15:
-            times=2
-        return f'{self.name}'+times*'\t'+f'[{self.id_}]'
-    """
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 17:15:28.337259
+#+ Editado:	2023/02/04 19:42:11.346147
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ class Sqlite(iModel):
         pass
 
     def insert_media_status(self, obj: MediaStatus) -> None:
-        self.get_cur_db().execute(f'insert into "{MediaStatus.table_name}" (name) values (?)', (obj.name))
+        self.get_cur_db().execute(f'insert into "{MediaStatus.table_name}" (name) values (?)', (obj.name, ))
 
     def insert_media_type(self, obj: MediaType) -> None:
         self.get_cur_db().execute(f'insert into "{MediaType.table_name}" (name, groupable) values (?, ?)', (obj.name, obj.groupable))

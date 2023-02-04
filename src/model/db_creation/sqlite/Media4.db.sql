@@ -2,6 +2,7 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "Platform" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -34,6 +35,7 @@ CREATE TABLE IF NOT EXISTS "FolderName" (
 CREATE TABLE IF NOT EXISTS "WarehouseType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -66,6 +68,7 @@ CREATE TABLE IF NOT EXISTS "Language" (
 CREATE TABLE IF NOT EXISTS "MediaType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
 	"groupable"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -74,6 +77,8 @@ CREATE TABLE IF NOT EXISTS "MediaType" (
 CREATE TABLE IF NOT EXISTS "ShareSiteType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
+	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "`ShareSiteType_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -81,14 +86,17 @@ CREATE TABLE IF NOT EXISTS "ShareSiteType" (
 CREATE TABLE IF NOT EXISTS "MediaStatus" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
+	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaStatus_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "Web" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL UNIQUE,
 	"acronym"		TEXT,
+	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
 	"link"			TEXT UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -98,6 +106,8 @@ CREATE TABLE IF NOT EXISTS "Web" (
 CREATE TABLE IF NOT EXISTS "App" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
+	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "App_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -107,6 +117,7 @@ CREATE TABLE IF NOT EXISTS "AppVersion" (
 	"id_app"			INTEGER NOT NULL,
 	"number"			TEXT NOT NULL,
 	"name"				TEXT,
+	"active"			INTEGER NOT NULL,
 	"num_bit_processor" INTEGER,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -117,6 +128,7 @@ CREATE TABLE IF NOT EXISTS "AppVersion" (
 CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
+	"description"	TEXT,
 	"id_media_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -127,6 +139,7 @@ CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 CREATE TABLE IF NOT EXISTS "MediaStatusName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
+	"description"		TEXT,
 	"id_media_status"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -185,6 +198,7 @@ CREATE TABLE IF NOT EXISTS "ShareSite" (
 CREATE TABLE IF NOT EXISTS "Warehouse" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
 	"size"			INTEGER,
 	"filled"		INTEGER,
 	"content"		TEXT,
@@ -500,273 +514,273 @@ CREATE TABLE IF NOT EXISTS "MediaWeb" (
 
 CREATE TRIGGER update_platform
 AFTER UPDATE ON "Platform" BEGIN
-	UDPATE "Platform"
+	UPDATE "Platform"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_encoder
 AFTER UPDATE ON "Encoder" BEGIN
-	UDPATE "Encoder"
+	UPDATE "Encoder"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_extension
 AFTER UPDATE ON "Extension" BEGIN
-	UDPATE "Extension"
+	UPDATE "Extension"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_folder_name
 AFTER UPDATE ON "FolderName" BEGIN
-	UDPATE "FolderName"
+	UPDATE "FolderName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_warehouse_type
 AFTER UPDATE ON "WarehouseType" BEGIN
-	UDPATE "WarehouseType"
+	UPDATE "WarehouseType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_codec_type
 AFTER UPDATE ON "CodecType" BEGIN
-	UDPATE "CodecType"
+	UPDATE "CodecType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_code
 AFTER UPDATE ON "Code" BEGIN
-	UDPATE "Code"
+	UPDATE "Code"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_language
 AFTER UPDATE ON "Language" BEGIN
-	UDPATE "Language"
+	UPDATE "Language"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_type
 AFTER UPDATE ON "MediaType" BEGIN
-	UDPATE "MediaType"
+	UPDATE "MediaType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_share_site_type
 AFTER UPDATE ON "ShareSiteType" BEGIN
-	UDPATE "ShareSiteType"
+	UPDATE "ShareSiteType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_status
 AFTER UPDATE ON "MediaStatus" BEGIN
-	UDPATE "MediaStatus"
+	UPDATE "MediaStatus"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_web
 AFTER UPDATE ON "Web" BEGIN
-	UDPATE "Web"
+	UPDATE "Web"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_app
 AFTER UPDATE ON "App" BEGIN
-	UDPATE "App"
+	UPDATE "App"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_app_version
 AFTER UPDATE ON "AppVersion" BEGIN
-	UDPATE "AppVersion"
+	UPDATE "AppVersion"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_type_name
 AFTER UPDATE ON "MediaTypeName" BEGIN
-	UDPATE "MediaTypeName"
+	UPDATE "MediaTypeName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_status_name
 AFTER UPDATE ON "MediaStatusName" BEGIN
-	UDPATE "MediaStatusName"
+	UPDATE "MediaStatusName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_type_name_language
 AFTER UPDATE ON "MediaTypeNameLanguage" BEGIN
-	UDPATE "MediaTypeNameLanguage"
+	UPDATE "MediaTypeNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_status_name_language
 AFTER UPDATE ON "MediaStatusNameLanguage" BEGIN
-	UDPATE "MediaStatusNameLanguage"
+	UPDATE "MediaStatusNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_codec
 AFTER UPDATE ON "Codec" BEGIN
-	UDPATE "Codec"
+	UPDATE "Codec"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_share_site
 AFTER UPDATE ON "ShareSite" BEGIN
-	UDPATE "ShareSite"
+	UPDATE "ShareSite"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_warehouse
 AFTER UPDATE ON "Warehouse" BEGIN
-	UDPATE "Warehouse"
+	UPDATE "Warehouse"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_language_name
 AFTER UPDATE ON "LanguageName" BEGIN
-	UDPATE "LanguageName"
+	UPDATE "LanguageName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_language_name_language
 AFTER UPDATE ON "LanguageNameLanguage" BEGIN
-	UDPATE "LanguageNameLanguage"
+	UPDATE "LanguageNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_language_code
 AFTER UPDATE ON "LanguageCode" BEGIN
-	UDPATE "LanguageCode"
+	UPDATE "LanguageCode"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media
 AFTER UPDATE ON "Media" BEGIN
-	UDPATE "Media"
+	UPDATE "Media"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_group
 AFTER UPDATE ON "MediaGroup" BEGIN
-	UDPATE "MediaGroup"
+	UPDATE "MediaGroup"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_issue
 AFTER UPDATE ON "MediaIssue" BEGIN
-	UDPATE "MediaIssue"
+	UPDATE "MediaIssue"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_poster
 AFTER UPDATE ON "MediaPoster" BEGIN
-	UDPATE "MediaPoster"
+	UPDATE "MediaPoster"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_file
 AFTER UPDATE ON "File" BEGIN
-	UDPATE "File"
+	UPDATE "File"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_file_stream
 AFTER UPDATE ON "FileStream" BEGIN
-	UDPATE "FileStream"
+	UPDATE "FileStream"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_country
 AFTER UPDATE ON "Country" BEGIN
-	UDPATE "Country"
+	UPDATE "Country"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_country_name
 AFTER UPDATE ON "CountryName" BEGIN
-	UDPATE "CountryName"
+	UPDATE "CountryName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_country_name_language
 AFTER UPDATE ON "CountryNameLanguage" BEGIN
-	UDPATE "CountryNameLanguage"
+	UPDATE "CountryNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_name
 AFTER UPDATE ON "MediaName" BEGIN
-	UDPATE "MediaName"
+	UPDATE "MediaName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_name_language
 AFTER UPDATE ON "MediaNameLanguage" BEGIN
-	UDPATE "MediaNameLanguage"
+	UPDATE "MediaNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_name_country
 AFTER UPDATE ON "MediaNameCountry" BEGIN
-	UDPATE "MediaNameCountry"
+	UPDATE "MediaNameCountry"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_share_site_subs
 AFTER UPDATE ON "ShareSiteSubs" BEGIN
-	UDPATE "ShareSiteSubs"
+	UPDATE "ShareSiteSubs"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_file_share_site
 AFTER UPDATE ON "FileShareSite" BEGIN
-	UDPATE "FileShareSite"
+	UPDATE "FileShareSite"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
 
 CREATE TRIGGER update_media_web
 AFTER UPDATE ON "MediaWeb" BEGIN
-	UDPATE "MediaWeb"
+	UPDATE "MediaWeb"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
