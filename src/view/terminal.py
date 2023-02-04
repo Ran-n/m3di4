@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/04 13:39:54.869163
+#+ Editado:	2023/02/04 13:45:56.182517
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -65,13 +65,15 @@ class Terminal(iView):
         return value
 
     def add_media_type(self) -> MediaType:
+        logging.info(_('Requesting the user for the information on the media type'))
         pass
 
     def add_media_status(self) -> MediaStatus:
+        logging.info(_('Requesting the user for the information on the media status'))
         pass
 
     def add_media(self) -> Union[Media, NoMediaStatuses, NoMediaTypes]:
-        logging.info(_('Requesting the user for the information'))
+        logging.info(_('Requesting the user for the information on the media'))
 
         print('** '+_('Add Media')+' **')
         # name
@@ -81,7 +83,7 @@ class Terminal(iView):
         # type_
         type_options = self.model.get_all(MediaType.table_name)
         if len(type_options) == 0:
-            logging.info(_('There is no media types available'))
+            logging.error(_('There are no media types available'))
             raise NoMediaTypes
 
         type_ = self.__pick_from_options(
@@ -94,7 +96,7 @@ class Terminal(iView):
         # status
         status_options = self.model.get_all(MediaStatus.table_name)
         if len(status_options) == 0:
-            logging.info(_('There is no media statuses available'))
+            logging.error(_('There are no media statuses available'))
             raise NoMediaStatuses
 
         status = self.__pick_from_options(

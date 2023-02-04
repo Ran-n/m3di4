@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 13:29:59.621356
+#+ Editado:	2023/02/04 13:43:24.009803
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -201,6 +201,7 @@ class Sqlite(iModel):
         pass
 
     def insert_media(self, obj: Media) -> None:
+        logging.info(_('Inserting the media into the database'))
         self.get_cur_db().execute(f'insert into "{Media.table_name}" (name, year_start, year_end, id_type, id_status, active) values (?, ?, ?, ?, ?, ?)', (obj.name, obj.year_start, obj.year_end, obj.type_.id_, obj.status.id_, obj.active))
 
     """
