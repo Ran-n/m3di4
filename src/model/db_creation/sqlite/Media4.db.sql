@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS "MediaType" (
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
 	"groupable"		INTEGER NOT NULL,
+	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaType_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -204,7 +205,6 @@ CREATE TABLE IF NOT EXISTS "Warehouse" (
 	"content"		TEXT,
 	"id_type"		INTEGER NOT NULL,
 	"health"		TEXT,
-	"description"	TEXT,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
