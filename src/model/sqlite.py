@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/30 22:31:23.651490
+#+ Editado:	2023/02/04 13:29:59.621356
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -181,7 +181,6 @@ class Sqlite(iModel):
             if result:
                 return NomeCarpeta(id_=result[0], nome=result[1])
         return None
-    """
 
     def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
         results = self.get_cur_db().execute(f'select ID, Nome, Agrupable from "_Media Tipo"').fetchall()
@@ -195,10 +194,14 @@ class Sqlite(iModel):
                 if result[2]:
                     valores.append(MediaTipo(id_=result[0], nome=result[1], agrupable=result[2]))
         return valores
+    """
 
     # INSERT
     def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:
         pass
+
+    def insert_media(self, obj: Media) -> None:
+        self.get_cur_db().execute(f'insert into "{Media.table_name}" (name, year_start, year_end, id_type, id_status, active) values (?, ?, ?, ?, ?, ?)', (obj.name, obj.year_start, obj.year_end, obj.type_.id_, obj.status.id_, obj.active))
 
     """
     def insert_media(self, obj: Media) -> None:

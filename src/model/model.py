@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/01/30 22:31:33.872128
+#+ Editado:	2023/02/04 13:10:31.789674
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -61,10 +61,10 @@ class Model:
 
     def get_nomecarpeta_by_name(self, name: str) -> NomeCarpeta:
         return self.model.get_nomecarpeta_by_name(name)
-    """
 
     def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
         return self.model.get_mediatipo_agrupables(id_only)
+    """
 
     # INSERT
     def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:

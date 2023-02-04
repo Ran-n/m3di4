@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/01/29 22:36:40.781509
+#+ Editado:	2023/02/04 13:21:15.592699
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -43,6 +43,5 @@ class Controller:
 
     def add_media(self) -> None:
         logging.info(_('Starting the "Add Media" process'))
-        Media = self.view.add_media()
-        print(Media)
+        self.model.insert(self.view.add_media())
 # ------------------------------------------------------------------------------

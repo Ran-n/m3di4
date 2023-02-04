@@ -57,11 +57,11 @@ class iModel(ABC):
     @abstractmethod
     def get_folder_name_by_name(self, name: str) -> FolderName:
         pass
-    """
 
     @abstractmethod
     def get_media_type_groupables(self, id_only: bool = False) -> List[Union[MediaType, str]]:
         pass
+    """
 
     @abstractmethod
     def insert(self, obj: Union[Media, MediaGroup, MediaIssue]) -> Union[None, int]:
