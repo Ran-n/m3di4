@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 00:18:35.149777
-#+ Editado:	2023/02/04 19:52:55.829373
+#+ Editado:	2023/02/04 21:29:22.840215
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -24,6 +24,8 @@ class Warehouse:
     desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
+    added_ts: Optional[str] = field(default=None)
+    modified_ts: Optional[str] = field(default=None)
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:

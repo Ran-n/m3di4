@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/29 23:20:04.639454
-#+ Editado:	2023/02/04 19:28:16.838022
+#+ Editado:	2023/02/04 21:29:09.486297
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -18,6 +18,8 @@ class MediaTypeName:
     media_type: MediaType
     desc: Optional[str] = field(default=None)
     id_: Optional[int] = field(default=None)
+    added_ts: Optional[str] = field(default=None)
+    modified_ts: Optional[str] = field(default=None)
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:

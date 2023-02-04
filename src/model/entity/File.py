@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/02/02 22:57:06.576255
+#+ Editado:	2023/02/04 21:28:33.321843
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -33,6 +33,8 @@ class File:
     media_issue: Optional[MediaIssue] = field(default=None)
     active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
+    added_ts: Optional[str] = field(default=None)
+    modified_ts: Optional[str] = field(default=None)
 
     # make either media or media_issue required on object creation
     def __post_init__(self) -> None:

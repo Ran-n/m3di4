@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:06:39.547649
-#+ Editado:	2023/02/01 18:46:24.126815
+#+ Editado:	2023/02/04 21:29:12.403165
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -19,6 +19,8 @@ class MediaWeb:
     link: str
     active: Optional[str] = field(default=1)
     id_: Optional[int] = field(default=None)
+    added_ts: Optional[str] = field(default=None)
+    modified_ts: Optional[str] = field(default=None)
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:

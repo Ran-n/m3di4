@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 01:19:35.116684
-#+ Editado:	2023/01/30 22:38:45.373959
+#+ Editado:	2023/02/04 21:27:58.755280
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -17,6 +17,8 @@ class Code:
     desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
     id_: Optional[int] = field(default=None)
+    added_ts: Optional[str] = field(default=None)
+    modified_ts: Optional[str] = field(default=None)
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:

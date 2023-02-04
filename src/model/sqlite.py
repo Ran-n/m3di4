@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 21:05:39.955038
+#+ Editado:	2023/02/04 21:38:53.265795
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -72,43 +72,80 @@ class Sqlite(iModel):
         pass
 
     def get_all_media_type(self, alfabetic: bool) -> List[MediaType]:
-        sql_results = self.get_cur_db().execute(f'select "id", "name", "groupable" from "{MediaType.table_name}"').fetchall()
+        sentence = f'select id, name, description, groupable, active, added_ts, modified_ts from "{MediaType.table_name}"'
+        if alfabetic:
+            sentence += ' order by name asc'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
         results = []
         for result in sql_results:
             results.append(MediaType(
-                id_=result[0],
-                name=result[1],
-                groupable=result[2]
+                id_         = result[0],
+                name        = result[1],
+                desc        = result[2],
+                groupable   = result[3],
+                active      = result[4],
+                added_ts    = result[5],
+                modified_ts = result[6]
             ))
         return results
 
     def get_all_media_status(self, alfabetic: bool) -> List[MediaStatus]:
-        sql_results = self.get_cur_db().execute(f'select "id", "name" from "{MediaStatus.table_name}"').fetchall()
+        sentence = f'select id, name, description, active, added_ts, modified_ts from "{MediaStatus.table_name}"'
+        if alfabetic:
+            sentence += ' order by name asc'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
         results = []
         for result in sql_results:
             results.append(MediaStatus(
-                id_=result[0],
-                name=result[1]
+                id_         = result[0],
+                name        = result[1],
+                desc        = result[2],
+                added_ts    = result[3],
+                modified_ts = result[4]
             ))
         return results
 
 
     # GET BY X
-    def get_by_name(self, table_name: str, name: str) -> List[Union[MediaType, MediaStatus]]:
+    def get_by_name(self, table_name: str, name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
 
-    def get_by_media_type_name(self, name: str) -> List[MediaType]:
-        db_results = self.get_cur_db().execute(f'select name, groupable from {MediaType.table_name} where name="{name}"').fetchall()
+    def get_by_media_type_name(self, name: str, alfabetic: bool) -> List[MediaType]:
+        sentence = f'select id, name, description, groupable, active, added_ts, modified_ts from {MediaType.table_name} where name="{name}"'
+        if alfabetic:
+            sentence += ' order by name asc'
+        db_results = self.get_cur_db().execute(sentence).fetchall()
         results = []
         for ele in db_results:
-            results.append(MediaType(name = ele[0], groupable = ele[1]))
+            results.append(MediaType(
+                id_         = result[0],
+                name        = result[1],
+                desc        = result[2],
+                groupable   = result[3],
+                active      = result[4],
+                added_ts    = result[5],
+                modified_ts = result[6]
+            ))
         return results
 
-    def get_by_media_status_name(self, name: str) -> List[MediaStatus]:
-        db_results = self.get_cur_db().execute(f'select name from {MediaStatus.table_name} where name="{name}"').fetchall()
+    def get_by_media_status_name(self, name: str, alfabetic: bool) -> List[MediaStatus]:
+        sentence = f'select id, name, description, active, added_ts, modified_ts from {MediaStatus.table_name} where name="{name}"'
+        if alfabetic:
+            sentence += ' order by name asc'
+        db_results = self.get_cur_db().execute(sentence).fetchall()
         results = []
         for ele in db_results:
-            results.append(MediaStatus(name = ele[0]))
+            results.append(MediaStatus(
+                id_         = result[0],
+                name        = result[1],
+                desc        = result[2],
+                added_ts    = result[3],
+                modified_ts = result[4]
+            ))
         return results
 
 

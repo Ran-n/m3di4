@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 20:57:38.620237
+#+ Editado:	2023/02/04 21:32:19.759312
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def get_by_name(self, table_name: str, name: str) -> List[Union[MediaType, MediaStatus]]:
+    def get_by_name(self, table_name: str, name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
 
     @abstractmethod
