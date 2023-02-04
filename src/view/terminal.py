@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/04 13:31:34.984483
+#+ Editado:	2023/02/04 13:39:54.869163
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,6 +12,7 @@ from src.view import iView
 import logging
 from typing import List, Union
 
+from src.exception import NoMediaTypes, NoMediaStatuses
 from src.model.entity import Media, MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Terminal(iView):
@@ -63,7 +64,13 @@ class Terminal(iView):
                 break
         return value
 
-    def add_media(self) -> Media:
+    def add_media_type(self) -> MediaType:
+        pass
+
+    def add_media_status(self) -> MediaStatus:
+        pass
+
+    def add_media(self) -> Union[Media, NoMediaStatuses, NoMediaTypes]:
         logging.info(_('Requesting the user for the information'))
 
         print('** '+_('Add Media')+' **')
@@ -74,9 +81,9 @@ class Terminal(iView):
         # type_
         type_options = self.model.get_all(MediaType.table_name)
         if len(type_options) == 0:
-            logging.info(_('There is no media type available, insert one first'))
-            # xFCR
-            pass
+            logging.info(_('There is no media types available'))
+            raise NoMediaTypes
+
         type_ = self.__pick_from_options(
                         message_title = _('Types'),
                         message = _('Type'),
@@ -87,9 +94,9 @@ class Terminal(iView):
         # status
         status_options = self.model.get_all(MediaStatus.table_name)
         if len(status_options) == 0:
-            logging.info(_('There is no media statuses available, insert one first'))
-            # xFCR
-            pass
+            logging.info(_('There is no media statuses available'))
+            raise NoMediaStatuses
+
         status = self.__pick_from_options(
                         message_title = _('Statuses'),
                         message = _('Status'),
