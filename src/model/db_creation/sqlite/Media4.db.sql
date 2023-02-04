@@ -497,4 +497,278 @@ CREATE TABLE IF NOT EXISTS "MediaWeb" (
 	CONSTRAINT "MediaWeb_NK" UNIQUE("id_media","id_web", "link"),
 	CONSTRAINT "MediaWeb_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+
+CREATE TRIGGER update_platform
+AFTER UPDATE ON "Platform" BEGIN
+	UDPATE "Platform"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_encoder
+AFTER UPDATE ON "Encoder" BEGIN
+	UDPATE "Encoder"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_extension
+AFTER UPDATE ON "Extension" BEGIN
+	UDPATE "Extension"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_folder_name
+AFTER UPDATE ON "FolderName" BEGIN
+	UDPATE "FolderName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_warehouse_type
+AFTER UPDATE ON "WarehouseType" BEGIN
+	UDPATE "WarehouseType"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_codec_type
+AFTER UPDATE ON "CodecType" BEGIN
+	UDPATE "CodecType"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_code
+AFTER UPDATE ON "Code" BEGIN
+	UDPATE "Code"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_language
+AFTER UPDATE ON "Language" BEGIN
+	UDPATE "Language"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_type
+AFTER UPDATE ON "MediaType" BEGIN
+	UDPATE "MediaType"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_share_site_type
+AFTER UPDATE ON "ShareSiteType" BEGIN
+	UDPATE "ShareSiteType"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_status
+AFTER UPDATE ON "MediaStatus" BEGIN
+	UDPATE "MediaStatus"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_web
+AFTER UPDATE ON "Web" BEGIN
+	UDPATE "Web"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_app
+AFTER UPDATE ON "App" BEGIN
+	UDPATE "App"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_app_version
+AFTER UPDATE ON "AppVersion" BEGIN
+	UDPATE "AppVersion"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_type_name
+AFTER UPDATE ON "MediaTypeName" BEGIN
+	UDPATE "MediaTypeName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_status_name
+AFTER UPDATE ON "MediaStatusName" BEGIN
+	UDPATE "MediaStatusName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_type_name_language
+AFTER UPDATE ON "MediaTypeNameLanguage" BEGIN
+	UDPATE "MediaTypeNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_status_name_language
+AFTER UPDATE ON "MediaStatusNameLanguage" BEGIN
+	UDPATE "MediaStatusNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_codec
+AFTER UPDATE ON "Codec" BEGIN
+	UDPATE "Codec"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_share_site
+AFTER UPDATE ON "ShareSite" BEGIN
+	UDPATE "ShareSite"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_warehouse
+AFTER UPDATE ON "Warehouse" BEGIN
+	UDPATE "Warehouse"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_language_name
+AFTER UPDATE ON "LanguageName" BEGIN
+	UDPATE "LanguageName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_language_name_language
+AFTER UPDATE ON "LanguageNameLanguage" BEGIN
+	UDPATE "LanguageNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_language_code
+AFTER UPDATE ON "LanguageCode" BEGIN
+	UDPATE "LanguageCode"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media
+AFTER UPDATE ON "Media" BEGIN
+	UDPATE "Media"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_group
+AFTER UPDATE ON "MediaGroup" BEGIN
+	UDPATE "MediaGroup"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_issue
+AFTER UPDATE ON "MediaIssue" BEGIN
+	UDPATE "MediaIssue"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_poster
+AFTER UPDATE ON "MediaPoster" BEGIN
+	UDPATE "MediaPoster"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_file
+AFTER UPDATE ON "File" BEGIN
+	UDPATE "File"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_file_stream
+AFTER UPDATE ON "FileStream" BEGIN
+	UDPATE "FileStream"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_country
+AFTER UPDATE ON "Country" BEGIN
+	UDPATE "Country"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_country_name
+AFTER UPDATE ON "CountryName" BEGIN
+	UDPATE "CountryName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_country_name_language
+AFTER UPDATE ON "CountryNameLanguage" BEGIN
+	UDPATE "CountryNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_name
+AFTER UPDATE ON "MediaName" BEGIN
+	UDPATE "MediaName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_name_language
+AFTER UPDATE ON "MediaNameLanguage" BEGIN
+	UDPATE "MediaNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_name_country
+AFTER UPDATE ON "MediaNameCountry" BEGIN
+	UDPATE "MediaNameCountry"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_share_site_subs
+AFTER UPDATE ON "ShareSiteSubs" BEGIN
+	UDPATE "ShareSiteSubs"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_file_share_site
+AFTER UPDATE ON "FileShareSite" BEGIN
+	UDPATE "FileShareSite"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_media_web
+AFTER UPDATE ON "MediaWeb" BEGIN
+	UDPATE "MediaWeb"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
 COMMIT;
