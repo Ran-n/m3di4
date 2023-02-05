@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/04 17:12:10.114285
+#+ Editado:	2023/02/05 13:43:52.610695
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ from src.model import iModel
 # ------------------------------------------------------------------------------
 from src.exception import InheritException
 
-from src.model.entity import Media
+from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class View:
@@ -29,6 +29,9 @@ class View:
     def menu(self, options: dict) -> int:
         return self.strategy.menu(options)
 
+    def save(self) -> None:
+        return self.strategy.save()
+
     def exit(self) -> None:
         self.strategy.exit()
 
@@ -40,4 +43,7 @@ class View:
 
     def add_media(self) -> Media:
         return self.strategy.add_media()
+
+    def add_media_group(self) -> MediaGroup:
+        return self.strategy.add_media_group()
 # ------------------------------------------------------------------------------

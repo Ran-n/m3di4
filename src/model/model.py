@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 21:32:31.964155
+#+ Editado:	2023/02/05 13:30:07.752582
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -44,16 +44,43 @@ class Model:
         return self.model.save_db()
 
 
+    # EXISTS
+    def exists(self, obj: MediaGroup) -> bool:
+        logging.info(_(f'Checking on {obj.table_name} table if the information already exists'))
+        if isinstance(obj, MediaGroup):
+            return self.model.exists_media_group(obj)
+
+
+    # GET NUM
+    def get_num(self, table_name: str) -> int:
+        logging.info(_(f'Counting the number of elements saved on table {table_name}'))
+        return self.model.get_num(table_name)
+
     # GET
-    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         logging.info(_(f'Getting all entries of table {table_name}'))
         if table_name == MediaType.table_name:
-            return self.model.get_all_media_type(alfabetic)
+            return self.model.get_all_media_type(limit, offset, alfabetic)
         elif table_name == MediaStatus.table_name:
-            return self.model.get_all_media_status(alfabetic)
+            return self.model.get_all_media_status(limit, offset, alfabetic)
+        elif table_name == Media.table_name:
+            return self.model.get_all_media(limit, offset, alfabetic)
 
 
     # GET BY X
+    def get_by_id(self, table_name: str, id_: int) -> Union[MediaType, MediaStatus, Media]:
+        logging.info(_(f'Searching on {table_name} table any entries that match the id given'))
+        if table_name == MediaType.table_name:
+            return self.model.get_by_media_type_id(id_)
+        elif table_name == MediaStatus.table_name:
+            return self.model.get_by_media_status_id(id_)
+        elif table_name == Media.table_name:
+            return self.model.get_by_media_id(id_)
+
+    def get_by_media_group_nk(self, obj: MediaGroup) -> MediaGroup:
+        logging.info(_(f'Searching on {table_name} table any entries that match its natural key'))
+        return self.model.get_by_media_group_nk(obj)
+
     def get_by_name(self, table_name: str, name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         logging.info(_(f'Searching on {table_name} table any entries that match the name given'))
         if table_name == MediaType.table_name:

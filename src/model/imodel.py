@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 21:32:19.759312
+#+ Editado:	2023/02/05 13:18:14.070686
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,7 +38,23 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+    def exists(self, obj: MediaGroup) -> bool:
+        pass
+
+    @abstractmethod
+    def get_num(self, table_name: str) -> int:
+        pass
+
+    @abstractmethod
+    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        pass
+
+    @abstractmethod
+    def get_by_id(self, table_name: str, id_: int) -> Union[MediaType, MediaStatus, Media]:
+        pass
+
+    @abstractmethod
+    def get_by_media_group_nk(self, obj: MediaGroup) -> MediaGroup:
         pass
 
     @abstractmethod

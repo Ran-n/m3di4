@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/04 21:38:53.265795
+#+ Editado:	2023/02/05 13:31:05.862717
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -67,14 +67,31 @@ class Sqlite(iModel):
             self.conn.commit()
             logging.info(_('Saving the sqlite db'))
 
-    # GET
-    def get_all(self, table_name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+
+    # EXISTS
+    def exists(self, obj: MediaGroup) -> bool:
         pass
 
-    def get_all_media_type(self, alfabetic: bool) -> List[MediaType]:
+    def exists_media_group(self, obj: MediaGroup) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{MediaGroup.table_name}" where id_media="{obj.media.id_}" and number="{obj.number}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+    # GET NUM
+    def get_num(self, table_name: str) -> int:
+        return self.get_cur_db().execute(f'select count(*) from "{table_name}"').fetchone()[0]
+
+    # GET
+    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        pass
+
+    def get_all_media_type(self, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
         sentence = f'select id, name, description, groupable, active, added_ts, modified_ts from "{MediaType.table_name}"'
         if alfabetic:
             sentence += ' order by name asc'
+        if limit != None and offset != None:
+            sentence += f' LIMIT {limit} OFFSET {offset}'
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
@@ -91,10 +108,12 @@ class Sqlite(iModel):
             ))
         return results
 
-    def get_all_media_status(self, alfabetic: bool) -> List[MediaStatus]:
+    def get_all_media_status(self, limit: int, offset: int, alfabetic: bool) -> List[MediaStatus]:
         sentence = f'select id, name, description, active, added_ts, modified_ts from "{MediaStatus.table_name}"'
         if alfabetic:
             sentence += ' order by name asc'
+        if limit != None and offset != None:
+            sentence += f' LIMIT {limit} OFFSET {offset}'
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
@@ -109,8 +128,88 @@ class Sqlite(iModel):
             ))
         return results
 
+    def get_all_media(self, limit: int, offset: int, alfabetic: bool) -> List[Media]:
+        sentence = f'select id, name, year_start, year_end, id_type, id_status, active, added_ts, modified_ts from "{Media.table_name}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(Media(
+                    id_         = result[0],
+                    name        = result[1],
+                    year_start  = result[2],
+                    year_end    = result[3],
+                    type_       = self.get_by_media_type_id(result[4]),
+                    status      = self.get_by_media_status_id(result[5]),
+                    active      = result[6],
+                    added_ts    = result[7],
+                    modified_ts = result[8]
+            ))
+        return results
+
 
     # GET BY X
+    def get_by_id(self, table_name: str, id_: int) -> Media:
+        pass
+
+    def get_by_media_type_id(self, id_: int) -> MediaType:
+        sql_result = self.get_cur_db().execute(f'select id, name, description, groupable, active, added_ts, modified_ts from "{MediaType.table_name}" where id={id_}').fetchone()
+        if sql_result:
+            return MediaType(
+                id_         = sql_result[0],
+                name        = sql_result[1],
+                desc        = sql_result[2],
+                groupable   = sql_result[3],
+                active      = sql_result[4],
+                added_ts    = sql_result[5],
+                modified_ts = sql_result[6]
+            )
+
+    def get_by_media_status_id(self, id_: int) -> MediaStatus:
+        sql_result = self.get_cur_db().execute(f'select id, name, description, active, added_ts, modified_ts from "{MediaStatus.table_name}" where id="{id_}"').fetchone()
+        if sql_result:
+            return MediaStatus(
+                id_         = sql_result[0],
+                name        = sql_result[1],
+                desc        = sql_result[2],
+                added_ts    = sql_result[3],
+                modified_ts = sql_result[4]
+            )
+
+    def get_by_media_id(self, id_: int) -> Media:
+        sql_result = self.get_cur_db().execute(f'select id, name, year_start, year_end, id_type, id_status, active, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"').fetchone()
+        if sql_result:
+            return Media(
+                    id_         = sql_result[0],
+                    name        = sql_result[1],
+                    year_start  = sql_result[2],
+                    year_end    = sql_result[3],
+                    type_       = self.get_by_media_type_id(sql_result[4]),
+                    status      = self.get_by_media_status_id(sql_result[5]),
+                    active      = sql_result[6],
+                    added_ts    = sql_result[7],
+                    modified_ts = sql_result[8]
+            )
+
+    def get_by_media_group_nk(self, obj: MediaGroup) -> MediaGroup:
+        sql_result = self.get_cur_db().execute(f'select id, name, number, year_start, year_end, id_media, active, added_ts, modified_ts from "{MediaGroup.table_name}" where number="{obj.number}" and id_media="{obj.media.id_}"').fetchone()
+        if sql_result:
+            return MediaGroup(
+                    id_         =   sql_result[0],
+                    name        =   sql_result[1],
+                    number      =   sql_result[2],
+                    year_start  =   sql_result[3],
+                    year_end    =   sql_result[4],
+                    media       =   self.get_by_media_id(sql_result[5]),
+                    active      =   sql_result[6],
+                    added_ts    =   sql_result[7],
+                    modified_ts =   sql_result[8]
+            )
+
+
     def get_by_name(self, table_name: str, name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
 
@@ -161,6 +260,9 @@ class Sqlite(iModel):
 
     def insert_media(self, obj: Media) -> None:
         self.get_cur_db().execute(f'insert into "{Media.table_name}" (name, year_start, year_end, id_type, id_status, active) values (?, ?, ?, ?, ?, ?)', (obj.name, obj.year_start, obj.year_end, obj.type_.id_, obj.status.id_, obj.active))
+
+    def insert_media_group(self, obj: MediaGroup) -> None:
+        self.get_cur_db().execute(f'insert into "{MediaGroup.table_name}" (id, name, number, year_start, year_end, id_media, active) values (?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.name, obj.number, obj.year_start, obj.year_end, obj.media.id_, obj.active))
 
 
 # ------------------------------------------------------------------------------
