@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/05 13:52:39.472935
+#+ Editado:	2023/02/05 15:03:03.651212
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,11 +17,11 @@ from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Terminal(iView):
-
-    model = None
-
     def __init__(self) -> None:
         logging.info(_('Starting Terminal view'))
+
+        self.model = None
+        self.controller = None
 
         print('----------------------------------------')
         print(_('Media4 Manager'))

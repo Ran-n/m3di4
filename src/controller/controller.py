@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/05 13:43:15.664171
+#+ Editado:	2023/02/05 15:02:27.956879
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -17,6 +17,8 @@ class Controller:
     def __init__(self, model: iModel, view: iView):
         self.model = model
         self.view = view
+        self.view.controller = self
+        self.view.strategy.controller = self
 
         if isinstance(self.view.strategy, Terminal):
             while True:

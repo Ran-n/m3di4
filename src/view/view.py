@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/05 13:43:52.610695
+#+ Editado:	2023/02/05 15:03:14.022893
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -21,8 +21,11 @@ class View:
         # demand the use of an intance of view
         if isinstance(strategy, iView):
             self.strategy = strategy
-            self.strategy.model = model
+
             self.model = model
+            self.strategy.model = model
+
+            self.controller = None
         else:
             raise InheritException(_(f'Must inherit from {iView.__name__}'))
 
