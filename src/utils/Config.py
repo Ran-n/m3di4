@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/05 21:40:44.383921
+#+ Editado:	2023/02/05 22:47:18.994335
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -11,7 +11,7 @@ import os
 import pathlib
 from datetime import datetime
 
-from src.enum import UI
+from src.enum import UIEnum
 from src.exception import TableNameException, LanguageException, UserInterfaceException
 # ------------------------------------------------------------------------------
 class Config(object):
@@ -46,7 +46,7 @@ class Config(object):
                 raise LanguageException(f'Language not supported yet, try: {self.supported_languages}')
 
             try:
-                self.ui = UI(self.ui)
+                self.ui = UIEnum(self.ui)
             except ValueError:
                 raise UserInterfaceException(f'User Interface not supported, try: {[o.value for o in UI]}')
             #

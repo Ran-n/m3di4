@@ -3,12 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/01/30 23:04:05.602653
+#+ Editado:	2023/02/05 22:47:46.612752
 # ------------------------------------------------------------------------------
 import logging
 import gettext
 
-from src.enum import UI
+from src.enum import UIEnum
 from src.utils import Config
 
 from src.model import Model, Sqlite
@@ -38,8 +38,8 @@ def main():
 
 
     views = {
-            UI.TERMINAL: Terminal,
-            UI.CUSTOM_TKINTER: CustomTKinter
+            UIEnum.TERMINAL: Terminal,
+            UIEnum.CUSTOM_TKINTER: CustomTKinter
     }
 
     model = Model(strategy = Sqlite(Config().file_content['db_file_location']))
