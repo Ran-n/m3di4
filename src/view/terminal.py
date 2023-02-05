@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/05 15:35:31.413685
+#+ Editado:	2023/02/05 20:16:01.257218
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -50,15 +50,16 @@ class Terminal(iView):
         print('----------------------------------------')
 
     @staticmethod
-    def __pick_from_options(message_title: str, message: str, options: List[Union[MediaType, MediaStatus]], paginated: bool = False, offset: int = 0) -> Union[None, MediaType, MediaStatus, Media]:
+    def __pick_from_options(message_title: str, message: str, options: List[Union[MediaType, MediaStatus]], paginated: bool = False, offset: int = 0) -> Union[str, MediaType, MediaStatus, Media]:
         while True:
             print(f'< {message_title}')
             for index, ele in enumerate(options):
                 print(f'{index + offset + 1}. {ele.name}')
             choice = input(f'> {message}: ')
 
-            if paginated and choice == '+':
-                return None
+            # move in pagination & add new element
+            if (choice == '+') or (paginated and choice in ['>', '<']):
+                return choice
             elif choice.isdigit():
                 choice = int(choice)
             else:
@@ -163,35 +164,67 @@ class Terminal(iView):
         print()
 
         # type_
-        type_options = self.model.get_all(MediaType.table_name)
-        while len(type_options) == 0:
-            logging.error(_('There are no media types available'))
+        media_type_count = self.model.get_num(MediaType.table_name)
+        while media_type_count == 0:
+            logging.warning(_('There are no media types available'))
             print('!! ' + _('No media types available, create one'))
             self.controller.add_media_type()
             print()
-            type_options = self.model.get_all(MediaType.table_name)
 
-        type_ = self.__pick_from_options(
-                        message_title = _('Types'),
-                        message = _('Type'),
-                        options = type_options
-        )
+        offset = 0
+        limit = 5
+        while True:
+            lst_media_type = self.model.get_all(table_name= MediaType.table_name, limit= limit, offset= offset)
+
+            type_ = self.__pick_from_options(
+                            message_title   =   _('Types'),
+                            message         =    _('Type'),
+                            paginated       =   True,
+                            options         =   lst_media_type
+            )
+            if isinstance(type_, str):
+                if type_ == '>' and media_type_count > offset + limit:
+                    offset += limit
+                elif type_ == '>' and offset != 0:
+                    offset -= limit
+                elif type_ == '+':
+                    print()
+                    self.controller.add_media_type()
+                    media_type_count += 1
+            elif isinstance(type_, object):
+                break
         print()
 
         # status
-        status_options = self.model.get_all(MediaStatus.table_name)
-        while len(status_options) == 0:
+        media_status_count = self.model.get_num(MediaStatus.table_name)
+        while media_status_count == 0:
             logging.warning(_('There are no media statuses available'))
             print('!! ' + _('No media statuses available, create one'))
             self.controller.add_media_status()
             print()
-            status_options = self.model.get_all(MediaStatus.table_name)
 
-        status = self.__pick_from_options(
-                        message_title = _('Statuses'),
-                        message = _('Status'),
-                        options = status_options
-        )
+        offset = 0
+        limit = 5
+        while True:
+            lst_media_status = self.model.get_all(table_name= MediaStatus.table_name, limit= limit, offset= offset)
+
+            status = self.__pick_from_options(
+                            message_title   =   _('Statuses'),
+                            message         =   _('Status'),
+                            paginated       =   True,
+                            options         =   lst_media_status
+            )
+            if isinstance(status, str):
+                if status == '>' and media_status_count > offset + limit:
+                    offset += limit
+                elif status == '>' and offset != 0:
+                    offset -= limit
+                elif status == '+':
+                    print()
+                    self.controller.add_media_status()
+                    media_status_count += 1
+            elif isinstance(status, object):
+                break
         print()
 
         # year_start
@@ -243,11 +276,18 @@ class Terminal(iView):
                     options = lst_medias
             )
 
-            if media:
-                break
-            else:
-                offset += limit
+            if isinstance(media, str):
+                if media == '>' and media_count > offset + limit:
+                    offset += limit
+                elif media == '<' and offset != 0:
+                    offset -= limit
+                elif media == '+':
+                    print()
+                    self.controller.add_media()
+                    media_count += 1
                 print()
+            elif isinstance(media, object):
+                break
         print()
 
         # number
