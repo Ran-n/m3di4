@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/05 15:02:27.956879
+#+ Editado:	2023/02/05 21:48:06.837580
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -28,7 +28,8 @@ class Controller:
     def __terminal_menu(self) -> None:
         options = {
                 '+': [_('Save'), self.save],
-                '0': [_('Exit'), self.exit],
+                '-': [_('Exit'), self.exit_no_save],
+                '0': [_('Exit & Save'), self.exit_save],
                 '1': [_('Add Media Type'), self.add_media_type],
                 '2': [_('Add Media Status'), self.add_media_status],
                 '3': [_('Add Media'), self.add_media],
@@ -46,12 +47,19 @@ class Controller:
         self.model.save_db()
         logging.info(_('The saving process was finished'))
 
-    def exit(self) -> None:
+    def exit_no_save(self) -> None:
+        self.__exit(False)
+
+    def exit_save(self) -> None:
+        self.__exit(True)
+
+    def __exit(self, commit: bool) -> None:
         logging.info(_('Starting the exit process'))
-        self.model.disconnect_db(commit=True)
+        self.model.disconnect_db(commit= commit)
         self.view.exit()
         logging.info(_('Exiting the program'))
         sys.exit()
+
 
     def add_media_type(self) -> None:
         logging.info(_('Starting the "Add Media Type" process'))

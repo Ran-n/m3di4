@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/03 16:22:33.889902
+#+ Editado:	2023/02/05 21:40:44.383921
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -38,6 +38,7 @@ class Config(object):
             self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
             self.log_folder = self.file_content.get('log_folder', 'media/logs')
             self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
+            self.pagination_limit = self.file_content.get('pagination_limit', 5)
             #
 
             # checking of the attributes

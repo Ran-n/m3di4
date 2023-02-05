@@ -22,3 +22,7 @@ db_file_location = media/db/Database.db
 # do NOT change unless you move them from this default location.
 # Default: media/i18n
 i18n_folder = media/i18n
+
+# PAGINATION
+# how many elements you want to be shown at once.
+pagination_limit = 5

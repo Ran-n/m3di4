@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/05 13:31:05.862717
+#+ Editado:	2023/02/05 21:33:30.470100
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -219,7 +219,7 @@ class Sqlite(iModel):
             sentence += ' order by name asc'
         db_results = self.get_cur_db().execute(sentence).fetchall()
         results = []
-        for ele in db_results:
+        for result in db_results:
             results.append(MediaType(
                 id_         = result[0],
                 name        = result[1],

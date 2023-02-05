@@ -3,14 +3,17 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/05 20:16:01.257218
+#+ Editado:	2023/02/05 21:42:44.075470
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
-from typing import List, Union
+from typing import List, Union, Callable
+
+from src.enum import PaginationEnum
+from src.utils import Config
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
@@ -49,25 +52,54 @@ class Terminal(iView):
     def exit(self) -> None:
         print('----------------------------------------')
 
-    @staticmethod
-    def __pick_from_options(message_title: str, message: str, options: List[Union[MediaType, MediaStatus]], paginated: bool = False, offset: int = 0) -> Union[str, MediaType, MediaStatus, Media]:
-        while True:
-            print(f'< {message_title}')
-            for index, ele in enumerate(options):
-                print(f'{index + offset + 1}. {ele.name}')
-            choice = input(f'> {message}: ')
+    def __pick_from_options(self, message: dict[str, str], table_name: str, add_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
+        """
+            message
+            {'title': 'a', 'pick': 'b', 'empty': 'c'}
+        """
+        option_count = self.model.get_num(table_name)
 
-            # move in pagination & add new element
-            if (choice == '+') or (paginated and choice in ['>', '<']):
-                return choice
+        # if not option exists, it starts the add option function
+        while option_count == 0:
+            logging.warning(message['empty'])
+            print(f'!! {message["empty"]}')
+            add_fn()
+            option_count += 1
+            print()
+
+        # loop choice of option
+        while True:
+
+            # xFCR - mirar que con limit None non peta
+            lst_option = self.model.get_all(table_name= table_name, limit= limit, offset= offset)
+
+            title = f'< {message["title"]}'
+            if limit:
+                title += f' {len(lst_option) + offset}/{option_count}'
+            print(title)
+
+            for index, ele in enumerate(lst_option):
+                print(f'{index + offset + 1}. {ele.name}')
+            choice = input(f'> {message["pick"]}: ')
+
+            # add new element
+            if choice == '+':
+                print()
+                add_fn()
+                option_count += 1
+            # move in pagination (limit = None | 0 will be false)
+            elif limit and (choice in PaginationEnum.OPTIONS.value):
+                choice_enum = PaginationEnum(choice)
+                if (choice_enum == PaginationEnum.NEXT) and (option_count > offset + limit):
+                    offset += limit
+                elif (choice_enum == PaginationEnum.PREVIOUS) and (offset != 0):
+                    offset -= limit
+            # user selected something in the list
             elif choice.isdigit():
                 choice = int(choice)
-            else:
-                continue
-
-            if (choice > 0 and choice <= (len(options) + offset)):
-                value = options[choice - offset - 1]
-                break
+                if (choice > 0 and choice <= (len(lst_option) + offset)):
+                    value = lst_option[choice - offset - 1]
+                    break
         return value
 
     @staticmethod
@@ -93,8 +125,8 @@ class Terminal(iView):
         ║   └ What will the user see to indicate what to insert.
         ╠═  · equal_to    -   str
         ║   └ What number will be used in case the user inputs the equal sign in the number picked.
-        ╚═  · compare_msg -   List[set[str, str, str]]
-            └ Example: [{'number'= ('14', 'symbol'= '>', 'message'= 'The number must be bigger than 14'}].
+        ╚═  · compare_msg -   List[dict[str, str, str]]
+            └ Example: [{'number'= '14', 'symbol'= '>', 'message'= 'The number must be bigger than 14'}].
               The first part will be evaluated, and if failed will show the second one to the user.
 
         @ Output:
@@ -164,67 +196,29 @@ class Terminal(iView):
         print()
 
         # type_
-        media_type_count = self.model.get_num(MediaType.table_name)
-        while media_type_count == 0:
-            logging.warning(_('There are no media types available'))
-            print('!! ' + _('No media types available, create one'))
-            self.controller.add_media_type()
-            print()
-
-        offset = 0
-        limit = 5
-        while True:
-            lst_media_type = self.model.get_all(table_name= MediaType.table_name, limit= limit, offset= offset)
-
-            type_ = self.__pick_from_options(
-                            message_title   =   _('Types'),
-                            message         =    _('Type'),
-                            paginated       =   True,
-                            options         =   lst_media_type
-            )
-            if isinstance(type_, str):
-                if type_ == '>' and media_type_count > offset + limit:
-                    offset += limit
-                elif type_ == '>' and offset != 0:
-                    offset -= limit
-                elif type_ == '+':
-                    print()
-                    self.controller.add_media_type()
-                    media_type_count += 1
-            elif isinstance(type_, object):
-                break
+        type_ = self.__pick_from_options(
+                message     =   {
+                    'title':    _('Types'),
+                    'pick':     _('Type'),
+                    'empty':    _('There are no media types available')
+                },
+                table_name  =   MediaType.table_name,
+                add_fn      =   self.controller.add_media_type,
+                limit       =   Config().pagination_limit
+        )
         print()
 
         # status
-        media_status_count = self.model.get_num(MediaStatus.table_name)
-        while media_status_count == 0:
-            logging.warning(_('There are no media statuses available'))
-            print('!! ' + _('No media statuses available, create one'))
-            self.controller.add_media_status()
-            print()
-
-        offset = 0
-        limit = 5
-        while True:
-            lst_media_status = self.model.get_all(table_name= MediaStatus.table_name, limit= limit, offset= offset)
-
-            status = self.__pick_from_options(
-                            message_title   =   _('Statuses'),
-                            message         =   _('Status'),
-                            paginated       =   True,
-                            options         =   lst_media_status
-            )
-            if isinstance(status, str):
-                if status == '>' and media_status_count > offset + limit:
-                    offset += limit
-                elif status == '>' and offset != 0:
-                    offset -= limit
-                elif status == '+':
-                    print()
-                    self.controller.add_media_status()
-                    media_status_count += 1
-            elif isinstance(status, object):
-                break
+        status = self.__pick_from_options(
+                message     =   {
+                    'title':    _('Statuses'),
+                    'pick':     _('Status'),
+                    'empty':    _('There are no media statuses available')
+                },
+                table_name  =   MediaStatus.table_name,
+                add_fn      =   self.controller.add_media_status,
+                limit       =   Config().pagination_limit
+        )
         print()
 
         # year_start
@@ -262,32 +256,16 @@ class Terminal(iView):
         print('** '+_('Add Media Group')+' **')
 
         # media
-        media_count = self.model.get_num(Media.table_name)
-        offset = 0
-        limit = 5
-        while True:
-            lst_medias = self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset)
-
-            media = self.__pick_from_options(
-                    message_title = _('Medias')+f' {len(lst_medias) + offset}/{media_count}',
-                    message = _('Media'),
-                    paginated = True,
-                    offset = offset,
-                    options = lst_medias
-            )
-
-            if isinstance(media, str):
-                if media == '>' and media_count > offset + limit:
-                    offset += limit
-                elif media == '<' and offset != 0:
-                    offset -= limit
-                elif media == '+':
-                    print()
-                    self.controller.add_media()
-                    media_count += 1
-                print()
-            elif isinstance(media, object):
-                break
+        media = self.__pick_from_options(
+                message     =   {
+                    'title':    _('Medias'),
+                    'pick':     _('Media'),
+                    'empty':    _('There are no medias available')
+                },
+                table_name  =   Media.table_name,
+                add_fn      =   self.controller.add_media,
+                limit       =   Config().pagination_limit
+        )
         print()
 
         # number
