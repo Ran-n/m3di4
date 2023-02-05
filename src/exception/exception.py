@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:45:01.530694
-#+ Editado:	2023/02/04 23:13:28.259506
+#+ Editado:	2023/02/05 15:30:47.874251
 # ------------------------------------------------------------------------------
 class TableNameException(Exception):
     pass
@@ -15,11 +15,5 @@ class UserInterfaceException(Exception):
     pass
 
 class InheritException(Exception):
-    pass
-
-class NoMediaTypesException(Exception):
-    pass
-
-class NoMediaStatusesException(Exception):
     pass
 # ------------------------------------------------------------------------------

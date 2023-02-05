@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/05 15:03:03.651212
+#+ Editado:	2023/02/05 15:35:31.413685
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,7 +12,6 @@ from src.view import iView
 import logging
 from typing import List, Union
 
-from src.exception import NoMediaTypesException, NoMediaStatusesException
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
@@ -165,9 +164,12 @@ class Terminal(iView):
 
         # type_
         type_options = self.model.get_all(MediaType.table_name)
-        if len(type_options) == 0:
+        while len(type_options) == 0:
             logging.error(_('There are no media types available'))
-            raise NoMediaTypesException
+            print('!! ' + _('No media types available, create one'))
+            self.controller.add_media_type()
+            print()
+            type_options = self.model.get_all(MediaType.table_name)
 
         type_ = self.__pick_from_options(
                         message_title = _('Types'),
@@ -178,9 +180,12 @@ class Terminal(iView):
 
         # status
         status_options = self.model.get_all(MediaStatus.table_name)
-        if len(status_options) == 0:
-            logging.error(_('There are no media statuses available'))
-            raise NoMediaStatusesException
+        while len(status_options) == 0:
+            logging.warning(_('There are no media statuses available'))
+            print('!! ' + _('No media statuses available, create one'))
+            self.controller.add_media_status()
+            print()
+            status_options = self.model.get_all(MediaStatus.table_name)
 
         status = self.__pick_from_options(
                         message_title = _('Statuses'),
