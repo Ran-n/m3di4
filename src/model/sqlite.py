@@ -264,5 +264,4 @@ class Sqlite(iModel):
     def insert_media_group(self, obj: MediaGroup) -> None:
         self.get_cur_db().execute(f'insert into "{MediaGroup.table_name}" (id, name, number, year_start, year_end, id_media, active) values (?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.name, obj.number, obj.year_start, obj.year_end, obj.media.id_, obj.active))
 
-
 # ------------------------------------------------------------------------------
