@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/05 21:33:30.470100
+#+ Editado:	2023/02/09 22:36:18.061073
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,15 +23,17 @@ from src.model.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
-        logging.info(_('Starting the sqlite db'))
+        logging.info(_('Starting the sqlite database'))
+        # xFCR check if better to add the declaration here an not in creation of object
         self.ficheiro = ficheiro
         self.conn = None
         self.cur = None
 
         # if the DB doesnt have all the number of supposed tables, run the creation script.
         if(self.__get_num_tables_db() < Config().get_num_entities()):
-            logging.info(_('Creating the sqlite db'))
-            self.cur.executescript(''.join(load_file('./src/model/db_creation/sqlite/Media4.db.sql')))
+            logging.info(_('Creating the sqlite database'))
+            # xFCR change path and add it to a config file
+            self.cur.executescript(''.join(load_file('./src/model/db_creation/sqlite/Media4.db.create.sql')))
 
     def __get_num_tables_db(self) -> int:
         self.connect_db()
@@ -39,6 +41,7 @@ class Sqlite(iModel):
 
     def get_conn_db(self) -> Connection:
         if self.conn == None:
+            logging.info(_('Creating a new connection to the sqlite database'))
             return self.connect_db()[0]
         return self.conn
 
@@ -50,7 +53,6 @@ class Sqlite(iModel):
     def connect_db(self) -> tuple([Connection, Cursor]):
         self.conn = sqlite3.connect(self.ficheiro)
         self.cur = self.conn.cursor()
-        logging.info(_('Creating connection and cursor to the sqlite db'))
         return (self.conn, self.cur)
 
     def disconnect_db(self, commit: bool = True) -> None:
@@ -60,16 +62,14 @@ class Sqlite(iModel):
             self.conn.close()
             self.conn = None
             self.cur = None
-        logging.info(_('Disconnecting from the sqlite db'))
 
     def save_db(self) -> None:
         if self.conn:
             self.conn.commit()
-            logging.info(_('Saving the sqlite db'))
 
 
     # EXISTS
-    def exists(self, obj: MediaGroup) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue]) -> bool:
         pass
 
     def exists_media_group(self, obj: MediaGroup) -> bool:
@@ -78,9 +78,20 @@ class Sqlite(iModel):
             return True
         return False
 
+    def exists_media_issue(self, obj: MediaIssue) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{MediaIssue.table_name}" where id_media="{obj.media.id_}" and id_media_group="{obj.media_group.id_}" and position="{obj.position}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+
     # GET NUM
     def get_num(self, table_name: str) -> int:
         return self.get_cur_db().execute(f'select count(*) from "{table_name}"').fetchone()[0]
+
+    def get_media_group_num_by_media_id(self, media_id: int) -> int:
+        return self.get_cur_db().execute(f'select count(*) from "{MediaGroup.table_name}" where id_media = "{media_id}"').fetchone()[0]
+
 
     # GET
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
@@ -142,8 +153,8 @@ class Sqlite(iModel):
                     name        = result[1],
                     year_start  = result[2],
                     year_end    = result[3],
-                    type_       = self.get_by_media_type_id(result[4]),
-                    status      = self.get_by_media_status_id(result[5]),
+                    type_       = self.get_media_type_by_id(result[4]),
+                    status      = self.get_media_status_by_id(result[5]),
                     active      = result[6],
                     added_ts    = result[7],
                     modified_ts = result[8]
@@ -155,7 +166,7 @@ class Sqlite(iModel):
     def get_by_id(self, table_name: str, id_: int) -> Media:
         pass
 
-    def get_by_media_type_id(self, id_: int) -> MediaType:
+    def get_media_type_by_id(self, id_: int) -> MediaType:
         sql_result = self.get_cur_db().execute(f'select id, name, description, groupable, active, added_ts, modified_ts from "{MediaType.table_name}" where id={id_}').fetchone()
         if sql_result:
             return MediaType(
@@ -168,7 +179,7 @@ class Sqlite(iModel):
                 modified_ts = sql_result[6]
             )
 
-    def get_by_media_status_id(self, id_: int) -> MediaStatus:
+    def get_media_status_by_id(self, id_: int) -> MediaStatus:
         sql_result = self.get_cur_db().execute(f'select id, name, description, active, added_ts, modified_ts from "{MediaStatus.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return MediaStatus(
@@ -179,7 +190,7 @@ class Sqlite(iModel):
                 modified_ts = sql_result[4]
             )
 
-    def get_by_media_id(self, id_: int) -> Media:
+    def get_media_by_id(self, id_: int) -> Media:
         sql_result = self.get_cur_db().execute(f'select id, name, year_start, year_end, id_type, id_status, active, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return Media(
@@ -187,14 +198,14 @@ class Sqlite(iModel):
                     name        = sql_result[1],
                     year_start  = sql_result[2],
                     year_end    = sql_result[3],
-                    type_       = self.get_by_media_type_id(sql_result[4]),
-                    status      = self.get_by_media_status_id(sql_result[5]),
+                    type_       = self.get_media_type_by_id(sql_result[4]),
+                    status      = self.get_media_status_by_id(sql_result[5]),
                     active      = sql_result[6],
                     added_ts    = sql_result[7],
                     modified_ts = sql_result[8]
             )
 
-    def get_by_media_group_nk(self, obj: MediaGroup) -> MediaGroup:
+    def get_media_group_by_nk(self, obj: MediaGroup) -> MediaGroup:
         sql_result = self.get_cur_db().execute(f'select id, name, number, year_start, year_end, id_media, active, added_ts, modified_ts from "{MediaGroup.table_name}" where number="{obj.number}" and id_media="{obj.media.id_}"').fetchone()
         if sql_result:
             return MediaGroup(
@@ -203,23 +214,51 @@ class Sqlite(iModel):
                     number      =   sql_result[2],
                     year_start  =   sql_result[3],
                     year_end    =   sql_result[4],
-                    media       =   self.get_by_media_id(sql_result[5]),
+                    media       =   self.get_media_by_id(sql_result[5]),
                     active      =   sql_result[6],
                     added_ts    =   sql_result[7],
                     modified_ts =   sql_result[8]
             )
 
+    def get_media_group_by_media_id(self, id_: int, limit: int, offset: int, alfabetic: bool) -> List[MediaGroup]:
+        sentence = f'select id, name, number, year_start, year_end, id_media, active, added_ts, modified_ts from "{MediaGroup.table_name}" where id_media="{id_}"'
+        if alfabetic:
+            sentence += ' order by name asc'
+        if limit != None and offset != None:
+            sentence += f' LIMIT {limit} OFFSET {offset}'
 
-    def get_by_name(self, table_name: str, name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(MediaGroup(
+                    id_         =   result[0],
+                    name        =   result[1],
+                    number      =   result[2],
+                    year_start  =   result[3],
+                    year_end    =   result[4],
+                    media       =   self.get_media_by_id(result[5]),
+                    active      =   result[6],
+                    added_ts    =   result[7],
+                    modified_ts =   result[8]
+            ))
+        return results
+
+
+    def get_by_name(self, table_name: str, name: str, limit: int, offset: int, alfabetic: bool) -> List[Union[MediaType, MediaStatus]]:
         pass
 
-    def get_by_media_type_name(self, name: str, alfabetic: bool) -> List[MediaType]:
+    def get_by_media_type_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
         sentence = f'select id, name, description, groupable, active, added_ts, modified_ts from {MediaType.table_name} where name="{name}"'
         if alfabetic:
             sentence += ' order by name asc'
-        db_results = self.get_cur_db().execute(sentence).fetchall()
+        if limit != None and offset != None:
+            sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
         results = []
-        for result in db_results:
+        for result in sql_results:
             results.append(MediaType(
                 id_         = result[0],
                 name        = result[1],
@@ -231,13 +270,17 @@ class Sqlite(iModel):
             ))
         return results
 
-    def get_by_media_status_name(self, name: str, alfabetic: bool) -> List[MediaStatus]:
+    def get_by_media_status_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaStatus]:
         sentence = f'select id, name, description, active, added_ts, modified_ts from {MediaStatus.table_name} where name="{name}"'
         if alfabetic:
             sentence += ' order by name asc'
-        db_results = self.get_cur_db().execute(sentence).fetchall()
+        if limit != None and offset != None:
+            sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
         results = []
-        for ele in db_results:
+        for ele in sql_results:
             results.append(MediaStatus(
                 id_         = result[0],
                 name        = result[1],
@@ -262,6 +305,9 @@ class Sqlite(iModel):
         self.get_cur_db().execute(f'insert into "{Media.table_name}" (name, year_start, year_end, id_type, id_status, active) values (?, ?, ?, ?, ?, ?)', (obj.name, obj.year_start, obj.year_end, obj.type_.id_, obj.status.id_, obj.active))
 
     def insert_media_group(self, obj: MediaGroup) -> None:
-        self.get_cur_db().execute(f'insert into "{MediaGroup.table_name}" (id, name, number, year_start, year_end, id_media, active) values (?, ?, ?, ?, ?, ?, ?)', (obj.id_, obj.name, obj.number, obj.year_start, obj.year_end, obj.media.id_, obj.active))
+        self.get_cur_db().execute(f'insert into "{MediaGroup.table_name}" (name, number, year_start, year_end, id_media, active) values (?, ?, ?, ?, ?, ?)', (obj.name, obj.number, obj.year_start, obj.year_end, obj.media.id_, obj.active))
+
+    def insert_media_issue(self, obj: MediaGroup) -> None:
+        self.get_cur_db().execute(f'insert into "{MediaIssue.table_name}" (position, name, date, id_media, id_media_group, active) values (?, ?, ?, ?, ?, ?)', (obj.position, obj.name, obj.date, obj.media.id_, obj.media_group.id_, obj.active))
 
 # ------------------------------------------------------------------------------

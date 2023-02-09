@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/05 13:18:14.070686
+#+ Editado:	2023/02/09 22:36:33.665976
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class iModel(ABC):
         pass
 
     @abstractmethod
-    def exists(self, obj: MediaGroup) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue]) -> bool:
         pass
 
     @abstractmethod
@@ -46,20 +46,30 @@ class iModel(ABC):
         pass
 
     @abstractmethod
+    def get_media_group_num_by_media_id(self, media_id: int) -> int:
+        pass
+
+    @abstractmethod
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
         pass
+
 
     @abstractmethod
     def get_by_id(self, table_name: str, id_: int) -> Union[MediaType, MediaStatus, Media]:
         pass
 
     @abstractmethod
-    def get_by_media_group_nk(self, obj: MediaGroup) -> MediaGroup:
+    def get_media_group_by_nk(self, obj: MediaGroup) -> MediaGroup:
         pass
 
     @abstractmethod
-    def get_by_name(self, table_name: str, name: str, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+    def get_media_group_by_media_id(self, id_: int, limit: int = None, offset: int = 0, alfabetic: bool = None) -> List[MediaGroup]:
         pass
+
+    @abstractmethod
+    def get_by_name(self, table_name: str, name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        pass
+
 
     @abstractmethod
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:

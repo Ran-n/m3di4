@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/02/04 21:28:52.260138
+#+ Editado:	2023/02/08 20:31:47.416775
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -13,10 +13,10 @@ from src.model.entity import Media, MediaGroup
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaIssue:
-    table_name: str = field(init=False, default='MediaIssue')
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaIssue'))
     position: int
-    id_media: Media
-    id_media_group: MediaGroup
+    media: Media
+    media_group: MediaGroup
     name: Optional[str] = field(default = None)
     date: Optional[str] = field(default = None)
     active: Optional[int] = field(default=1)

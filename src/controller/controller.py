@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/05 21:48:06.837580
+#+ Editado:	2023/02/09 22:26:52.869716
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -34,6 +34,7 @@ class Controller:
                 '2': [_('Add Media Status'), self.add_media_status],
                 '3': [_('Add Media'), self.add_media],
                 '4': [_('Add Media Group'), self.add_media_group],
+                '5': [_('Add Media Issue'), self.add_media_issue],
         }
 
         try:
@@ -76,8 +77,14 @@ class Controller:
         self.model.insert(self.view.add_media())
         logging.info(_('The "Add Media" process was finished'))
 
-    def add_media_group(self) -> None:
+    def add_media_group(self, id_media: int = None) -> None:
         logging.info(_('Starting the "Add Media Group" process'))
-        self.model.insert(self.view.add_media_group())
+        self.model.insert(self.view.add_media_group(id_media))
         logging.info(_('The "Add Media Group" process was finished'))
+
+
+    def add_media_issue(self) -> None:
+        logging.info(_('Starting the "Add Media Issue" process'))
+        self.model.insert(self.view.add_media_issue())
+        logging.info(_('The "Add Media Issue" process was finished'))
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/05 15:03:14.022893
+#+ Editado:	2023/02/09 22:22:41.692803
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -47,6 +47,9 @@ class View:
     def add_media(self) -> Media:
         return self.strategy.add_media()
 
-    def add_media_group(self) -> MediaGroup:
-        return self.strategy.add_media_group()
+    def add_media_group(self, id_media: int = None) -> MediaGroup:
+        return self.strategy.add_media_group(id_media= id_media)
+
+    def add_media_issue(self) -> MediaIssue:
+        return self.strategy.add_media_issue()
 # ------------------------------------------------------------------------------

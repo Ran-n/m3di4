@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/05 21:42:44.075470
+#+ Editado:	2023/02/09 22:48:19.349900
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -52,12 +52,14 @@ class Terminal(iView):
     def exit(self) -> None:
         print('----------------------------------------')
 
-    def __pick_from_options(self, message: dict[str, str], table_name: str, add_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
+    def __pick_from_options(self, message: dict[str, str], table_name: str, add_fn: Callable, get_opts_fn: Callable, option_count: int = None, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
         """
             message
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
         """
-        option_count = self.model.get_num(table_name)
+
+        if option_count == None:
+            option_count = self.model.get_num(table_name)
 
         # if not option exists, it starts the add option function
         while option_count == 0:
@@ -67,19 +69,23 @@ class Terminal(iView):
             option_count += 1
             print()
 
+        # this variable allows the print to be smart and only reprint
+        # and reask for the options if anyting was changed
+        load_options = True
         # loop choice of option
         while True:
+            if load_options:
+                load_options = False
 
-            # xFCR - mirar que con limit None non peta
-            lst_option = self.model.get_all(table_name= table_name, limit= limit, offset= offset)
+                lst_option = get_opts_fn(limit= limit, offset= offset)
 
-            title = f'< {message["title"]}'
-            if limit:
-                title += f' {len(lst_option) + offset}/{option_count}'
-            print(title)
+                title = f'< {message["title"]}'
+                if limit:
+                    title += f' {len(lst_option) + offset}/{option_count}'
+                print(title)
 
-            for index, ele in enumerate(lst_option):
-                print(f'{index + offset + 1}. {ele.name}')
+                for index, ele in enumerate(lst_option):
+                    print(f'{index + offset + 1}. {ele.name}')
             choice = input(f'> {message["pick"]}: ')
 
             # add new element
@@ -87,13 +93,16 @@ class Terminal(iView):
                 print()
                 add_fn()
                 option_count += 1
+                load_options = True
             # move in pagination (limit = None | 0 will be false)
             elif limit and (choice in PaginationEnum.OPTIONS.value):
                 choice_enum = PaginationEnum(choice)
                 if (choice_enum == PaginationEnum.NEXT) and (option_count > offset + limit):
                     offset += limit
+                    load_options = True
                 elif (choice_enum == PaginationEnum.PREVIOUS) and (offset != 0):
                     offset -= limit
+                    load_options = True
             # user selected something in the list
             elif choice.isdigit():
                 choice = int(choice)
@@ -162,6 +171,7 @@ class Terminal(iView):
         print('** '+_('Add Media Type')+' **')
 
         while True:
+            # xFCR check not null
             name = input('> '+_('Name')+': ')
             if len(self.model.get_by_name(MediaType.table_name, name)) == 0:
                 break
@@ -178,6 +188,7 @@ class Terminal(iView):
         print('** '+_('Add Media Status')+' **')
 
         while True:
+            # xFCR check not null
             name = input('> '+_('Name')+': ')
             if len(self.model.get_by_name(MediaStatus.table_name, name)) == 0:
                 break
@@ -192,6 +203,7 @@ class Terminal(iView):
 
         print('** '+_('Add Media')+' **')
         # name
+        # xFCR check if not null
         name = input('> '+_('Name')+': ')
         print()
 
@@ -204,6 +216,7 @@ class Terminal(iView):
                 },
                 table_name  =   MediaType.table_name,
                 add_fn      =   self.controller.add_media_type,
+                get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= MediaType.table_name, limit= limit, offset= offset),
                 limit       =   Config().pagination_limit
         )
         print()
@@ -217,6 +230,7 @@ class Terminal(iView):
                 },
                 table_name  =   MediaStatus.table_name,
                 add_fn      =   self.controller.add_media_status,
+                get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= MediaStatus.table_name, limit= limit, offset= offset),
                 limit       =   Config().pagination_limit
         )
         print()
@@ -251,21 +265,25 @@ class Terminal(iView):
                 year_end    =   year_end
         )
 
-    def add_media_group(self) -> MediaGroup:
+    def add_media_group(self, id_media: int) -> MediaGroup:
         logging.info(_('Requesting the user for the information on the media group'))
         print('** '+_('Add Media Group')+' **')
 
         # media
-        media = self.__pick_from_options(
-                message     =   {
-                    'title':    _('Medias'),
-                    'pick':     _('Media'),
-                    'empty':    _('There are no medias available')
-                },
-                table_name  =   Media.table_name,
-                add_fn      =   self.controller.add_media,
-                limit       =   Config().pagination_limit
-        )
+        if id_media == None:
+            media = self.__pick_from_options(
+                    message     =   {
+                        'title':    _('Medias'),
+                        'pick':     _('Media'),
+                        'empty':    _('There are no medias available')
+                    },
+                    table_name  =   Media.table_name,
+                    add_fn      =   self.controller.add_media,
+                    get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
+                    limit       =   Config().pagination_limit
+            )
+        else:
+            media = self.model.get_by_id(table_name= Media.table_name, id_= id_media)
         print()
 
         # number
@@ -282,7 +300,6 @@ class Terminal(iView):
             else:
                 logging.info(_('The requested media group to be added already exists, a number change will be adviced'))
                 print('!! '+_('The Media Group already exists, pick another number.'))
-
         print()
 
         # name
@@ -322,6 +339,78 @@ class Terminal(iView):
                 name        =   name,
                 year_start  =   year_start,
                 year_end    =   year_end
+        )
+
+    def add_media_issue(self) -> MediaIssue:
+        """
+        """
+
+        logging.info(_('Requesting the user for the information on the media issue'))
+        print('** '+_('Add Media Issue')+' **')
+
+        # media
+        media = self.__pick_from_options(
+                message     =   {
+                    'title':    _('Medias'),
+                    'pick':     _('Media'),
+                    'empty':    _('There are no medias available')
+                },
+                table_name  =   Media.table_name,
+                add_fn      =   self.controller.add_media,
+                get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
+                limit       =   Config().pagination_limit
+        )
+        print()
+
+        # media group
+        media_group = self.__pick_from_options(
+                message         =   {
+                    'title':    _('Media Groups'),
+                    'pick':     _('Media'),
+                    'empty':    _('There are no media groups available')
+                },
+                table_name      =   MediaGroup.table_name,
+                option_count    =   self.model.get_media_group_num_by_media_id(media.id_),
+                add_fn          =   lambda: self.controller.add_media_group(id_media= media.id_),
+                get_opts_fn     =   lambda limit, offset: self.model.get_media_group_by_media_id(id_= media.id_, limit= limit, offset= offset),
+                limit           =   Config().pagination_limit
+        )
+        print()
+
+
+        # position
+        while True:
+            position = self.__pick_number(
+                    message     =   _('Issue Number within the Group'),
+                    compare_msg =   [
+                        {'symbol': '>=', 'number': '0', 'message': 'The issue number must be bigger than 0'}
+                    ]
+            )
+
+            if not self.model.exists(MediaIssue(media= media, media_group= media_group, position= position)):
+                break
+            else:
+                logging.info(_('The requested media issue to be added already exists, a number change will be adviced'))
+                print('!! '+_('The Media Issue already exists, pick another number.'))
+        print()
+
+        # name
+        name = input('> '+_('Name')+': ')
+        print()
+
+
+        # date
+        date = input('> '+_('Date')+': ')
+        print()
+
+        print('** '+_('Add Media Issue')+' **')
+
+        return MediaIssue(
+                position    =   position,
+                media       =   media,
+                media_group =   media_group,
+                name        =   name,
+                date        =   date
         )
 
 # ------------------------------------------------------------------------------
