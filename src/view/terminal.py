@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/09 22:48:19.349900
+#+ Editado:	2023/02/09 22:55:04.644900
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -52,14 +52,11 @@ class Terminal(iView):
     def exit(self) -> None:
         print('----------------------------------------')
 
-    def __pick_from_options(self, message: dict[str, str], table_name: str, add_fn: Callable, get_opts_fn: Callable, option_count: int = None, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
+    def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
         """
             message
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
         """
-
-        if option_count == None:
-            option_count = self.model.get_num(table_name)
 
         # if not option exists, it starts the add option function
         while option_count == 0:
@@ -214,10 +211,10 @@ class Terminal(iView):
                     'pick':     _('Type'),
                     'empty':    _('There are no media types available')
                 },
-                table_name  =   MediaType.table_name,
-                add_fn      =   self.controller.add_media_type,
-                get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= MediaType.table_name, limit= limit, offset= offset),
-                limit       =   Config().pagination_limit
+                option_count    =   self.model.get_num(table_name= MediaType.table_name),
+                add_fn          =   self.controller.add_media_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= MediaType.table_name, limit= limit, offset= offset),
+                limit           =   Config().pagination_limit
         )
         print()
 
@@ -228,10 +225,10 @@ class Terminal(iView):
                     'pick':     _('Status'),
                     'empty':    _('There are no media statuses available')
                 },
-                table_name  =   MediaStatus.table_name,
-                add_fn      =   self.controller.add_media_status,
-                get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= MediaStatus.table_name, limit= limit, offset= offset),
-                limit       =   Config().pagination_limit
+                option_count    =   self.model.get_num(table_name= MediaStatus.table_name),
+                add_fn          =   self.controller.add_media_status,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= MediaStatus.table_name, limit= limit, offset= offset),
+                limit           =   Config().pagination_limit
         )
         print()
 
@@ -277,10 +274,10 @@ class Terminal(iView):
                         'pick':     _('Media'),
                         'empty':    _('There are no medias available')
                     },
-                    table_name  =   Media.table_name,
-                    add_fn      =   self.controller.add_media,
-                    get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
-                    limit       =   Config().pagination_limit
+                    option_count    =   self.model.get_num(table_name= Media.table_name),
+                    add_fn          =   self.controller.add_media,
+                    get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
+                    limit           =   Config().pagination_limit
             )
         else:
             media = self.model.get_by_id(table_name= Media.table_name, id_= id_media)
@@ -355,10 +352,10 @@ class Terminal(iView):
                     'pick':     _('Media'),
                     'empty':    _('There are no medias available')
                 },
-                table_name  =   Media.table_name,
-                add_fn      =   self.controller.add_media,
-                get_opts_fn =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
-                limit       =   Config().pagination_limit
+                option_count    =   self.model.get_num(table_name= Media.table_name),
+                add_fn          =   self.controller.add_media,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
+                limit           =   Config().pagination_limit
         )
         print()
 
@@ -369,8 +366,7 @@ class Terminal(iView):
                     'pick':     _('Media'),
                     'empty':    _('There are no media groups available')
                 },
-                table_name      =   MediaGroup.table_name,
-                option_count    =   self.model.get_media_group_num_by_media_id(media.id_),
+                option_count    =   self.model.get_media_group_num_by_media_id(media_id= media.id_),
                 add_fn          =   lambda: self.controller.add_media_group(id_media= media.id_),
                 get_opts_fn     =   lambda limit, offset: self.model.get_media_group_by_media_id(id_= media.id_, limit= limit, offset= offset),
                 limit           =   Config().pagination_limit
