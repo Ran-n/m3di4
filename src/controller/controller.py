@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/10 18:02:34.012035
+#+ Editado:	2023/02/10 18:04:06.803035
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -22,25 +22,6 @@ class Controller:
 
         self.view.start()
 
-
-    """
-    def __terminal_menu(self) -> None:
-        options = {
-                '+': [_('Save'), self.save],
-                '-': [_('Exit'), self.exit_no_save],
-                '0': [_('Exit & Save'), self.exit_save],
-                '1': [_('Add Media Type'), self.add_media_type],
-                '2': [_('Add Media Status'), self.add_media_status],
-                '3': [_('Add Media'), self.add_media],
-                '4': [_('Add Media Group'), self.add_media_group],
-                '5': [_('Add Media Issue'), self.add_media_issue],
-        }
-
-        try:
-            options[self.view.menu(options)][1]()
-        except KeyboardInterrupt:
-            pass
-    """
 
     def save(self) -> None:
         logging.info(_('Starting the saving process'))
