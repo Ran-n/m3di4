@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/02/08 20:20:42.773792
+#+ Editado:	2023/02/10 17:48:55.923742
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class iView(ABC):
         pass
 
     @abstractmethod
-    def add_media_group(self) -> MediaGroup:
+    def add_media_group(self, id_media: int = None) -> MediaGroup:
         pass
 
     @abstractmethod
