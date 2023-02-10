@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:13:55.315626
-#+ Editado:	2023/02/10 23:21:31.527955
+#+ Editado:	2023/02/11 00:08:24.733106
 # ------------------------------------------------------------------------------
 from unicodedata import normalize, category
 
@@ -52,8 +52,10 @@ def center(string: str, length: int, padder: str = ' ') -> str:
     ╚═  str -   The centered string.
     """
 
+    string = string[0:length]
+
     l_padding = (length - len(string)) // 2
     r_padding = length - len(string) - l_padding
 
-    return (padder * (l_padding-1)) + ' ' + string + ' ' + (padder * (r_padding-1))
+    return padder * l_padding + string + padder * r_padding
 # ------------------------------------------------------------------------------
