@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/10 17:58:22.338196
+#+ Editado:	2023/02/10 23:21:54.595501
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ import logging
 from typing import List, Union, Callable
 
 from src.enum import PaginationEnum
-from src.utils import Config
+from src.utils import Config, center
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
@@ -25,55 +25,77 @@ class Terminal(iView):
         self.model = None
         self.controller = None
 
-    def start(self) -> None:
-        print('----------------------------------------')
-        print(_('Media4 Manager'))
-        print('----------------------------------------')
+        self.line_len = None
+        self.tab_len = 3
 
+    def start(self) -> None:
         while True:
             self.__menu()
 
-
     def __menu(self) -> None:
         options = {
-                '+': [_('Save'), self.controller.save],
-                '-': [_('Exit'), self.controller.exit_no_save],
-                '0': [_('Exit & Save'), self.controller.exit_save],
-                '1': [_('Add Media Type'), self.controller.add_media_type],
-                '2': [_('Add Media Status'), self.controller.add_media_status],
-                '3': [_('Add Media'), self.controller.add_media],
-                '4': [_('Add Media Group'), self.controller.add_media_group],
-                '5': [_('Add Media Issue'), self.controller.add_media_issue],
+                '+'         :   [_('Save'), self.controller.save],
+                '.'         :   [_('Exit'), self.controller.exit_no_save],
+                '..'        :   [_('Save & Exit'), self.controller.exit_save],
+                _('+mt')    :   [_('Add Media Type'), self.controller.add_media_type],
+                _('+ms')    :   [_('Add Media Status'), self.controller.add_media_status],
+                _('+m')     :   [_('Add Media'), self.controller.add_media],
+                _('+mg')    :   [_('Add Media Group'), self.controller.add_media_group],
+                _('+mi')    :   [_('Add Media Issue'), self.controller.add_media_issue],
         }
+
 
         try:
             options[self.__show_menu(options)][1]()
         except KeyboardInterrupt:
             print()
+            print('-' * self.line_len)
+            print()
             pass
 
     def __show_menu(self, options: dict) -> int:
+        biggest_key_len = len(max(options.keys(), key=len)) + self.tab_len
+        biggest_value_len = len(max([ele[0] for ele in options.values()], key=len)) + self.tab_len
+
+        if not self.line_len:
+            self.line_len = biggest_key_len + biggest_value_len + self.tab_len + 5
+
+            print('-' * self.line_len)
+            print(center(_('Media4 Manager'), self.line_len))
+            print('-' * self.line_len)
+
+
+        title = center('*** '+_('MENU')+' ***', self.line_len)[1:-1]
         print()
-        print('*** '+_('MENU')+' ***')
+        print('█' + '▀' * len(title) + '█')
+        print('█' + title + '█')
+        print('█' + ('▄'*(self.line_len-2)) + '█')
 
         for key, value in zip(options.keys(), options.values()):
-            print(f'{key}  {value[0]}')
+            value0 = value[0]
+            print(f'▌ {key:<{biggest_key_len}}▐\t{value0:<{biggest_value_len}} ▐'.expandtabs(self.tab_len))
 
+
+        print('▀'*self.line_len)
         while True:
             option = input(_('Pick: '))
             if option in options:
                 break
-
-        print('*** '+_('MENU')+' ***')
-        print()
-
         return option
 
     def save(self) -> None:
-        print('* ' + _('The Database was saved') + ' *')
+        print()
+        print('-' * self.line_len)
+        text = '* ' + _('The Database was saved') + ' *'
+        print(center(text, self.line_len))
+        print('-' * self.line_len)
 
     def exit(self) -> None:
-        print('----------------------------------------')
+        print()
+        print('-' * self.line_len)
+        text = _('Goodbye!')
+        print(center(text, self.line_len))
+        print('-' * self.line_len)
 
     def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
         """
@@ -84,10 +106,10 @@ class Terminal(iView):
         # if not option exists, it starts the add option function
         while option_count == 0:
             logging.warning(message['empty'])
+            print()
             print(f'!! {message["empty"]}')
             add_fn()
             option_count += 1
-            print()
 
         # this variable allows the print to be smart and only reprint
         # and reask for the options if anyting was changed
@@ -110,7 +132,6 @@ class Terminal(iView):
 
             # add new element
             if choice == '+':
-                print()
                 add_fn()
                 option_count += 1
                 load_options = True
@@ -150,11 +171,16 @@ class Terminal(iView):
         Questions the user to pick a number, the number selected can be within a set a defined constraints.
 
         @ Input:
-        ╠═  * message    -   str
+        ╠═  * message       -   str
         ║   └ What will the user see to indicate what to insert.
-        ╠═  · equal_to    -   str
+        ║
+        ╠═  · nullable      -   bool                        -   False
+        ║   └ Whether or not a number must be picked.
+        ║
+        ╠═  · equal_to      -   int                         -   None
         ║   └ What number will be used in case the user inputs the equal sign in the number picked.
-        ╚═  · compare_msg -   List[dict[str, str, str]]
+        ║
+        ╚═  · compare_msg   -   List[dict[str, str, str]]   -   None
             └ Example: [{'number'= '14', 'symbol'= '>', 'message'= 'The number must be bigger than 14'}].
               The first part will be evaluated, and if failed will show the second one to the user.
 
@@ -188,7 +214,13 @@ class Terminal(iView):
 
     def add_media_type(self) -> MediaType:
         logging.info(_('Requesting the user for the information on the media type'))
-        print('** '+_('Add Media Type')+' **')
+
+        title = '** '+_('Add Media Type')+' **'
+        ender = '** '+_('Added Media Type')+' **'
+        print()
+        print('-' * self.line_len)
+        print(center(title, self.line_len))
+        print('-' * self.line_len)
 
         while True:
             name = input('> '+_('Name')+': ')
@@ -199,13 +231,22 @@ class Terminal(iView):
 
         groupable = self.__yn_question(_('Groupable?'))
 
-        print('** '+_('Add Media Type')+' **')
+        print()
+        print('-' * self.line_len)
+        print(center(ender, self.line_len))
+        print('-' * self.line_len)
 
         return MediaType(name = name, groupable = groupable)
 
     def add_media_status(self) -> MediaStatus:
         logging.info(_('Requesting the user for the information on the media status'))
-        print('** '+_('Add Media Status')+' **')
+
+        title = '** '+_('Add Media Status')+' **'
+        ender = '** '+_('Added Media Status')+' **'
+        print()
+        print('-' * self.line_len)
+        print(center(title, self.line_len))
+        print('-' * self.line_len)
 
         while True:
             name = input('> '+_('Name')+': ')
@@ -214,14 +255,23 @@ class Terminal(iView):
                     break
                 print('!! '+_('The given name is already in use'))
 
-        print('** '+_('Add Media Status')+' **')
+        print()
+        print('-' * self.line_len)
+        print(center(ender, self.line_len))
+        print('-' * self.line_len)
 
         return MediaStatus(name= name)
 
     def add_media(self) -> Media:
         logging.info(_('Requesting the user for the information on the media'))
 
-        print('** '+_('Add Media')+' **')
+        title = '** '+_('Add Media')+' **'
+        ender = '** '+_('Added Media')+' **'
+        print()
+        print('-' * self.line_len)
+        print(center(title, self.line_len))
+        print('-' * self.line_len)
+
         # name
         while True:
             name = input('> '+_('Name')+': ')
@@ -277,7 +327,11 @@ class Terminal(iView):
                     {'symbol': '>=', 'number': f'{year_start}', 'message': _(f'The end year must be equal or bigger than the start one ({year_start})')}
                 ]
         )
-        print('** '+_('Add Media')+' **')
+
+        print()
+        print('-' * self.line_len)
+        print(center(ender, self.line_len))
+        print('-' * self.line_len)
 
         return Media(
                 name        =   name,
@@ -289,7 +343,13 @@ class Terminal(iView):
 
     def add_media_group(self, id_media: int) -> MediaGroup:
         logging.info(_('Requesting the user for the information on the media group'))
-        print('** '+_('Add Media Group')+' **')
+
+        title = '** '+_('Add Media Group')+' **'
+        ender = '** '+_('Added Media Group')+' **'
+        print()
+        print('-' * self.line_len)
+        print(center(title, self.line_len))
+        print('-' * self.line_len)
 
         # media
         if id_media == None:
@@ -355,7 +415,10 @@ class Terminal(iView):
                 ]
         )
 
-        print('** '+_('Add Media Group')+' **')
+        print()
+        print('-' * self.line_len)
+        print(center(ended, self.line_len))
+        print('-' * self.line_len)
 
         return MediaGroup(
                 media       =   media,
@@ -370,7 +433,13 @@ class Terminal(iView):
         """
 
         logging.info(_('Requesting the user for the information on the media issue'))
-        print('** '+_('Add Media Issue')+' **')
+
+        title = '** '+_('Add Media Issue')+' **'
+        ended = '** '+_('Add Media Issue')+' **'
+        print()
+        print('-' * self.line_len)
+        print(center(title, self.line_len))
+        print('-' * self.line_len)
 
         # media
         media = self.__pick_from_options(
@@ -426,9 +495,11 @@ class Terminal(iView):
 
         # date
         date = input('> '+_('Date')+': ')
-        print()
 
-        print('** '+_('Add Media Issue')+' **')
+        print()
+        print('-' * self.line_len)
+        print(center(ended, self.line_len))
+        print('-' * self.line_len)
 
         return MediaIssue(
                 position    =   position,
