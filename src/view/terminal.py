@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/10 23:27:37.426199
+#+ Editado:	2023/02/10 23:40:52.227437
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ class Terminal(iView):
             print('-' * self.line_len)
 
 
-        title = center('*** '+_('MENU')+' ***', self.line_len)[1:-1]
+        title = center('*'*3 + ' '+_('MENU')+' ' + '*'*3, self.line_len)[1:-1]
         print()
         print('█' + '▀' * len(title) + '█')
         print('█' + title + '█')
@@ -227,10 +227,19 @@ class Terminal(iView):
 
 
     def add_media_type(self) -> MediaType:
+        """
+        Terminal View function for adding a media type element.
+
+        @ Input:
+
+        @ Output:
+        ╚═  MediaType   -   The MediaType created by the user.
+        """
+
         logging.info(_('Requesting the user for the information on the media type'))
 
-        title = '** '+_('Add Media Type')+' **'
-        ender = '** '+_('Added Media Type')+' **'
+        title = (2*'*') + ' ' + _('Add Media Type') + ' ' + (2*'*')
+        ender = (2*'*') + ' ' + _('Added Media Type') + ' ' + (2*'*')
         print()
         print('-' * self.line_len)
         print(center(title, self.line_len))
@@ -253,10 +262,19 @@ class Terminal(iView):
         return MediaType(name = name, groupable = groupable)
 
     def add_media_status(self) -> MediaStatus:
+        """
+        Terminal View function for adding a media status element.
+
+        @ Input:
+
+        @ Output:
+        ╚═  MediaStatus   -   The MediaStatus created by the user.
+        """
+
         logging.info(_('Requesting the user for the information on the media status'))
 
-        title = '** '+_('Add Media Status')+' **'
-        ender = '** '+_('Added Media Status')+' **'
+        title = (2*'*') + ' ' + _('Add Media Status') + ' ' + (2*'*')
+        ender = (2*'*') + ' ' + _('Added Media Status') + ' ' + (2*'*')
         print()
         print('-' * self.line_len)
         print(center(title, self.line_len))
@@ -277,10 +295,19 @@ class Terminal(iView):
         return MediaStatus(name= name)
 
     def add_media(self) -> Media:
+        """
+        Terminal View function for adding a media element.
+
+        @ Input:
+
+        @ Output:
+        ╚═  Media   -   The Media created by the user.
+        """
+
         logging.info(_('Requesting the user for the information on the media'))
 
-        title = '** '+_('Add Media')+' **'
-        ender = '** '+_('Added Media')+' **'
+        title = (2*'*') + ' ' + _('Add Media') + ' ' + (2*'*')
+        ender = (2*'*') + ' ' + _('Added Media') + ' ' + (2*'*')
         print()
         print('-' * self.line_len)
         print(center(title, self.line_len))
@@ -356,10 +383,21 @@ class Terminal(iView):
         )
 
     def add_media_group(self, id_media: int) -> MediaGroup:
+        """
+        Terminal View function for adding a media group element.
+
+        @ Input:
+        ╚═  · id_media  -   int -   None
+            └ The id of the media the group should be added to.
+
+        @ Output:
+        ╚═  MediaGroup  -   The MediaGroup created by the user.
+        """
+
         logging.info(_('Requesting the user for the information on the media group'))
 
-        title = '** '+_('Add Media Group')+' **'
-        ender = '** '+_('Added Media Group')+' **'
+        title = (2*'*') + ' ' + _('Add Media Group') + ' ' + (2*'*')
+        ender = (2*'*') + ' ' + _('Added Media Group') + ' ' + (2*'*')
         print()
         print('-' * self.line_len)
         print(center(title, self.line_len))
@@ -444,12 +482,18 @@ class Terminal(iView):
 
     def add_media_issue(self) -> MediaIssue:
         """
+        Terminal View function for adding a media issue element.
+
+        @ Input:
+
+        @ Output:
+        ╚═  MediaIssue  -   The MediaIssue created by the user.
         """
 
         logging.info(_('Requesting the user for the information on the media issue'))
 
-        title = '** '+_('Add Media Issue')+' **'
-        ended = '** '+_('Add Media Issue')+' **'
+        title = (2*'*') + ' ' + _('Add Media Issue') + ' ' + (2*'*')
+        ender = (2*'*') + ' ' + _('Added Media Issue') + ' ' + (2*'*')
         print()
         print('-' * self.line_len)
         print(center(title, self.line_len))
