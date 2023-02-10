@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/10 23:21:54.595501
+#+ Editado:	2023/02/10 23:27:37.426199
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -153,7 +153,21 @@ class Terminal(iView):
         return value
 
     @staticmethod
-    def __yn_question(message: str, as_str: bool = False) -> [str, int]:
+    def __yn_question(message: str, as_str: bool = False) -> Union[str, int]:
+        """
+        Return the answer of a yes/no question to the user.
+
+        @ Input:
+        ╠═  * message   -   str
+        ║   └ What will the user see to indicate what to insert.
+        ║
+        ╚═  · as_str    -   bool    -   False
+            └ Indicates if the return should be in str or int form.
+
+        @ Output:
+        ╚═  [str | int] -   The answer picked by the user.
+        """
+
         no_opts = ['n', 'no', 'non']
         str_answer = {0: _('No'), 1: _('Yes')}
 
@@ -185,7 +199,7 @@ class Terminal(iView):
               The first part will be evaluated, and if failed will show the second one to the user.
 
         @ Output:
-        ╚═  int -   The picked number by the user.
+        ╚═  int -   The number picked by the user.
         """
 
         while True:
