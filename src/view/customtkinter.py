@@ -3,14 +3,15 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/01/29 23:10:52.923823
+#+ Editado:	2023/02/10 18:01:50.430421
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
 import customtkinter
 
-from src.model.entity import Media
+from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import MediaType, MediaStatus
 # ------------------------------------------------------------------------------
 class CustomTKinter(iView):
     def __init__(self) -> None:
@@ -19,16 +20,31 @@ class CustomTKinter(iView):
         customtkinter.set_default_color_theme("dark-blue")
 
         self.root = customtkinter.CTk()
+
+    def start(self) -> None:
         self.root.geometry('800x500')
         self.root.mainloop()
 
-    def menu(self, options: dict) -> int:
+    def save(self) -> None:
         pass
 
     def exit(self) -> None:
         # nothing need to be done here
         pass
 
+    def add_media_type(self) -> MediaType:
+        pass
+
+    def add_media_status(self) -> MediaStatus:
+        pass
+
+
     def add_media(self) -> Media:
+        pass
+
+    def add_media_group(self) -> MediaGroup:
+        pass
+
+    def add_media_issue(self) -> MediaIssue:
         pass
 # ------------------------------------------------------------------------------
