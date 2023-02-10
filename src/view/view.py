@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/09 22:22:41.692803
+#+ Editado:	2023/02/10 18:01:21.790652
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -29,14 +29,15 @@ class View:
         else:
             raise InheritException(_(f'Must inherit from {iView.__name__}'))
 
-    def menu(self, options: dict) -> int:
-        return self.strategy.menu(options)
+    def start(self) -> None:
+        return self.strategy.start()
 
     def save(self) -> None:
         return self.strategy.save()
 
     def exit(self) -> None:
         self.strategy.exit()
+
 
     def add_media_type(self) -> MediaType:
         return self.strategy.add_media_type()

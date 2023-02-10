@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/10 17:48:20.778116
+#+ Editado:	2023/02/10 17:58:22.338196
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -25,11 +25,34 @@ class Terminal(iView):
         self.model = None
         self.controller = None
 
+    def start(self) -> None:
         print('----------------------------------------')
         print(_('Media4 Manager'))
         print('----------------------------------------')
 
-    def menu(self, options: dict) -> int:
+        while True:
+            self.__menu()
+
+
+    def __menu(self) -> None:
+        options = {
+                '+': [_('Save'), self.controller.save],
+                '-': [_('Exit'), self.controller.exit_no_save],
+                '0': [_('Exit & Save'), self.controller.exit_save],
+                '1': [_('Add Media Type'), self.controller.add_media_type],
+                '2': [_('Add Media Status'), self.controller.add_media_status],
+                '3': [_('Add Media'), self.controller.add_media],
+                '4': [_('Add Media Group'), self.controller.add_media_group],
+                '5': [_('Add Media Issue'), self.controller.add_media_issue],
+        }
+
+        try:
+            options[self.__show_menu(options)][1]()
+        except KeyboardInterrupt:
+            print()
+            pass
+
+    def __show_menu(self, options: dict) -> int:
         print()
         print('*** '+_('MENU')+' ***')
 

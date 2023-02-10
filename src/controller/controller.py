@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/09 22:26:52.869716
+#+ Editado:	2023/02/10 18:02:34.012035
 # ------------------------------------------------------------------------------
 import sys
 import logging
 
 from src.model import iModel
-from src.view import iView, Terminal
+from src.view import iView
 
 #from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
@@ -20,11 +20,10 @@ class Controller:
         self.view.controller = self
         self.view.strategy.controller = self
 
-        if isinstance(self.view.strategy, Terminal):
-            while True:
-                self.__terminal_menu()
+        self.view.start()
 
 
+    """
     def __terminal_menu(self) -> None:
         options = {
                 '+': [_('Save'), self.save],
@@ -41,6 +40,7 @@ class Controller:
             options[self.view.menu(options)][1]()
         except KeyboardInterrupt:
             pass
+    """
 
     def save(self) -> None:
         logging.info(_('Starting the saving process'))
