@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/09 22:36:18.061073
+#+ Editado:	2023/02/11 00:13:12.933351
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -280,7 +280,7 @@ class Sqlite(iModel):
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
-        for ele in sql_results:
+        for result in sql_results:
             results.append(MediaStatus(
                 id_         = result[0],
                 name        = result[1],
