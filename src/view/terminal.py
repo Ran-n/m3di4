@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/11 15:54:12.384597
+#+ Editado:	2023/02/11 15:54:48.304410
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ class Terminal(iView):
         options = {
                 '+'         :   [_('Save'), self.controller.save],
                 '.'         :   [_('Exit'), self.controller.exit_save],
-                '..'        :   [_('Exit No Save'), self.controller.exit_no_save],
+                '..'        :   [_('Exit (No Save)'), self.controller.exit_no_save],
                 _('+mt')    :   [_('Add Media Type'), self.controller.add_media_type],
                 _('+ms')    :   [_('Add Media Status'), self.controller.add_media_status],
                 _('+m')     :   [_('Add Media'), self.controller.add_media],
