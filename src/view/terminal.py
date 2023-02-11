@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/11 15:48:19.328883
+#+ Editado:	2023/02/11 15:54:12.384597
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -35,17 +35,19 @@ class Terminal(iView):
             self.__menu()
 
     def __menu(self) -> None:
+        """
+        """
+
         options = {
                 '+'         :   [_('Save'), self.controller.save],
-                '.'         :   [_('Exit'), self.controller.exit_no_save],
-                '..'        :   [_('Save & Exit'), self.controller.exit_save],
+                '.'         :   [_('Exit'), self.controller.exit_save],
+                '..'        :   [_('Exit No Save'), self.controller.exit_no_save],
                 _('+mt')    :   [_('Add Media Type'), self.controller.add_media_type],
                 _('+ms')    :   [_('Add Media Status'), self.controller.add_media_status],
                 _('+m')     :   [_('Add Media'), self.controller.add_media],
                 _('+mg')    :   [_('Add Media Group'), self.controller.add_media_group],
                 _('+mi')    :   [_('Add Media Issue'), self.controller.add_media_issue],
         }
-
 
         try:
             options[self.__show_menu(options)][1]()
