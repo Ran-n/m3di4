@@ -183,15 +183,16 @@ CREATE TABLE IF NOT EXISTS "Codec" (
 	CONSTRAINT "Codec_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "ShareSite" (
-	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL UNIQUE,
-	"private"		INTEGER,
-	"link"			TEXT,
-	"id_type"		INTEGER NOT NULL,
-	"id_platform"	INTEGER,
-	"active"		INTEGER NOT NULL,
-	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	"id"				INTEGER NOT NULL UNIQUE,
+	"in_platform_id"	TEXT,
+	"name"				TEXT NOT NULL,
+	"private"			INTEGER,
+	"link"				TEXT NOT NULL UNIQUE,
+	"id_type"			INTEGER NOT NULL,
+	"id_platform"		INTEGER,
+	"active"			INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "ShareSite_FK1" FOREIGN KEY("id_type") REFERENCES "ShareSiteType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "ShareSite_FK2" FOREIGN KEY("id_platform") REFERENCES "Platform"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "ShareSite_PK" PRIMARY KEY("id" AUTOINCREMENT)
