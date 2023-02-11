@@ -9,6 +9,7 @@ Allows you to automatically add useful information about media files to a databa
 - [How to Start](#how-to-start)
 - [Frequent Stuff](#frequent-stuff)
 - [Code Features](#code-features)
+- [Tasks](#tasks)
 - [TODO](#todo)
 
 
@@ -30,6 +31,18 @@ You can not leave the right part of the parameter definition in blank, you eithe
 
 - Logging
 - Configuration file
+
+## Tasks
+
+- [ ] Add in platform id for sharesite table
+- [ ] Create new NK for ShareSite table
+- [ ] Add Function for WarehouseType
+- [ ] Add Function for Warehouse
+- [ ] Add Function for ShareSiteType
+- [ ] Add Function for ShareSite
+- [ ] Add Function for Platform
+- [ ] Make Telegram service
+- [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
 
 ## TODO
 
