@@ -37,3 +37,4 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [ ] Make the CustomTKinter GUI.
 - [ ] Remake the insert media option and add other options.
 - [ ] Migrate the app language everywhere in the code into english.
+- [ ] Allow inserting dates before year 0.
