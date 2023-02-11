@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/11 15:27:15.530935
+#+ Editado:	2023/02/11 15:48:19.328883
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -271,12 +271,18 @@ class Terminal(iView):
                 if restrictions:
                     exit_ = True
                     for compare, error_msg in restrictions:
-                        if not eval(f'{int(date)}{compare}'):
+                        eval_value = True
+                        try:
+                            eval_value = eval(f'{int(date)}{compare}')
+                        except TypeError:
+                            pass
+                        if not eval_value:
                             exit_ = False
                             print(f'{Config().error_symbol} {error_msg}')
                             break
                     if exit_:
                         return date
+
                 else:
                     return date
             else:
@@ -406,7 +412,11 @@ class Terminal(iView):
         print()
 
         # year_start
-        year_start = self.__pick_date(message= _('Start Year'), date_format= '%Y')
+        year_start = self.__pick_date(
+                message     =   _('Start Year'),
+                date_format =   '%Y',
+                nullable    =   True
+        )
         print()
 
         # year_end
@@ -416,7 +426,7 @@ class Terminal(iView):
                 nullable        =   True,
                 equal_to        =   year_start,
                 restrictions    =   [
-                    [f'>={year_start}', _(f'The end year must be equal or bigger than the start one ({year_start})')]
+                    [f'>={year_start}', _(f'The end year must be equal or bigger than the start one ({year_start})')],
                 ]
         )
         print()
@@ -495,27 +505,27 @@ class Terminal(iView):
         print()
 
         # year_start
-        year_start = self.__pick_number(
-                message     =   _('Start year'),
-                nullable    =   True,
-                compare_msg =   [
-                    {'symbol': '>=', 'number': '0', 'message': _('The start year must be equal or bigger than 0')},
-                    {'symbol': '>=', 'number': f'{media.year_start}', 'message': _(f'The start year must be equal or bigger than the start year of its Media ({media.year_start})')},
-                    {'symbol': '<=', 'number': f'{media.year_end}', 'message': _(f'The start year must be equal or smaller than the end year of its Media ({media.year_end})')},
+        year_start = self.__pick_date(
+                message         =   _('Start Year'),
+                date_format     =   '%Y',
+                nullable        =   True,
+                restrictions    =   [
+                    [f'>={media.year_start}',   _(f'The start year must be equal or bigger than the start year of its Media ({media.year_start})')],
+                    [f'<={media.year_end}',     _(f'The start year must be equal or smaller than the end year of its Media ({media.year_end})')]
                 ]
         )
         print()
 
         # year_end
-        year_end = self.__pick_number(
-                message     =   _('End year'),
-                nullable    =   True,
-                equal_to    =   year_start,
-                compare_msg =   [
-                    {'symbol': '>=', 'number': '0', 'message': _('The end year must be equal or bigger than 0')},
-                    {'symbol': '>=', 'number': f'{year_start}', 'message': _(f'The end year must be equal or bigger than the start one ({year_start})')},
-                    {'symbol': '<=', 'number': f'{media.year_end}', 'message': _(f'The end year must be equal or smaller than the end year of its Media ({media.year_end})')},
-                    {'symbol': '>=', 'number': f'{year_start}', 'message': _(f'The end year must be equal or bigger than the start year ({year_start})')}
+        year_end = self.__pick_date(
+                message         =   _('End Year'),
+                date_format     =   '%Y',
+                nullable        =   True,
+                equal_to        =   year_start,
+                restrictions    =   [
+                    [f'>={year_start}',         _(f'The end year must be equal or bigger than the start one ({year_start})')],
+                    [f'>={media.year_start}',   _(f'The end year must be equal or bigger than the start year of its Media ({year_start})')],
+                    [f'<={media.year_end}',     _(f'The end year must be equal or smaller than the end year of its Media ({media.year_end})')]
                 ]
         )
 
