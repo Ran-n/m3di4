@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/05 22:47:18.994335
+#+ Editado:	2023/02/11 13:22:22.843109
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -32,14 +32,28 @@ class Config(object):
             self.file_content = ConfigObj(self.config_file)
             #
 
-            # setup of class attributes
+            ## setup of class attributes
+            # language
             self.language = self.file_content.get('language', 'eng')
+            # ui
             self.ui = self.file_content.get('user_interface', 'terminal')
+            # terminal symbols
+            self.title_symbol = self.file_content.get('title_symbol', '*')
+            self.input_symbol = self.file_content.get('input_symbol', '>')
+            self.option_title_symbol = self.file_content.get('option_title_symbol', '<')
+            self.separator_symbol = self.file_content.get('separator_symbol', '-')
+            self.error_symbol = self.file_content.get('error_symbol', '!!')
+            self.add_symbol = self.file_content.get('add_symbol', '+')
+            self.remove_symbol = self.file_content.get('remove_symbol', '-')
+            self.equal_symbol = self.file_content.get('equal_symbol', '=')
+            # folder locations
             self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
             self.log_folder = self.file_content.get('log_folder', 'media/logs')
+            # database location
             self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
+            # pagination
             self.pagination_limit = self.file_content.get('pagination_limit', 5)
-            #
+            ##
 
             # checking of the attributes
             if self.language not in self.supported_languages.keys():

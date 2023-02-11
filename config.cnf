@@ -10,6 +10,24 @@ language = eng
 # Default: terminal
 user_inteface = terminal
 
+# ui terminal
+# Title symbol decorator
+title_symbol = *
+# what marks the start of a input in the ui
+input_symbol = >
+# what marks the title of a option pick input block
+option_title_symbol = <
+# what symbol is used to mark the separation of blocks of orders
+separator_symbol = -
+# what symbol is used to start a error message to the user
+error_symbol = !!
+# add new element symbol, used in the option listing to indicate adding new one
+add_symbol = +
+# remove element symbol, used in the option listing to indicate removing one
+remove_symbol = -
+# used to indicate an end date want to be set to be the same as a start one
+equal_symbol = =
+
 # PATHS
 # Where do you wish logs to be saved, folder doesnt need to exist
 # Default: media/logs

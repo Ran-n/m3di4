@@ -3,13 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/10 23:40:52.227437
+#+ Editado:	2023/02/11 13:58:44.158159
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
+from datetime import datetime
 from typing import List, Union, Callable
 
 from src.enum import PaginationEnum
@@ -26,6 +27,7 @@ class Terminal(iView):
         self.controller = None
 
         self.line_len = None
+        self.separator = None
         self.tab_len = 3
 
     def start(self) -> None:
@@ -49,7 +51,7 @@ class Terminal(iView):
             options[self.__show_menu(options)][1]()
         except KeyboardInterrupt:
             print()
-            print('-' * self.line_len)
+            print(self.separator)
             print()
             pass
 
@@ -59,19 +61,21 @@ class Terminal(iView):
 
         if not self.line_len:
             self.line_len = biggest_key_len + biggest_value_len + self.tab_len + 5
+            self.separator = Config().separator_symbol * self.line_len
 
-            print('-' * self.line_len)
+            print(self.separator)
             print(center(_('Media4 Manager'), self.line_len))
-            print('-' * self.line_len)
+            print(self.separator)
 
 
-        title = center('*'*3 + ' '+_('MENU')+' ' + '*'*3, self.line_len)[1:-1]
+        title = center(f'{Config().title_symbol*3} ' + _('MENU') + f' {Config().title_symbol*3}', self.line_len-2)
         print()
         print('█' + '▀' * len(title) + '█')
         print('█' + title + '█')
         print('█' + ('▄'*(self.line_len-2)) + '█')
 
-        for key, value in zip(options.keys(), options.values()):
+        #for key, value in zip(options.keys(), options.values()):
+        for key, value in options.items():
             value0 = value[0]
             print(f'▌ {key:<{biggest_key_len}}▐\t{value0:<{biggest_value_len}} ▐'.expandtabs(self.tab_len))
 
@@ -85,17 +89,17 @@ class Terminal(iView):
 
     def save(self) -> None:
         print()
-        print('-' * self.line_len)
-        text = '* ' + _('The Database was saved') + ' *'
+        print(self.separator)
+        text = f'{Config().title_symbol} ' + _('The Database was saved') + f' {Config().title_symbol}'
         print(center(text, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
     def exit(self) -> None:
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         text = _('Goodbye!')
         print(center(text, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
     def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
         """
@@ -107,7 +111,7 @@ class Terminal(iView):
         while option_count == 0:
             logging.warning(message['empty'])
             print()
-            print(f'!! {message["empty"]}')
+            print(f'{Config().error_symbol} {message["empty"]}')
             add_fn()
             option_count += 1
 
@@ -121,17 +125,16 @@ class Terminal(iView):
 
                 lst_option = get_opts_fn(limit= limit, offset= offset)
 
-                title = f'< {message["title"]}'
-                if limit:
-                    title += f' {len(lst_option) + offset}/{option_count}'
+                title = f'{Config().option_title_symbol} {message["title"]}'
+                if limit: title += f' {len(lst_option) + offset}/{option_count}'
                 print(title)
 
                 for index, ele in enumerate(lst_option):
                     print(f'{index + offset + 1}. {ele.name}')
-            choice = input(f'> {message["pick"]}: ')
+            choice = input(f'{Config().input_symbol} {message["pick"]}: ')
 
             # add new element
-            if choice == '+':
+            if choice == Config().add_symbol:
                 add_fn()
                 option_count += 1
                 load_options = True
@@ -171,7 +174,7 @@ class Terminal(iView):
         no_opts = ['n', 'no', 'non']
         str_answer = {0: _('No'), 1: _('Yes')}
 
-        user_input = input(f'> {message}'+_(' [Y/n]')+': ')
+        user_input = input(f'{Config().input_symbol} {message}'+_(' [Y/n]')+': ')
 
         answer = 1  # yes by default
         if user_input.lower() in no_opts: answer = 0
@@ -204,7 +207,7 @@ class Terminal(iView):
 
         while True:
             exit = False
-            number = input(f'> {message}: ')
+            number = input(f'{Config().input_symbol} {message}: ')
             if nullable and number == '':
                 number = None
                 break
@@ -215,15 +218,40 @@ class Terminal(iView):
                             exit = True
                         else:
                             exit = False
-                            print('!! '+ele['message'])
+                            print(f'{Config().error_symbol} '+ele['message'])
                             break
 
                 if exit:
                     break
-            elif equal_to and number == '=':
+            elif equal_to and number == Config().equal_symbol:
                 number = equal_to
                 break
         return number
+
+    @staticmethod
+    def __pick_date(date_format: str = '%Y-%m-%d') -> str:
+        """
+        """
+
+        date_formats = {
+                '%Y'  :   'yyyy',
+                '%m'  :   'mm',
+                '%d'  :   'dd',
+        }
+
+        date_format_ui = date_format
+        for key, value in date_formats.items():
+            date_format_ui = date_format_ui.replace(key, value)
+
+        while True:
+            date = input(f'{Config().input_symbol} ' + _('Date') + f' [{date_format_ui}] : ')
+
+            try:
+                datetime.strptime(date, date_format)
+                return date
+            except:
+                print(f'{Config().error_symbol} ' + _('The date format is incorrect'))
+                continue
 
 
     def add_media_type(self) -> MediaType:
@@ -238,26 +266,26 @@ class Terminal(iView):
 
         logging.info(_('Requesting the user for the information on the media type'))
 
-        title = (2*'*') + ' ' + _('Add Media Type') + ' ' + (2*'*')
-        ender = (2*'*') + ' ' + _('Added Media Type') + ' ' + (2*'*')
+        title = f'{2*Config().title_symbol} ' + _('Add Media Type') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Media Type') + f' {2*Config().title_symbol}'
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(title, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         while True:
-            name = input('> '+_('Name')+': ')
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
             if name != '':
                 if len(self.model.get_by_name(MediaType.table_name, name)) == 0:
                     break
-                print('!! '+_('The given name is already in use'))
+                print(f'{Config().error_symbol} ' + _('The given name is already in use'))
 
         groupable = self.__yn_question(_('Groupable?'))
 
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(ender, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         return MediaType(name = name, groupable = groupable)
 
@@ -273,24 +301,24 @@ class Terminal(iView):
 
         logging.info(_('Requesting the user for the information on the media status'))
 
-        title = (2*'*') + ' ' + _('Add Media Status') + ' ' + (2*'*')
-        ender = (2*'*') + ' ' + _('Added Media Status') + ' ' + (2*'*')
+        title = f'{2*Config().title_symbol} ' + _('Add Media Status') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Media Status') + f' {2*Config().title_symbol}'
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(title, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         while True:
-            name = input('> '+_('Name')+': ')
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
             if name != '':
                 if len(self.model.get_by_name(MediaStatus.table_name, name)) == 0:
                     break
-                print('!! '+_('The given name is already in use'))
+                print(f'{Config().error_symbol} ' + _('The given name is already in use'))
 
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(ender, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         return MediaStatus(name= name)
 
@@ -306,16 +334,16 @@ class Terminal(iView):
 
         logging.info(_('Requesting the user for the information on the media'))
 
-        title = (2*'*') + ' ' + _('Add Media') + ' ' + (2*'*')
-        ender = (2*'*') + ' ' + _('Added Media') + ' ' + (2*'*')
+        title = f'{2*Config().title_symbol} ' + _('Add Media') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Media') + f' {2*Config().title_symbol}'
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(title, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         # name
         while True:
-            name = input('> '+_('Name')+': ')
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
             if name != '':
                 break
         print()
@@ -370,9 +398,9 @@ class Terminal(iView):
         )
 
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(ender, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         return Media(
                 name        =   name,
@@ -396,12 +424,12 @@ class Terminal(iView):
 
         logging.info(_('Requesting the user for the information on the media group'))
 
-        title = (2*'*') + ' ' + _('Add Media Group') + ' ' + (2*'*')
-        ender = (2*'*') + ' ' + _('Added Media Group') + ' ' + (2*'*')
+        title = f'{2*Config().title_symbol} ' + _('Add Media Group') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Media Group') + f' {2*Config().title_symbol}'
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(title, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         # media
         if id_media == None:
@@ -433,11 +461,11 @@ class Terminal(iView):
                 break
             else:
                 logging.info(_('The requested media group to be added already exists, a number change will be adviced'))
-                print('!! '+_('The Media Group already exists, pick another number.'))
+                print('Config().error_symbol '+_('The Media Group already exists, pick another number.'))
         print()
 
         # name
-        name = input('> '+_('Name')+': ')
+        name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
         if name == '':
             name = None
         print()
@@ -468,9 +496,9 @@ class Terminal(iView):
         )
 
         print()
-        print('-' * self.line_len)
-        print(center(ended, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
 
         return MediaGroup(
                 media       =   media,
@@ -492,12 +520,12 @@ class Terminal(iView):
 
         logging.info(_('Requesting the user for the information on the media issue'))
 
-        title = (2*'*') + ' ' + _('Add Media Issue') + ' ' + (2*'*')
-        ender = (2*'*') + ' ' + _('Added Media Issue') + ' ' + (2*'*')
+        title = f'{2*Config().title_symbol} ' + _('Add Media Issue') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Media Issue') + f' {2*Config().title_symbol}'
         print()
-        print('-' * self.line_len)
+        print(self.separator)
         print(center(title, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
 
         # media
         media = self.__pick_from_options(
@@ -541,23 +569,23 @@ class Terminal(iView):
                 break
             else:
                 logging.info(_('The requested media issue to be added already exists, a number change will be adviced'))
-                print('!! '+_('The Media Issue already exists, pick another number.'))
+                print(f'{Config().error_symbol} '+_('The Media Issue already exists, pick another number.'))
         print()
 
         # name
-        name = input('> '+_('Name')+': ')
+        name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
         if name == '':
             name = None
         print()
 
 
         # date
-        date = input('> '+_('Date')+': ')
+        date = self.__pick_date()
 
         print()
-        print('-' * self.line_len)
-        print(center(ended, self.line_len))
-        print('-' * self.line_len)
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
 
         return MediaIssue(
                 position    =   position,
