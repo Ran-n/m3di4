@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/11 14:20:29.874163
+#+ Editado:	2023/02/11 15:27:15.530935
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -206,7 +206,7 @@ class Terminal(iView):
         """
 
         while True:
-            exit = False
+            exit_ = False
             number = input(f'{Config().input_symbol} {message}: ')
             if nullable and number == '':
                 number = None
@@ -215,13 +215,13 @@ class Terminal(iView):
                 for ele in compare_msg:
                     if ele['number'] != None:
                         if eval(number + ele['symbol'] + ele['number']):
-                            exit = True
+                            exit_ = True
                         else:
-                            exit = False
+                            exit_ = False
                             print(f'{Config().error_symbol} '+ele['message'])
                             break
 
-                if exit:
+                if exit_:
                     break
             elif equal_to and number == Config().equal_symbol:
                 number = equal_to
@@ -229,8 +229,20 @@ class Terminal(iView):
         return number
 
     @staticmethod
-    def __pick_date(date_format: str = '%Y-%m-%d') -> str:
+    def __is_valid_date(date: str, date_format: str) -> bool:
         """
+        """
+
+        try:
+            datetime.strptime(date, date_format)
+        except:
+            return False
+        return True
+
+    def __pick_date(self, message: str, date_format: str = '%Y-%m-%d', nullable: bool = False, equal_to: str = None, restrictions: List[List[str]] = None) -> str:
+        """
+        restrictions
+            [['>=15', 'Is smaller than 15']]
         """
 
         date_formats = {
@@ -247,14 +259,28 @@ class Terminal(iView):
             date_format_ui = date_format_ui.replace(key, value)
 
         while True:
-            date = input(f'{Config().input_symbol} ' + _('Date') + f' [{date_format_ui}] : ')
+            date = input(f'{Config().input_symbol} {message} [{date_format_ui}]: ')
 
-            try:
-                datetime.strptime(date, date_format)
-                return date
-            except:
+            if nullable and (date == ''):
+                return None
+
+            if (equal_to != None) and (date == Config().equal_symbol):
+                return equal_to
+
+            if self.__is_valid_date(date= date, date_format= date_format):
+                if restrictions:
+                    exit_ = True
+                    for compare, error_msg in restrictions:
+                        if not eval(f'{int(date)}{compare}'):
+                            exit_ = False
+                            print(f'{Config().error_symbol} {error_msg}')
+                            break
+                    if exit_:
+                        return date
+                else:
+                    return date
+            else:
                 print(f'{Config().error_symbol} ' + _('The date format is incorrect'))
-                continue
 
 
     def add_media_type(self) -> MediaType:
@@ -380,25 +406,20 @@ class Terminal(iView):
         print()
 
         # year_start
-        year_start = self.__pick_number(
-                message     =   _('Start Year'),
-                nullable    =   True,
-                compare_msg =   [
-                    {'symbol': '>=', 'number': '0', 'message': _('The start year must be equal or bigger than 0')}
-                ]
-        )
+        year_start = self.__pick_date(message= _('Start Year'), date_format= '%Y')
         print()
 
         # year_end
-        year_end = self.__pick_number(
-                message     =   _('End Year'),
-                nullable    =   True,
-                equal_to    =   year_start,
-                compare_msg =   [
-                    {'symbol': '>=', 'number': '0', 'message': _('The year end year must be equal or bigger than 0')},
-                    {'symbol': '>=', 'number': f'{year_start}', 'message': _(f'The end year must be equal or bigger than the start one ({year_start})')}
+        year_end = self.__pick_date(
+                message         =   _('End Year'),
+                date_format     =   '%Y',
+                nullable        =   True,
+                equal_to        =   year_start,
+                restrictions    =   [
+                    [f'>={year_start}', _(f'The end year must be equal or bigger than the start one ({year_start})')]
                 ]
         )
+        print()
 
         print()
         print(self.separator)
@@ -583,7 +604,7 @@ class Terminal(iView):
 
 
         # date
-        date = self.__pick_date()
+        date = self.__pick_date(message= _('Date'))
 
         print()
         print(self.separator)
