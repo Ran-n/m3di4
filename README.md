@@ -38,3 +38,4 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [ ] Remake the insert media option and add other options.
 - [ ] Migrate the app language everywhere in the code into english.
 - [ ] Allow inserting dates before year 0.
+- [ ] Check if a date of an issue is in between the appropiate years according to its group/media
