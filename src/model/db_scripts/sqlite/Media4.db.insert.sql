@@ -27,28 +27,28 @@ INSERT INTO "LanguageDescription" ("id", "description", "id_language") VALUES (8
 INSERT INTO "LanguageDescription" ("id", "description", "id_language") VALUES (9, "Idioma romance con más de 460 millones de hablantes como lengua materna, el español se originó en la región de Castilla de España, pero ahora se habla ampliamente en muchos países de América. Tiene una rica historia, evolucionando a partir de una mezcla de latín, visigodo y mozárabe, y es ahora el idioma oficial de España. El español se utiliza ampliamente en varios aspectos de la vida diaria, incluyendo educación, medios, gobierno y comercio, y es también uno de los seis idiomas oficiales de las Naciones Unidas.", 3);
 
 INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 1, 1);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 2, 2);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 3, 3);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 4, 2);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 5, 1);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 5, 3);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 6, 2);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 7, 2);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 8, 1);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 8, 3);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 9, 1);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 10, 1);
-INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (1, 11, 3);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (2, 2, 2);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (3, 3, 3);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (4, 4, 2);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (5, 5, 1);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (6, 5, 3);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (7, 6, 2);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (8, 7, 2);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (9, 8, 1);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (10, 8, 3);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (11, 9, 1);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (12, 10, 1);
+INSERT INTO "LanguageNameLanguage" ("id", "id_language_name", "id_language") VALUES (13, 11, 3);
 
 INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 1, 2);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 2, 1);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 3, 3);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 4, 2);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 5, 1);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 6, 3);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 7, 2);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 8, 1);
-INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (1, 9, 3);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (2, 2, 1);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (3, 3, 3);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (4, 4, 2);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (5, 5, 1);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (6, 6, 3);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (7, 7, 2);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (8, 8, 1);
+INSERT INTO "LanguageDescriptionLanguage" ("id", "id_language_description", "id_language") VALUES (9, 9, 3);
 
 
 INSERT INTO "Platform" ("id", "name", "description", "active") VALUES (1, "Telegram", "Telegram is a messaging app with a focus on speed and security, it’s super-fast, simple and free. You can use Telegram on all your devices at the same time — your messages sync seamlessly across any number of your phones, tablets or computers. Telegram has over 700 million monthly active users and is one of the 10 most downloaded apps in the world.\n\nWith Telegram, you can send messages, photos, videos and files of any type (doc, zip, mp3, etc), as well as create groups for up to 200,000 people or channels for broadcasting to unlimited audiences. You can write to your phone contacts and find people by their usernames. As a result, Telegram is like SMS and email combined — and can take care of all your personal or business messaging needs. In addition to this, we support end-to-end encrypted voice and video calls, as well as voice chats in groups for thousands of participants.", 1);
