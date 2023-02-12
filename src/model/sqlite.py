@@ -33,7 +33,7 @@ class Sqlite(iModel):
         if(self.__get_num_tables_db() < Config().get_num_entities()):
             logging.info(_('Creating the sqlite database'))
             # xFCR change path and add it to a config file
-            self.cur.executescript(''.join(load_file('./src/model/db_creation/sqlite/Media4.db.create.sql')))
+            self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.create.sql')))
 
     def __get_num_tables_db(self) -> int:
         self.connect_db()
