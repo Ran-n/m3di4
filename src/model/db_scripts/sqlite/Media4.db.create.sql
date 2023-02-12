@@ -257,6 +257,7 @@ CREATE TABLE IF NOT EXISTS "WarehouseNameLanguage" (
 CREATE TABLE IF NOT EXISTS "LanguageName" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
+	"description"	TEXT,
 	"id_language"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
