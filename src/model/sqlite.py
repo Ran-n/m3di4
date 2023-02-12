@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/11 00:13:12.933351
+#+ Editado:	2023/02/12 14:23:50.830740
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -32,7 +32,6 @@ class Sqlite(iModel):
         # if the DB doesnt have all the number of supposed tables, run the creation script.
         if(self.__get_num_tables_db() < Config().get_num_entities()):
             logging.info(_('Creating the sqlite database'))
-            # xFCR change path and add it to a config file
             self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.create.sql')))
 
     def __get_num_tables_db(self) -> int:
