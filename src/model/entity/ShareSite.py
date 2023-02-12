@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 14:52:39.247289
-#+ Editado:	2023/02/04 21:29:17.733377
+#+ Editado:	2023/02/12 13:38:14.931577
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -16,6 +16,7 @@ class ShareSite:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSite'))
     name: str
     type_: ShareSiteType
+    in_platform_id: Optional[int] = field(default=None)
     private: Optional[int] = field(default=None)
     link: Optional[str] = field(default=None)
     platform: Optional[Platform] = field(default=None)
