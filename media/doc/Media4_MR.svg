@@ -119,8 +119,8 @@
     <rect style="fill: #ffffff" x="1794.19" y="2324.1" width="172.3" height="18"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1794.19" y="2324.1" width="172.3" height="18"/>
     <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1880.34" y="2338.1">LanguageName</text>
-    <rect style="fill: #ffffff" x="1794.19" y="2342.1" width="172.3" height="84"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1794.19" y="2342.1" width="172.3" height="84"/>
+    <rect style="fill: #ffffff" x="1794.19" y="2342.1" width="172.3" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1794.19" y="2342.1" width="172.3" height="100"/>
     <polygon style="fill: #000000" points="1797.19,2352.1 1799.19,2355.1 1801.19,2352.1 1799.19,2349.1 "/>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2358.1">id</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2358.1">integer</text>
@@ -128,21 +128,24 @@
     <ellipse style="fill: #000000" cx="1799.19" cy="2368.1" rx="2" ry="2"/>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2374.1">name</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2374.1">string</text>
-    <ellipse style="fill: #000000" cx="1799.19" cy="2384.1" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2390.1">id_language</text>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2390.1">integer</text>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="1799.19" cy="2384.1" rx="2" ry="2"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2390.1">description</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2390.1">string</text>
     <ellipse style="fill: #000000" cx="1799.19" cy="2400.1" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2406.1">added_ts</text>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2406.1">datetime</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2406.1">id_language</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2406.1">integer</text>
     <ellipse style="fill: #000000" cx="1799.19" cy="2416.1" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2422.1">modified_ts</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2422.1">added_ts</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2422.1">datetime</text>
+    <ellipse style="fill: #000000" cx="1799.19" cy="2432.1" rx="2" ry="2"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1803.19" y="2438.1">modified_ts</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1897.89" y="2438.1">datetime</text>
   </g>
   <g>
-    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1794.19,2384.1 1742.34,2384.1 1742.34,2532.22 1700.22,2532.22 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1794.19,2400.1 1742.34,2400.1 1742.34,2532.22 1700.22,2532.22 "/>
     <polygon style="fill: #000000" points="1692.72,2532.22 1702.72,2527.22 1700.22,2532.22 1702.72,2537.22 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1692.72,2532.22 1702.72,2527.22 1700.22,2532.22 1702.72,2537.22 "/>
-    <text font-size="9.6" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="1790.19" y="2380.1">1</text>
+    <text font-size="9.6" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="1790.19" y="2396.1">1</text>
     <text font-size="9.6" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1694.48" y="2528.22">n</text>
   </g>
   <g>
