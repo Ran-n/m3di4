@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/12 15:31:12.981773 )
+[//]: # (+ Editado:	2023/02/12 16:51:01.633268 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -48,12 +48,13 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [ ] Make Add Function for Warehouse
 - [ ] Make Add Function for ShareSiteType
 - [ ] Make Add Function for ShareSite
-- [ ] Make Add Function for Platform
+- [X] Make Add Function for Platform
 - [ ] Make Make Telegram service
 - [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
 
 ## TODO
 
+- [ ] Separate the i18n tables into Name and Description.
 - [ ] Make "info.py" a service.
 - [ ] Make the CustomTKinter GUI.
 - [ ] Remake the insert media option and add other options.
