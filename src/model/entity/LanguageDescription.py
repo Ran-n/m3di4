@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/21 01:24:01.546584
-#+ Editado:	2023/02/12 20:59:23.264584
+#+ Creado: 	2023/02/12 20:59:37.407686
+#+ Editado:	2023/02/12 20:59:57.232593
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -12,9 +12,9 @@ from src.utils import Config
 from src.model.entity import Language
 # ------------------------------------------------------------------------------
 @dataclass
-class LanguageName:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageName'))
-    name: str
+class LanguageDescription:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageDescription'))
+    description: str
     language: Language
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)

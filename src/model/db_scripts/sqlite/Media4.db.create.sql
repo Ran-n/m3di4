@@ -257,13 +257,22 @@ CREATE TABLE IF NOT EXISTS "WarehouseNameLanguage" (
 CREATE TABLE IF NOT EXISTS "LanguageName" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
-	"description"	TEXT,
 	"id_language"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "LanguageName_FK1" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "LanguageName_NK" UNIQUE("name", "id_language"),
 	CONSTRAINT "LanguageName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "LanguageDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_language"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "LanguageDescription_FK1" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "LanguageDescription_NK" UNIQUE("description", "id_language"),
+	CONSTRAINT "LanguageDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "LanguageNameLanguage" (
 	"id"				INTEGER NOT NULL UNIQUE,
@@ -275,6 +284,17 @@ CREATE TABLE IF NOT EXISTS "LanguageNameLanguage" (
 	CONSTRAINT "LanguageNameLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "LanguageNameLanguage_NK" UNIQUE("id_language_name", "id_language"),
 	CONSTRAINT "LanguageNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "LanguageDescriptionLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_language_description"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "LanguageDescriptionLanguage_FK1" FOREIGN KEY("id_language_description") REFERENCES "LanguageDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "LanguageDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "LanguageDescriptionLanguage_NK" UNIQUE("id_language_description", "id_language"),
+	CONSTRAINT "LanguageDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "LanguageCode" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -738,9 +758,23 @@ AFTER UPDATE ON "LanguageName" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
+CREATE TRIGGER update_language_description
+AFTER UPDATE ON "LanguageDescription" BEGIN
+	UPDATE "LanguageDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
 CREATE TRIGGER update_language_name_language
 AFTER UPDATE ON "LanguageNameLanguage" BEGIN
 	UPDATE "LanguageNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_language_description_language
+AFTER UPDATE ON "LanguageDescriptionLanguage" BEGIN
+	UPDATE "LanguageDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
