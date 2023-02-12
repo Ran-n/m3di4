@@ -36,6 +36,10 @@
     "ShareSiteSubs": "ShareSiteSubs",
     "ShareSiteType": "ShareSiteType",
     "Warehouse": "Warehouse",
+    "WarehouseName": "WarehouseName",
+    "WarehouseNameLanguage": "WarehouseNameLanguage",
     "WarehouseType": "WarehouseType",
+    "WarehouseTypeName": "WarehouseTypeName",
+    "WarehouseTypeNameLanguage": "WarehouseTypeNameLanguage",
     "Web": "Web"
 }
