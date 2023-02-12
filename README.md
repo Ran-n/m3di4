@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/12 21:20:52.600330 )
+[//]: # (+ Editado:	2023/02/12 23:22:55.971171 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -42,6 +42,7 @@ You can not leave the right part of the parameter definition in blank, you eithe
 
 ## Tasks
 
+- [ ] Make a simplified version of the diagrams
 - [X] Add in platform id for sharesite table
 - [X] Create new NK for ShareSite table
 - [ ] Make Add Function for WarehouseType
