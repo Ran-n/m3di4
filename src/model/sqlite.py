@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/12 14:23:50.830740
+#+ Editado:	2023/02/12 14:51:47.981313
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -33,6 +33,9 @@ class Sqlite(iModel):
         if(self.__get_num_tables_db() < Config().get_num_entities()):
             logging.info(_('Creating the sqlite database'))
             self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.create.sql')))
+            if Config().populate_db:
+                logging.info(_('Populating the sqlite database'))
+                self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.insert.sql')))
 
     def __get_num_tables_db(self) -> int:
         self.connect_db()

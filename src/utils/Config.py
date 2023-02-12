@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/11 13:22:22.843109
+#+ Editado:	2023/02/12 14:49:58.111755
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -35,8 +35,12 @@ class Config(object):
             ## setup of class attributes
             # language
             self.language = self.file_content.get('language', 'eng')
+            # database
+            self.populate_db = self.file_content.get('user_interface', 'true').capitalize()
             # ui
             self.ui = self.file_content.get('user_interface', 'terminal')
+            # pagination
+            self.pagination_limit = self.file_content.get('pagination_limit', 5)
             # terminal symbols
             self.title_symbol = self.file_content.get('title_symbol', '*')
             self.input_symbol = self.file_content.get('input_symbol', '>')
@@ -51,8 +55,6 @@ class Config(object):
             self.log_folder = self.file_content.get('log_folder', 'media/logs')
             # database location
             self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
-            # pagination
-            self.pagination_limit = self.file_content.get('pagination_limit', 5)
             ##
 
             # checking of the attributes

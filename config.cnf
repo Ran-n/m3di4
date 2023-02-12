@@ -1,16 +1,29 @@
-# LANGUAGE
+## LANGUAGE
 # Language of the app
 # Accepted: glg(Galician), eng(English) and cas(Spanish)
 # Default: eng
 language = eng
+##
 
-# UI
+## DATABASE
+# indicates if the insert script with curated inserts
+# should be run or not if not run the database will
+# be completetly empty
+populate_db = true
+##
+
+## UI
 # What user interface do you wish to use
 # Accepted: terminal, customtkinter
 # Default: terminal
 user_inteface = terminal
 
 # ui terminal
+# pagination
+# how many elements you want to be shown at once.
+pagination_limit = 5
+
+# symbols
 # Title symbol decorator
 title_symbol = *
 # what marks the start of a input in the ui
@@ -27,8 +40,9 @@ add_symbol = +
 remove_symbol = -
 # used to indicate an end date want to be set to be the same as a start one
 equal_symbol = =
+##
 
-# PATHS
+## PATHS
 # Where do you wish logs to be saved, folder doesnt need to exist
 # Default: media/logs
 log_folder = media/logs
@@ -40,7 +54,4 @@ db_file_location = media/db/Database.db
 # do NOT change unless you move them from this default location.
 # Default: media/i18n
 i18n_folder = media/i18n
-
-# PAGINATION
-# how many elements you want to be shown at once.
-pagination_limit = 5
+##
