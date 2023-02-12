@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/02/10 18:01:50.430421
+#+ Editado:	2023/02/12 16:26:39.441556
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
@@ -12,6 +12,7 @@ import customtkinter
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class CustomTKinter(iView):
     def __init__(self) -> None:
@@ -46,5 +47,8 @@ class CustomTKinter(iView):
         pass
 
     def add_media_issue(self) -> MediaIssue:
+        pass
+
+    def add_platform(self) -> Platform:
         pass
 # ------------------------------------------------------------------------------
