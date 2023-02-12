@@ -126,6 +126,17 @@ CREATE TABLE IF NOT EXISTS "AppVersion" (
 	CONSTRAINT "AppVersion_NK" UNIQUE("id_app", "number"),
 	CONSTRAINT "AppVersion_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "WarehouseTypeName" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"name"				TEXT NOT NULL,
+	"description"		TEXT,
+	"id_warehouse_type"	INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseTypeName_FK1" FOREIGN KEY("id_warehouse_type") REFERENCES "WarehouseType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseTypeName_NK" UNIQUE("name", "id_warehouse_type"),
+	CONSTRAINT "WarehouseTypeName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
@@ -133,7 +144,7 @@ CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 	"id_media_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediatypeName_FK1" FOREIGN KEY("id_media_type") REFERENCES "MediaType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaTypeName_FK1" FOREIGN KEY("id_media_type") REFERENCES "MediaType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "MediaTypeName_NK" UNIQUE("name", "id_media_type"),
 	CONSTRAINT "MediaTypeName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
@@ -211,6 +222,37 @@ CREATE TABLE IF NOT EXISTS "Warehouse" (
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Warehouse_FK1" FOREIGN KEY("id_type") REFERENCES "WarehouseType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "Warehouse_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "WarehouseName" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"name"			TEXT NOT NULL,
+	"description"	TEXT,
+	"id_warehouse"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseName_FK1" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseName_NK" UNIQUE("name", "id_warehouse"),
+	CONSTRAINT "WarehouseName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "WarehouseTypeNameLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_warehouse_type_name"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseTypeNameLanguage_FK1" FOREIGN KEY("id_warehouse_type_name") REFERENCES "WarehouseTypeName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseTypeNameLanguage_NK" UNIQUE("id_warehouse_type_name", "id_language"),
+	CONSTRAINT "WarehouseTypeNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "WarehouseNameLanguage" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"id_warehouse_name"	INTEGER NOT NULL,
+	"id_language"		INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseNameLanguage_FK1" FOREIGN KEY("id_warehouse_name") REFERENCES "WarehouseName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseNameLanguage_NK" UNIQUE("id_warehouse_name", "id_language"),
+	CONSTRAINT "WarehouseNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "LanguageName" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -611,6 +653,13 @@ AFTER UPDATE ON "AppVersion" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
+CREATE TRIGGER update_warehouse_type_name
+AFTER UPDATE ON "WarehouseTypeName" BEGIN
+	UPDATE "WarehouseTypeName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
 CREATE TRIGGER update_media_type_name
 AFTER UPDATE ON "MediaTypeName" BEGIN
 	UPDATE "MediaTypeName"
@@ -656,6 +705,27 @@ END;
 CREATE TRIGGER update_warehouse
 AFTER UPDATE ON "Warehouse" BEGIN
 	UPDATE "Warehouse"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_warehouse_name
+AFTER UPDATE ON "WarehouseName" BEGIN
+	UPDATE "WarehouseName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_warehouse_type_name_language
+AFTER UPDATE ON "WarehouseTypeNameLanguage" BEGIN
+	UPDATE "WarehouseTypeNameLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_warehouse_name_language
+AFTER UPDATE ON "WarehouseNameLanguage" BEGIN
+	UPDATE "WarehouseNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
