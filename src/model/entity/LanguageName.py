@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 01:24:01.546584
-#+ Editado:	2023/02/04 21:28:45.235397
+#+ Editado:	2023/02/12 14:36:51.956874
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -16,6 +16,7 @@ class LanguageName:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageName'))
     name: str
     language: Language
+    description: Optional[str] = field(default=None)
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
