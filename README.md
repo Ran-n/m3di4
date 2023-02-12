@@ -34,14 +34,14 @@ You can not leave the right part of the parameter definition in blank, you eithe
 
 ## Tasks
 
-- [ ] Add in platform id for sharesite table
-- [ ] Create new NK for ShareSite table
-- [ ] Add Function for WarehouseType
-- [ ] Add Function for Warehouse
-- [ ] Add Function for ShareSiteType
-- [ ] Add Function for ShareSite
-- [ ] Add Function for Platform
-- [ ] Make Telegram service
+- [X] Add in platform id for sharesite table
+- [X] Create new NK for ShareSite table
+- [ ] Make Add Function for WarehouseType
+- [ ] Make Add Function for Warehouse
+- [ ] Make Add Function for ShareSiteType
+- [ ] Make Add Function for ShareSite
+- [ ] Make Add Function for Platform
+- [ ] Make Make Telegram service
 - [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
 
 ## TODO
