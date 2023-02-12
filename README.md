@@ -1,3 +1,10 @@
+[//]: # ( -*- coding: utf-8 -*- )
+[//]: # ( ---------------------------------------------------------------------- )
+[//]: # (+ Autor:  	Ran# )
+[//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
+[//]: # (+ Editado:	2023/02/12 15:31:12.981773 )
+[//]: # ( ---------------------------------------------------------------------- )
+
 # media4
 
 Manager for your own personal media library.\
@@ -9,6 +16,7 @@ Allows you to automatically add useful information about media files to a databa
 - [How to Start](#how-to-start)
 - [Frequent Stuff](#frequent-stuff)
 - [Code Features](#code-features)
+- [Documentation](doc/index.md#documentation)
 - [Tasks](#tasks)
 - [TODO](#todo)
 
