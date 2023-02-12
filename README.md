@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/12 16:51:01.633268 )
+[//]: # (+ Editado:	2023/02/12 21:20:52.600330 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -54,7 +54,10 @@ You can not leave the right part of the parameter definition in blank, you eithe
 
 ## TODO
 
-- [ ] Separate the i18n tables into Name and Description.
+- [ ] Separate/Make the i18n tables into Name and Description.
+    - [X] LanguageName
+    - [ ] Platform
+    - [ ] ShareSiteType
 - [ ] Make "info.py" a service.
 - [ ] Make the CustomTKinter GUI.
 - [ ] Remake the insert media option and add other options.
