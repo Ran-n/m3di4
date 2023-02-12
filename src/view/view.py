@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/10 18:01:21.790652
+#+ Editado:	2023/02/12 16:01:43.087645
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -15,6 +15,7 @@ from src.exception import InheritException
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class View:
     def __init__(self, strategy: iView, model: iModel) -> None:
@@ -53,4 +54,7 @@ class View:
 
     def add_media_issue(self) -> MediaIssue:
         return self.strategy.add_media_issue()
+
+    def add_platform(self) -> Platform:
+        return self.strategy.add_platform()
 # ------------------------------------------------------------------------------

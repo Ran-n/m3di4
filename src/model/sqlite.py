@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/12 14:51:47.981313
+#+ Editado:	2023/02/12 16:17:14.201002
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -20,6 +20,7 @@ from src.utils import Config
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -82,6 +83,12 @@ class Sqlite(iModel):
 
     def exists_media_issue(self, obj: MediaIssue) -> bool:
         sql_result = self.get_cur_db().execute(f'select id from "{MediaIssue.table_name}" where id_media="{obj.media.id_}" and id_media_group="{obj.media_group.id_}" and position="{obj.position}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+    def exists_platform(self, obj: Platform) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{Platform.table_name}" where name like "{obj.name}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -311,5 +318,8 @@ class Sqlite(iModel):
 
     def insert_media_issue(self, obj: MediaGroup) -> None:
         self.get_cur_db().execute(f'insert into "{MediaIssue.table_name}" (position, name, date, id_media, id_media_group, active) values (?, ?, ?, ?, ?, ?)', (obj.position, obj.name, obj.date, obj.media.id_, obj.media_group.id_, obj.active))
+
+    def insert_platform(self, obj: Platform) -> None:
+        self.get_cur_db().execute(f'insert into "{Platform.table_name}" (name, description, active) values (?, ?, ?)', (obj.name, obj.desc, obj.active))
 
 # ------------------------------------------------------------------------------

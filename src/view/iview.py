@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/02/10 17:58:04.727574
+#+ Editado:	2023/02/12 16:01:36.491883
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -11,6 +11,7 @@ from abc import ABC, abstractmethod
 # ------------------------------------------------------------------------------
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class iView(ABC):
     @abstractmethod
@@ -43,6 +44,10 @@ class iView(ABC):
 
     @abstractmethod
     def add_media_issue(self) -> MediaIssue:
+        pass
+
+    @abstractmethod
+    def add_platform(self) -> Platform:
         pass
 # ------------------------------------------------------------------------------
 

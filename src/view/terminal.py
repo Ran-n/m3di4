@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/11 15:54:48.304410
+#+ Editado:	2023/02/12 16:16:36.092662
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,6 +18,7 @@ from src.utils import Config, center
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
@@ -47,6 +48,7 @@ class Terminal(iView):
                 _('+m')     :   [_('Add Media'), self.controller.add_media],
                 _('+mg')    :   [_('Add Media Group'), self.controller.add_media_group],
                 _('+mi')    :   [_('Add Media Issue'), self.controller.add_media_issue],
+                _('+p')     :   [_('Add Platform'), self.controller.add_platform],
         }
 
         try:
@@ -605,7 +607,7 @@ class Terminal(iView):
                 break
             else:
                 logging.info(_('The requested media issue to be added already exists, a number change will be adviced'))
-                print(f'{Config().error_symbol} '+_('The Media Issue already exists, pick another number.'))
+                print(f'{Config().error_symbol} '+ _('The Media Issue already exists, pick another number.'))
         print()
 
         # name
@@ -629,6 +631,51 @@ class Terminal(iView):
                 media_group =   media_group,
                 name        =   name,
                 date        =   date
+        )
+
+    def add_platform(self) -> Platform:
+        """
+        Terminal View function for adding a platform element.
+
+        @ Input:
+
+        @ Output:
+        ╚═  Platform    -   The Platform created by the user.
+        """
+
+        logging.info(_('Requesting the user for the information on the platform'))
+
+        title = f'{2*Config().title_symbol} ' + _('Add Platform') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Platform') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+        # name
+        while True:
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
+            if name != '':
+                if self.model.exists(Platform(name= name)):
+                    print(f'{Config().error_symbol} ' + _('The platform already exists, pick another name.'))
+                else:
+                    break
+        print()
+
+        # description
+        desc = input(f'{Config().input_symbol} ' + _('Description') + ': ')
+        if desc == '':
+            desc = None
+        print()
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+
+        return Platform(
+                name    =   name.capitalize(),
+                desc    =   desc
         )
 
 # ------------------------------------------------------------------------------

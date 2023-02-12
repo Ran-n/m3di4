@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/09 22:36:02.822194
+#+ Editado:	2023/02/12 16:06:27.669634
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -19,6 +19,7 @@ from src.exception import InheritException
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -48,12 +49,15 @@ class Model:
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform]) -> bool:
         logging.info(_(f'Checking on table "{obj.table_name}" if the information already exists'))
         if isinstance(obj, MediaGroup):
             return self.model.exists_media_group(obj)
         elif isinstance(obj, MediaIssue):
             return self.model.exists_media_issue(obj)
+        elif isinstance(obj, Platform):
+            return self.model.exists_platform(obj)
+
 
 
     # GET NUM
@@ -104,7 +108,7 @@ class Model:
 
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue, Platform]) -> Union[None, int]:
         logging.info(_(f'Inserting new value in the table "{obj.table_name}"'))
         if isinstance(obj, MediaStatus):
             return self.model.insert_media_status(obj)
@@ -116,4 +120,8 @@ class Model:
             return self.model.insert_media_group(obj)
         elif isinstance(obj, MediaIssue):
             return self.model.insert_media_issue(obj)
+        elif isinstance(obj, Platform):
+            return self.model.insert_platform(obj)
+
+
 # ------------------------------------------------------------------------------
