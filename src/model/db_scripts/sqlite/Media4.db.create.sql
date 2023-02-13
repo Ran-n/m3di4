@@ -414,16 +414,6 @@ CREATE TABLE IF NOT EXISTS "LanguageName" (
 	CONSTRAINT "LanguageName_NK" UNIQUE("name", "id_language"),
 	CONSTRAINT "LanguageName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "PlatformName" (
-	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL,
-	"id_platform"	INTEGER NOT NULL,
-	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "PlatformName_FK1" FOREIGN KEY("id_platform") REFERENCES "Platform"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "PlatformName_NK" UNIQUE("name", "id_platform"),
-	CONSTRAINT "PlatformName_PK" PRIMARY KEY("id" AUTOINCREMENT)
-);
 CREATE TABLE IF NOT EXISTS "WarehouseTypeName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
@@ -467,17 +457,6 @@ CREATE TABLE IF NOT EXISTS "CountryName" (
 	CONSTRAINT "CountryName_NK" UNIQUE("name", "id_country"),
 	CONSTRAINT "CountryName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "WarehouseName" (
-	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL,
-	"description"	TEXT,
-	"id_warehouse"	INTEGER NOT NULL,
-	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "WarehouseName_FK1" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "WarehouseName_NK" UNIQUE("name", "id_warehouse"),
-	CONSTRAINT "WarehouseName_PK" PRIMARY KEY("id" AUTOINCREMENT)
-);
 CREATE TABLE IF NOT EXISTS "MediaName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
@@ -511,17 +490,6 @@ CREATE TABLE IF NOT EXISTS "LanguageNameLanguage" (
 	CONSTRAINT "LanguageNameLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "LanguageNameLanguage_NK" UNIQUE("id_language_name", "id_language"),
 	CONSTRAINT "LanguageNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
-);
-CREATE TABLE IF NOT EXISTS "PlatformNameLanguage" (
-	"id"				INTEGER NOT NULL UNIQUE,
-	"id_platform_name"	INTEGER NOT NULL,
-	"id_language"		INTEGER NOT NULL,
-	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "PlatformNameLanguage_FK1" FOREIGN KEY("id_platform_name") REFERENCES "PlatformName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "PlatformNameLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "PlatformNameLanguage_NK" UNIQUE("id_platform_name", "id_language"),
-	CONSTRAINT "PlatformNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "WarehouseTypeNameLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
@@ -566,16 +534,6 @@ CREATE TABLE IF NOT EXISTS "CountryNameLanguage" (
 	CONSTRAINT "CountryNameLanguage_NK" UNIQUE("id_country_name", "id_language"),
 	CONSTRAINT "CountryNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "WarehouseNameLanguage" (
-	"id"				INTEGER NOT NULL UNIQUE,
-	"id_warehouse_name"	INTEGER NOT NULL,
-	"id_language"		INTEGER NOT NULL,
-	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "WarehouseNameLanguage_FK1" FOREIGN KEY("id_warehouse_name") REFERENCES "WarehouseName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "WarehouseNameLanguage_NK" UNIQUE("id_warehouse_name", "id_language"),
-	CONSTRAINT "WarehouseNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
-);
 CREATE TABLE IF NOT EXISTS "MediaNameLanguage" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"id_media_name"	INTEGER NOT NULL,
@@ -614,6 +572,16 @@ CREATE TABLE IF NOT EXISTS "PlatformDescription" (
 	CONSTRAINT "PlatformDescription_NK" UNIQUE("description", "id_platform"),
 	CONSTRAINT "PlatformDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "WarehouseDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT,
+	"id_warehouse"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseName_FK1" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseName_NK" UNIQUE("description", "id_warehouse"),
+	CONSTRAINT "WarehouseName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 /***/
 
 
@@ -642,6 +610,17 @@ CREATE TABLE IF NOT EXISTS "PlatformDescriptionLanguage" (
 	CONSTRAINT "PlatformDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "PlatformDescriptionLanguage_NK" UNIQUE("id_platform_description", "id_language"),
 	CONSTRAINT "PlatformDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+CREATE TABLE IF NOT EXISTS "WarehouseDescriptionLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_warehouse_description"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseDescriptionLanguage_FK1" FOREIGN KEY("id_warehouse_description") REFERENCES "WarehouseDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseDescriptionLanguage_NK" UNIQUE("id_warehouse_description", "id_language"),
+	CONSTRAINT "WarehouseDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 /** **/
 
@@ -857,12 +836,6 @@ AFTER UPDATE ON "LanguageName" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_platform_name
-AFTER UPDATE ON "PlatformName" BEGIN
-	UPDATE "PlatformName"
-	SET modified_ts = current_timestamp
-	WHERE rowid = new.rowid;
-END;
 CREATE TRIGGER update_warehouse_type_name
 AFTER UPDATE ON "WarehouseTypeName" BEGIN
 	UPDATE "WarehouseTypeName"
@@ -887,12 +860,6 @@ AFTER UPDATE ON "CountryName" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_warehouse_name
-AFTER UPDATE ON "WarehouseName" BEGIN
-	UPDATE "WarehouseName"
-	SET modified_ts = current_timestamp
-	WHERE rowid = new.rowid;
-END;
 CREATE TRIGGER update_media_name
 AFTER UPDATE ON "MediaName" BEGIN
 	UPDATE "MediaName"
@@ -909,12 +876,6 @@ END;
 CREATE TRIGGER update_language_name_language
 AFTER UPDATE ON "LanguageNameLanguage" BEGIN
 	UPDATE "LanguageNameLanguage"
-	SET modified_ts = current_timestamp
-	WHERE rowid = new.rowid;
-END;
-CREATE TRIGGER update_platform_name_language
-AFTER UPDATE ON "PlatformNameLanguage" BEGIN
-	UPDATE "PlatformNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -939,12 +900,6 @@ END;
 CREATE TRIGGER update_country_name_language
 AFTER UPDATE ON "CountryNameLanguage" BEGIN
 	UPDATE "CountryNameLanguage"
-	SET modified_ts = current_timestamp
-	WHERE rowid = new.rowid;
-END;
-CREATE TRIGGER update_warehouse_name_language
-AFTER UPDATE ON "WarehouseNameLanguage" BEGIN
-	UPDATE "WarehouseNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -973,6 +928,13 @@ AFTER UPDATE ON "PlatformDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+
+CREATE TRIGGER update_warehouse_name
+AFTER UPDATE ON "WarehouseDescription" BEGIN
+	UPDATE "WarehouseDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 /** **/
 
 
@@ -989,6 +951,13 @@ END;
 CREATE TRIGGER update_platform_description_language
 AFTER UPDATE ON "PlatformDescriptionLanguage" BEGIN
 	UPDATE "PlatformDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+
+CREATE TRIGGER update_warehouse_name_language
+AFTER UPDATE ON "WarehouseDescriptionLanguage" BEGIN
+	UPDATE "WarehouseDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
