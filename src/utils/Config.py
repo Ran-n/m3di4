@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/12 14:49:58.111755
+#+ Editado:	2023/02/13 22:26:59.823693
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -80,7 +80,7 @@ class Config(object):
         try:
             return self.database_tables[table_name]
         except KeyError:
-            raise TableNameException(f'Table "{table_name}" does not exist in the config file "{Config().file}"')
+            raise TableNameException(f'Table "{table_name}" does not exist in the config file "{Config().table_names_file}"')
 
     def get_num_entities(self) -> int:
         """
