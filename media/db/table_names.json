@@ -34,6 +34,8 @@
     "MediaTypeNameLanguage": "MediaTypeNameLanguage",
     "MediaWeb": "MediaWeb",
     "Platform": "Platform",
+    "PlatformDescription": "PlatformDescription",
+    "PlatformDescriptionLanguage": "PlatformDescriptionLanguage",
     "ShareSite": "ShareSite",
     "ShareSiteSubs": "ShareSiteSubs",
     "ShareSiteType": "ShareSiteType",

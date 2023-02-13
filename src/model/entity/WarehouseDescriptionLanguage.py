@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/12 13:48:04.701991
-#+ Editado:	2023/02/13 20:56:47.066944
+#+ Editado:	2023/02/13 22:23:32.624838
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -14,7 +14,7 @@ from src.model.entity import WarehouseDescription, Language
 @dataclass
 class WarehouseDescriptionLanguage:
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseDescriptionLanguage'))
-    warehouse_description WarehouseDescription
+    warehouse_desc: WarehouseDescription
     language: Language
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)

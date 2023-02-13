@@ -2,20 +2,20 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/02/12 21:00:51.700970
-#+ Editado:	2023/02/13 22:24:07.074881
+#+ Creado: 	2023/02/13 22:20:32.532650
+#+ Editado:	2023/02/13 22:21:29.913434
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import Language, LanguageDescription
+from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 @dataclass
-class LanguageDescriptionLanguage:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageDescriptionLanguage'))
-    language_desc: LanguageDescription
-    language: Language
+class PlatformDescription:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('PlatformDescription'))
+    desc: str
+    platform: Platform
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
