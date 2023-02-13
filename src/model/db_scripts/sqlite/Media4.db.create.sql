@@ -417,7 +417,6 @@ CREATE TABLE IF NOT EXISTS "LanguageName" (
 CREATE TABLE IF NOT EXISTS "WarehouseTypeName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
-	"description"		TEXT,
 	"id_warehouse_type"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -457,6 +456,7 @@ CREATE TABLE IF NOT EXISTS "CountryName" (
 	CONSTRAINT "CountryName_NK" UNIQUE("name", "id_country"),
 	CONSTRAINT "CountryName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+/* xFCR split in 3 tables */
 CREATE TABLE IF NOT EXISTS "MediaName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
@@ -572,6 +572,17 @@ CREATE TABLE IF NOT EXISTS "PlatformDescription" (
 	CONSTRAINT "PlatformDescription_NK" UNIQUE("description", "id_platform"),
 	CONSTRAINT "PlatformDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "WarehouseTypeDescription" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"description"		TEXT NOT NULL,
+	"id_warehouse_type"	INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehouseTypeDescription_FK1" FOREIGN KEY("id_warehouse_type") REFERENCES "WarehouseType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseTypeDescription_NK" UNIQUE("description", "id_warehouse_type"),
+	CONSTRAINT "WarehouseTypeDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+
 CREATE TABLE IF NOT EXISTS "WarehouseDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"description"	TEXT,
@@ -611,6 +622,17 @@ CREATE TABLE IF NOT EXISTS "PlatformDescriptionLanguage" (
 	CONSTRAINT "PlatformDescriptionLanguage_NK" UNIQUE("id_platform_description", "id_language"),
 	CONSTRAINT "PlatformDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "WarehouseTypeDescriptionLanguage" (
+	"id"							INTEGER NOT NULL UNIQUE,
+	"id_warehouse_type_description"	INTEGER NOT NULL,
+	"id_language"					INTEGER NOT NULL,
+	"added_ts"						TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WarehousetypeDescriptionLanguage_FK1" FOREIGN KEY("id_warehouse_type_description") REFERENCES "WarehouseTypeDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehousetypeDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseTypeDescriptionLanguage_NK" UNIQUE("id_warehouse_type_description", "id_language"),
+	CONSTRAINT "WarehouseTypeDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 
 CREATE TABLE IF NOT EXISTS "WarehouseDescriptionLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
@@ -648,85 +670,85 @@ CREATE TABLE IF NOT EXISTS "MediaNameCountry" (
 
 /*** TRIGGERS ***/
 /** Without FK **/
-CREATE TRIGGER update_language
+CREATE TRIGGER IF NOT EXISTS update_language
 AFTER UPDATE ON "Language" BEGIN
 	UPDATE "Language"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_platform
+CREATE TRIGGER IF NOT EXISTS update_platform
 AFTER UPDATE ON "Platform" BEGIN
 	UPDATE "Platform"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_encoder
+CREATE TRIGGER IF NOT EXISTS update_encoder
 AFTER UPDATE ON "Encoder" BEGIN
 	UPDATE "Encoder"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_extension
+CREATE TRIGGER IF NOT EXISTS update_extension
 AFTER UPDATE ON "Extension" BEGIN
 	UPDATE "Extension"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_folder_name
+CREATE TRIGGER IF NOT EXISTS update_folder_name
 AFTER UPDATE ON "FolderName" BEGIN
 	UPDATE "FolderName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_warehouse_type
+CREATE TRIGGER IF NOT EXISTS update_warehouse_type
 AFTER UPDATE ON "WarehouseType" BEGIN
 	UPDATE "WarehouseType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_codec_type
+CREATE TRIGGER IF NOT EXISTS update_codec_type
 AFTER UPDATE ON "CodecType" BEGIN
 	UPDATE "CodecType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_code
+CREATE TRIGGER IF NOT EXISTS update_code
 AFTER UPDATE ON "Code" BEGIN
 	UPDATE "Code"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_type
+CREATE TRIGGER IF NOT EXISTS update_media_type
 AFTER UPDATE ON "MediaType" BEGIN
 	UPDATE "MediaType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_share_site_type
+CREATE TRIGGER IF NOT EXISTS update_share_site_type
 AFTER UPDATE ON "ShareSiteType" BEGIN
 	UPDATE "ShareSiteType"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_status
+CREATE TRIGGER IF NOT EXISTS update_media_status
 AFTER UPDATE ON "MediaStatus" BEGIN
 	UPDATE "MediaStatus"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_web
+CREATE TRIGGER IF NOT EXISTS update_web
 AFTER UPDATE ON "Web" BEGIN
 	UPDATE "Web"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_app
+CREATE TRIGGER IF NOT EXISTS update_app
 AFTER UPDATE ON "App" BEGIN
 	UPDATE "App"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_country
+CREATE TRIGGER IF NOT EXISTS update_country
 AFTER UPDATE ON "Country" BEGIN
 	UPDATE "Country"
 	SET modified_ts = current_timestamp
@@ -739,85 +761,85 @@ END;
 
 
 /** With FK **/
-CREATE TRIGGER update_app_version
+CREATE TRIGGER IF NOT EXISTS update_app_version
 AFTER UPDATE ON "AppVersion" BEGIN
 	UPDATE "AppVersion"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_codec
+CREATE TRIGGER IF NOT EXISTS update_codec
 AFTER UPDATE ON "Codec" BEGIN
 	UPDATE "Codec"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_share_site
+CREATE TRIGGER IF NOT EXISTS update_share_site
 AFTER UPDATE ON "ShareSite" BEGIN
 	UPDATE "ShareSite"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_warehouse
+CREATE TRIGGER IF NOT EXISTS update_warehouse
 AFTER UPDATE ON "Warehouse" BEGIN
 	UPDATE "Warehouse"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_language_code
+CREATE TRIGGER IF NOT EXISTS update_language_code
 AFTER UPDATE ON "LanguageCode" BEGIN
 	UPDATE "LanguageCode"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media
+CREATE TRIGGER IF NOT EXISTS update_media
 AFTER UPDATE ON "Media" BEGIN
 	UPDATE "Media"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_group
+CREATE TRIGGER IF NOT EXISTS update_media_group
 AFTER UPDATE ON "MediaGroup" BEGIN
 	UPDATE "MediaGroup"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_issue
+CREATE TRIGGER IF NOT EXISTS update_media_issue
 AFTER UPDATE ON "MediaIssue" BEGIN
 	UPDATE "MediaIssue"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_poster
+CREATE TRIGGER IF NOT EXISTS update_media_poster
 AFTER UPDATE ON "MediaPoster" BEGIN
 	UPDATE "MediaPoster"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_file
+CREATE TRIGGER IF NOT EXISTS update_file
 AFTER UPDATE ON "File" BEGIN
 	UPDATE "File"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_file_stream
+CREATE TRIGGER IF NOT EXISTS update_file_stream
 AFTER UPDATE ON "FileStream" BEGIN
 	UPDATE "FileStream"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_share_site_subs
+CREATE TRIGGER IF NOT EXISTS update_share_site_subs
 AFTER UPDATE ON "ShareSiteSubs" BEGIN
 	UPDATE "ShareSiteSubs"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_file_share_site
+CREATE TRIGGER IF NOT EXISTS update_file_share_site
 AFTER UPDATE ON "FileShareSite" BEGIN
 	UPDATE "FileShareSite"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_web
+CREATE TRIGGER IF NOT EXISTS update_media_web
 AFTER UPDATE ON "MediaWeb" BEGIN
 	UPDATE "MediaWeb"
 	SET modified_ts = current_timestamp
@@ -830,37 +852,37 @@ END;
 
 
 /** i18n name **/
-CREATE TRIGGER update_language_name
+CREATE TRIGGER IF NOT EXISTS update_language_name
 AFTER UPDATE ON "LanguageName" BEGIN
 	UPDATE "LanguageName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_warehouse_type_name
+CREATE TRIGGER IF NOT EXISTS update_warehouse_type_name
 AFTER UPDATE ON "WarehouseTypeName" BEGIN
 	UPDATE "WarehouseTypeName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_type_name
+CREATE TRIGGER IF NOT EXISTS update_media_type_name
 AFTER UPDATE ON "MediaTypeName" BEGIN
 	UPDATE "MediaTypeName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_status_name
+CREATE TRIGGER IF NOT EXISTS update_media_status_name
 AFTER UPDATE ON "MediaStatusName" BEGIN
 	UPDATE "MediaStatusName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_country_name
+CREATE TRIGGER IF NOT EXISTS update_country_name
 AFTER UPDATE ON "CountryName" BEGIN
 	UPDATE "CountryName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_name
+CREATE TRIGGER IF NOT EXISTS update_media_name
 AFTER UPDATE ON "MediaName" BEGIN
 	UPDATE "MediaName"
 	SET modified_ts = current_timestamp
@@ -873,37 +895,37 @@ END;
 
 
 /** i18n name language **/
-CREATE TRIGGER update_language_name_language
+CREATE TRIGGER IF NOT EXISTS update_language_name_language
 AFTER UPDATE ON "LanguageNameLanguage" BEGIN
 	UPDATE "LanguageNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_warehouse_type_name_language
+CREATE TRIGGER IF NOT EXISTS update_warehouse_type_name_language
 AFTER UPDATE ON "WarehouseTypeNameLanguage" BEGIN
 	UPDATE "WarehouseTypeNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_type_name_language
+CREATE TRIGGER IF NOT EXISTS update_media_type_name_language
 AFTER UPDATE ON "MediaTypeNameLanguage" BEGIN
 	UPDATE "MediaTypeNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_status_name_language
+CREATE TRIGGER IF NOT EXISTS update_media_status_name_language
 AFTER UPDATE ON "MediaStatusNameLanguage" BEGIN
 	UPDATE "MediaStatusNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_country_name_language
+CREATE TRIGGER IF NOT EXISTS update_country_name_language
 AFTER UPDATE ON "CountryNameLanguage" BEGIN
 	UPDATE "CountryNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_media_name_language
+CREATE TRIGGER IF NOT EXISTS update_media_name_language
 AFTER UPDATE ON "MediaNameLanguage" BEGIN
 	UPDATE "MediaNameLanguage"
 	SET modified_ts = current_timestamp
@@ -916,20 +938,26 @@ END;
 
 
 /** i18n description **/
-CREATE TRIGGER update_language_description
+CREATE TRIGGER IF NOT EXISTS update_language_description
 AFTER UPDATE ON "LanguageDescription" BEGIN
 	UPDATE "LanguageDescription"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_platform_description
+CREATE TRIGGER IF NOT EXISTS update_platform_description
 AFTER UPDATE ON "PlatformDescription" BEGIN
 	UPDATE "PlatformDescription"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_warehouse_type_description
+AFTER UPDATE ON "WarehouseTypeDescription" BEGIN
+	UPDATE "WarehouseTypeDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 
-CREATE TRIGGER update_warehouse_name
+CREATE TRIGGER IF NOT EXISTS update_warehouse_description
 AFTER UPDATE ON "WarehouseDescription" BEGIN
 	UPDATE "WarehouseDescription"
 	SET modified_ts = current_timestamp
@@ -942,20 +970,26 @@ END;
 
 
 /** i18n description language **/
-CREATE TRIGGER update_language_description_language
+CREATE TRIGGER IF NOT EXISTS update_language_description_language
 AFTER UPDATE ON "LanguageDescriptionLanguage" BEGIN
 	UPDATE "LanguageDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER update_platform_description_language
+CREATE TRIGGER IF NOT EXISTS update_platform_description_language
 AFTER UPDATE ON "PlatformDescriptionLanguage" BEGIN
 	UPDATE "PlatformDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_warehouse_type_description_language
+AFTER UPDATE ON "WarehouseTypeDescriptionLanguage" BEGIN
+	UPDATE "WarehouseTypeDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 
-CREATE TRIGGER update_warehouse_name_language
+CREATE TRIGGER IF NOT EXISTS update_warehouse_description_language
 AFTER UPDATE ON "WarehouseDescriptionLanguage" BEGIN
 	UPDATE "WarehouseDescriptionLanguage"
 	SET modified_ts = current_timestamp
@@ -968,7 +1002,7 @@ END;
 
 /** locale **/
 /** **/
-CREATE TRIGGER update_media_name_country
+CREATE TRIGGER IF NOT EXISTS update_media_name_country
 AFTER UPDATE ON "MediaNameCountry" BEGIN
 	UPDATE "MediaNameCountry"
 	SET modified_ts = current_timestamp

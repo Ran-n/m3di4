@@ -43,6 +43,8 @@
     "WarehouseDescription": "WarehouseDescription",
     "WarehouseDescriptionLanguage": "WarehouseDescriptionLanguage",
     "WarehouseType": "WarehouseType",
+    "WarehouseTypeDescription": "WarehouseTypeDescription",
+    "WarehouseTypeDescriptionLanguage": "WarehouseTypeDescriptionLanguage",
     "WarehouseTypeName": "WarehouseTypeName",
     "WarehouseTypeNameLanguage": "WarehouseTypeNameLanguage",
     "Web": "Web"

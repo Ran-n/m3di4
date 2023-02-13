@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/13 22:20:19.960436
+#+ Editado:	2023/02/13 22:41:58.069847
 # ------------------------------------------------------------------------------
 from .Language import Language
 from .Platform import Platform
@@ -40,6 +40,7 @@ from .WarehouseTypeName import WarehouseTypeName
 from .MediaTypeName import MediaTypeName
 from .MediaStatusName import MediaStatusName
 from .CountryName import CountryName
+# xFCR
 from .MediaName import MediaName
 
 from .LanguageNameLanguage import LanguageNameLanguage
@@ -51,10 +52,12 @@ from .MediaNameLanguage import MediaNameLanguage
 
 from .LanguageDescription import LanguageDescription
 from .PlatformDescription import PlatformDescription
+from .WarehouseTypeDescription import WarehouseTypeDescription
 from .WarehouseDescription import WarehouseDescription
 
 from .LanguageDescriptionLanguage import LanguageDescriptionLanguage
 from .PlatformDescriptionLanguage import PlatformDescriptionLanguage
+from .WarehouseTypeDescriptionLanguage import WarehouseTypeDescriptionLanguage
 from .WarehouseDescriptionLanguage import WarehouseDescriptionLanguage
 
 from .MediaNameCountry import MediaNameCountry
