@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:31.773700 )
-[//]: # (+ Editado:	2023/02/13 20:27:14.394383 )
+[//]: # (+ Editado:	2023/02/13 20:28:48.299752 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # Documentation
@@ -15,9 +15,9 @@
 
 ### Entity Relationship
 
-![ER diagram](diagrams/Media4_ER.svg "ER")
+![ER diagram](diagrams/Media4_ER.png "Entity Relationship Diagram")
 
 
 ### Relational Model
 
-![RM diagram](diagrams/Media4_MR.svg "RM")
+![RM diagram](diagrams/Media4_MR.png "Relational Model Diagram")
