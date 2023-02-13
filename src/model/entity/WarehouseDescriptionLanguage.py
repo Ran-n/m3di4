@@ -2,21 +2,20 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/02/12 13:45:17.157511
-#+ Editado:	2023/02/12 13:45:34.353867
+#+ Creado: 	2023/02/12 13:48:04.701991
+#+ Editado:	2023/02/13 20:56:47.066944
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import Warehouse
+from src.model.entity import WarehouseDescription, Language
 # ------------------------------------------------------------------------------
 @dataclass
-class WarehouseName:
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseName'))
-    name: str
-    warehouse: Warehouse
-    desc: Optional[str] = field(default=None)
+class WarehouseDescriptionLanguage:
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseDescriptionLanguage'))
+    warehouse_description WarehouseDescription
+    language: Language
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
