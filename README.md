@@ -16,7 +16,7 @@ Allows you to automatically add useful information about media files to a databa
 - [How to Start](#how-to-start)
 - [Frequent Stuff](#frequent-stuff)
 - [Code Features](#code-features)
-- [Documentation](doc/index.md#documentation)
+- [Documentation](media/doc/index.md#documentation)
 - [Tasks](#tasks)
 - [TODO](#todo)
 
