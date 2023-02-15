@@ -52,19 +52,21 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [X] Make Add Function for Platform
 - [ ] Make Make Telegram service
 - [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
-
-## TODO
-
 - [ ] Separate/Make the i18n tables into Name and/or Description.
     - [X] LanguageName
     - [X] Platform
-    - [ ] ShareSiteType
+    - [X] ShareSiteType
     - [ ] ShareSite
     - [X] Warehouse
     - [X] WarehouseType
+    - [ ] Media, MediaGroup & MediaIssue
+
+## TODO
+
 - [ ] Make "info.py" a service.
 - [ ] Make the CustomTKinter GUI.
 - [ ] Remake the insert media option and add other options.
 - [ ] Migrate the app language everywhere in the code into english.
 - [ ] Allow inserting dates before year 0.
 - [ ] Check if a date of an issue is in between the appropiate years according to its group/media
+- [ ] Automatically update the subs of the Telegram ShareSites.
