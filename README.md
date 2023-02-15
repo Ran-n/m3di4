@@ -55,10 +55,13 @@ You can not leave the right part of the parameter definition in blank, you eithe
 
 ## TODO
 
-- [ ] Separate/Make the i18n tables into Name and Description.
+- [ ] Separate/Make the i18n tables into Name and/or Description.
     - [X] LanguageName
-    - [ ] Platform
+    - [X] Platform
     - [ ] ShareSiteType
+    - [ ] ShareSite
+    - [X] Warehouse
+    - [X] WarehouseType
 - [ ] Make "info.py" a service.
 - [ ] Make the CustomTKinter GUI.
 - [ ] Remake the insert media option and add other options.
