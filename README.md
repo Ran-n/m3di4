@@ -56,7 +56,7 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [X] LanguageName
     - [X] Platform
     - [X] ShareSiteType
-    - [ ] ShareSite
+    - [X] ShareSite
     - [X] Warehouse
     - [X] WarehouseType
     - [ ] Media, MediaGroup & MediaIssue

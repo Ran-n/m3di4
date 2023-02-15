@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/15 21:08:39.273688
+#+ Editado:	2023/02/15 22:40:11.437167
 # ------------------------------------------------------------------------------
 from .Language import Language
 from .Platform import Platform
@@ -56,12 +56,14 @@ from .LanguageDescription import LanguageDescription
 from .PlatformDescription import PlatformDescription
 from .WarehouseTypeDescription import WarehouseTypeDescription
 from .ShareSiteTypeDescription import ShareSiteTypeDescription
+from .ShareSiteDescription import ShareSiteDescription
 from .WarehouseDescription import WarehouseDescription
 
 from .LanguageDescriptionLanguage import LanguageDescriptionLanguage
 from .PlatformDescriptionLanguage import PlatformDescriptionLanguage
 from .WarehouseTypeDescriptionLanguage import WarehouseTypeDescriptionLanguage
 from .ShareSiteTypeDescriptionLanguage import ShareSiteTypeDescriptionLanguage
+from .ShareSiteDescriptionLanguage import ShareSiteDescriptionLanguage
 from .WarehouseDescriptionLanguage import WarehouseDescriptionLanguage
 
 from .MediaNameCountry import MediaNameCountry
