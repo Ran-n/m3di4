@@ -36,4 +36,6 @@ The diagram tries to convey how the of all three medias tables names can be coun
 
 The green "i18n" table represents the existance of translation tables for attributes like "name" and/or "description".
 
+Also in green, the "i18n Country" table is shown. This one is used for indicating to which country/ies relates each Media/MediaGroup/MediaIssue name.
+
 On the right side, on a blue tone, the same "i18n" table is presented with the structure all translation tables will emulate by having another table that uses the translation table id and the language id to tie it all together.
