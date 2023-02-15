@@ -35,4 +35,5 @@ The diagram tries to convey how the of all three medias tables names can be coun
 ![RM diagram](diagrams/Media4_RM.png "Relational Model Diagram")
 
 The green "i18n" table represents the existance of translation tables for attributes like "name" and/or "description".
+
 On the right side, on a blue tone, the same "i18n" table is presented with the structure all translation tables will emulate by having another table that uses the translation table id and the language id to tie it all together.
