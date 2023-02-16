@@ -10,6 +10,7 @@ from typing import Optional, Union
 
 from src.utils import Config
 from src.model.entity import App
+# ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
