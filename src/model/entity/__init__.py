@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/15 22:40:11.437167
+#+ Editado:	2023/02/16 17:03:40.727118
 # ------------------------------------------------------------------------------
 from .Language import Language
 from .Platform import Platform
@@ -17,10 +17,10 @@ from .MediaType import MediaType
 from .ShareSiteType import ShareSiteType
 from .MediaStatus import MediaStatus
 from .Web import Web
-from .App import App
+from .app import App
 from .Country import Country
 
-from .AppVersion import AppVersion
+from .app_version import AppVersion
 from .Codec import Codec
 from .ShareSite import ShareSite
 from .Warehouse import Warehouse
