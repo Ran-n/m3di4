@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:54.400579
-#+ Editado:	2023/02/16 23:17:23.814446
+#+ Editado:	2023/02/16 23:34:30.533907
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config, strip_accents
-from src.model.entity import BaseTable
+from src.model.entity import BaseEntity
 # ------------------------------------------------------------------------------
 
 

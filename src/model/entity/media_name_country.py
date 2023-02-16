@@ -3,10 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:58:42.990911
-#+ Editado:	2023/02/16 23:25:18.806441
+#+ Editado:	2023/02/16 23:35:27.007630
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, MediaName, Country

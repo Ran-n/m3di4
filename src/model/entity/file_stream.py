@@ -3,10 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/02/16 23:22:25.490609
+#+ Editado:	2023/02/16 23:34:49.629609
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, File, Codec, Language

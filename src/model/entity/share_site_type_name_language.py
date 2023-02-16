@@ -3,10 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/15 21:04:16.341950
-#+ Editado:	2023/02/16 23:27:38.259964
+#+ Editado:	2023/02/16 23:36:10.699416
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, ShareSiteTypeName, Language

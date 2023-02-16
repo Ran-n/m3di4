@@ -3,10 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/01 21:18:34.961211
-#+ Editado:	2023/02/16 23:19:15.270880
+#+ Editado:	2023/02/16 23:34:32.125418
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import Country

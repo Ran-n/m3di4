@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 13:31:54.424384
-#+ Editado:	2023/02/16 23:16:07.812802
+#+ Editado:	2023/02/16 23:36:47.869338
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseTable, CodecType
+from src.model.entity import BaseEntity, CodecType
 # ------------------------------------------------------------------------------
 
 

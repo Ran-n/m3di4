@@ -6,7 +6,7 @@
 #+ Editado:	2023/02/16 23:25:02.891297
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, Media, MediaGroup

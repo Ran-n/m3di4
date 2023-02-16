@@ -3,10 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/02/16 23:21:11.531662
+#+ Editado:	2023/02/16 23:34:43.453061
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, Warehouse, FolderName, Media, MediaIssue
