@@ -3,19 +3,19 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/13 22:20:32.532650
-#+ Editado:	2023/02/16 22:50:26.007599
+#+ Editado:	2023/02/16 23:26:27.266000
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import Platform
+from src.model.entity import BaseEntity, Platform
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class PlatformDescription:
+class PlatformDescription(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('PlatformDescription'))
@@ -24,9 +24,4 @@ class PlatformDescription:
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
-
-    # table_name and id_ attributes are frozen
-    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if attr != 'table_name':
-            object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

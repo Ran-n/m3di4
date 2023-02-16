@@ -3,19 +3,20 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/01 21:18:34.961211
-#+ Editado:	2023/02/16 22:14:26.342758
+#+ Editado:	2023/02/16 23:19:15.270880
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
 from src.model.entity import Country
+from src.model.entity import BaseEntity
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class CountryName:
+class CountryName(BaseEntity):
     """CountryName Entity Object"""
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('CountryName'))
@@ -24,9 +25,4 @@ class CountryName:
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
-
-    # table_name and id_ attributes are frozen
-    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if attr != 'table_name':
-            object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

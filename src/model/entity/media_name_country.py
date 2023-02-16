@@ -3,19 +3,19 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:58:42.990911
-#+ Editado:	2023/02/16 22:50:03.701129
+#+ Editado:	2023/02/16 23:25:18.806441
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import MediaName, Country
+from src.model.entity import BaseEntity, MediaName, Country
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaNameCountry:
+class MediaNameCountry(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('MediaNameCountry'))
@@ -24,9 +24,4 @@ class MediaNameCountry:
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
-
-    # table_name and id_ attributes are frozen
-    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if attr != 'table_name':
-            object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

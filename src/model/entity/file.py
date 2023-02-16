@@ -3,20 +3,20 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/02/16 22:42:10.438472
+#+ Editado:	2023/02/16 23:21:11.531662
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
-from src.model.entity import Warehouse, FolderName, Media, MediaIssue
+from src.model.entity import BaseEntity, Warehouse, FolderName, Media, MediaIssue
 from src.model.entity import Extension, Encoder, AppVersion
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class File:
+class File(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('File'))
@@ -47,9 +47,4 @@ class File:
         if not any([self.media, self.media_issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media" or "media_issue"')
-
-    # table_name and id_ attributes are frozen
-    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if attr != 'table_name':
-            object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

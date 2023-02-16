@@ -3,18 +3,19 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/20 18:16:02.918934
-#+ Editado:	2023/02/16 22:51:23.863590
+#+ Editado:	2023/02/16 23:27:55.172819
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
 from src.utils import Config
+from src.model.entity import BaseEntity
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class WarehouseType:
+class WarehouseType(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('WarehouseType'))
@@ -24,9 +25,4 @@ class WarehouseType:
     id_: Optional[int] = field(default=None)
     added_ts: Optional[str] = field(default=None)
     modified_ts: Optional[str] = field(default=None)
-
-    # table_name and id_ attributes are frozen
-    def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if attr != 'table_name':
-            object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------
