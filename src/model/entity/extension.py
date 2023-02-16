@@ -12,6 +12,7 @@ from src.utils import Config
 # ------------------------------------------------------------------------------
 @dataclass
 class Extension:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Extension'))
     name: str
     format_name: Optional[str] = field(default=None)

@@ -13,6 +13,7 @@ from src.model.entity import ShareSiteTypeDescription, Language
 # ------------------------------------------------------------------------------
 @dataclass
 class ShareSiteTypeDescriptionLanguage:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteTypeDescriptionLanguage'))
     share_site_type_desc: ShareSiteTypeDescription
     language: Language

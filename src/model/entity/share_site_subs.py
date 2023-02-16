@@ -13,6 +13,7 @@ from src.model.entity import ShareSite
 # ------------------------------------------------------------------------------
 @dataclass
 class ShareSiteSubs:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteSubs'))
     sub_num: int
     share_site: ShareSite

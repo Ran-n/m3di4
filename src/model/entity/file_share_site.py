@@ -13,6 +13,7 @@ from src.model.entity import ShareSite, File
 # ------------------------------------------------------------------------------
 @dataclass
 class FileShareSite:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('FileShareSite'))
     link: str
     share_site: ShareSite

@@ -12,6 +12,7 @@ from src.utils import Config
 # ------------------------------------------------------------------------------
 @dataclass
 class WarehouseType:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseType'))
     name: str
     desc: Optional[str] = field(default=None)

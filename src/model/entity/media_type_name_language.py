@@ -13,6 +13,7 @@ from src.model.entity import MediaTypeName, Language
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaTypeNameLanguage:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaTypeNameLanguage'))
     media_type_name: MediaTypeName
     language: Language

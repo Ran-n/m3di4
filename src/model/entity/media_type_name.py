@@ -13,6 +13,7 @@ from src.model.entity import MediaType
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaTypeName:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaTypeName'))
     name: str
     media_type: MediaType

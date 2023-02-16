@@ -13,6 +13,7 @@ from src.model.entity import Media
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaGroup:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaGroup'))
     number: int
     media: Media

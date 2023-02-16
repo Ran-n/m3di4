@@ -13,6 +13,7 @@ from src.model.entity import WarehouseTypeDescription, Language
 # ------------------------------------------------------------------------------
 @dataclass
 class WarehouseTypeDescriptionLanguage:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseTypeDescriptionLanguage'))
     warehouse_type_desc: WarehouseTypeDescription
     language: Language

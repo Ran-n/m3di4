@@ -12,6 +12,7 @@ from src.utils import Config
 # ------------------------------------------------------------------------------
 @dataclass
 class FolderName:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('FolderName'))
     name: str
     active: Optional[int] = field(default=1)

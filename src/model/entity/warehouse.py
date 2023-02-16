@@ -13,6 +13,7 @@ from src.model.entity import WarehouseType
 # ------------------------------------------------------------------------------
 @dataclass
 class Warehouse:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Warehouse'))
     name: str
     type_: WarehouseType

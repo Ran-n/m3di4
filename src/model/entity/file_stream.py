@@ -13,6 +13,7 @@ from src.model.entity import File, Codec, Language
 # ------------------------------------------------------------------------------
 @dataclass
 class FileStream:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('FileStream'))
     file: File
     codec: Codec

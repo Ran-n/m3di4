@@ -12,6 +12,7 @@ from src.utils import Config
 # ------------------------------------------------------------------------------
 @dataclass
 class Platform:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Platform'))
     name: str
     desc: Optional[str] = field(default=None)

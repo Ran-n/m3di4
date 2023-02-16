@@ -12,6 +12,7 @@ from src.utils import Config, strip_accents
 # ------------------------------------------------------------------------------
 @dataclass
 class Language:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Language'))
     name: str
     desc: Optional[str] = field(default=None)

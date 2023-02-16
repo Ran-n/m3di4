@@ -13,6 +13,7 @@ from src.model.entity import Media, Extension
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaPoster:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaPoster'))
     media: Media
     extension: Extension

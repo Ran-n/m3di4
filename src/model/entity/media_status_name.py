@@ -13,6 +13,7 @@ from src.model.entity import MediaStatus
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaStatusName:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaStatusName'))
     name: str
     media_status: MediaStatus

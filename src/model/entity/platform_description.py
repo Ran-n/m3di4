@@ -13,6 +13,7 @@ from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 @dataclass
 class PlatformDescription:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('PlatformDescription'))
     desc: str
     platform: Platform

@@ -13,6 +13,7 @@ from src.model.entity import Language, LanguageName
 # ------------------------------------------------------------------------------
 @dataclass
 class LanguageNameLanguage:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageNameLanguage'))
     language_name: LanguageName
     language: Language

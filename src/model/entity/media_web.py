@@ -13,6 +13,7 @@ from src.model.entity import Media, Web
 # ------------------------------------------------------------------------------
 @dataclass
 class MediaWeb:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaWeb'))
     media: Media
     web: Web

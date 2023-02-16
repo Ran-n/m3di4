@@ -12,6 +12,7 @@ from src.utils import Config
 # ------------------------------------------------------------------------------
 @dataclass
 class Web:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('Web'))
     name: str
     acronym: Optional[str] = field(default=None)

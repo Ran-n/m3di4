@@ -13,6 +13,7 @@ from src.model.entity import Warehouse, FolderName, Media, MediaIssue, Extension
 # ------------------------------------------------------------------------------
 @dataclass
 class File:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('File'))
     name: str
     extension: Extension

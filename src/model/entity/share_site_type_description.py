@@ -13,6 +13,7 @@ from src.model.entity import ShareSiteType
 # ------------------------------------------------------------------------------
 @dataclass
 class ShareSiteTypeDescription:
+    """Entity Object"""
     table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteTypeDescription'))
     desc: str
     share_site_type: ShareSiteType
