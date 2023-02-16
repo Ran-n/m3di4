@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/12 13:44:15.192121
-#+ Editado:	2023/02/13 22:35:44.452130
+#+ Editado:	2023/02/16 22:51:29.357375
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -11,10 +11,14 @@ from typing import Optional, Union
 from src.utils import Config
 from src.model.entity import WarehouseType
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class WarehouseTypeName:
     """Entity Object"""
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('WarehouseTypeName'))
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('WarehouseTypeName'))
     name: str
     warehouse_type: WarehouseType
     id_: Optional[int] = field(default=None)
@@ -23,6 +27,6 @@ class WarehouseTypeName:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name'):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

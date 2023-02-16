@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/29 23:20:04.639454
-#+ Editado:	2023/02/04 21:29:09.486297
+#+ Editado:	2023/02/16 22:50:18.743762
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -11,10 +11,14 @@ from typing import Optional, Union
 from src.utils import Config
 from src.model.entity import MediaType
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class MediaTypeName:
     """Entity Object"""
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('MediaTypeName'))
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('MediaTypeName'))
     name: str
     media_type: MediaType
     desc: Optional[str] = field(default=None)
@@ -24,6 +28,6 @@ class MediaTypeName:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name'):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

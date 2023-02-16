@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/02/04 21:28:37.452604
+#+ Editado:	2023/02/16 22:43:25.774168
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -11,10 +11,14 @@ from typing import Optional, Union
 from src.utils import Config
 from src.model.entity import File, Codec, Language
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class FileStream:
     """Entity Object"""
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('FileStream'))
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('FileStream'))
     file: File
     codec: Codec
     language: Language
@@ -86,6 +90,6 @@ class FileStream:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name'):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

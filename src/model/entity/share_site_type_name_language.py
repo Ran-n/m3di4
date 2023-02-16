@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/15 21:04:16.341950
-#+ Editado:	2023/02/15 21:04:32.451818
+#+ Editado:	2023/02/16 22:51:15.234580
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -11,10 +11,14 @@ from typing import Optional, Union
 from src.utils import Config
 from src.model.entity import ShareSiteTypeName, Language
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class ShareSiteTypeNameLanguage:
     """Entity Object"""
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('ShareSiteTypeNameLanguage'))
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('ShareSiteTypeNameLanguage'))
     share_site_type_name: ShareSiteTypeName
     language: Language
     id_: Optional[int] = field(default=None)
@@ -23,6 +27,6 @@ class ShareSiteTypeNameLanguage:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name'):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

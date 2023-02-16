@@ -3,8 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/16 18:55:00.327541
+#+ Editado:	2023/02/16 23:07:29.641176
 # ------------------------------------------------------------------------------
+from .base_entity import BaseEntity
+
 from .language import Language
 from .platform import Platform
 from .encoder import Encoder

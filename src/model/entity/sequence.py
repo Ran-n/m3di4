@@ -7,9 +7,12 @@
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class Sequence:
-    """Entity Object"""
+    """Entity Object for SQLite default table"""
     table_name: str = field(init=False, repr=False, default='sqlite_sequence')
     name: str
     seq: int

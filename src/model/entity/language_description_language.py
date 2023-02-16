@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/12 21:00:51.700970
-#+ Editado:	2023/02/13 22:24:07.074881
+#+ Editado:	2023/02/16 22:46:08.833814
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -11,10 +11,14 @@ from typing import Optional, Union
 from src.utils import Config
 from src.model.entity import Language, LanguageDescription
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class LanguageDescriptionLanguage:
     """Entity Object"""
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageDescriptionLanguage'))
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('LanguageDescriptionLanguage'))
     language_desc: LanguageDescription
     language: Language
     id_: Optional[int] = field(default=None)
@@ -23,6 +27,6 @@ class LanguageDescriptionLanguage:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name'):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------

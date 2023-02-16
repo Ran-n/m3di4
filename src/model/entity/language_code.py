@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 01:23:38.362620
-#+ Editado:	2023/02/04 21:28:43.577118
+#+ Editado:	2023/02/16 22:45:00.039970
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -11,10 +11,14 @@ from typing import Optional, Union
 from src.utils import Config
 from src.model.entity import Language, Code
 # ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
 @dataclass
 class LanguageCode:
     """Entity Object"""
-    table_name: str = field(init=False, repr=False, default=Config().get_table_name('LanguageCode'))
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('LanguageCode'))
     language: Language
     code: Code
     codename: str
@@ -24,6 +28,6 @@ class LanguageCode:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name'):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------
