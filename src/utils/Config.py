@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/13 22:28:08.704841
+#+ Editado:	2023/02/16 23:09:00.152400
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -84,8 +84,11 @@ class Config(object):
 
     def get_num_entities(self) -> int:
         """
+        Returns the name of entity files created in the folder -2.
+        The minus two is need in order to not keep count of the __init__.py
+        and the base_entity.py files.
         """
-        return len(next(os.walk('./src/model/entity/'))[2])-1
+        return len(next(os.walk('./src/model/entity/'))[2])-2
 
     def get_num_defined_tables_db(self) -> int:
         """
