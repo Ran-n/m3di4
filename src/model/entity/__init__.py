@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/16 23:07:29.641176
+#+ Editado:	2023/02/16 23:12:54.521709
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
+from .sequence import Sequence
 
 from .language import Language
 from .platform import Platform
