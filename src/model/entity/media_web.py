@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:06:39.547649
-#+ Editado:	2023/02/16 23:35:47.390709
+#+ Editado:	2023/02/17 18:05:22.351181
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,13 +17,11 @@ from src.model.entity import BaseEntity, Media, Web
 @dataclass
 class MediaWeb(BaseEntity):
     """Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaWeb'))
     media: Media
     web: Web
     link: str
     active: Optional[str] = field(default=1)
-    id_: Optional[int] = field(default=None)
-    added_ts: Optional[str] = field(default=None)
-    modified_ts: Optional[str] = field(default=None)
+
+    def __post_init__(self):
+        self.table_name = Config().get_table_name('MediaWeb')
 # ------------------------------------------------------------------------------

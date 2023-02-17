@@ -3,10 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/01 21:21:01.942449
-#+ Editado:	2023/02/16 23:32:27.550759
+#+ Editado:	2023/02/17 18:03:10.694650
 # ------------------------------------------------------------------------------
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 from src.utils import Config
 from src.model.entity import BaseEntity, CountryName, Language
@@ -17,11 +16,9 @@ from src.model.entity import BaseEntity, CountryName, Language
 @dataclass
 class CountryNameLanguage(BaseEntity):
     """Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('CountryNameLanguage'))
     country_name: CountryName
     language: Language
-    id_: Optional[int] = field(default=None)
-    added_ts: Optional[str] = field(default=None)
-    modified_ts: Optional[str] = field(default=None)
+
+    def __post_init__(self):
+        self.table_name = Config().get_table_name('CountryNameLanguage')
 # ------------------------------------------------------------------------------

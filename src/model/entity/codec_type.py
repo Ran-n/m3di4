@@ -3,10 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 16:44:24.358200
-#+ Editado:	2023/02/16 23:33:17.699713
+#+ Editado:	2023/02/17 18:18:53.943046
 # ------------------------------------------------------------------------------
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 from src.utils import Config
 from src.model.entity import BaseEntity
@@ -16,11 +15,9 @@ from src.model.entity import BaseEntity
 # ------------------------------------------------------------------------------
 @dataclass
 class CodecType(BaseEntity):
-    """CodecType Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('CodecType'))
+    """Entity Object"""
     name: str
-    id_: Optional[int] = field(default=None)
-    added_ts: Optional[str] = field(default=None)
-    modified_ts: Optional[str] = field(default=None)
+
+    def __post_init__(self):
+        self.table_name = Config().get_table_name('CodecType')
 # ------------------------------------------------------------------------------

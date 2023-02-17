@@ -3,10 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/01 21:18:34.961211
-#+ Editado:	2023/02/16 23:34:32.125418
+#+ Editado:	2023/02/17 18:19:15.538454
 # ------------------------------------------------------------------------------
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 from src.utils import Config
 from src.model.entity import Country
@@ -17,12 +16,10 @@ from src.model.entity import BaseEntity
 # ------------------------------------------------------------------------------
 @dataclass
 class CountryName(BaseEntity):
-    """CountryName Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('CountryName'))
+    """Entity Object"""
     name: str
     country: Country
-    id_: Optional[int] = field(default=None)
-    added_ts: Optional[str] = field(default=None)
-    modified_ts: Optional[str] = field(default=None)
+
+    def __post_init__(self):
+        self.table_name = Config().get_table_name('CountryName')
 # ------------------------------------------------------------------------------
