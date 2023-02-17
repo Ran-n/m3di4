@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/12 16:17:14.201002
+#+ Editado:	2023/02/17 23:16:39.290087
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -43,22 +43,44 @@ class Sqlite(iModel):
         return self.cur.execute('select count(*) from sqlite_master where type="table"').fetchone()[0];
 
     def get_conn_db(self) -> Connection:
+        """ Returns a connection to the DB.
+        @ Input:
+        @ Output:
+        ╚═ Connection   -   Connection object to the DB.
+        """
         if self.conn == None:
             logging.info(_('Creating a new connection to the sqlite database'))
             return self.connect_db()[0]
         return self.conn
 
     def get_cur_db(self) -> Cursor:
+        """ Returns a cursor to the DB.
+        @ Input:
+        @ Output:
+        ╚═ Cursor   -   Cursor object in the DB.
+        """
         if self.cur == None:
             return self.connect_db()[1]
         return self.cur
 
     def connect_db(self) -> tuple([Connection, Cursor]):
+        """ Does the whole process of connecting to a DB.
+        @ Input:
+        @ Ouput:
+        ╚═ (Connection, Cursor) -   Tuple with objects of DB Connection and Cursor.
+        """
         self.conn = sqlite3.connect(self.ficheiro)
         self.cur = self.conn.cursor()
         return (self.conn, self.cur)
 
     def disconnect_db(self, commit: bool = True) -> None:
+        """ Does the whole process of disconnecting from a DB.
+        @ Input:
+        ╚═  · commit -   bool    -   True
+            └ Indicates if changes to the DB should be commited or rolled back.
+
+        @ Output:
+        """
         if self.conn:
             if commit:
                 self.conn.commit()
@@ -67,12 +89,24 @@ class Sqlite(iModel):
             self.cur = None
 
     def save_db(self) -> None:
+        """ Saves the non commited changes to the DB.
+        @ Input:
+        @ Output:
+        """
         if self.conn:
             self.conn.commit()
 
 
     # EXISTS
     def exists(self, obj: Union[MediaGroup, MediaIssue]) -> bool:
+        """ Checks if a element is saved in the DB.
+        @ Input:
+        ╚═  · obj   -   Any Entity Object   -   True
+            └ Object to check if it exists in the DB.
+
+        @ Output:
+        ╚═  bool    -   Indicating if the object exists or not.
+        """
         pass
 
     def exists_media_group(self, obj: MediaGroup) -> bool:
@@ -96,14 +130,42 @@ class Sqlite(iModel):
 
     # GET NUM
     def get_num(self, table_name: str) -> int:
+        """ Returns the number of elements in a table.
+        @ Input:
+        ╚═  · table_name    -   str
+            └ Name of the table to query.
+        @ Output:
+        ╚═  int - Number of entries on the table.
+        """
         return self.get_cur_db().execute(f'select count(*) from "{table_name}"').fetchone()[0]
 
     def get_media_group_num_by_media_id(self, media_id: int) -> int:
+        """Returns the number of group elements discriminating by media id.
+        @ Input:
+        ╚═  · media_id  -   int
+            └ Id of the media to use as a discriminator.
+        @ Output:
+        ╚═  int - Number of entries on the table that meet the criteria.
+        """
         return self.get_cur_db().execute(f'select count(*) from "{MediaGroup.table_name}" where id_media = "{media_id}"').fetchone()[0]
 
 
     # GET
-    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+    def get_all(self, table_name: str, limit: int = None,
+                offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+        """ Return all elements of a table.
+        @ Input:
+        ╠═  · table_name    -   str
+        ║   └ Name of the table to query.
+        ╠═  · limit         -   int     -   None
+        ║   └ Maximum number of elements to retrieve.
+        ╠═  · offset        -   int     -   0
+        ║   └ How far removed from the start should the results to return start.
+        ╚═  · alfabetic     -   bool    -   None
+            └ Indicate if the output should be alfabetically ordered.
+        @ Output:
+        ╚═  List[Any Entity Object]   -   With all the information of the table.
+        """
         pass
 
     def get_all_media_type(self, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
@@ -172,10 +234,20 @@ class Sqlite(iModel):
 
 
     # GET BY X
-    def get_by_id(self, table_name: str, id_: int) -> Media:
+    def get_by_id(self, table_name: str, id_: int) -> Union[None, MediaType, MediaStatus, Media]:
+        """ Returns a element of the table discriminating by its id.
+        @ Input:
+        ╠═  · table_name    -   str
+        ║   └ Name of the table to query.
+        ╚═  · id_           -   int
+            └ Identifier of the element to gather from the table.
+        @ Output:
+        ╠═  Any Entity Object    -   The element of the table discriminated by id.
+        ╚═  None                 -   If no matches exists.
+        """
         pass
 
-    def get_media_type_by_id(self, id_: int) -> MediaType:
+    def get_media_type_by_id(self, id_: int) -> Union[None, MediaType]:
         sql_result = self.get_cur_db().execute(f'select id, name, description, groupable, active, added_ts, modified_ts from "{MediaType.table_name}" where id={id_}').fetchone()
         if sql_result:
             return MediaType(
@@ -188,7 +260,7 @@ class Sqlite(iModel):
                 modified_ts = sql_result[6]
             )
 
-    def get_media_status_by_id(self, id_: int) -> MediaStatus:
+    def get_media_status_by_id(self, id_: int) -> Union[None, MediaStatus]:
         sql_result = self.get_cur_db().execute(f'select id, name, description, active, added_ts, modified_ts from "{MediaStatus.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return MediaStatus(
@@ -199,7 +271,7 @@ class Sqlite(iModel):
                 modified_ts = sql_result[4]
             )
 
-    def get_media_by_id(self, id_: int) -> Media:
+    def get_media_by_id(self, id_: int) -> Union[None, Media]:
         sql_result = self.get_cur_db().execute(f'select id, name, year_start, year_end, id_type, id_status, active, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return Media(
@@ -214,7 +286,15 @@ class Sqlite(iModel):
                     modified_ts = sql_result[8]
             )
 
-    def get_media_group_by_nk(self, obj: MediaGroup) -> MediaGroup:
+    def get_media_group_by_nk(self, obj: MediaGroup) -> Union[None, MediaGroup]:
+        """ Returns a group discriminated by its natural key (NK).
+        @ Input:
+        ╚═  · obj   -   MediaGroup
+            └ The MediaGroup object to use in the search.
+        @ Output:
+        ╠═  MediaGroup   -   The element of the table discriminated by natural key.
+        ╚═  None         -   If no matches exists.
+        """
         sql_result = self.get_cur_db().execute(f'select id, name, number, year_start, year_end, id_media, active, added_ts, modified_ts from "{MediaGroup.table_name}" where number="{obj.number}" and id_media="{obj.media.id_}"').fetchone()
         if sql_result:
             return MediaGroup(
@@ -229,7 +309,23 @@ class Sqlite(iModel):
                     modified_ts =   sql_result[8]
             )
 
-    def get_media_group_by_media_id(self, id_: int, limit: int, offset: int, alfabetic: bool) -> List[MediaGroup]:
+    def get_media_group_by_media_id(self, id_: int, limit: int = None,
+                                    offset: int = 0, alfabetic: bool = None
+                                    ) -> Union[None, List[MediaGroup]]:
+        """ Returns a group discriminated by its id.
+        @ Input:
+        ╠═  · id_       -   int
+        ║   └ Id of the media to use as a discriminator.
+        ╠═  · limit     -   int     -   None
+        ║   └ Maximum number of elements to retrieve.
+        ╠═  · offset    -   int     -   0
+        ║   └ How far removed from the start should the results to return start.
+        ╚═  · alfabetic -   bool    -   None
+            └ Indicate if the output should be alfabetically ordered.
+        @ Output:
+        ╠═  MediaGroup   -   The element of the table discriminated by natural key.
+        ╚═  None         -   If no matches exists.
+        """
         sentence = f'select id, name, number, year_start, year_end, id_media, active, added_ts, modified_ts from "{MediaGroup.table_name}" where id_media="{id_}"'
         if alfabetic:
             sentence += ' order by name asc'
@@ -254,7 +350,25 @@ class Sqlite(iModel):
         return results
 
 
-    def get_by_name(self, table_name: str, name: str, limit: int, offset: int, alfabetic: bool) -> List[Union[MediaType, MediaStatus]]:
+    def get_by_name(self, table_name: str, name: str, limit: int = None,
+                    offset: int = 0, alfabetic: bool = False
+                    ) -> Union[None, List[Union[MediaType, MediaStatus]]]:
+        """ Returns all elements of table that match the given name.
+        @ Input:
+        ╠═  · table_name    -   str
+        ║   └ Id of the media to use as a discriminator.
+        ╠═  · name          -   str
+        ║   └ Name to use to descriminate the data of the table by.
+        ╠═  · limit         -   int     -   None
+        ║   └ Maximum number of elements to retrieve.
+        ╠═  · offset        -   int     -   0
+        ║   └ How far removed from the start should the results to return start.
+        ╚═  · alfabetic     -   bool    -   None
+            └ Indicate if the output should be alfabetically ordered.
+        @ Output:
+        ╠═  List[Any Entity Object] -   The elements of the table discriminated by name.
+        ╚═  None                    -   If no matches exists.
+        """
         pass
 
     def get_by_media_type_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
@@ -301,7 +415,15 @@ class Sqlite(iModel):
 
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue]) -> Union[None, int]:
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue, Platform]
+               ) -> None:
+        """ Adds an element to a DB table.
+        @ Input:
+        ╚═  · obj   -   Any Entity Type
+            └ Entity to insert in the DB.
+        @ Output:
+        ╚═  None
+        """
         pass
 
     def insert_media_status(self, obj: MediaStatus) -> None:
