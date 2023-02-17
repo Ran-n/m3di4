@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:01:51.038236
-#+ Editado:	2023/02/17 20:37:48.947736
+#+ Editado:	2023/02/17 20:55:45.884968
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -21,7 +21,6 @@ class Language(BaseEntity):
                             default=Config().get_table_name('Language'))
     name: str
     desc: Optional[str] = field(default=None)
-
 
     def __gt__(self, other) -> bool:
         return strip_accents(self.name) > strip_accents(other.name)
