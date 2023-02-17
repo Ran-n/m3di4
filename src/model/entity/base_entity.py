@@ -20,6 +20,6 @@ class BaseEntity:
 
     # table_name and id_ attributes are frozen
     def __setattr__(self, attr: str, value: Union[int, str]) -> None:
-        if (attr != 'table_name') or (self.table_name is None):
+        if attr != 'table_name':
             object.__setattr__(self, attr, value)
 # ------------------------------------------------------------------------------
