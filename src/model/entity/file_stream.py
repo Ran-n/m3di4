@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/02/17 18:04:00.012903
+#+ Editado:	2023/02/17 20:37:44.261812
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,6 +17,8 @@ from src.model.entity import BaseEntity, File, Codec, Language
 @dataclass
 class FileStream(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('FileStream'))
     file: File
     codec: Codec
     language: Language
@@ -82,7 +84,4 @@ class FileStream(BaseEntity):
     dmix_mode: Optional[int] = field(default=None)
     text_subtitle: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('FileStream')
 # ------------------------------------------------------------------------------

@@ -3,9 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/29 23:33:56.446838
-#+ Editado:	2023/02/17 18:20:42.981100
+#+ Editado:	2023/02/17 20:40:52.863922
 # ------------------------------------------------------------------------------
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.utils import Config
 from src.model.entity import BaseEntity, MediaStatusName, Language
@@ -16,9 +16,8 @@ from src.model.entity import BaseEntity, MediaStatusName, Language
 @dataclass
 class MediaStatusNameLanguage(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('MediaStatusNameLanguage'))
     media_status_name: MediaStatusName
     language: Language
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('MediaStatusNameLanguage')
 # ------------------------------------------------------------------------------

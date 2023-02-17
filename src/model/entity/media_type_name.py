@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/29 23:20:04.639454
-#+ Editado:	2023/02/17 18:05:19.214945
+#+ Editado:	2023/02/17 20:38:25.201914
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,10 +17,9 @@ from src.model.entity import BaseEntity, MediaType
 @dataclass
 class MediaTypeName(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('MediaTypeName'))
     name: str
     media_type: MediaType
     desc: Optional[str] = field(default=None)
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('MediaTypeName')
 # ------------------------------------------------------------------------------

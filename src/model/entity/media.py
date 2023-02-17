@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/02/17 18:00:50.621119
+#+ Editado:	2023/02/17 20:38:03.345779
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,13 +17,12 @@ from src.model.entity import BaseEntity, MediaType, MediaStatus
 @dataclass
 class Media(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('Media'))
     name: str
     type_: MediaType
     status: MediaStatus
     year_start: int
     year_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('Media')
 # ------------------------------------------------------------------------------

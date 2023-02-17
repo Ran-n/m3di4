@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/02/17 18:23:31.662397
+#+ Editado:	2023/02/17 20:43:06.217999
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,6 +17,8 @@ from src.model.entity import BaseEntity, Media, MediaGroup, MediaIssue
 @dataclass
 class MediaName(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('MediaName'))
     name: str
     media: Optional[Media] = field(default=None)
     media_group: Optional[MediaGroup] = field(default=None)
@@ -28,6 +30,4 @@ class MediaName(BaseEntity):
         if not any([self.media, self.media_group, self.media_issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media", "media_group" or "media_issue"')
-        self.table_name = Config().get_table_name('MediaName')
-
 # ------------------------------------------------------------------------------

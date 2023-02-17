@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/02/17 18:23:40.768142
+#+ Editado:	2023/02/17 20:42:04.461451
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -18,6 +18,8 @@ from src.model.entity import Extension, Encoder, AppVersion
 @dataclass
 class File(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('File'))
     name: str
     extension: Extension
     warehouse: Warehouse
@@ -42,5 +44,4 @@ class File(BaseEntity):
         if not any([self.media, self.media_issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media" or "media_issue"')
-        self.table_name = Config().get_table_name('File')
 # ------------------------------------------------------------------------------

@@ -17,10 +17,9 @@ from src.model.entity import BaseEntity
 @dataclass
 class Code(BaseEntity):
     """Code Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('Code'))
     name: str
     desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('Code')
 # ------------------------------------------------------------------------------

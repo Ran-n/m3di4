@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/30 23:00:23.885215
-#+ Editado:	2023/02/17 18:02:21.260827
+#+ Editado:	2023/02/17 20:38:29.955842
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,10 +17,9 @@ from src.model.entity import BaseEntity
 @dataclass
 class Platform(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('Platform'))
     name: str
     desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('Platform')
 # ------------------------------------------------------------------------------

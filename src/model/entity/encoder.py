@@ -3,9 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:34:16.472445
-#+ Editado:	2023/02/17 18:19:31.052678
+#+ Editado:	2023/02/17 20:36:26.163232
 # ------------------------------------------------------------------------------
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.utils import Config
 from src.model.entity import BaseEntity
@@ -16,8 +16,7 @@ from src.model.entity import BaseEntity
 @dataclass
 class Encoder(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('Encoder'))
     name: str
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('Encoder')
 # ------------------------------------------------------------------------------

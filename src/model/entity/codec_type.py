@@ -3,9 +3,9 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 16:44:24.358200
-#+ Editado:	2023/02/17 18:18:53.943046
+#+ Editado:	2023/02/17 20:36:14.566011
 # ------------------------------------------------------------------------------
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.utils import Config
 from src.model.entity import BaseEntity
@@ -16,8 +16,7 @@ from src.model.entity import BaseEntity
 @dataclass
 class CodecType(BaseEntity):
     """Entity Object"""
+    table_name: str = field(init=False, repr=False,
+                            default=Config().get_table_name('CodecType'))
     name: str
-
-    def __post_init__(self):
-        self.table_name = Config().get_table_name('CodecType')
 # ------------------------------------------------------------------------------
