@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/12 23:22:55.971171 )
+[//]: # (+ Editado:	2023/02/17 20:57:43.855220 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -70,3 +70,4 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [ ] Allow inserting dates before year 0.
 - [ ] Check if a date of an issue is in between the appropiate years according to its group/media
 - [ ] Automatically update the subs of the Telegram ShareSites.
+- [ ] Dont only show name on groups since it can be null and number is more important anyways.
