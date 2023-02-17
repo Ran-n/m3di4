@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/12 16:16:36.092662
+#+ Editado:	2023/02/17 20:53:39.652195
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -97,6 +97,7 @@ class Terminal(iView):
         text = f'{Config().title_symbol} ' + _('The Database was saved') + f' {Config().title_symbol}'
         print(center(text, self.line_len))
         print(self.separator)
+        print()
 
     def exit(self) -> None:
         print()
@@ -325,6 +326,7 @@ class Terminal(iView):
         print(self.separator)
         print(center(ender, self.line_len))
         print(self.separator)
+        print()
 
         return MediaType(name = name, groupable = groupable)
 
@@ -358,6 +360,7 @@ class Terminal(iView):
         print(self.separator)
         print(center(ender, self.line_len))
         print(self.separator)
+        print()
 
         return MediaStatus(name= name)
 
@@ -439,6 +442,7 @@ class Terminal(iView):
         print(self.separator)
         print(center(ender, self.line_len))
         print(self.separator)
+        print()
 
         return Media(
                 name        =   name,
@@ -537,6 +541,7 @@ class Terminal(iView):
         print(self.separator)
         print(center(ender, self.line_len))
         print(self.separator)
+        print()
 
         return MediaGroup(
                 media       =   media,
@@ -618,12 +623,16 @@ class Terminal(iView):
 
 
         # date
-        date = self.__pick_date(message= _('Date'))
+        date = self.__pick_date(
+                message     =   _('Date'),
+                nullable    =   True
+        )
 
         print()
         print(self.separator)
         print(center(ender, self.line_len))
         print(self.separator)
+        print()
 
         return MediaIssue(
                 position    =   position,
@@ -672,6 +681,7 @@ class Terminal(iView):
         print(self.separator)
         print(center(ender, self.line_len))
         print(self.separator)
+        print()
 
         return Platform(
                 name    =   name.capitalize(),
