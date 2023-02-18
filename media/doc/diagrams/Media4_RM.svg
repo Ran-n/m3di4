@@ -848,8 +848,8 @@
     <rect style="fill: #ffffff" x="341.212" y="2073.16" width="172.3" height="18"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="341.212" y="2073.16" width="172.3" height="18"/>
     <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="427.362" y="2087.16">Country</text>
-    <rect style="fill: #ffffff" x="341.212" y="2091.16" width="172.3" height="100"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="341.212" y="2091.16" width="172.3" height="100"/>
+    <rect style="fill: #ffffff" x="341.212" y="2091.16" width="172.3" height="116"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="341.212" y="2091.16" width="172.3" height="116"/>
     <polygon style="fill: #000000" points="344.212,2101.16 346.212,2104.16 348.212,2101.16 346.212,2098.16 "/>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2107.16">id</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2107.16">integer</text>
@@ -858,17 +858,20 @@
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2123.16">name</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2123.16">string</text>
     <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="346.212" cy="2133.16" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2139.16">kingdom</text>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2139.16">integer</text>
-    <ellipse style="fill: #000000" cx="346.212" cy="2149.16" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2155.16">active</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2139.16">description</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2139.16">string</text>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="346.212" cy="2149.16" rx="2" ry="2"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2155.16">kingdom</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2155.16">integer</text>
     <ellipse style="fill: #000000" cx="346.212" cy="2165.16" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2171.16">added_ts</text>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2171.16">datetime</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2171.16">active</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2171.16">integer</text>
     <ellipse style="fill: #000000" cx="346.212" cy="2181.16" rx="2" ry="2"/>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2187.16">modified_ts</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2187.16">added_ts</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2187.16">datetime</text>
+    <ellipse style="fill: #000000" cx="346.212" cy="2197.16" rx="2" ry="2"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="350.212" y="2203.16">modified_ts</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="444.912" y="2203.16">datetime</text>
   </g>
   <g>
     <rect style="fill: #ffffff" x="625.039" y="2041.16" width="210.8" height="18"/>
