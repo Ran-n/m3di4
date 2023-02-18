@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS "App" (
 CREATE TABLE IF NOT EXISTS "Country" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"description"	TEXT,
 	"kingdom"		INTEGER,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -673,9 +674,9 @@ CREATE TABLE IF NOT EXISTS "WarehouseDescription" (
 	"id_warehouse"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "WarehouseName_FK1" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "WarehouseName_NK" UNIQUE("description", "id_warehouse"),
-	CONSTRAINT "WarehouseName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "WarehouseDescription_FK1" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WarehouseDescription_NK" UNIQUE("description", "id_warehouse"),
+	CONSTRAINT "WarehouseDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "MediaDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,

@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/18 15:32:15.982775 )
+[//]: # (+ Editado:	2023/02/19 00:52:17.747900 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -59,9 +59,12 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [X] ShareSite
     - [X] Warehouse
     - [X] WarehouseType
-    - [ ] Media, MediaGroup & MediaIssue
+    - [X] Media, MediaGroup & MediaIssue
+    - [X] Country
     - [ ] MediaType
     - [ ] MediaStatus
+    - [ ] CodecType
+    - [ ] Codec
 
 ## TODO
 

@@ -5,6 +5,8 @@
     "Codec": "Codec",
     "CodecType": "CodecType",
     "Country": "Country",
+    "CountryDescription": "CountryDescription",
+    "CountryDescriptionLanguage": "CountryDescriptionLanguage",
     "CountryName": "CountryName",
     "CountryNameLanguage": "CountryNameLanguage",
     "Encoder": "Encoder",
