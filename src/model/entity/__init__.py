@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/17 00:25:18.845701
+#+ Editado:	2023/02/18 22:13:47.904351
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -44,8 +44,9 @@ from .media_type_name import MediaTypeName
 from .share_site_type_name import ShareSiteTypeName
 from .media_status_name import MediaStatusName
 from .country_name import CountryName
-# xFCR
 from .media_name import MediaName
+from .media_group_name import MediaGroupName
+from .media_issue_name import MediaIssueName
 
 from .language_name_language import LanguageNameLanguage
 from .warehouse_type_name_language import WarehouseTypeNameLanguage
@@ -54,6 +55,8 @@ from .share_site_type_name_language import ShareSiteTypeNameLanguage
 from .media_status_name_language import MediaStatusNameLanguage
 from .country_name_language import CountryNameLanguage
 from .media_name_language import MediaNameLanguage
+from .media_group_name_language import MediaGroupNameLanguage
+from .media_issue_name_language import MediaIssueNameLanguage
 
 from .language_description import LanguageDescription
 from .platform_description import PlatformDescription
@@ -61,6 +64,9 @@ from .warehouse_type_description import WarehouseTypeDescription
 from .share_site_type_description import ShareSiteTypeDescription
 from .share_site_description import ShareSiteDescription
 from .warehouse_description import WarehouseDescription
+from .media_description import MediaDescription
+from .media_group_description import MediaGroupDescription
+from .media_issue_description import MediaIssueDescription
 
 from .language_description_language import LanguageDescriptionLanguage
 from .platform_description_language import PlatformDescriptionLanguage
@@ -68,6 +74,9 @@ from .warehouse_type_description_language import WarehouseTypeDescriptionLanguag
 from .share_site_type_description_language import ShareSiteTypeDescriptionLanguage
 from .share_site_description_language import ShareSiteDescriptionLanguage
 from .warehouse_description_language import WarehouseDescriptionLanguage
+from .media_description_language import MediaDescriptionLanguage
+from .media_group_description_language import MediaGroupDescriptionLanguage
+from .media_issue_description_language import MediaIssueDescriptionLanguage
 
 from .media_name_country import MediaNameCountry
 # ------------------------------------------------------------------------------

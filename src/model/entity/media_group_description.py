@@ -2,24 +2,24 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:45:45.121317
-#+ Editado:	2023/02/18 22:02:04.759287
+#+ Creado: 	2023/02/18 22:08:58.127821
+#+ Editado:	2023/02/18 22:09:46.287103
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Media
+from src.model.entity import BaseEntity, MediaGroup
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaName(BaseEntity):
+class MediaGroupDescription(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaName'))
+                            default=Config().get_table_name('MediaGroupDescription'))
     name: str
-    media: Media
+    media_group: MediaGroup
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------
