@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/17 20:53:39.652195
+#+ Editado:	2023/02/18 15:23:00.731515
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -390,6 +390,12 @@ class Terminal(iView):
                 break
         print()
 
+        # description
+        description = input(f'{Config().input_symbol} ' + _('Description') + ': ')
+        if description == '':
+            description = None
+        print()
+
         # type_
         type_ = self.__pick_from_options(
                 message     =   {
@@ -446,6 +452,7 @@ class Terminal(iView):
 
         return Media(
                 name        =   name,
+                desc        =   description,
                 type_       =   type_,
                 status      =   status,
                 year_start  =   year_start,
@@ -512,6 +519,12 @@ class Terminal(iView):
             name = None
         print()
 
+        # description
+        description = input(f'{Config().input_symbol} ' + _('Description') + ': ')
+        if description == '':
+            description = None
+        print()
+
         # year_start
         year_start = self.__pick_date(
                 message         =   _('Start Year'),
@@ -547,6 +560,7 @@ class Terminal(iView):
                 media       =   media,
                 number      =   number,
                 name        =   name,
+                desc        =   description,
                 year_start  =   year_start,
                 year_end    =   year_end
         )
@@ -621,6 +635,11 @@ class Terminal(iView):
             name = None
         print()
 
+        # description
+        description = input(f'{Config().input_symbol} ' + _('Description') + ': ')
+        if description == '':
+            description = None
+        print()
 
         # date
         date = self.__pick_date(
@@ -639,6 +658,7 @@ class Terminal(iView):
                 media       =   media,
                 media_group =   media_group,
                 name        =   name,
+                desc        =   description,
                 date        =   date
         )
 

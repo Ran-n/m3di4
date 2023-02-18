@@ -23,6 +23,7 @@ class Media(BaseEntity):
     type_: MediaType
     status: MediaStatus
     year_start: int
+    desc: Optional[str] = field(default=None)
     year_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

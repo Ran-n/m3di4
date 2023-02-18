@@ -201,6 +201,7 @@ CREATE TABLE IF NOT EXISTS "LanguageCode" (
 CREATE TABLE IF NOT EXISTS "Media" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
+	"description"	TEXT,
 	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_type"		INTEGER NOT NULL,
@@ -215,8 +216,9 @@ CREATE TABLE IF NOT EXISTS "Media" (
 );
 CREATE TABLE IF NOT EXISTS "MediaGroup" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT,
 	"number"		INTEGER NOT NULL,
+	"name"			TEXT,
+	"description"	TEXT,
 	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_media"		INTEGER NOT NULL,
@@ -231,6 +233,7 @@ CREATE TABLE IF NOT EXISTS "MediaIssue" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"position"			INTEGER NOT NULL,
 	"name"				TEXT,
+	"description"		TEXT,
 	"date"				TEXT,
 	"id_media"			INTEGER NOT NULL,
 	"id_media_group"	INTEGER NOT NULL,
