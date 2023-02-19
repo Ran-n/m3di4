@@ -442,7 +442,6 @@ CREATE TABLE IF NOT EXISTS "CodecTypeName" (
 CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
-	"description"	TEXT,
 	"id_media_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -463,7 +462,6 @@ CREATE TABLE IF NOT EXISTS "ShareSiteTypeName" (
 CREATE TABLE IF NOT EXISTS "MediaStatusName" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
-	"description"		TEXT,
 	"id_media_status"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -678,6 +676,16 @@ CREATE TABLE IF NOT EXISTS "CodecTypeDescription" (
 	CONSTRAINT "CodecTypeDescription_NK" UNIQUE("description", "id_codec_type"),
 	CONSTRAINT "CodecTypeDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "MediaTypeDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_media_type"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "MediaTypeDescription_FK1" FOREIGN KEY("id_media_type") REFERENCES "MediaType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaTypeDescription_NK" UNIQUE("description", "id_media_type"),
+	CONSTRAINT "MediaTypeDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "ShareSiteTypeDescription" (
 	"id"					INTEGER NOT NULL UNIQUE,
 	"description"			TEXT NOT NULL,
@@ -687,6 +695,16 @@ CREATE TABLE IF NOT EXISTS "ShareSiteTypeDescription" (
 	CONSTRAINT "ShareSiteTypeDescription_FK1" FOREIGN KEY("id_share_site_type") REFERENCES "ShareSiteType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "ShareSiteTypeDescription_NK" UNIQUE("description", "id_share_site_type"),
 	CONSTRAINT "ShareSiteTypeDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "MediaStatusDescription" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"description"		TEXT NOT NULL,
+	"id_media_status"	INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "MediaStatusDescription_FK1" FOREIGN KEY("id_media_status") REFERENCES "MediaStatus"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaStatusDescription_NK" UNIQUE("description", "id_media_status"),
+	CONSTRAINT "MediaStatusDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -810,6 +828,17 @@ CREATE TABLE IF NOT EXISTS "CodecTypeDescriptionLanguage" (
 	CONSTRAINT "CodecTypeDescriptionLanguage_NK" UNIQUE("id_codec_type_description", "id_language"),
 	CONSTRAINT "CodecTypeDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "MediaTypeDescriptionLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_media_type_description"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "MediaTypeDescriptionLanguage_FK1" FOREIGN KEY("id_media_type_description") REFERENCES "MediaTypeDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaTypeDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaTypeDescriptionLanguage_NK" UNIQUE("id_media_type_description", "id_language"),
+	CONSTRAINT "MediaTypeDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "ShareSiteTypeDescriptionLanguage" (
 	"id"								INTEGER NOT NULL UNIQUE,
 	"id_share_site_type_description"	INTEGER NOT NULL,
@@ -820,6 +849,17 @@ CREATE TABLE IF NOT EXISTS "ShareSiteTypeDescriptionLanguage" (
 	CONSTRAINT "ShareSiteTypeDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "ShareSiteTypeDescriptionLanguage_NK" UNIQUE("id_share_site_type_description", "id_language"),
 	CONSTRAINT "ShareSiteTypeDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "MediaStatusDescriptionLanguage" (
+	"id"							INTEGER NOT NULL UNIQUE,
+	"id_media_status_description"	INTEGER NOT NULL,
+	"id_language"					INTEGER NOT NULL,
+	"added_ts"						TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "MediaStatusDescriptionLanguage_FK1" FOREIGN KEY("id_media_status_description") REFERENCES "MediaStatusDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaStatusDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaStatusDescriptionLanguage_NK" UNIQUE("id_media_status_description", "id_language"),
+	CONSTRAINT "MediaStatusDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "CountryDescriptionLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
@@ -1261,9 +1301,21 @@ AFTER UPDATE ON "CodecTypeDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_media_type_description
+AFTER UPDATE ON "MediaTypeDescription" BEGIN
+	UPDATE "MediaTypeDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_share_site_type_description
 AFTER UPDATE ON "ShareSiteTypeDescription" BEGIN
 	UPDATE "ShareSiteTypeDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_media_status_description
+AFTER UPDATE ON "MediaStatusDescription" BEGIN
+	UPDATE "MediaStatusDescription"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1335,9 +1387,21 @@ AFTER UPDATE ON "WarehouseTypeDescriptionLanguage" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_media_type_description_language
+AFTER UPDATE ON "MediaTypeDescriptionLanguage" BEGIN
+	UPDATE "MediaTypeDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_share_site_type_description_language
 AFTER UPDATE ON "ShareSiteTypeDescriptionLanguage" BEGIN
 	UPDATE "ShareSiteTypeDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_media_status_description_language
+AFTER UPDATE ON "MediaStatusDescriptionLanguage" BEGIN
+	UPDATE "MediaStatusDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

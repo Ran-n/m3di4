@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/19 13:13:58.457148
-#+ Editado:	2023/02/19 13:14:15.501509
+#+ Editado:	2023/02/19 14:19:25.723511
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
@@ -19,5 +19,5 @@ class CodecDescriptionLanguage(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('CodecDescriptionLanguage'))
     codec_desc: CodecDescription
-    language: Codec
+    language: Language
 # ------------------------------------------------------------------------------

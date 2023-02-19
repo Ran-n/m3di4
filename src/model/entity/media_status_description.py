@@ -2,22 +2,22 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/02/19 12:34:17.222611
-#+ Editado:	2023/02/19 14:18:26.706629
+#+ Creado: 	2023/02/19 14:16:04.980216
+#+ Editado:	2023/02/19 14:16:18.019832
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Language, CodecTypeDescription
+from src.model.entity import BaseEntity, MediaStatus
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class CodecTypeDescriptionLanguage(BaseEntity):
+class MediaStatusDescription(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('CodecTypeDescriptionLanguage'))
-    codec_type_desc: CodecTypeDescription
-    language: Language
+                            default=Config().get_table_name('MediaStatusDescription'))
+    desc: str
+    media_type: MediaStatus
 # ------------------------------------------------------------------------------

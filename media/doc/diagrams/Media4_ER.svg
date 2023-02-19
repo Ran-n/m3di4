@@ -419,9 +419,9 @@
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="832.48,545.033 842.678,549.617 837.224,550.842 834.932,555.941 "/>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="1136.08" y1="628.619" x2="851.216" y2="541.494"/>
-    <polygon style="fill: #000000" points="844.044,539.301 855.069,537.444 851.216,541.494 852.144,547.007 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="844.044,539.301 855.069,537.444 851.216,541.494 852.144,547.007 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="1144.58" y1="630.507" x2="857.087" y2="538.753"/>
+    <polygon style="fill: #000000" points="849.942,536.473 860.989,534.75 857.087,538.753 857.949,544.276 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="849.942,536.473 860.989,534.75 857.087,538.753 857.949,544.276 "/>
   </g>
   <g>
     <ellipse style="fill: #ffffff" cx="434.701" cy="977.722" rx="35.4" ry="18"/>
@@ -589,29 +589,29 @@
   </g>
   <g>
     <g>
-      <rect style="fill: #ffffff" x="770.307" y="581.401" width="25.65" height="10.55"/>
-      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="783.132" y="589.801">
-        <tspan x="783.132" y="589.801">name</tspan>
+      <rect style="fill: #ffffff" x="771.935" y="581.401" width="25.65" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="784.76" y="589.801">
+        <tspan x="784.76" y="589.801">name</tspan>
       </text>
     </g>
     <g>
-      <rect style="fill: #ffffff" x="758.796" y="591.951" width="50.3" height="10.55"/>
-      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="783.946" y="600.351">
-        <tspan x="783.946" y="600.351">description</tspan>
+      <rect style="fill: #ffffff" x="760.424" y="591.951" width="50.3" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="785.574" y="600.351">
+        <tspan x="785.574" y="600.351">description</tspan>
       </text>
     </g>
   </g>
   <g>
     <g>
-      <rect style="fill: #ffffff" x="999.409" y="581.401" width="25.65" height="10.55"/>
-      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1012.23" y="589.801">
-        <tspan x="1012.23" y="589.801">name</tspan>
+      <rect style="fill: #ffffff" x="1002.66" y="578.146" width="25.65" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1015.49" y="586.546">
+        <tspan x="1015.49" y="586.546">name</tspan>
       </text>
     </g>
     <g>
-      <rect style="fill: #ffffff" x="987.898" y="591.951" width="50.3" height="10.55"/>
-      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1013.05" y="600.351">
-        <tspan x="1013.05" y="600.351">description</tspan>
+      <rect style="fill: #ffffff" x="991.154" y="588.696" width="50.3" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1016.3" y="597.096">
+        <tspan x="1016.3" y="597.096">description</tspan>
       </text>
     </g>
   </g>
@@ -666,5 +666,48 @@
     <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="444.566" y="893.073">
       <tspan x="444.566" y="893.073">description</tspan>
     </text>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="1839.38" cy="545.059" rx="35.4" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #90ee90" cx="1839.38" cy="545.059" rx="35.4" ry="18"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="1839.38" y="549.059">i18n</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="1890.88" y1="628.621" x2="1855.48" y2="571.175"/>
+    <polygon style="fill: #000000" points="1851.54,564.791 1861.05,570.68 1855.48,571.175 1852.53,575.927 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1851.54,564.791 1861.05,570.68 1855.48,571.175 1852.53,575.927 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="1789.56" y1="628.627" x2="1823.61" y2="571.507"/>
+    <polygon style="fill: #000000" points="1827.45,565.065 1826.63,576.214 1823.61,571.507 1818.04,571.094 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1827.45,565.065 1826.63,576.214 1823.61,571.507 1818.04,571.094 "/>
+  </g>
+  <g>
+    <g>
+      <rect style="fill: #ffffff" x="1792.52" y="593.202" width="25.65" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1805.34" y="601.602">
+        <tspan x="1805.34" y="601.602">name</tspan>
+      </text>
+    </g>
+    <g>
+      <rect style="fill: #ffffff" x="1781.01" y="603.752" width="50.3" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1806.16" y="612.152">
+        <tspan x="1806.16" y="612.152">description</tspan>
+      </text>
+    </g>
+  </g>
+  <g>
+    <g>
+      <rect style="fill: #ffffff" x="1862.51" y="593.202" width="25.65" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1875.33" y="601.602">
+        <tspan x="1875.33" y="601.602">name</tspan>
+      </text>
+    </g>
+    <g>
+      <rect style="fill: #ffffff" x="1851" y="603.752" width="50.3" height="10.55"/>
+      <text font-size="9.03111" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="1876.15" y="612.152">
+        <tspan x="1876.15" y="612.152">description</tspan>
+      </text>
+    </g>
   </g>
 </svg>

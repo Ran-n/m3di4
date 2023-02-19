@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/29 23:17:57.682598
-#+ Editado:	2023/02/17 20:38:20.127731
+#+ Editado:	2023/02/19 14:13:49.019098
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -21,5 +21,4 @@ class MediaStatusName(BaseEntity):
                             default=Config().get_table_name('MediaStatusName'))
     name: str
     media_status: MediaStatus
-    desc: Optional[str] = field(default=None)
 # ------------------------------------------------------------------------------
