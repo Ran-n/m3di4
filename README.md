@@ -62,7 +62,7 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [X] Media, MediaGroup & MediaIssue
     - [X] Country
     - [X] CodecType
-    - [ ] Codec
+    - [X] Codec
     - [ ] MediaType
     - [ ] MediaStatus
 
