@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/18 22:13:47.904351
+#+ Editado:	2023/02/19 13:42:19.384629
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -40,6 +40,7 @@ from .media_web import MediaWeb
 
 from .language_name import LanguageName
 from .warehouse_type_name import WarehouseTypeName
+from .codec_type_name import CodecTypeName
 from .media_type_name import MediaTypeName
 from .share_site_type_name import ShareSiteTypeName
 from .media_status_name import MediaStatusName
@@ -50,6 +51,7 @@ from .media_issue_name import MediaIssueName
 
 from .language_name_language import LanguageNameLanguage
 from .warehouse_type_name_language import WarehouseTypeNameLanguage
+from .codec_type_name_language import CodecTypeNameLanguage
 from .media_type_name_language import MediaTypeNameLanguage
 from .share_site_type_name_language import ShareSiteTypeNameLanguage
 from .media_status_name_language import MediaStatusNameLanguage
@@ -61,6 +63,8 @@ from .media_issue_name_language import MediaIssueNameLanguage
 from .language_description import LanguageDescription
 from .platform_description import PlatformDescription
 from .warehouse_type_description import WarehouseTypeDescription
+from .codec_type_description import CodecTypeDescription
+from .codec_description import CodecDescription
 from .share_site_type_description import ShareSiteTypeDescription
 from .share_site_description import ShareSiteDescription
 from .warehouse_description import WarehouseDescription
@@ -71,6 +75,8 @@ from .media_issue_description import MediaIssueDescription
 from .language_description_language import LanguageDescriptionLanguage
 from .platform_description_language import PlatformDescriptionLanguage
 from .warehouse_type_description_language import WarehouseTypeDescriptionLanguage
+from .codec_type_description_language import CodecTypeDescriptionLanguage
+from .codec_description_language import CodecDescriptionLanguage
 from .share_site_type_description_language import ShareSiteTypeDescriptionLanguage
 from .share_site_description_language import ShareSiteDescriptionLanguage
 from .warehouse_description_language import WarehouseDescriptionLanguage

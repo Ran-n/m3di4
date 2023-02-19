@@ -3,6 +3,8 @@
     "AppVersion": "AppVersion",
     "Code": "Code",
     "Codec": "Codec",
+    "CodecDescription": "CodecDescription",
+    "CodecDescriptionLanguage": "CodecDescriptionLanguage",
     "CodecType": "CodecType",
     "CodecTypeDescription": "CodecTypeDescription",
     "CodecTypeDescriptionLanguage": "CodecTypeDescriptionLanguage",

@@ -699,6 +699,16 @@ CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	CONSTRAINT "CountryDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+CREATE TABLE IF NOT EXISTS "CodecDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_codec"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CodecName_FK1" FOREIGN KEY("id_codec") REFERENCES "Codec"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CodecName_NK" UNIQUE("description", "id_codec"),
+	CONSTRAINT "CodecName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "ShareSiteDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL,
@@ -823,6 +833,16 @@ CREATE TABLE IF NOT EXISTS "CountryDescriptionLanguage" (
 	CONSTRAINT "CountryDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+CREATE TABLE IF NOT EXISTS "CodecDescriptionLanguage" (
+	"id"					INTEGER NOT NULL UNIQUE,
+	"id_codec_description"	INTEGER NOT NULL,
+	"id_language"			INTEGER NOT NULL,
+	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CodecDescriptionLanguage_FK1" FOREIGN KEY("id_codec_description") REFERENCES "CodecDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CodecDescriptionLanguage_NK" UNIQUE("id_codec_description", "id_language"),
+	CONSTRAINT "CodecDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "ShareSiteDescriptionLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
 	"id_share_site_description"	INTEGER NOT NULL,
@@ -1254,6 +1274,12 @@ AFTER UPDATE ON "CountryDescription" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
+CREATE TRIGGER IF NOT EXISTS update_codec_description
+AFTER UPDATE ON "CodecDescription" BEGIN
+	UPDATE "CodecDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_share_site_description
 AFTER UPDATE ON "ShareSiteDescription" BEGIN
 	UPDATE "ShareSiteDescription"
@@ -1322,6 +1348,12 @@ AFTER UPDATE ON "CountryDescriptionLanguage" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
+CREATE TRIGGER IF NOT EXISTS update_codec_description_language
+AFTER UPDATE ON "CodecDescriptionLanguage" BEGIN
+	UPDATE "CodecDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_share_site_description_language
 AFTER UPDATE ON "ShareSiteDescriptionLanguage" BEGIN
 	UPDATE "ShareSiteDescriptionLanguage"
