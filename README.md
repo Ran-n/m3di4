@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/19 14:06:52.352419 )
+[//]: # (+ Editado:	2023/02/19 15:17:13.846272 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -52,6 +52,7 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [X] Make Add Function for Platform
 - [ ] Make Make Telegram service
 - [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
+- [ ] Make MediaIssue not always have MediaGroup.
 - [ ] Separate/Make the i18n tables into Name and/or Description.
     - [X] LanguageName
     - [X] Platform
@@ -65,6 +66,12 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [X] Codec
     - [X] MediaType
     - [X] MediaStatus
+    - [ ] Web (Description)
+    - [ ] Code (Description)
+    - [ ] Extension (Description)
+    - [ ] AppVersion (Description)
+    - [ ] App (Description)
+    - [ ] Encoder (Description)
 
 ## TODO
 
@@ -77,3 +84,4 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [ ] Automatically update the subs of the Telegram ShareSites.
 - [ ] Dont only show name on groups since it can be null and number is more important anyways.
 - [ ] Make less confusing what part of input you are in when a subinput is opened (insert media group of newly created media)
+- [ ] Add authors (this is tricky because it would also imply, if done correctly, to add attributions).
