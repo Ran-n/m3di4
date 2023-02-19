@@ -2,23 +2,22 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/27 16:44:24.358200
-#+ Editado:	2023/02/19 12:30:42.778787
+#+ Creado: 	2023/02/19 12:34:17.222611
+#+ Editado:	2023/02/19 12:34:24.632871
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity
+from src.model.entity import BaseEntity, Language, CodecTypeDescription
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class CodecType(BaseEntity):
+class CodecTypeDescriptionLanguage(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('CodecType'))
-    name: str
-    desc: Optional[str] = field(default=None)
+                            default=Config().get_table_name('CodecTypeDescriptionLanguage'))
+    codec_type_desc: CodecTypeDescription
+    language: CodecType
 # ------------------------------------------------------------------------------

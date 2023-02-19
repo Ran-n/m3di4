@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/19 00:52:17.747900 )
+[//]: # (+ Editado:	2023/02/19 12:30:49.057894 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -61,10 +61,10 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [X] WarehouseType
     - [X] Media, MediaGroup & MediaIssue
     - [X] Country
+    - [X] CodecType
+    - [ ] Codec
     - [ ] MediaType
     - [ ] MediaStatus
-    - [ ] CodecType
-    - [ ] Codec
 
 ## TODO
 
