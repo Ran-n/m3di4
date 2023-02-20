@@ -75,5 +75,7 @@
     "WarehouseTypeDescriptionLanguage": "WarehouseTypeDescriptionLanguage",
     "WarehouseTypeName": "WarehouseTypeName",
     "WarehouseTypeNameLanguage": "WarehouseTypeNameLanguage",
-    "Web": "Web"
+    "Web": "Web",
+    "WebDescription": "WebDescription",
+    "WebDescriptionLanguage": "WebDescriptionLanguage"
 }

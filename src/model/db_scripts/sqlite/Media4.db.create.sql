@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS "Extension" (
 	"name"				TEXT NOT NULL UNIQUE,
 	"format_name"		TEXT NOT NULL UNIQUE,
 	"format_name_long"	TEXT NOT NULL UNIQUE,
+	"description"		TEXT,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Extension_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -61,67 +62,67 @@ CREATE TABLE IF NOT EXISTS "CodecType" (
 );
 CREATE TABLE IF NOT EXISTS "Code" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Code_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "MediaType" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
 	"groupable"		INTEGER NOT NULL,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaType_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "ShareSiteType" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "`ShareSiteType_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "MediaStatus" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaStatus_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "Web" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"acronym"		TEXT,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
 	"link"			TEXT UNIQUE,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Web_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "App" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "App_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "Country" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
 	"kingdom"		INTEGER,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Country_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -135,11 +136,12 @@ CREATE TABLE IF NOT EXISTS "Country" (
 /** With FK **/
 CREATE TABLE IF NOT EXISTS "AppVersion" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"id_app"			INTEGER NOT NULL,
 	"number"			TEXT NOT NULL,
 	"name"				TEXT,
-	"active"			INTEGER NOT NULL,
 	"num_bit_processor" INTEGER,
+	"description"		TEXT,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "AppVersion_FK1" FOREIGN KEY("id_app") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -706,6 +708,16 @@ CREATE TABLE IF NOT EXISTS "MediaStatusDescription" (
 	CONSTRAINT "MediaStatusDescription_NK" UNIQUE("description", "id_media_status"),
 	CONSTRAINT "MediaStatusDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "WebDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_web"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WebDescription_FK1" FOREIGN KEY("id_web") REFERENCES "Web"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WebDescription_NK" UNIQUE("description", "id_web"),
+	CONSTRAINT "WebDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL,
@@ -860,6 +872,17 @@ CREATE TABLE IF NOT EXISTS "MediaStatusDescriptionLanguage" (
 	CONSTRAINT "MediaStatusDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "MediaStatusDescriptionLanguage_NK" UNIQUE("id_media_status_description", "id_language"),
 	CONSTRAINT "MediaStatusDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "WebDescriptionLanguage" (
+	"id"					INTEGER NOT NULL UNIQUE,
+	"id_web_description"	INTEGER NOT NULL,
+	"id_language"			INTEGER NOT NULL,
+	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "WebDescriptionLanguage_FK1" FOREIGN KEY("id_web_description") REFERENCES "WebDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WebDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "WebDescriptionLanguage_NK" UNIQUE("id_web_description", "id_language"),
+	CONSTRAINT "WebDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "CountryDescriptionLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
@@ -1319,6 +1342,12 @@ AFTER UPDATE ON "MediaStatusDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_web_description
+AFTER UPDATE ON "WebDescription" BEGIN
+	UPDATE "WebDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_country_description
 AFTER UPDATE ON "CountryDescription" BEGIN
 	UPDATE "CountryDescription"
@@ -1402,6 +1431,12 @@ END;
 CREATE TRIGGER IF NOT EXISTS update_media_status_description_language
 AFTER UPDATE ON "MediaStatusDescriptionLanguage" BEGIN
 	UPDATE "MediaStatusDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_web_description_language
+AFTER UPDATE ON "WebDescriptionLanguage" BEGIN
+	UPDATE "WebDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
