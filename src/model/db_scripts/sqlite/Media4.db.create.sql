@@ -658,6 +658,16 @@ CREATE TABLE IF NOT EXISTS "PlatformDescription" (
 	CONSTRAINT "PlatformDescription_NK" UNIQUE("description", "id_platform"),
 	CONSTRAINT "PlatformDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "EncoderDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_encoder"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "EncoderDescription_FK1" FOREIGN KEY("id_encoder") REFERENCES "Encoder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "EncoderDescription_NK" UNIQUE("description", "id_encoder"),
+	CONSTRAINT "EncoderDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "WarehouseTypeDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"description"		TEXT NOT NULL,
@@ -817,6 +827,17 @@ CREATE TABLE IF NOT EXISTS "PlatformDescriptionLanguage" (
 	CONSTRAINT "PlatformDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "PlatformDescriptionLanguage_NK" UNIQUE("id_platform_description", "id_language"),
 	CONSTRAINT "PlatformDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "EncoderDescriptionLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_encoder_description"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "EncoderDescriptionLanguage_FK1" FOREIGN KEY("id_encoder_description") REFERENCES "EncoderDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "EncoderDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "EncoderDescriptionLanguage_NK" UNIQUE("id_encoder_description", "id_language"),
+	CONSTRAINT "EncoderDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "WarehouseTypeDescriptionLanguage" (
 	"id"							INTEGER NOT NULL UNIQUE,
@@ -1312,6 +1333,12 @@ AFTER UPDATE ON "PlatformDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_encoder_description
+AFTER UPDATE ON "EncoderDescription" BEGIN
+	UPDATE "EncoderDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_warehouse_type_description
 AFTER UPDATE ON "WarehouseTypeDescription" BEGIN
 	UPDATE "WarehouseTypeDescription"
@@ -1407,6 +1434,12 @@ END;
 CREATE TRIGGER IF NOT EXISTS update_platform_description_language
 AFTER UPDATE ON "PlatformDescriptionLanguage" BEGIN
 	UPDATE "PlatformDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_encoder_description_language
+AFTER UPDATE ON "EncoderDescriptionLanguage" BEGIN
+	UPDATE "EncoderDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

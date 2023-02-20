@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/20 17:49:54.122922 )
+[//]: # (+ Editado:	2023/02/20 17:58:28.029283 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -71,7 +71,7 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [ ] Extension (Description)
     - [ ] AppVersion (Description)
     - [ ] App (Description)
-    - [ ] Encoder (Description)
+    - [X] Encoder (Description)
 
 ## TODO
 

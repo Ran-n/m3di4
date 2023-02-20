@@ -16,6 +16,8 @@
     "CountryName": "CountryName",
     "CountryNameLanguage": "CountryNameLanguage",
     "Encoder": "Encoder",
+    "EncoderDescription": "EncoderDescription",
+    "EncoderDescriptionLanguage": "EncoderDescriptionLanguage",
     "Extension": "Extension",
     "File": "File",
     "FileShareSite": "FileShareSite",
