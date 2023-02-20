@@ -688,6 +688,16 @@ CREATE TABLE IF NOT EXISTS "CodecTypeDescription" (
 	CONSTRAINT "CodecTypeDescription_NK" UNIQUE("description", "id_codec_type"),
 	CONSTRAINT "CodecTypeDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "CodeDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_code"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CodeDescription_FK1" FOREIGN KEY("id_code") REFERENCES "Code"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CodeDescription_NK" UNIQUE("description", "id_code"),
+	CONSTRAINT "CodeDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "MediaTypeDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL,
@@ -860,6 +870,17 @@ CREATE TABLE IF NOT EXISTS "CodecTypeDescriptionLanguage" (
 	CONSTRAINT "CodecTypeDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "CodecTypeDescriptionLanguage_NK" UNIQUE("id_codec_type_description", "id_language"),
 	CONSTRAINT "CodecTypeDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "CodeDescriptionLanguage" (
+	"id"					INTEGER NOT NULL UNIQUE,
+	"id_code_description"	INTEGER NOT NULL,
+	"id_language"			INTEGER NOT NULL,
+	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CodeDescriptionLanguage_FK1" FOREIGN KEY("id_code_description") REFERENCES "CodeDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CodeDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CodeDescriptionLanguage_NK" UNIQUE("id_code_description", "id_language"),
+	CONSTRAINT "CodeDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "MediaTypeDescriptionLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
@@ -1351,6 +1372,12 @@ AFTER UPDATE ON "CodecTypeDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_code_description
+AFTER UPDATE ON "CodeDescription" BEGIN
+	UPDATE "CodeDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_media_type_description
 AFTER UPDATE ON "MediaTypeDescription" BEGIN
 	UPDATE "MediaTypeDescription"
@@ -1452,6 +1479,18 @@ END;
 CREATE TRIGGER IF NOT EXISTS update_media_type_description_language
 AFTER UPDATE ON "MediaTypeDescriptionLanguage" BEGIN
 	UPDATE "MediaTypeDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_codec_type_description_language
+AFTER UPDATE ON "CodecTypeDescriptionLanguage" BEGIN
+	UPDATE "CodecTypeDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_code_description_language
+AFTER UPDATE ON "CodeDescriptionLanguage" BEGIN
+	UPDATE "CodeDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
