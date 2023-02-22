@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/20 18:31:35.711548
+#+ Editado:	2023/02/22 21:54:31.073391
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -63,6 +63,7 @@ from .media_issue_name_language import MediaIssueNameLanguage
 from .language_description import LanguageDescription
 from .platform_description import PlatformDescription
 from .encoder_description import EncoderDescription
+from .extension_description import ExtensionDescription
 from .warehouse_type_description import WarehouseTypeDescription
 from .codec_type_description import CodecTypeDescription
 from .code_description import CodeDescription
@@ -81,6 +82,7 @@ from .media_issue_description import MediaIssueDescription
 from .language_description_language import LanguageDescriptionLanguage
 from .platform_description_language import PlatformDescriptionLanguage
 from .encoder_description_language import EncoderDescriptionLanguage
+from .extension_description_language import ExtensionDescriptionLanguage
 from .warehouse_type_description_language import WarehouseTypeDescriptionLanguage
 from .codec_type_description_language import CodecTypeDescriptionLanguage
 from .code_description_language import CodeDescriptionLanguage

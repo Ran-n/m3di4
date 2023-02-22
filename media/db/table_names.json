@@ -21,6 +21,8 @@
     "EncoderDescription": "EncoderDescription",
     "EncoderDescriptionLanguage": "EncoderDescriptionLanguage",
     "Extension": "Extension",
+    "ExtensionDescription": "ExtensionDescription",
+    "ExtensionDescriptionLanguage": "ExtensionDescriptionLanguage",
     "File": "File",
     "FileShareSite": "FileShareSite",
     "FileStream": "FileStream",

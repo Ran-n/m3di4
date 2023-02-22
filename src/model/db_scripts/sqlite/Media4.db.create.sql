@@ -668,6 +668,16 @@ CREATE TABLE IF NOT EXISTS "EncoderDescription" (
 	CONSTRAINT "EncoderDescription_NK" UNIQUE("description", "id_encoder"),
 	CONSTRAINT "EncoderDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "ExtensionDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_extension"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "ExtensionDescription_FK1" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "ExtensionDescription_NK" UNIQUE("description", "id_extension"),
+	CONSTRAINT "ExtensionDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "WarehouseTypeDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"description"		TEXT NOT NULL,
@@ -848,6 +858,17 @@ CREATE TABLE IF NOT EXISTS "EncoderDescriptionLanguage" (
 	CONSTRAINT "EncoderDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "EncoderDescriptionLanguage_NK" UNIQUE("id_encoder_description", "id_language"),
 	CONSTRAINT "EncoderDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "ExtensionDescriptionLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_extension_description"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "ExtensionDescriptionLanguage_FK1" FOREIGN KEY("id_extension_description") REFERENCES "ExtensionDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "ExtensionDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "ExtensionDescriptionLanguage_NK" UNIQUE("id_extension_description", "id_language"),
+	CONSTRAINT "ExtensionDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "WarehouseTypeDescriptionLanguage" (
 	"id"							INTEGER NOT NULL UNIQUE,
@@ -1360,6 +1381,12 @@ AFTER UPDATE ON "EncoderDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_extension_description
+AFTER UPDATE ON "ExtensionDescription" BEGIN
+	UPDATE "ExtensionDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_warehouse_type_description
 AFTER UPDATE ON "WarehouseTypeDescription" BEGIN
 	UPDATE "WarehouseTypeDescription"
@@ -1467,6 +1494,12 @@ END;
 CREATE TRIGGER IF NOT EXISTS update_encoder_description_language
 AFTER UPDATE ON "EncoderDescriptionLanguage" BEGIN
 	UPDATE "EncoderDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_extension_description_language
+AFTER UPDATE ON "ExtensionDescriptionLanguage" BEGIN
+	UPDATE "ExtensionDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

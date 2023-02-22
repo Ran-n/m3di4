@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/20 18:24:05.551192 )
+[//]: # (+ Editado:	2023/02/22 21:50:37.726770 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -68,7 +68,7 @@ You can not leave the right part of the parameter definition in blank, you eithe
     - [X] MediaStatus
     - [X] Web (Description)
     - [X] Code (Description)
-    - [ ] Extension (Description)
+    - [X] Extension (Description)
     - [ ] AppVersion (Description)
     - [ ] App (Description)
     - [X] Encoder (Description)
