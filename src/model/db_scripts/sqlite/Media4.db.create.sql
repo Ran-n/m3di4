@@ -748,6 +748,16 @@ CREATE TABLE IF NOT EXISTS "WebDescription" (
 	CONSTRAINT "WebDescription_NK" UNIQUE("description", "id_web"),
 	CONSTRAINT "WebDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "AppDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"id_app"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "AppDescription_FK1" FOREIGN KEY("id_app") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppDescription_NK" UNIQUE("description", "id_app"),
+	CONSTRAINT "AppDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL,
@@ -759,6 +769,16 @@ CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	CONSTRAINT "CountryDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+CREATE TABLE IF NOT EXISTS "AppVersionDescription" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"description"		TEXT NOT NULL,
+	"id_app_version"	INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "AppVersionName_FK1" FOREIGN KEY("id_app_version") REFERENCES "AppVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppVersionName_NK" UNIQUE("description", "id_app_version"),
+	CONSTRAINT "AppVersionName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "CodecDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"description"	TEXT NOT NULL,
@@ -947,18 +967,39 @@ CREATE TABLE IF NOT EXISTS "WebDescriptionLanguage" (
 	CONSTRAINT "WebDescriptionLanguage_NK" UNIQUE("id_web_description", "id_language"),
 	CONSTRAINT "WebDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
+CREATE TABLE IF NOT EXISTS "AppDescriptionLanguage" (
+	"id"					INTEGER NOT NULL UNIQUE,
+	"id_app_description"	INTEGER NOT NULL,
+	"id_language"			INTEGER NOT NULL,
+	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "AppDescriptionLanguage_FK1" FOREIGN KEY("id_app_description") REFERENCES "AppDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppDescriptionLanguage_NK" UNIQUE("id_app_description", "id_language"),
+	CONSTRAINT "AppDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "CountryDescriptionLanguage" (
 	"id"						INTEGER NOT NULL UNIQUE,
 	"id_country_description"	INTEGER NOT NULL,
 	"id_language"				INTEGER NOT NULL,
 	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "ShareSiteTypeDescriptionLanguage_FK1" FOREIGN KEY("id_country_description") REFERENCES "CountryDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "CountryDescriptionLanguage_FK1" FOREIGN KEY("id_country_description") REFERENCES "CountryDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "CountryDescriptionLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "CountryDescriptionLanguage_NK" UNIQUE("id_country_description", "id_language"),
 	CONSTRAINT "CountryDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
+CREATE TABLE IF NOT EXISTS "AppVersionDescriptionLanguage" (
+	"id"							INTEGER NOT NULL UNIQUE,
+	"id_app_version_description"	INTEGER NOT NULL,
+	"id_language"					INTEGER NOT NULL,
+	"added_ts"						TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "AppVersionDescriptionLanguage_FK1" FOREIGN KEY("id_app_version_description") REFERENCES "AppVersionDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppVersionDescriptionLanguage_NK" UNIQUE("id_app_version_description", "id_language"),
+	CONSTRAINT "AppVersionDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
 CREATE TABLE IF NOT EXISTS "CodecDescriptionLanguage" (
 	"id"					INTEGER NOT NULL UNIQUE,
 	"id_codec_description"	INTEGER NOT NULL,
@@ -1429,6 +1470,12 @@ AFTER UPDATE ON "WebDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_app_description
+AFTER UPDATE ON "AppDescription" BEGIN
+	UPDATE "AppDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_country_description
 AFTER UPDATE ON "CountryDescription" BEGIN
 	UPDATE "CountryDescription"
@@ -1436,6 +1483,12 @@ AFTER UPDATE ON "CountryDescription" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
+CREATE TRIGGER IF NOT EXISTS update_app_version_description
+AFTER UPDATE ON "AppVersionDescription" BEGIN
+	UPDATE "AppVersionDescription"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_codec_description
 AFTER UPDATE ON "CodecDescription" BEGIN
 	UPDATE "CodecDescription"
@@ -1545,6 +1598,12 @@ AFTER UPDATE ON "WebDescriptionLanguage" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
+CREATE TRIGGER IF NOT EXISTS update_app_description_language
+AFTER UPDATE ON "AppDescriptionLanguage" BEGIN
+	UPDATE "AppDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_country_description_language
 AFTER UPDATE ON "CountryDescriptionLanguage" BEGIN
 	UPDATE "CountryDescriptionLanguage"
@@ -1552,6 +1611,12 @@ AFTER UPDATE ON "CountryDescriptionLanguage" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
+CREATE TRIGGER IF NOT EXISTS update_app_version_description_language
+AFTER UPDATE ON "AppVersionDescriptionLanguage" BEGIN
+	UPDATE "AppVersionDescriptionLanguage"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_codec_description_language
 AFTER UPDATE ON "CodecDescriptionLanguage" BEGIN
 	UPDATE "CodecDescriptionLanguage"

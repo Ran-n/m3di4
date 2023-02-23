@@ -1,6 +1,10 @@
 {
     "App": "App",
+    "AppDescription": "AppDescription",
+    "AppDescriptionLanguage": "AppDescriptionLanguage",
     "AppVersion": "AppVersion",
+    "AppVersionDescription": "AppVersionDescription",
+    "AppVersionDescriptionLanguage": "AppVersionDescriptionLanguage",
     "Code": "Code",
     "CodeDescription": "CodeDescription",
     "CodeDescriptionLanguage": "CodeDescriptionLanguage",
