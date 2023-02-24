@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/01 21:18:34.961211
-#+ Editado:	2023/02/17 20:36:21.718472
+#+ Editado:	2023/02/24 21:18:24.845933
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import Country
@@ -21,4 +22,5 @@ class CountryName(BaseEntity):
                             default=Config().get_table_name('CountryName'))
     name: str
     country: Country
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

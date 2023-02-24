@@ -398,6 +398,7 @@ CREATE TABLE IF NOT EXISTS "MediaWeb" (
 /** i18n name **/
 CREATE TABLE IF NOT EXISTS "LanguageName" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL,
 	"id_language"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -408,6 +409,7 @@ CREATE TABLE IF NOT EXISTS "LanguageName" (
 );
 CREATE TABLE IF NOT EXISTS "WarehouseTypeName" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL,
 	"id_warehouse_type"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -418,6 +420,7 @@ CREATE TABLE IF NOT EXISTS "WarehouseTypeName" (
 );
 CREATE TABLE IF NOT EXISTS "CodecTypeName" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL,
 	"id_codec_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -428,6 +431,7 @@ CREATE TABLE IF NOT EXISTS "CodecTypeName" (
 );
 CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL,
 	"id_media_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -438,6 +442,7 @@ CREATE TABLE IF NOT EXISTS "MediaTypeName" (
 );
 CREATE TABLE IF NOT EXISTS "ShareSiteTypeName" (
 	"id"					INTEGER NOT NULL UNIQUE,
+	"active"				INTEGER NOT NULL,
 	"name"					TEXT NOT NULL,
 	"id_share_site_type"	INTEGER NOT NULL,
 	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
@@ -448,6 +453,7 @@ CREATE TABLE IF NOT EXISTS "ShareSiteTypeName" (
 );
 CREATE TABLE IF NOT EXISTS "MediaStatusName" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL,
 	"id_media_status"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -458,6 +464,7 @@ CREATE TABLE IF NOT EXISTS "MediaStatusName" (
 );
 CREATE TABLE IF NOT EXISTS "CountryName" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL,
 	"id_country"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -625,6 +632,7 @@ CREATE TABLE IF NOT EXISTS "MediaIssueNameLanguage" (
 /** i18n description **/
 CREATE TABLE IF NOT EXISTS "LanguageDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_language"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -635,6 +643,7 @@ CREATE TABLE IF NOT EXISTS "LanguageDescription" (
 );
 CREATE TABLE IF NOT EXISTS "PlatformDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_platform"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -645,6 +654,7 @@ CREATE TABLE IF NOT EXISTS "PlatformDescription" (
 );
 CREATE TABLE IF NOT EXISTS "EncoderDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_encoder"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -655,6 +665,7 @@ CREATE TABLE IF NOT EXISTS "EncoderDescription" (
 );
 CREATE TABLE IF NOT EXISTS "ExtensionDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_extension"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -665,6 +676,7 @@ CREATE TABLE IF NOT EXISTS "ExtensionDescription" (
 );
 CREATE TABLE IF NOT EXISTS "WarehouseTypeDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"		TEXT NOT NULL,
 	"id_warehouse_type"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -675,6 +687,7 @@ CREATE TABLE IF NOT EXISTS "WarehouseTypeDescription" (
 );
 CREATE TABLE IF NOT EXISTS "CodecTypeDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_codec_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -685,6 +698,7 @@ CREATE TABLE IF NOT EXISTS "CodecTypeDescription" (
 );
 CREATE TABLE IF NOT EXISTS "CodeDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_code"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -695,6 +709,7 @@ CREATE TABLE IF NOT EXISTS "CodeDescription" (
 );
 CREATE TABLE IF NOT EXISTS "MediaTypeDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_media_type"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -705,6 +720,7 @@ CREATE TABLE IF NOT EXISTS "MediaTypeDescription" (
 );
 CREATE TABLE IF NOT EXISTS "ShareSiteTypeDescription" (
 	"id"					INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"			TEXT NOT NULL,
 	"id_share_site_type"	INTEGER NOT NULL,
 	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
@@ -715,6 +731,7 @@ CREATE TABLE IF NOT EXISTS "ShareSiteTypeDescription" (
 );
 CREATE TABLE IF NOT EXISTS "MediaStatusDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"		TEXT NOT NULL,
 	"id_media_status"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -725,6 +742,7 @@ CREATE TABLE IF NOT EXISTS "MediaStatusDescription" (
 );
 CREATE TABLE IF NOT EXISTS "WebDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_web"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -735,6 +753,7 @@ CREATE TABLE IF NOT EXISTS "WebDescription" (
 );
 CREATE TABLE IF NOT EXISTS "AppDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_app"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -745,6 +764,7 @@ CREATE TABLE IF NOT EXISTS "AppDescription" (
 );
 CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_country"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -756,6 +776,7 @@ CREATE TABLE IF NOT EXISTS "CountryDescription" (
 
 CREATE TABLE IF NOT EXISTS "AppVersionDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"		TEXT NOT NULL,
 	"id_app_version"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -766,6 +787,7 @@ CREATE TABLE IF NOT EXISTS "AppVersionDescription" (
 );
 CREATE TABLE IF NOT EXISTS "CodecDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_codec"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -776,6 +798,7 @@ CREATE TABLE IF NOT EXISTS "CodecDescription" (
 );
 CREATE TABLE IF NOT EXISTS "ShareSiteDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_share_site"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -786,6 +809,7 @@ CREATE TABLE IF NOT EXISTS "ShareSiteDescription" (
 );
 CREATE TABLE IF NOT EXISTS "WarehouseDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_warehouse"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -796,6 +820,7 @@ CREATE TABLE IF NOT EXISTS "WarehouseDescription" (
 );
 CREATE TABLE IF NOT EXISTS "MediaDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"description"	TEXT NOT NULL,
 	"id_media"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
@@ -806,6 +831,7 @@ CREATE TABLE IF NOT EXISTS "MediaDescription" (
 );
 CREATE TABLE IF NOT EXISTS "MediaGroupDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"description"		TEXT NOT NULL,
 	"id_media_group"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -816,6 +842,7 @@ CREATE TABLE IF NOT EXISTS "MediaGroupDescription" (
 );
 CREATE TABLE IF NOT EXISTS "MediaIssueDescription" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"description"		TEXT NOT NULL,
 	"id_media_issue"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,

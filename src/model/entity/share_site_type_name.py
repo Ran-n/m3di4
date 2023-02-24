@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/15 21:03:03.989792
-#+ Editado:	2023/02/17 20:41:15.189442
+#+ Editado:	2023/02/24 21:17:38.038570
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, ShareSiteType
@@ -20,4 +21,5 @@ class ShareSiteTypeName(BaseEntity):
                             default=Config().get_table_name('ShareSiteTypeName'))
     name: str
     share_site_type: ShareSiteType
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

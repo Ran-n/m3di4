@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/02/24 21:12:28.368150 )
+[//]: # (+ Editado:	2023/02/24 21:27:37.052189 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -51,3 +51,4 @@ Until
     - [X] App (Description)
     - [X] AppVersion (Description)
 - [X] Move the active attribute just below the id one.
+- [X] Add the active flag to all i18n primary tables.

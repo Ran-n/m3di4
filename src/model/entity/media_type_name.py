@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/29 23:20:04.639454
-#+ Editado:	2023/02/23 17:30:10.201983
+#+ Editado:	2023/02/24 21:15:59.198160
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, MediaType
@@ -20,4 +21,5 @@ class MediaTypeName(BaseEntity):
                             default=Config().get_table_name('MediaTypeName'))
     name: str
     media_type: MediaType
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

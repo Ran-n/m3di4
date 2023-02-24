@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/12 20:59:37.407686
-#+ Editado:	2023/02/17 20:40:32.656392
+#+ Editado:	2023/02/24 21:19:32.942681
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, Language
@@ -20,4 +21,5 @@ class LanguageDescription(BaseEntity):
                             default=Config().get_table_name('LanguageDescription'))
     desc: str
     language: Language
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

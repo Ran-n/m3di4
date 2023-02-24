@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/12 13:44:15.192121
-#+ Editado:	2023/02/17 20:41:29.709507
+#+ Editado:	2023/02/24 21:14:54.894903
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, WarehouseType
@@ -20,4 +21,5 @@ class WarehouseTypeName(BaseEntity):
                             default=Config().get_table_name('WarehouseTypeName'))
     name: str
     warehouse_type: WarehouseType
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------
