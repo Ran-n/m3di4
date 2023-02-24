@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/19 14:16:04.980216
-#+ Editado:	2023/02/19 14:16:18.019832
+#+ Editado:	2023/02/24 22:04:59.768832
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, MediaStatus
@@ -20,4 +21,5 @@ class MediaStatusDescription(BaseEntity):
                             default=Config().get_table_name('MediaStatusDescription'))
     desc: str
     media_type: MediaStatus
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

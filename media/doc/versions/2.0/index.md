@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/02/24 21:39:18.237958 )
+[//]: # (+ Editado:	2023/02/24 21:46:36.045999 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -54,4 +54,8 @@ Until
     - [X] App (Description)
     - [X] AppVersion (Description)
 - [X] Move the active attribute just below the id one.
-- [X] Add the active flag to all i18n primary tables.
+- [ ] Add active field to all tables that benefit from it.
+    - [X] Add the active flag to all i18n primary tables.
+    - [ ] Encoder
+    - [ ] CodecType
+    - [ ] LanguageCode

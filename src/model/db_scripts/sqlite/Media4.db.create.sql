@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS "Platform" (
 );
 CREATE TABLE IF NOT EXISTS "Encoder" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -50,6 +51,7 @@ CREATE TABLE IF NOT EXISTS "WarehouseType" (
 );
 CREATE TABLE IF NOT EXISTS "CodecType" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -180,6 +182,7 @@ CREATE TABLE IF NOT EXISTS "Warehouse" (
 );
 CREATE TABLE IF NOT EXISTS "LanguageCode" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"id_language"	INTEGER NOT NULL,
 	"id_code"		INTEGER NOT NULL,
 	"codename"		TEXT NOT NULL,
@@ -358,7 +361,6 @@ CREATE TABLE IF NOT EXISTS "ShareSiteSubs" (
 	"id_share_site"	INTEGER NOT NULL,
 	"sub_num"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "ShareSiteSubs_FK1" FOREIGN KEY("id_share_site") REFERENCES "ShareSite"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "ShareSiteSubs_NK" UNIQUE("id_share_site", "sub_num", "added_ts"),
 	CONSTRAINT "ShareSiteSubs_PK" PRIMARY KEY("id" AUTOINCREMENT)

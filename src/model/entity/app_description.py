@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/23 17:25:23.700767
-#+ Editado:	2023/02/23 17:25:53.002776
+#+ Editado:	2023/02/24 22:03:24.314665
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, App
@@ -20,4 +21,5 @@ class AppDescription(BaseEntity):
                             default=Config().get_table_name('AppDescription'))
     desc: str
     app: App
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

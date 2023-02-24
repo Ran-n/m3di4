@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/19 13:12:35.072093
-#+ Editado:	2023/02/19 13:12:39.762154
+#+ Editado:	2023/02/24 22:04:07.535571
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, Codec
@@ -20,4 +21,5 @@ class CodecDescription(BaseEntity):
                             default=Config().get_table_name('CodecDescription'))
     desc: str
     codec: Codec
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

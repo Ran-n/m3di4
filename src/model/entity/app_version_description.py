@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/23 17:17:21.124687
-#+ Editado:	2023/02/23 17:17:49.152586
+#+ Editado:	2023/02/24 22:03:36.361092
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+from typing import Optional
 
 from src.utils import Config
 from src.model.entity import BaseEntity, AppVersion
@@ -20,4 +21,5 @@ class AppVersionDescription(BaseEntity):
                             default=Config().get_table_name('AppVersionDescription'))
     desc: str
     app_version: AppVersion
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------
