@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/02/23 17:28:11.138452
+#+ Editado:	2023/02/24 15:49:27.591356
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -12,7 +12,7 @@ from .language import Language
 from .platform import Platform
 from .encoder import Encoder
 from .extension import Extension
-from .folder_name import FolderName
+from .folder import Folder
 from .warehouse_type import WarehouseType
 from .codec_type import CodecType
 from .code import Code

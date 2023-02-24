@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/02/17 20:42:04.461451
+#+ Editado:	2023/02/24 15:48:55.203188
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Warehouse, FolderName, Media, MediaIssue
+from src.model.entity import BaseEntity, Warehouse, Folder, Media, MediaIssue
 from src.model.entity import Extension, Encoder, AppVersion
 # ------------------------------------------------------------------------------
 
@@ -23,7 +23,6 @@ class File(BaseEntity):
     name: str
     extension: Extension
     warehouse: Warehouse
-    folder: FolderName
     title: str
     nb_streams: int
     nb_programs: int
@@ -33,6 +32,7 @@ class File(BaseEntity):
     bit_rate: int
     probe_score: int
     creation_ts: str
+    folder: Optional[Folder] = field(default=None)
     encoder: Optional[Encoder] = field(default=None)
     app_version: Optional[AppVersion] = field(default=None)
     media: Optional[Media] = field(default=None)

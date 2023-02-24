@@ -35,13 +35,13 @@ CREATE TABLE IF NOT EXISTS "Extension" (
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Extension_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "FolderName" (
+CREATE TABLE IF NOT EXISTS "Folder" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL UNIQUE,
+	"path"			TEXT NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "FolderName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "Folder_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "WarehouseType" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -122,6 +122,8 @@ CREATE TABLE IF NOT EXISTS "Country" (
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
+	"nation"		INTEGER,
+	"state"			INTEGER,
 	"kingdom"		INTEGER,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -265,7 +267,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	"name"				TEXT NOT NULL,
 	"id_extension"		INTEGER NOT NULL,
 	"id_warehouse"		INTEGER NOT NULL,
-	"id_folder"			INTEGER NOT NULL,
+	"id_folder"			INTEGER,
 	"id_media"			INTEGER,
 	"id_media_issue"	INTEGER,
 	"title"				TEXT,
@@ -285,7 +287,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	CONSTRAINT "File_NN1" CHECK (("id_media" IS NOT NULL AND "id_media_issue" IS NULL) OR ("id_media" IS NULL AND "id_media_issue" IS NOT NULL)),
 	CONSTRAINT "File_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK2" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "File_FK3" FOREIGN KEY("id_folder") REFERENCES "FolderName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "File_FK3" FOREIGN KEY("id_folder") REFERENCES "Folder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK4" FOREIGN KEY("id_media_issue") REFERENCES "MediaIssue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK5" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK6" FOREIGN KEY("id_encoder") REFERENCES "Encoder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -1110,9 +1112,9 @@ AFTER UPDATE ON "Extension" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_folder_name
-AFTER UPDATE ON "FolderName" BEGIN
-	UPDATE "FolderName"
+CREATE TRIGGER IF NOT EXISTS update_folder
+AFTER UPDATE ON "Folder" BEGIN
+	UPDATE "Folder"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
