@@ -4,17 +4,17 @@ INSERT INTO "Language" ("id", "name") VALUES (1, "Galician");
 INSERT INTO "Language" ("id", "name") VALUES (2, "English");
 INSERT INTO "Language" ("id", "name") VALUES (3, "Spanish");
 
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (1, "Galego", 1);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (2, "Galician", 1);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (3, "Gallego", 1);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (4, "English", 2);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (5, "Inglés", 2);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (6, "Spanish", 3);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (7, "Castillian", 3);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (8, "Español", 3);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (9, "Espanhol", 3);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (10, "Castelán", 3);
-INSERT INTO "LanguageName" ("id", "name", "id_language") VALUES (11, "Castellano", 3);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (1, 1, "Galego", 1);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (2, 1, "Galician", 1);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (3, 1, "Gallego", 1);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (4, 1, "English", 2);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (5, 1, "Inglés", 2);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (6, 1, "Spanish", 3);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (7, 1, "Castillian", 3);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (8, 1, "Español", 3);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (9, 1, "Espanhol", 3);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (10, 1, "Castelán", 3);
+INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (11, 1, "Castellano", 3);
 
 INSERT INTO "LanguageNameLanguage" ("id_language_name", "id_language") VALUES (1, 1);
 INSERT INTO "LanguageNameLanguage" ("id_language_name", "id_language") VALUES (2, 2);
