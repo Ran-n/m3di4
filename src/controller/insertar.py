@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/06 17:48:55.515052
-#+ Editado:	2023/01/28 01:03:15.619672
+#+ Editado:	2023/02/24 21:39:49.595024
 # ------------------------------------------------------------------------------
 from typing import Union, List
 import pathlib
@@ -12,30 +12,6 @@ from uteis.imprimir import jprint
 
 from src.controller.info import main
 from src.model.model import Model
-
-"""
-from src.dtos.Almacen import Almacen
-from src.dtos.Arquivo import Arquivo
-from src.dtos.ArquivoAdxunto import ArquivoAdxunto
-from src.dtos.ArquivoAudio import ArquivoAudio
-from src.dtos.ArquivoSubtitulo import ArquivoSubtitulo
-from src.dtos.ArquivoVideo import ArquivoVideo
-from src.dtos.Compartido import Compartido
-from src.dtos.CompartirLugar import CompartirLugar
-from src.dtos.Lingua import Lingua
-from src.dtos.Media import Media
-from src.dtos.MediaAgrupacion import MediaAgrupacion
-from src.dtos.MediaFasciculo import MediaFasciculo
-from src.dtos.MediaNomes import MediaNomes
-from src.dtos.MediaNomesLinguas import MediaNomesLinguas
-from src.dtos.MediaNomesPaises import MediaNomesPaises
-from src.dtos.MediaSituacion import MediaSituacion
-from src.dtos.MediaTipo import MediaTipo
-from src.dtos.MediaWeb import MediaWeb
-from src.dtos.NomeCarpeta import NomeCarpeta
-from src.dtos.Pais import Pais
-from src.dtos.Web import Web
-"""
 # ------------------------------------------------------------------------------
 def loop_variable(model: Model, variable: str, msg: str = None) -> Union[str, None]:
     if variable == 'Tipo':

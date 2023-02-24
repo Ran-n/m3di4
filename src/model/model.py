@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/17 23:14:52.575009
+#+ Editado:	2023/02/24 21:41:07.741801
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ from src.model.entity import Platform
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
-        # obrigamos ó uso dunha instancia
+        # object must instance the interface
         if isinstance(strategy, iModel):
             self.model = strategy
         else:

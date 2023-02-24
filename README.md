@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/24 21:27:28.749195 )
+[//]: # (+ Editado:	2023/02/24 21:39:08.619115 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -38,23 +38,21 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - Configuration file
 
 ## Tasks
-- [ ] Make a simplified version of the diagrams
 - [ ] Make Add Function for WarehouseType
 - [ ] Make Add Function for Warehouse
 - [ ] Make Add Function for ShareSiteType
 - [ ] Make Add Function for ShareSite
 - [ ] Make Make Telegram service
-- [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
 - [ ] Make MediaIssue not always have MediaGroup.
 
 ## TODO
 - [ ] Make "info.py" a service.
 - [ ] Make the CustomTKinter GUI.
-- [ ] Remake the insert media option and add other options.
-- [ ] Migrate the app language everywhere in the code into english.
 - [ ] Allow inserting dates before year 0.
 - [ ] Check if a date of an issue is in between the appropiate years according to its group/media
 - [ ] Automatically update the subs of the Telegram ShareSites.
-- [ ] Dont only show name on groups since it can be null and number is more important anyways.
+    - [ ] Make service to connect to the API of Telegram.
+    - [ ] Use the service for updating the subs of ShareSite depending on Platform (use thread).
+- [ ] Dont only show name on "MediaGroup"s since it can be null and number is more important anyways.
 - [ ] Make less confusing what part of input you are in when a subinput is opened (insert media group of newly created media)
 - [ ] Add authors (this is tricky because it would also imply, if done correctly, to add attributions).
