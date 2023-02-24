@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/18 15:23:00.731515
+#+ Editado:	2023/02/24 22:40:20.619352
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,7 +38,6 @@ class Terminal(iView):
     def __menu(self) -> None:
         """
         """
-
         options = {
                 '+'         :   [_('Save'), self.controller.save],
                 '.'         :   [_('Exit'), self.controller.exit_save],
@@ -162,20 +161,16 @@ class Terminal(iView):
 
     @staticmethod
     def __yn_question(message: str, as_str: bool = False) -> Union[str, int]:
-        """
-        Return the answer of a yes/no question to the user.
-
+        """ Return the answer of a yes/no question to the user.
         @ Input:
         ╠═  * message   -   str
         ║   └ What will the user see to indicate what to insert.
         ║
         ╚═  · as_str    -   bool    -   False
             └ Indicates if the return should be in str or int form.
-
         @ Output:
         ╚═  [str | int] -   The answer picked by the user.
         """
-
         no_opts = ['n', 'no', 'non']
         str_answer = {0: _('No'), 1: _('Yes')}
 
@@ -189,9 +184,7 @@ class Terminal(iView):
 
     @staticmethod
     def __pick_number(message: str, nullable: bool = False, equal_to: int = None, compare_msg: List[dict[str, str, str]] = None) -> int:
-        """
-        Questions the user to pick a number, the number selected can be within a set a defined constraints.
-
+        """ Questions the user to pick a number, the number selected can be within a set a defined constraints.
         @ Input:
         ╠═  * message       -   str
         ║   └ What will the user see to indicate what to insert.
@@ -205,11 +198,9 @@ class Terminal(iView):
         ╚═  · compare_msg   -   List[dict[str, str, str]]   -   None
             └ Example: [{'number'= '14', 'symbol'= '>', 'message'= 'The number must be bigger than 14'}].
               The first part will be evaluated, and if failed will show the second one to the user.
-
         @ Output:
         ╚═  int -   The number picked by the user.
         """
-
         while True:
             exit_ = False
             number = input(f'{Config().input_symbol} {message}: ')
@@ -237,7 +228,6 @@ class Terminal(iView):
     def __is_valid_date(date: str, date_format: str) -> bool:
         """
         """
-
         try:
             datetime.strptime(date, date_format)
         except:
@@ -249,7 +239,6 @@ class Terminal(iView):
         restrictions
             [['>=15', 'Is smaller than 15']]
         """
-
         date_formats = {
                 '%Y'    :   'yyyy',
                 '%m'    :   'mm',
@@ -295,15 +284,11 @@ class Terminal(iView):
 
 
     def add_media_type(self) -> MediaType:
-        """
-        Terminal View function for adding a media type element.
-
+        """ Terminal View function for adding a media type element.
         @ Input:
-
         @ Output:
         ╚═  MediaType   -   The MediaType created by the user.
         """
-
         logging.info(_('Requesting the user for the information on the media type'))
 
         title = f'{2*Config().title_symbol} ' + _('Add Media Type') + f' {2*Config().title_symbol}'
@@ -331,15 +316,11 @@ class Terminal(iView):
         return MediaType(name = name, groupable = groupable)
 
     def add_media_status(self) -> MediaStatus:
-        """
-        Terminal View function for adding a media status element.
-
+        """ Terminal View function for adding a media status element.
         @ Input:
-
         @ Output:
         ╚═  MediaStatus   -   The MediaStatus created by the user.
         """
-
         logging.info(_('Requesting the user for the information on the media status'))
 
         title = f'{2*Config().title_symbol} ' + _('Add Media Status') + f' {2*Config().title_symbol}'
@@ -365,15 +346,11 @@ class Terminal(iView):
         return MediaStatus(name= name)
 
     def add_media(self) -> Media:
-        """
-        Terminal View function for adding a media element.
-
+        """ Terminal View function for adding a media element.
         @ Input:
-
         @ Output:
         ╚═  Media   -   The Media created by the user.
         """
-
         logging.info(_('Requesting the user for the information on the media'))
 
         title = f'{2*Config().title_symbol} ' + _('Add Media') + f' {2*Config().title_symbol}'
@@ -390,11 +367,13 @@ class Terminal(iView):
                 break
         print()
 
+        """
         # description
         description = input(f'{Config().input_symbol} ' + _('Description') + ': ')
         if description == '':
             description = None
         print()
+        """
 
         # type_
         type_ = self.__pick_from_options(
@@ -452,7 +431,6 @@ class Terminal(iView):
 
         return Media(
                 name        =   name,
-                desc        =   description,
                 type_       =   type_,
                 status      =   status,
                 year_start  =   year_start,
@@ -460,17 +438,13 @@ class Terminal(iView):
         )
 
     def add_media_group(self, id_media: int) -> MediaGroup:
-        """
-        Terminal View function for adding a media group element.
-
+        """ Terminal View function for adding a media group element.
         @ Input:
         ╚═  · id_media  -   int -   None
             └ The id of the media the group should be added to.
-
         @ Output:
         ╚═  MediaGroup  -   The MediaGroup created by the user.
         """
-
         logging.info(_('Requesting the user for the information on the media group'))
 
         title = f'{2*Config().title_symbol} ' + _('Add Media Group') + f' {2*Config().title_symbol}'
@@ -519,11 +493,13 @@ class Terminal(iView):
             name = None
         print()
 
+        """
         # description
         description = input(f'{Config().input_symbol} ' + _('Description') + ': ')
         if description == '':
             description = None
         print()
+        """
 
         # year_start
         year_start = self.__pick_date(
@@ -560,21 +536,16 @@ class Terminal(iView):
                 media       =   media,
                 number      =   number,
                 name        =   name,
-                desc        =   description,
                 year_start  =   year_start,
                 year_end    =   year_end
         )
 
     def add_media_issue(self) -> MediaIssue:
-        """
-        Terminal View function for adding a media issue element.
-
+        """ Terminal View function for adding a media issue element.
         @ Input:
-
         @ Output:
         ╚═  MediaIssue  -   The MediaIssue created by the user.
         """
-
         logging.info(_('Requesting the user for the information on the media issue'))
 
         title = f'{2*Config().title_symbol} ' + _('Add Media Issue') + f' {2*Config().title_symbol}'
@@ -635,11 +606,13 @@ class Terminal(iView):
             name = None
         print()
 
+        """
         # description
         description = input(f'{Config().input_symbol} ' + _('Description') + ': ')
         if description == '':
             description = None
         print()
+        """
 
         # date
         date = self.__pick_date(
@@ -658,20 +631,15 @@ class Terminal(iView):
                 media       =   media,
                 media_group =   media_group,
                 name        =   name,
-                desc        =   description,
                 date        =   date
         )
 
     def add_platform(self) -> Platform:
-        """
-        Terminal View function for adding a platform element.
-
+        """ Terminal View function for adding a platform element.
         @ Input:
-
         @ Output:
         ╚═  Platform    -   The Platform created by the user.
         """
-
         logging.info(_('Requesting the user for the information on the platform'))
 
         title = f'{2*Config().title_symbol} ' + _('Add Platform') + f' {2*Config().title_symbol}'
@@ -691,11 +659,13 @@ class Terminal(iView):
                     break
         print()
 
+        """
         # description
         desc = input(f'{Config().input_symbol} ' + _('Description') + ': ')
         if desc == '':
             desc = None
         print()
+        """
 
         print()
         print(self.separator)
@@ -704,8 +674,7 @@ class Terminal(iView):
         print()
 
         return Platform(
-                name    =   name.capitalize(),
-                desc    =   desc
+                name    =   name.capitalize()
         )
 
 # ------------------------------------------------------------------------------
