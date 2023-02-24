@@ -2,8 +2,10 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:31.773700 )
-[//]: # (+ Editado:	2023/02/24 15:59:11.744758 )
+[//]: # (+ Editado:	2023/02/24 16:17:16.406059 )
 [//]: # ( ---------------------------------------------------------------------- )
+
+[↩️](https://github.com/Ran-n/media4#readme)
 
 # Documentation
 
@@ -11,7 +13,7 @@
 
 - [Diagrams](#diagrams)
 - [Tables](tables.md#tables)
-- [Versions](versions/index#versions)
+- [Versions](versions/index.md#versions)
 
 ## Diagrams
 
