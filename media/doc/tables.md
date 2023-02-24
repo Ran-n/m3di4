@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:24.413478 )
-[//]: # (+ Editado:	2023/02/24 15:42:29.881590 )
+[//]: # (+ Editado:	2023/02/24 16:07:21.177135 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # Tables
@@ -33,7 +33,7 @@ Explanation of what each table of the database was designed to contain.
 - [Warehouse](#warehouse)
 - [WarehouseType](#warehousetype)
 - [Extension](#extension)
-- [FolderName](#foldername)
+- [Folder](#folder)
 
 ## Platform
 Refers to the place that holds the ShareSite site.
