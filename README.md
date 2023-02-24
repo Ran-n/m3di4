@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/24 16:01:36.800302 )
+[//]: # (+ Editado:	2023/02/24 16:25:47.579987 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -13,10 +13,10 @@ Allows you to automatically add useful information about media files to a databa
 
 ## Index
 
+- [Documentation](media/doc/index.md#documentation)
 - [How to Start](#how-to-start)
 - [Frequent Stuff](#frequent-stuff)
 - [Code Features](#code-features)
-- [Documentation](media/doc/index.md#documentation)
 - [Tasks](#tasks)
 - [TODO](#todo)
 
@@ -43,13 +43,10 @@ You can not leave the right part of the parameter definition in blank, you eithe
 ## Tasks
 
 - [ ] Make a simplified version of the diagrams
-- [X] Add in platform id for sharesite table
-- [X] Create new NK for ShareSite table
 - [ ] Make Add Function for WarehouseType
 - [ ] Make Add Function for Warehouse
 - [ ] Make Add Function for ShareSiteType
 - [ ] Make Add Function for ShareSite
-- [X] Make Add Function for Platform
 - [ ] Make Make Telegram service
 - [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
 - [ ] Make MediaIssue not always have MediaGroup.
