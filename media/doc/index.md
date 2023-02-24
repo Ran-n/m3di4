@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:31.773700 )
-[//]: # (+ Editado:	2023/02/24 16:17:16.406059 )
+[//]: # (+ Editado:	2023/02/24 19:10:45.253168 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](https://github.com/Ran-n/media4#readme)
@@ -10,17 +10,15 @@
 # Documentation
 
 ## Index
-
 - [Diagrams](#diagrams)
 - [Tables](tables.md#tables)
+- [Design Choices](design_choices.md#design-choices)
 - [Versions](versions/index.md#versions)
 
 ## Diagrams
-
 Both diagrams are presented in its simplified version since the adding of all entities and tables for the internacionalization of text would make the diagram very difficult to be understood.
 
 ### Entity Relationship
-
 ![ER diagram](diagrams/Media4_ER.png "Entity Relationship Diagram")
 
 The green "i18n" bubble indicates the existance of entities for each translatable element of the original entity.
@@ -34,7 +32,6 @@ The diagram tries to convey how the of all three medias tables names can be coun
 
 
 ### Relational Model
-
 ![RM diagram](diagrams/Media4_RM.png "Relational Model Diagram")
 
 The green "i18n" table represents the existance of translation tables for attributes like "name" and/or "description".
