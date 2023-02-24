@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/02/19 14:30:50.584736
+#+ Editado:	2023/02/24 20:17:54.568402
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -23,7 +23,6 @@ class MediaIssue(BaseEntity):
     media: Media
     media_group: Optional[MediaGroup]
     name: Optional[str] = field(default=None)
-    desc: Optional[str] = field(default=None)
     date: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

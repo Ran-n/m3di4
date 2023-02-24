@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/02/17 20:38:03.345779
+#+ Editado:	2023/02/24 20:17:44.256096
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -23,7 +23,6 @@ class Media(BaseEntity):
     type_: MediaType
     status: MediaStatus
     year_start: int
-    desc: Optional[str] = field(default=None)
     year_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

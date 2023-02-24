@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:36:45.461301
-#+ Editado:	2023/02/17 20:38:23.505644
+#+ Editado:	2023/02/24 20:15:35.729259
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -20,7 +20,6 @@ class MediaType(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('MediaType'))
     name: str
-    desc: Optional[str] = field(default=None)
     groupable: Optional[int] = field(default=0)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

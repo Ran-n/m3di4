@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/02 22:55:38.799230
-#+ Editado:	2023/02/17 20:32:13.026987
+#+ Editado:	2023/02/24 20:16:23.682969
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -20,6 +20,5 @@ class App(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('App'))
     name: str
-    desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/24 22:20:00.157191
-#+ Editado:	2023/02/17 20:38:47.453815
+#+ Editado:	2023/02/24 20:15:51.891924
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -20,6 +20,5 @@ class ShareSiteType(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('ShareSiteType'))
     name: str
-    desc: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

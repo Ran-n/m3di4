@@ -4,7 +4,6 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "Language" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Language_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -12,7 +11,6 @@ CREATE TABLE IF NOT EXISTS "Language" (
 CREATE TABLE IF NOT EXISTS "Platform" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -30,7 +28,6 @@ CREATE TABLE IF NOT EXISTS "Extension" (
 	"name"				TEXT NOT NULL UNIQUE,
 	"format_name"		TEXT NOT NULL UNIQUE,
 	"format_name_long"	TEXT NOT NULL UNIQUE,
-	"description"		TEXT,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Extension_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -46,7 +43,6 @@ CREATE TABLE IF NOT EXISTS "Folder" (
 CREATE TABLE IF NOT EXISTS "WarehouseType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -55,7 +51,6 @@ CREATE TABLE IF NOT EXISTS "WarehouseType" (
 CREATE TABLE IF NOT EXISTS "CodecType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "CodecType_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -64,7 +59,6 @@ CREATE TABLE IF NOT EXISTS "Code" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Code_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -73,7 +67,6 @@ CREATE TABLE IF NOT EXISTS "MediaType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"groupable"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -83,7 +76,6 @@ CREATE TABLE IF NOT EXISTS "ShareSiteType" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "`ShareSiteType_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -92,7 +84,6 @@ CREATE TABLE IF NOT EXISTS "MediaStatus" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaStatus_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -103,7 +94,6 @@ CREATE TABLE IF NOT EXISTS "Web" (
 	"acronym"		TEXT,
 	"name"			TEXT NOT NULL UNIQUE,
 	"name_long"		TEXT UNIQUE,
-	"description"	TEXT,
 	"link"			TEXT UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -113,7 +103,6 @@ CREATE TABLE IF NOT EXISTS "App" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "App_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -122,7 +111,6 @@ CREATE TABLE IF NOT EXISTS "Country" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"nation"		INTEGER,
 	"state"			INTEGER,
 	"kingdom"		INTEGER,
@@ -144,7 +132,6 @@ CREATE TABLE IF NOT EXISTS "AppVersion" (
 	"number"			TEXT NOT NULL,
 	"name"				TEXT,
 	"num_bit_processor" INTEGER,
-	"description"		TEXT,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "AppVersion_FK1" FOREIGN KEY("id_app") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -156,7 +143,6 @@ CREATE TABLE IF NOT EXISTS "Codec" (
 	"name"			TEXT NOT NULL UNIQUE,
 	"name_long"		TEXT UNIQUE,
 	"id_type"		INTEGER NOT NULL,
-	"description"	TEXT,
 	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -181,7 +167,6 @@ CREATE TABLE IF NOT EXISTS "ShareSite" (
 CREATE TABLE IF NOT EXISTS "Warehouse" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
-	"description"	TEXT,
 	"size"			INTEGER,
 	"filled"		INTEGER,
 	"content"		TEXT,
@@ -208,7 +193,6 @@ CREATE TABLE IF NOT EXISTS "LanguageCode" (
 CREATE TABLE IF NOT EXISTS "Media" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL,
-	"description"	TEXT,
 	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_type"		INTEGER NOT NULL,
@@ -225,7 +209,6 @@ CREATE TABLE IF NOT EXISTS "MediaGroup" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"number"		INTEGER NOT NULL,
 	"name"			TEXT,
-	"description"	TEXT,
 	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_media"		INTEGER NOT NULL,
@@ -240,7 +223,6 @@ CREATE TABLE IF NOT EXISTS "MediaIssue" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"position"			INTEGER NOT NULL,
 	"name"				TEXT,
-	"description"		TEXT,
 	"date"				TEXT,
 	"id_media"			INTEGER NOT NULL,
 	"id_media_group"	INTEGER NOT NULL,
