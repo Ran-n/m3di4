@@ -22,4 +22,5 @@ class Extension(BaseEntity):
     name: str
     format_name: Optional[str] = field(default=None)
     format_name_long: Optional[str] = field(default=None)
+    active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

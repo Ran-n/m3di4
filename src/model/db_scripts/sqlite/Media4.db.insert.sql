@@ -1,8 +1,8 @@
 BEGIN TRANSACTION;
 
-INSERT INTO "Language" ("id", "name") VALUES (1, "Galician");
-INSERT INTO "Language" ("id", "name") VALUES (2, "English");
-INSERT INTO "Language" ("id", "name") VALUES (3, "Spanish");
+INSERT INTO "Language" ("id", "active", "name") VALUES (1, 1, "Galician");
+INSERT INTO "Language" ("id", "active", "name") VALUES (2, 1, "English");
+INSERT INTO "Language" ("id", "active", "name") VALUES (3, 1, "Spanish");
 
 INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (1, 1, "Galego", 1);
 INSERT INTO "LanguageName" ("id", "active", "name", "id_language") VALUES (2, 1, "Galician", 1);

@@ -3,6 +3,7 @@ BEGIN TRANSACTION;
 /** Without FK **/
 CREATE TABLE IF NOT EXISTS "Language" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
@@ -26,6 +27,7 @@ CREATE TABLE IF NOT EXISTS "Encoder" (
 );
 CREATE TABLE IF NOT EXISTS "Extension" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL UNIQUE,
 	"format_name"		TEXT NOT NULL UNIQUE,
 	"format_name_long"	TEXT NOT NULL UNIQUE,
