@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:08:25.622146
-#+ Editado:	2023/02/17 20:39:10.314335
+#+ Editado:	2023/02/24 19:46:53.210071
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -20,6 +20,7 @@ class Web(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('Web'))
     name: str
+    name_long: Optional[str] = field(default=None)
     acronym: Optional[str] = field(default=None)
     link: Optional[str] = field(default=None)
     desc: Optional[str] = field(default=None)

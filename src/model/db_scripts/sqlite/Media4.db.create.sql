@@ -102,6 +102,7 @@ CREATE TABLE IF NOT EXISTS "Web" (
 	"active"		INTEGER NOT NULL,
 	"acronym"		TEXT,
 	"name"			TEXT NOT NULL UNIQUE,
+	"name_long"		TEXT NOT NULL UNIQUE,
 	"description"	TEXT,
 	"link"			TEXT UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
