@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/23 17:24:24.531734 )
+[//]: # (+ Editado:	2023/02/24 16:01:36.800302 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -53,25 +53,6 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - [ ] Make Make Telegram service
 - [ ] Automatically use the Telegram service for updating the subs of sharesite depending on platform (use thread)
 - [ ] Make MediaIssue not always have MediaGroup.
-- [ ] Separate/Make the i18n tables into Name and/or Description.
-    - [X] LanguageName
-    - [X] Platform
-    - [X] ShareSiteType
-    - [X] ShareSite
-    - [X] Warehouse
-    - [X] WarehouseType
-    - [X] Media, MediaGroup & MediaIssue
-    - [X] Country
-    - [X] CodecType
-    - [X] Codec
-    - [X] MediaType
-    - [X] MediaStatus
-    - [X] Web (Description)
-    - [X] Code (Description)
-    - [X] Extension (Description)
-    - [X] Encoder (Description)
-    - [X] App (Description)
-    - [X] AppVersion (Description)
 
 ## TODO
 
