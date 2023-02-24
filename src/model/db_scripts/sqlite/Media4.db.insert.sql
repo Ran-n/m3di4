@@ -54,7 +54,7 @@ INSERT INTO "LanguageDescriptionLanguage" ("id_language_description", "id_langua
 
 
 
-INSERT INTO "Platform" ("id", "name", "active") VALUES (1, "Telegram", 1);
+INSERT INTO "Platform" ("id", "active", "name") VALUES (1, 1, "Telegram");
 
 INSERT INTO "PlatformDescription" ("id", "description", "id_platform") VALUES (1, "Telegram is a messaging app with a focus on speed and security, it’s super-fast, simple and free. You can use Telegram on all your devices at the same time — your messages sync seamlessly across any number of your phones, tablets or computers. Telegram has over 700 million monthly active users and is one of the 10 most downloaded apps in the world.\n\nWith Telegram, you can send messages, photos, videos and files of any type (doc, zip, mp3, etc), as well as create groups for up to 200,000 people or channels for broadcasting to unlimited audiences. You can write to your phone contacts and find people by their usernames. As a result, Telegram is like SMS and email combined — and can take care of all your personal or business messaging needs. In addition to this, we support end-to-end encrypted voice and video calls, as well as voice chats in groups for thousands of participants.", 1);
 INSERT INTO "PlatformDescription" ("id", "description", "id_platform") VALUES (2, "Telegram é unha aplicación de mensaxería con enfoque na velocidade e seguridade, é super rápida, simple e de balde. Podes usar Telegram en todos os teus dispositivos ao mesmo tempo, as túas mensaxes sincronízanse perfectamente en calquera número dos teus teléfonos, tablets ou ordenadores. Telegram ten máis de 700 millóns de usuarios activos mensuais e é unha das 10 aplicacións máis descargadas do mundo.\n\nCon Telegram, podes enviar mensaxes, fotos, vídeos e arquivos de calquera tipo (doc, zip, mp3, etc), así como crear grupos de ata 200.000 persoas ou canles para emitir para audiencias ilimitadas. Podes escribir aos teus contactos do teléfono e atopar xente polos seus nomes de usuario. Como resultado, Telegram é como se combinan as mensaxes de SMS e correo electrónico e pode encargarse de todas as túas necesidades de mensaxería persoais ou comerciais. Ademais, compatibilizamos chamadas de voz e vídeo cifradas de extremo a extremo, así como conversas de voz en grupos de miles de participantes.", 1);
@@ -68,9 +68,9 @@ INSERT INTO "PlatformDescriptionLanguage" ("id_platform_description", "id_langua
 
 
 
-INSERT INTO "ShareSiteType" ("id", "name", "active") VALUES (1, "Group Chat", 1);
-INSERT INTO "ShareSiteType" ("id", "name", "active") VALUES (2, "Channel", 1);
-INSERT INTO "ShareSiteType" ("id", "name", "active") VALUES (3, "Website", 1);
+INSERT INTO "ShareSiteType" ("id", "active", "name") VALUES (1, 1, "Group Chat");
+INSERT INTO "ShareSiteType" ("id", "active", "name") VALUES (2, 1, "Channel");
+INSERT INTO "ShareSiteType" ("id", "active", "name") VALUES (3, 1, "Website");
 
 INSERT INTO "ShareSiteTypeName" ("id", "name", "id_share_site_type") VALUES (1, "Group Chat", 1);
 INSERT INTO "ShareSiteTypeName" ("id", "name", "id_share_site_type") VALUES (2, "Chat grupal", 1);
@@ -124,7 +124,7 @@ INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description"
 
 INSERT INTO "Web" ("id", "active", "acronym", "name", "name_long", "link") VALUES (1, 1, "tmdb", "TMDB", "The Movie Database", "https://www.themoviedb.org/");
 INSERT INTO "Web" ("id", "active", "acronym", "name", "name_long", "link") VALUES (2, 1, "imdb", "IMDb", "Internet Movie Database", "https://www.imdb.com/");
-INSERT INTO "Web" ("id", "active", "acronym", "name", "link") VALUES (3, 1, "tvdb", "TheTVDB", "https://thetvdb.com/");
+INSERT INTO "Web" ("id", "active", "acronym", "name", "name_long", "link") VALUES (3, 1, "tvdb", "TheTVDB", "The TV Database", "https://thetvdb.com/");
 INSERT INTO "Web" ("id", "active", "acronym", "name", "name_long", "link") VALUES (4, 1, "omdb", "OMDb", "The Open Movie Database", "https://www.omdbapi.com/");
 
 INSERT INTO "WebDescription" ("id", "description", "id_web") VALUES (1, "Community built movie and TV database. Every piece of data has been added by our amazing community dating back to 2008. TMDB's strong international focus and breadth of data is largely unmatched and something we're incredibly proud of. Put simply, we live and breathe community and that's precisely what makes us different.", 1);

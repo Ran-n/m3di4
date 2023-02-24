@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/24 19:48:28.058659 )
+[//]: # (+ Editado:	2023/02/24 21:12:18.991397 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -38,7 +38,6 @@ You can not leave the right part of the parameter definition in blank, you eithe
 - Configuration file
 
 ## Tasks
-- [ ] Move the active attribute just below the id one.
 - [ ] Add the active flag to all i18n primary tables.
 - [ ] Make a simplified version of the diagrams
 - [ ] Make Add Function for WarehouseType

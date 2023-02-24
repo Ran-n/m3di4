@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/02/24 16:31:46.291189 )
+[//]: # (+ Editado:	2023/02/24 21:12:28.368150 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -50,3 +50,4 @@ Until
     - [X] Encoder (Description)
     - [X] App (Description)
     - [X] AppVersion (Description)
+- [X] Move the active attribute just below the id one.

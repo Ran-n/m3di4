@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS "Language" (
 );
 CREATE TABLE IF NOT EXISTS "Platform" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
+	"name"			TEXT NOT NULL UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Platform_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -34,16 +34,16 @@ CREATE TABLE IF NOT EXISTS "Extension" (
 );
 CREATE TABLE IF NOT EXISTS "Folder" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"path"			TEXT NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
+	"path"			TEXT NOT NULL UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Folder_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "WarehouseType" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"name"			TEXT NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
+	"name"			TEXT NOT NULL UNIQUE,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "WarehouseType_PK" PRIMARY KEY("id" AUTOINCREMENT)
@@ -140,10 +140,10 @@ CREATE TABLE IF NOT EXISTS "AppVersion" (
 );
 CREATE TABLE IF NOT EXISTS "Codec" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"name_long"		TEXT UNIQUE,
 	"id_type"		INTEGER NOT NULL,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Codec_FK1" FOREIGN KEY("id_type") REFERENCES "CodecType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -151,13 +151,13 @@ CREATE TABLE IF NOT EXISTS "Codec" (
 );
 CREATE TABLE IF NOT EXISTS "ShareSite" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"in_platform_id"	TEXT,
 	"name"				TEXT NOT NULL,
 	"private"			INTEGER,
 	"link"				TEXT NOT NULL UNIQUE,
 	"id_type"			INTEGER NOT NULL,
 	"id_platform"		INTEGER,
-	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "ShareSite_FK1" FOREIGN KEY("id_type") REFERENCES "ShareSiteType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -166,13 +166,13 @@ CREATE TABLE IF NOT EXISTS "ShareSite" (
 );
 CREATE TABLE IF NOT EXISTS "Warehouse" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"size"			INTEGER,
 	"filled"		INTEGER,
 	"content"		TEXT,
 	"id_type"		INTEGER NOT NULL,
 	"health"		TEXT,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Warehouse_FK1" FOREIGN KEY("id_type") REFERENCES "WarehouseType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -192,12 +192,12 @@ CREATE TABLE IF NOT EXISTS "LanguageCode" (
 );
 CREATE TABLE IF NOT EXISTS "Media" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL,
 	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_type"		INTEGER NOT NULL,
 	"id_status"		INTEGER NOT NULL,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Media_FK1" FOREIGN KEY("id_type") REFERENCES "MediaType"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -207,12 +207,12 @@ CREATE TABLE IF NOT EXISTS "Media" (
 );
 CREATE TABLE IF NOT EXISTS "MediaGroup" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"number"		INTEGER NOT NULL,
 	"name"			TEXT,
 	"year_start"	INTEGER,
 	"year_end"		INTEGER,
 	"id_media"		INTEGER NOT NULL,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaGroup_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -221,12 +221,12 @@ CREATE TABLE IF NOT EXISTS "MediaGroup" (
 );
 CREATE TABLE IF NOT EXISTS "MediaIssue" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"position"			INTEGER NOT NULL,
 	"name"				TEXT,
 	"date"				TEXT,
 	"id_media"			INTEGER NOT NULL,
 	"id_media_group"	INTEGER NOT NULL,
-	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaIssue_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -247,6 +247,7 @@ CREATE TABLE IF NOT EXISTS "MediaPoster" (
 );
 CREATE TABLE IF NOT EXISTS "File" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL,
 	"id_extension"		INTEGER NOT NULL,
 	"id_warehouse"		INTEGER NOT NULL,
@@ -264,7 +265,6 @@ CREATE TABLE IF NOT EXISTS "File" (
 	"creation_ts"		TEXT,
 	"id_app_version"	INTEGER,
 	"id_encoder"		INTEGER,
-	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "File_NN1" CHECK (("id_media" IS NOT NULL AND "id_media_issue" IS NULL) OR ("id_media" IS NULL AND "id_media_issue" IS NOT NULL)),
@@ -280,6 +280,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 );
 CREATE TABLE IF NOT EXISTS "FileStream" (
 	"id"					INTEGER NOT NULL UNIQUE,
+	"active"				INTEGER NOT NULL,
 	"id_file"				INTEGER NOT NULL,
 	"id_codec"				INTEGER NOT NULL,
 	"id_language"			INTEGER,
@@ -344,7 +345,6 @@ CREATE TABLE IF NOT EXISTS "FileStream" (
 	"frame_number"			INTEGER,
 	"dmix_mode"				INTEGER,
 	"text_subtitle"			INTEGER,
-	"active"				INTEGER NOT NULL,
 	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "FileStream_FK1" FOREIGN KEY("id_file") REFERENCES "File"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -365,10 +365,10 @@ CREATE TABLE IF NOT EXISTS "ShareSiteSubs" (
 );
 CREATE TABLE IF NOT EXISTS "FileShareSite" (
 	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
 	"id_file"		INTEGER NOT NULL,
 	"id_share_site"	INTEGER NOT NULL,
 	"link"			TEXT NOT NULL,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "FileShareSite_FK1" FOREIGN KEY("id_share_site") REFERENCES "ShareSite"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -378,10 +378,10 @@ CREATE TABLE IF NOT EXISTS "FileShareSite" (
 );
 CREATE TABLE IF NOT EXISTS "MediaWeb" (
 	"id"			INTEGER UNIQUE NOT NULL,
+	"active"		INTEGER NOT NULL,
 	"id_media"		INTEGER NOT NULL,
 	"id_web"		INTEGER NOT NULL,
 	"link"			TEXT NOT NULL,
-	"active"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaWeb_FK1" FOREIGN KEY("id_web") REFERENCES "Web"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -469,9 +469,9 @@ CREATE TABLE IF NOT EXISTS "CountryName" (
 
 CREATE TABLE IF NOT EXISTS "MediaName" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL,
 	"id_media"			INTEGER NOT NULL,
-	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id"),
@@ -480,9 +480,9 @@ CREATE TABLE IF NOT EXISTS "MediaName" (
 );
 CREATE TABLE IF NOT EXISTS "MediaGroupName" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL,
 	"id_media_group"	INTEGER NOT NULL,
-	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_media_group") REFERENCES "MediaGroup"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -491,9 +491,9 @@ CREATE TABLE IF NOT EXISTS "MediaGroupName" (
 );
 CREATE TABLE IF NOT EXISTS "MediaIssueName" (
 	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
 	"name"				TEXT NOT NULL,
 	"id_media_issue"	INTEGER NOT NULL,
-	"active"			INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_media_issue") REFERENCES "MediaIssue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
