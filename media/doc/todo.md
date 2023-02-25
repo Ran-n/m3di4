@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/02/25 13:34:21.853563 )
+[//]: # (+ Editado:	2023/02/25 15:10:52.802242 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -15,7 +15,7 @@
 - [ ] Check if a date of an issue is in between the appropiate years according to its group/media
 - [ ] Automatically update the subs of the Telegram ShareSites.
     - [X] Make Add Function for ShareSiteType
-    - [ ] Make Add Function for ShareSite
+    - [X] Make Add Function for ShareSite
     - [ ] Make service to connect to the API of Telegram.
     - [ ] Use the service for updating the subs of ShareSite depending on Platform (use thread).
 - [ ] Dont only show name on "MediaGroup"s since it can be null and number is more important anyways.

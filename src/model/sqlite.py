@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/25 13:33:34.843854
+#+ Editado:	2023/02/25 15:12:03.488062
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ from src.utils import Config
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType
+from src.model.entity import Platform, ShareSiteType, ShareSite
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -132,6 +132,12 @@ class Sqlite(iModel):
             return True
         return False
 
+    def exists_sharesite(self, obj: ShareSite) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{ShareSite.table_name}" where link like "{obj.link}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
 
     # GET NUM
     def get_num(self, table_name: str) -> int:
@@ -157,7 +163,8 @@ class Sqlite(iModel):
 
     # GET
     def get_all(self, table_name: str, limit: int = None,
-                offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+                offset: int = 0, alfabetic: bool = False) ->\
+    List[Union[MediaType, MediaStatus, ShareSiteType, Platform]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -233,6 +240,46 @@ class Sqlite(iModel):
                     status      = self.get_media_status_by_id(result[6]),
                     added_ts    = result[7],
                     modified_ts = result[8]
+            ))
+        return results
+
+    def get_all_sharesite_type(self, limit: int, offset: int, alfabetic: bool) -> List[ShareSiteType]:
+        """
+        """
+        sentence = f'select id, active, name, added_ts, modified_ts from "{ShareSiteType.table_name}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(ShareSiteType(
+                    id_         = result[0],
+                    active      = result[1],
+                    name        = result[2],
+                    added_ts    = result[3],
+                    modified_ts = result[4]
+            ))
+        return results
+
+    def get_all_platform(self, limit: int, offset: int, alfabetic: bool) -> List[Platform]:
+        """
+        """
+        sentence = f'select id, active, name, added_ts, modified_ts from "{Platform.table_name}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(Platform(
+                    id_         = result[0],
+                    active      = result[1],
+                    name        = result[2],
+                    added_ts    = result[3],
+                    modified_ts = result[4]
             ))
         return results
 
@@ -448,5 +495,8 @@ class Sqlite(iModel):
 
     def insert_sharesite_type(self, obj: ShareSiteType) -> None:
         self.get_cur_db().execute(f'insert into "{ShareSiteType.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
+
+    def insert_sharesite(self, obj: ShareSite) -> None:
+        self.get_cur_db().execute(f'insert into "{ShareSite.table_name}" (active, in_platform_id, name, private, link, id_type, id_platform) values (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.in_platform_id, obj.name, obj.private, obj.link, obj.type_.id_, obj.platform.id_))
 
 # ------------------------------------------------------------------------------

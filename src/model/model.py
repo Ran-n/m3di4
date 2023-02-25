@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/25 13:33:21.713954
+#+ Editado:	2023/02/25 15:05:12.223303
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ from src.exception import InheritException
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType
+from src.model.entity import Platform, ShareSiteType, ShareSite
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -59,7 +59,6 @@ class Model:
         @ Input:
         ╚═  · commit -   bool    -   True
             └ Indicates if changes to the DB should be commited or rolled back.
-
         @ Output:
         """
         logging.info(_('Disconnecting from the database'))
@@ -75,7 +74,7 @@ class Model:
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType, ShareSite]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -92,6 +91,8 @@ class Model:
             return self.model.exists_platform(obj)
         elif isinstance(obj, ShareSiteType):
             return self.model.exists_sharesite_type(obj)
+        elif isinstance(obj, ShareSite):
+            return self.model.exists_sharesite(obj)
 
 
 
@@ -121,7 +122,8 @@ class Model:
 
     # GET
     def get_all(self, table_name: str, limit: int = None,
-                offset: int = 0, alfabetic: bool = False) -> List[Union[MediaType, MediaStatus]]:
+                offset: int = 0, alfabetic: bool = False) ->\
+    List[Union[MediaType, MediaStatus, ShareSiteType, Platform]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -142,6 +144,10 @@ class Model:
             return self.model.get_all_media_status(limit, offset, alfabetic)
         elif table_name == Media.table_name:
             return self.model.get_all_media(limit, offset, alfabetic)
+        elif table_name == ShareSiteType.table_name:
+            return self.model.get_all_sharesite_type(limit, offset, alfabetic)
+        elif table_name == Platform.table_name:
+            return self.model.get_all_platform(limit, offset, alfabetic)
 
 
     # GET BY X
@@ -163,6 +169,7 @@ class Model:
             return self.model.get_media_status_by_id(id_)
         elif table_name == Media.table_name:
             return self.model.get_media_by_id(id_)
+
 
     def get_media_group_by_nk(self, obj: MediaGroup) -> MediaGroup:
         """ Returns a group discriminated by its natural key (NK).
@@ -224,7 +231,7 @@ class Model:
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
-                                MediaIssue, Platform, ShareSiteType]
+                                MediaIssue, Platform, ShareSiteType, ShareSite]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -248,6 +255,8 @@ class Model:
             return self.model.insert_platform(obj)
         elif isinstance(obj, ShareSiteType):
             return self.model.insert_sharesite_type(obj)
+        elif isinstance(obj, ShareSite):
+            return self.model.insert_sharesite(obj)
 
 
 # ------------------------------------------------------------------------------

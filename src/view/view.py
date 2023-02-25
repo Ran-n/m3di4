@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/25 13:29:36.130317
+#+ Editado:	2023/02/25 13:49:25.302846
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ from src.exception import InheritException
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType
+from src.model.entity import Platform, ShareSiteType, ShareSite
 # ------------------------------------------------------------------------------
 class View:
     def __init__(self, strategy: iView, model: iModel) -> None:
@@ -60,4 +60,7 @@ class View:
 
     def add_sharesite_type(self) -> ShareSiteType:
         return self.strategy.add_sharesite_type()
+
+    def add_sharesite(self) -> ShareSite:
+        return self.strategy.add_sharesite()
 # ------------------------------------------------------------------------------

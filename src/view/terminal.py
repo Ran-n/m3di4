@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/25 13:20:20.017178
+#+ Editado:	2023/02/25 15:17:09.529664
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -11,6 +11,7 @@ from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
 from datetime import datetime
+import validators as valid
 from typing import List, Union, Callable
 
 from src.enum import PaginationEnum
@@ -18,7 +19,7 @@ from src.utils import Config, center
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType
+from src.model.entity import Platform, ShareSiteType, ShareSite
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
@@ -49,6 +50,7 @@ class Terminal(iView):
                 _('+mi')    :   [_('Add Media Issue'), self.controller.add_media_issue],
                 _('+p')     :   [_('Add Platform'), self.controller.add_platform],
                 _('+st')    :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
+                _('+s')     :   [_('Add ShareSite'), self.controller.add_sharesite],
         }
 
         try:
@@ -485,7 +487,7 @@ class Terminal(iView):
                 break
             else:
                 logging.info(_('The requested media group to be added already exists, a number change will be adviced'))
-                print('Config().error_symbol '+_('The Media Group already exists, pick another number.'))
+                print(f'{Config().error_symbol} '+_('The Media Group already exists, pick another number.'))
         print()
 
         # name
@@ -707,6 +709,88 @@ class Terminal(iView):
 
         return ShareSiteType(
                 name    =   name
+        )
+
+    def add_sharesite(self) -> ShareSite:
+        """
+        """
+        logging.info(_('Requesting the user for the information on the ShareSite'))
+        title = f'{2*Config().title_symbol} ' + _('Add ShareSite') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added ShareSite') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+        # in_platform_id
+        in_platform_id = input(f'{Config().input_symbol} ' + _('Identifier') + ': ')
+        if in_platform_id == '':
+            in_platform_id = None
+        print()
+
+        # name
+        while True:
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
+            if name != '':
+                break
+        print()
+
+        # link
+        while True:
+            link = input(f'{Config().input_symbol} ' + _('Link') + ': ')
+            if link != '' and valid.url(link):
+                if not self.model.exists(ShareSite(name=name, type_=None, link=link)):
+                    break
+                else:
+                    logging.info(_('The requested ShareSite to be added already exists, a link change will be adviced'))
+                    print(f'{Config().error_symbol} '+_('The ShareSite already exists, pick another link.'))
+        print()
+
+        # private
+        private = self.__yn_question(_('Private?'))
+        print()
+
+        # type
+        type_ = self.__pick_from_options(
+                message     =   {
+                    'title':    _('ShareSiteTypes'),
+                    'pick':     _('ShareSiteType'),
+                    'empty':    _('There are no ShareSiteTypes available')
+                },
+                option_count    =   self.model.get_num(table_name=ShareSiteType.table_name),
+                add_fn          =   self.controller.add_sharesite_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=ShareSiteType.table_name, limit=limit, offset=offset),
+                limit           =   Config().pagination_limit
+        )
+        print()
+
+        # platform
+        platform = self.__pick_from_options(
+                message     =   {
+                    'title':    _('Platforms'),
+                    'pick':     _('Platform'),
+                    'empty':    _('There are no Platforms available')
+                },
+                option_count    =   self.model.get_num(table_name=Platform.table_name),
+                add_fn          =   self.controller.add_platform,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Platform.table_name, limit=limit, offset=offset),
+                limit           =   Config().pagination_limit
+        )
+        print()
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+        print()
+
+        return ShareSite(
+                in_platform_id  =   in_platform_id,
+                name            =   name,
+                private         =   private,
+                link            =   link,
+                type_           =   type_,
+                platform        =   platform
         )
 
 # ------------------------------------------------------------------------------

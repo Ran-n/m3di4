@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/02/25 13:29:12.209125
+#+ Editado:	2023/02/25 13:49:06.959948
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ from abc import ABC, abstractmethod
 # ------------------------------------------------------------------------------
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType
+from src.model.entity import Platform, ShareSiteType, ShareSite
 # ------------------------------------------------------------------------------
 class iView(ABC):
     @abstractmethod
@@ -52,6 +52,11 @@ class iView(ABC):
 
     @abstractmethod
     def add_sharesite_type(self) -> ShareSiteType:
+        """
+        """
+
+    @abstractmethod
+    def add_sharesite(self) -> ShareSite:
         """
         """
 
