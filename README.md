@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/25 12:51:36.760762 )
+[//]: # (+ Editado:	2023/02/25 12:52:33.519522 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 # media4
@@ -11,11 +11,10 @@ Allows you to automatically add useful information about media files to a databa
 
 
 ## Index
-- [Documentation](media/doc/index.md#documentation)
 - [How to Start](#how-to-start)
 - [Frequent Stuff](#frequent-stuff)
 - [Code Features](#code-features)
-- [Tasks](#tasks)
+- [Documentation](media/doc/index.md#documentation)
 - [TODO](media/doc/todo.md#todo)
 
 
