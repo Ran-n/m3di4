@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/24 21:41:07.741801
+#+ Editado:	2023/02/25 13:33:21.713954
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ from src.exception import InheritException
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform
+from src.model.entity import Platform, ShareSiteType
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -75,12 +75,11 @@ class Model:
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
             └ Object to check if it exists in the DB.
-
         @ Output:
         ╚═  bool    -   Indicating if the object exists or not.
         """
@@ -91,6 +90,8 @@ class Model:
             return self.model.exists_media_issue(obj)
         elif isinstance(obj, Platform):
             return self.model.exists_platform(obj)
+        elif isinstance(obj, ShareSiteType):
+            return self.model.exists_sharesite_type(obj)
 
 
 
@@ -222,7 +223,8 @@ class Model:
 
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue, Platform]
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
+                                MediaIssue, Platform, ShareSiteType]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -244,6 +246,8 @@ class Model:
             return self.model.insert_media_issue(obj)
         elif isinstance(obj, Platform):
             return self.model.insert_platform(obj)
+        elif isinstance(obj, ShareSiteType):
+            return self.model.insert_sharesite_type(obj)
 
 
 # ------------------------------------------------------------------------------

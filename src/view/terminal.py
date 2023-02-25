@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/24 22:40:20.619352
+#+ Editado:	2023/02/25 13:20:20.017178
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ from src.utils import Config, center
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform
+from src.model.entity import Platform, ShareSiteType
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
@@ -48,6 +48,7 @@ class Terminal(iView):
                 _('+mg')    :   [_('Add Media Group'), self.controller.add_media_group],
                 _('+mi')    :   [_('Add Media Issue'), self.controller.add_media_issue],
                 _('+p')     :   [_('Add Platform'), self.controller.add_platform],
+                _('+st')    :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
         }
 
         try:
@@ -657,7 +658,7 @@ class Terminal(iView):
                     print(f'{Config().error_symbol} ' + _('The platform already exists, pick another name.'))
                 else:
                     break
-        print()
+        #print()
 
         """
         # description
@@ -675,6 +676,37 @@ class Terminal(iView):
 
         return Platform(
                 name    =   name.capitalize()
+        )
+
+    def add_sharesite_type(self) -> ShareSiteType:
+        """
+        """
+        logging.info(_('Requesting the user for the information on the ShareSiteType'))
+        title = f'{2*Config().title_symbol} ' + _('Add ShareSiteType') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added ShareSiteType') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+        # name
+        while True:
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
+            if name != '':
+                if self.model.exists(ShareSiteType(name= name)):
+                    print(f'{Config().error_symbol} ' + _('The platform already exists, pick another name.'))
+                else:
+                    break
+        #print()
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+        print()
+
+        return ShareSiteType(
+                name    =   name
         )
 
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/17 23:11:13.689195
+#+ Editado:	2023/02/25 13:33:09.310443
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ from typing import List, Union
 #from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform
+from src.model.entity import Platform, ShareSiteType
 # ------------------------------------------------------------------------------
 
 
@@ -53,7 +53,6 @@ class iModel(ABC):  # pylint: disable=C0103
         @ Input:
         ╚═  · commit -   bool    -   True
             └ Indicates if changes to the DB should be commited or rolled back.
-
         @ Output:
         """
 
@@ -65,12 +64,11 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def exists(self, obj: Union[MediaGroup, MediaIssue]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
             └ Object to check if it exists in the DB.
-
         @ Output:
         ╚═  bool    -   Indicating if the object exists or not.
         """
@@ -87,7 +85,7 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def get_media_group_num_by_media_id(self, media_id: int) -> int:
-        """Returns the number of group elements discriminating by media id.
+        """ Returns the number of group elements discriminating by media id.
         @ Input:
         ╚═  · media_id  -   int
             └ Id of the media to use as a discriminator.
@@ -181,7 +179,8 @@ class iModel(ABC):  # pylint: disable=C0103
     # ---
 
     @abstractmethod
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue, Platform]
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
+                                MediaIssue, Platform, ShareSiteType]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:

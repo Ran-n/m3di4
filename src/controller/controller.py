@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/12 15:24:39.096755
+#+ Editado:	2023/02/25 13:19:15.002306
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -72,5 +72,12 @@ class Controller:
         logging.info(_('Starting the "Add Platform" process'))
         self.model.insert(self.view.add_platform())
         logging.info(_('The "Add Platform" process was finished'))
+
+    def add_sharesite_type(self) -> None:
+        """
+        """
+        logging.info(_('Starting the "Add ShareSiteType" process'))
+        self.model.insert(self.view.add_sharesite_type())
+        logging.info(_('The "Add ShareSiteType" process was finished'))
 
 # ------------------------------------------------------------------------------

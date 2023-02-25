@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/24 22:38:25.249060
+#+ Editado:	2023/02/25 13:33:34.843854
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ from src.utils import Config
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform
+from src.model.entity import Platform, ShareSiteType
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -97,7 +97,7 @@ class Sqlite(iModel):
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -122,6 +122,12 @@ class Sqlite(iModel):
 
     def exists_platform(self, obj: Platform) -> bool:
         sql_result = self.get_cur_db().execute(f'select id from "{Platform.table_name}" where name like "{obj.name}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+    def exists_sharesite_type(self, obj: ShareSiteType) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{ShareSiteType.table_name}" where name like "{obj.name}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -439,5 +445,8 @@ class Sqlite(iModel):
 
     def insert_platform(self, obj: Platform) -> None:
         self.get_cur_db().execute(f'insert into "{Platform.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
+
+    def insert_sharesite_type(self, obj: ShareSiteType) -> None:
+        self.get_cur_db().execute(f'insert into "{ShareSiteType.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
 
 # ------------------------------------------------------------------------------
