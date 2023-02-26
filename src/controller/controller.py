@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/26 13:57:11.382061
+#+ Editado:	2023/02/26 14:38:52.717160
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -78,9 +78,8 @@ class Controller:
                         sub_num=sub_num,
                         added_ts=datetime.now().strftime("%Y-%m-%d")
                         )
-                if not self.model.exists(ss):
+                if sub_num and not self.model.exists(ss):
                     self.model.insert(ss)
-            #self.model.save_db()
         else:
             logging.info(_('The member count was not updated since there \
                     are no ShareSites'))

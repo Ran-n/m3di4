@@ -3,3 +3,4 @@
 .coverage
 .cnf
 *.log
+media/db/test_data.insert.sql
