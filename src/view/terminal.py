@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/26 15:01:29.493347
+#+ Editado:	2023/02/26 15:10:31.057530
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ class Terminal(iView):
 
         if not self.line_len:
             self.line_len = biggest_key_len + biggest_value_len + (self.tab_len*6)
-            self.separator = Config().separator_symbol * self.line_len
+            self.separator = Config().separator_symbol * (self.line_len + 2)
 
             print(self.separator)
             print(center(_('Media4 Manager'), self.line_len))
