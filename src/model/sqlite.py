@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/26 00:34:52.623488
+#+ Editado:	2023/02/26 13:55:26.697248
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -69,7 +69,9 @@ class Sqlite(iModel):
         @ Ouput:
         ╚═ (Connection, Cursor) -   Tuple with objects of DB Connection and Cursor.
         """
-        self.conn = sqlite3.connect(self.ficheiro)
+        # this check_same_thread option may give problems
+        # may need to make a queue
+        self.conn = sqlite3.connect(database=self.ficheiro, check_same_thread=False)
         self.cur = self.conn.cursor()
         return (self.conn, self.cur)
 

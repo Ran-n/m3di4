@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/26 00:36:33.655698
+#+ Editado:	2023/02/26 13:57:11.382061
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -51,9 +51,7 @@ class Controller:
 
     def update_member_count(self) -> None:
         logging.info(_('Starting the "Update Member Count" process'))
-        self.__update_member_count_aux()
-        #thread = Thread(target=self.__update_member_count_aux)
-        #thread.start()
+        Thread(target=self.__update_member_count_aux).start()
         logging.info(_('The "Update Member Count" process was finished'))
 
     def __update_member_count_aux(self) -> None:
@@ -78,7 +76,7 @@ class Controller:
                 ss = ShareSiteSubs(
                         share_site=share_site,
                         sub_num=sub_num,
-                        added_ts=datetime.now().strftime("%Y-%m-%d %H:%M")
+                        added_ts=datetime.now().strftime("%Y-%m-%d")
                         )
                 if not self.model.exists(ss):
                     self.model.insert(ss)
