@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/25 15:17:09.529664
+#+ Editado:	2023/02/25 18:49:41.031878
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -40,17 +40,18 @@ class Terminal(iView):
         """
         """
         options = {
-                '+'         :   [_('Save'), self.controller.save],
-                '.'         :   [_('Exit'), self.controller.exit_save],
-                '..'        :   [_('Exit (No Save)'), self.controller.exit_no_save],
-                _('+mt')    :   [_('Add Media Type'), self.controller.add_media_type],
-                _('+ms')    :   [_('Add Media Status'), self.controller.add_media_status],
-                _('+m')     :   [_('Add Media'), self.controller.add_media],
-                _('+mg')    :   [_('Add Media Group'), self.controller.add_media_group],
-                _('+mi')    :   [_('Add Media Issue'), self.controller.add_media_issue],
-                _('+p')     :   [_('Add Platform'), self.controller.add_platform],
-                _('+st')    :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
-                _('+s')     :   [_('Add ShareSite'), self.controller.add_sharesite],
+                '+'             :   [_('Save'), self.controller.save],
+                '.'             :   [_('Exit'), self.controller.exit_save],
+                '..'            :   [_('Exit (No Save)'), self.controller.exit_no_save],
+                _('#members')   :   [_('Update Member Count'), self.controller.update_member_count],
+                _('+mt')        :   [_('Add Media Type'), self.controller.add_media_type],
+                _('+ms')        :   [_('Add Media Status'), self.controller.add_media_status],
+                _('+m')         :   [_('Add Media'), self.controller.add_media],
+                _('+mg')        :   [_('Add Media Group'), self.controller.add_media_group],
+                _('+mi')        :   [_('Add Media Issue'), self.controller.add_media_issue],
+                _('+p')         :   [_('Add Platform'), self.controller.add_platform],
+                _('+st')        :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
+                _('+s')         :   [_('Add ShareSite'), self.controller.add_sharesite],
         }
 
         try:
@@ -66,7 +67,7 @@ class Terminal(iView):
         biggest_value_len = len(max([ele[0] for ele in options.values()], key=len)) + self.tab_len
 
         if not self.line_len:
-            self.line_len = biggest_key_len + biggest_value_len + self.tab_len + 5
+            self.line_len = biggest_key_len + biggest_value_len + self.tab_len
             self.separator = Config().separator_symbol * self.line_len
 
             print(self.separator)
@@ -74,19 +75,19 @@ class Terminal(iView):
             print(self.separator)
 
 
-        title = center(f'{Config().title_symbol*3} ' + _('MENU') + f' {Config().title_symbol*3}', self.line_len-2)
+        title = center(f'{Config().title_symbol*3} ' + _('MENU') + f' {Config().title_symbol*3}', self.line_len)
         print()
-        print('█' + '▀' * len(title) + '█')
-        print('█' + title + '█')
-        print('█' + ('▄'*(self.line_len-2)) + '█')
+        print('█'+ '▀'*self.line_len +'█')
+        print('█'+ title +'█')
+        print('█'+ '▄'*self.line_len +'█')
 
         #for key, value in zip(options.keys(), options.values()):
         for key, value in options.items():
             value0 = value[0]
-            print(f'▌ {key:<{biggest_key_len}}▐\t{value0:<{biggest_value_len}} ▐'.expandtabs(self.tab_len))
+            print('▌'+center(f'{key:<{biggest_key_len}}▐\t{value0:<{biggest_value_len}}'.expandtabs(self.tab_len), self.line_len)+'▐')
 
 
-        print('▀'*self.line_len)
+        print('▀'*(self.line_len+2))
         while True:
             option = input(_('Pick: '))
             if option in options:

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/25 15:05:12.223303
+#+ Editado:	2023/02/25 23:23:47.226520
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ from src.exception import InheritException
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite
+from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -93,6 +93,8 @@ class Model:
             return self.model.exists_sharesite_type(obj)
         elif isinstance(obj, ShareSite):
             return self.model.exists_sharesite(obj)
+        elif isinstance(obj, ShareSiteSubs):
+            return self.model.exists_sharesite_subs(obj)
 
 
 
@@ -123,7 +125,7 @@ class Model:
     # GET
     def get_all(self, table_name: str, limit: int = None,
                 offset: int = 0, alfabetic: bool = False) ->\
-    List[Union[MediaType, MediaStatus, ShareSiteType, Platform]]:
+    List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -148,10 +150,13 @@ class Model:
             return self.model.get_all_sharesite_type(limit, offset, alfabetic)
         elif table_name == Platform.table_name:
             return self.model.get_all_platform(limit, offset, alfabetic)
+        elif table_name == ShareSite.table_name:
+            return self.model.get_all_sharesite(limit, offset, alfabetic)
 
 
     # GET BY X
-    def get_by_id(self, table_name: str, id_: int) -> Union[None, MediaType, MediaStatus, Media]:
+    def get_by_id(self, table_name: str, id_: int) ->\
+            Union[None, MediaType, MediaStatus, Media, ShareSiteType, Platform]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -162,13 +167,18 @@ class Model:
         ╠═  Any Entity Object    -   The element of the table discriminated by id.
         ╚═  None                 -   If no matches exists.
         """
-        logging.info(_(f'Searching on "{table_name}" table any entries that match the given id "{id_}"'))
+        logging.info(_(f'Searching on "{table_name}" table any entries that\
+                match the given id "{id_}"'))
         if table_name == MediaType.table_name:
             return self.model.get_media_type_by_id(id_)
         elif table_name == MediaStatus.table_name:
             return self.model.get_media_status_by_id(id_)
         elif table_name == Media.table_name:
             return self.model.get_media_by_id(id_)
+        elif table_name == ShareSiteType.table_name:
+            return self.model.get_sharesite_type_by_id(id_)
+        elif table_name == Platform.table_name:
+            return self.model.get_platform_by_id(id_)
 
 
     def get_media_group_by_nk(self, obj: MediaGroup) -> MediaGroup:
@@ -257,6 +267,8 @@ class Model:
             return self.model.insert_sharesite_type(obj)
         elif isinstance(obj, ShareSite):
             return self.model.insert_sharesite(obj)
+        elif isinstance(obj, ShareSiteSubs):
+            return self.model.insert_sharesite_subs(obj)
 
 
 # ------------------------------------------------------------------------------

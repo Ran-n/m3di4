@@ -10,7 +10,26 @@ language = eng
 # should be run or not if not run the database will
 # be completetly empty
 populate_db = true
-##
+##/ LANGUAGE
+
+## PATHS
+# Where do you wish logs to be saved, folder doesnt need to exist
+# Default: media/logs
+log_folder = media/logs
+# Where do you wish to have the db created or where should media4 look for to connect.
+# Default: media/db/Database.db
+db_file_location = media/db/Database.db
+
+# Where are the translation files located at
+# do NOT change unless you move them from this default location.
+# Default: media/i18n
+i18n_folder = media/i18n
+##/ PATHS
+
+## SERVICES
+# telegram bot token
+telegram_bot_token =
+##/ SERVICES
 
 ## UI
 # What user interface do you wish to use
@@ -40,18 +59,4 @@ add_symbol = +
 remove_symbol = -
 # used to indicate an end date want to be set to be the same as a start one
 equal_symbol = =
-##
-
-## PATHS
-# Where do you wish logs to be saved, folder doesnt need to exist
-# Default: media/logs
-log_folder = media/logs
-# Where do you wish to have the db created or where should media4 look for to connect.
-# Default: media/db/Database.db
-db_file_location = media/db/Database.db
-
-# Where are the translation files located at
-# do NOT change unless you move them from this default location.
-# Default: media/i18n
-i18n_folder = media/i18n
-##
+##/ UI

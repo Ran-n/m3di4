@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/25 15:12:03.488062
+#+ Editado:	2023/02/26 00:34:52.623488
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ from src.utils import Config
 from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite
+from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -138,6 +138,14 @@ class Sqlite(iModel):
             return True
         return False
 
+    def exists_sharesite_subs(self, obj: ShareSiteSubs) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{ShareSiteSubs.table_name}" where \
+                id_share_site={obj.share_site.id_} and sub_num={obj.sub_num} \
+                and added_ts like "{obj.added_ts}%"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
 
     # GET NUM
     def get_num(self, table_name: str) -> int:
@@ -164,7 +172,7 @@ class Sqlite(iModel):
     # GET
     def get_all(self, table_name: str, limit: int = None,
                 offset: int = 0, alfabetic: bool = False) ->\
-    List[Union[MediaType, MediaStatus, ShareSiteType, Platform]]:
+    List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -283,9 +291,36 @@ class Sqlite(iModel):
             ))
         return results
 
+    def get_all_sharesite(self, limit: int, offset: int, alfabetic: bool) -> List[ShareSite]:
+        """
+        """
+        sentence = f'select id, active, in_platform_id, name, private, link, id_type, \
+                id_platform, added_ts, modified_ts from "{ShareSite.table_name}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(ShareSite(
+                    id_             = result[0],
+                    active          = result[1],
+                    in_platform_id  = result[2],
+                    name            = result[3],
+                    private         = result[4],
+                    link            = result[5],
+                    type_           = self.get_sharesite_type_by_id(result[6]),
+                    platform        = self.get_platform_by_id(result[7]),
+                    added_ts        = result[8],
+                    modified_ts     = result[9]
+            ))
+        return results
+
 
     # GET BY X
-    def get_by_id(self, table_name: str, id_: int) -> Union[None, MediaType, MediaStatus, Media]:
+    def get_by_id(self, table_name: str, id_: int) ->\
+            Union[None, MediaType, MediaStatus, Media, ShareSiteType, Platform]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -322,7 +357,8 @@ class Sqlite(iModel):
             )
 
     def get_media_by_id(self, id_: int) -> Union[None, Media]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, year_start, year_end, id_type, id_status, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"').fetchone()
+        sql_result = self.get_cur_db().execute(f'select id, active, name, year_start, year_end, \
+                id_type, id_status, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return Media(
                     id_         = sql_result[0],
@@ -334,6 +370,32 @@ class Sqlite(iModel):
                     status      = self.get_media_status_by_id(sql_result[6]),
                     added_ts    = sql_result[7],
                     modified_ts = sql_result[8]
+            )
+
+    def get_sharesite_type_by_id(self, id_: int) -> Union[None, ShareSiteType]:
+        """"""
+        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
+                modified_ts from "{ShareSiteType.table_name}" where id="{id_}"').fetchone()
+        if sql_result:
+            return ShareSiteType(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    added_ts    = sql_result[3],
+                    modified_ts = sql_result[4]
+            )
+
+    def get_platform_by_id(self, id_: int) -> Union[None, Platform]:
+        """"""
+        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
+                modified_ts from "{Platform.table_name}" where id="{id_}"').fetchone()
+        if sql_result:
+            return Platform(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    added_ts    = sql_result[3],
+                    modified_ts = sql_result[4]
             )
 
     def get_media_group_by_nk(self, obj: MediaGroup) -> Union[None, MediaGroup]:
@@ -498,5 +560,8 @@ class Sqlite(iModel):
 
     def insert_sharesite(self, obj: ShareSite) -> None:
         self.get_cur_db().execute(f'insert into "{ShareSite.table_name}" (active, in_platform_id, name, private, link, id_type, id_platform) values (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.in_platform_id, obj.name, obj.private, obj.link, obj.type_.id_, obj.platform.id_))
+
+    def insert_sharesite_subs(self, obj: ShareSiteSubs) -> None:
+        self.get_cur_db().execute(f'insert into "{ShareSiteSubs.table_name}" (id_share_site, sub_num) values (?, ?)', (obj.share_site.id_, obj.sub_num))
 
 # ------------------------------------------------------------------------------

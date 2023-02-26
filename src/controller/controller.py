@@ -3,14 +3,19 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/25 15:02:08.355199
+#+ Editado:	2023/02/26 00:36:33.655698
 # ------------------------------------------------------------------------------
 import sys
 import logging
+from datetime import datetime
+from threading import Thread
 
 from src.model import iModel
 from src.view import iView
 
+from src.service import MemberCountService
+
+from src.model.entity import ShareSite, ShareSiteSubs, Platform
 #from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
 class Controller:
@@ -19,6 +24,8 @@ class Controller:
         self.view = view
         self.view.controller = self
         self.view.strategy.controller = self
+
+        self.update_member_count()
 
         self.view.start()
 
@@ -42,6 +49,44 @@ class Controller:
         logging.info(_('Exiting the program'))
         sys.exit()
 
+    def update_member_count(self) -> None:
+        logging.info(_('Starting the "Update Member Count" process'))
+        self.__update_member_count_aux()
+        #thread = Thread(target=self.__update_member_count_aux)
+        #thread.start()
+        logging.info(_('The "Update Member Count" process was finished'))
+
+    def __update_member_count_aux(self) -> None:
+        logging.info(_('Starting the thread for the "Update Member Count"'))
+        share_sites = self.model.get_all(ShareSite.table_name)
+        if len(share_sites) > 0:
+            chat_ids = {}
+            platform_share_sites = {}
+            platforms = [ele.name.lower() for ele in self.model.get_all(Platform.table_name)]
+            for platform in platforms:
+                chat_ids[platform] = []
+                platform_share_sites[platform] = []
+
+            # sort the ids by platform
+            for ele in share_sites:
+                chat_ids[ele.platform.name.lower()].append(ele.in_platform_id)
+                platform_share_sites[ele.platform.name.lower()].append(ele)
+
+            members = MemberCountService().run(chat_ids.copy())
+
+            for share_site, sub_num in zip(*platform_share_sites.values(), *members.values()):
+                ss = ShareSiteSubs(
+                        share_site=share_site,
+                        sub_num=sub_num,
+                        added_ts=datetime.now().strftime("%Y-%m-%d %H:%M")
+                        )
+                if not self.model.exists(ss):
+                    self.model.insert(ss)
+            #self.model.save_db()
+        else:
+            logging.info(_('The member count was not updated since there \
+                    are no ShareSites'))
+        logging.info(_('Finishing the thread for the "Update Member Count"'))
 
     def add_media_type(self) -> None:
         logging.info(_('Starting the "Add Media Type" process'))
@@ -86,5 +131,6 @@ class Controller:
         logging.info(_('Starting the "Add ShareSite" process'))
         self.model.insert(self.view.add_sharesite())
         logging.info(_('The "Add ShareSite" process was finished'))
+
 
 # ------------------------------------------------------------------------------

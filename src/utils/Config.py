@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/16 23:09:00.152400
+#+ Editado:	2023/02/25 17:41:20.807419
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -15,6 +15,7 @@ from src.enum import UIEnum
 from src.exception import TableNameException, LanguageException, UserInterfaceException
 # ------------------------------------------------------------------------------
 class Config(object):
+    """"""
     config_file: str = '.cnf'
     table_names_file: str = 'media/db/table_names.json'
     supported_languages_file: str = 'media/i18n/supported_languages.json'
@@ -37,6 +38,14 @@ class Config(object):
             self.language = self.file_content.get('language', 'eng')
             # database
             self.populate_db = self.file_content.get('user_interface', 'true').capitalize()
+            # folder locations
+            self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
+            self.log_folder = self.file_content.get('log_folder', 'media/logs')
+            # database location
+            self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
+            # services
+            token = self.file_content.get('telegram_bot_token', None)
+            self.telegram_bot_token = token if token != '' else None
             # ui
             self.ui = self.file_content.get('user_interface', 'terminal')
             # pagination
@@ -50,11 +59,6 @@ class Config(object):
             self.add_symbol = self.file_content.get('add_symbol', '+')
             self.remove_symbol = self.file_content.get('remove_symbol', '-')
             self.equal_symbol = self.file_content.get('equal_symbol', '=')
-            # folder locations
-            self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
-            self.log_folder = self.file_content.get('log_folder', 'media/logs')
-            # database location
-            self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
             ##
 
             # checking of the attributes
@@ -74,19 +78,19 @@ class Config(object):
         return self.instance
 
     def get_table_name(self, table_name: str) -> str:
-        """
-        Given a table name (as stated in the config file) it returns its actual name in the DB.
+        """ Given a table name (as stated in the config file) it returns its actual name in the DB.
         """
         try:
             return self.database_tables[table_name]
         except KeyError:
-            raise TableNameException(f'Table "{table_name}" does not exist in the config file "{Config().table_names_file}"')
+            raise TableNameException(f'Table "{table_name}" does not exist in the config \
+                    file "{Config().table_names_file}"')
 
     def get_num_entities(self) -> int:
-        """
-        Returns the name of entity files created in the folder -2.
+        """ Returns the name of entity files created in the folder -2.
         The minus two is need in order to not keep count of the __init__.py
         and the base_entity.py files.
+
         """
         return len(next(os.walk('./src/model/entity/'))[2])-2
 
