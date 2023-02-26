@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/02/24 22:08:45.214928 )
+[//]: # (+ Editado:	2023/02/26 15:25:34.083621 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -61,3 +61,8 @@ Until
     - [X] LanguageCode
     - [X] Language
     - [X] Extension
+- [X] Automatically update the subs of the Telegram ShareSites.
+    - [X] Make Add Function for ShareSiteType
+    - [X] Make Add Function for ShareSite
+    - [X] Make service to connect to the API of Telegram.
+    - [X] Use the service for updating the subs of ShareSite depending on Platform (use thread).

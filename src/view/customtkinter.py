@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/02/26 14:57:07.253443
+#+ Editado:	2023/02/26 15:56:27.730057
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
@@ -13,6 +13,7 @@ import customtkinter
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite
+from src.model.entity import WarehouseType, Warehouse
 # ------------------------------------------------------------------------------
 class CustomTKinter(iView):
     def __init__(self) -> None:
@@ -68,6 +69,16 @@ class CustomTKinter(iView):
         pass
 
     def add_sharesite(self) -> ShareSite:
+        """
+        """
+        pass
+
+    def add_warehouse_type(self) -> WarehouseType:
+        """
+        """
+        pass
+
+    def add_warehouse(self) -> Warehouse:
         """
         """
         pass

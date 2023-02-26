@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/25 23:23:47.226520
+#+ Editado:	2023/02/26 16:00:09.086379
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -20,6 +20,7 @@ from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
+from src.model.entity import WarehouseType, Warehouse
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -74,7 +75,8 @@ class Model:
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType, ShareSite]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
+            ShareSiteType, ShareSite, WarehouseType, Warehouse]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -95,6 +97,10 @@ class Model:
             return self.model.exists_sharesite(obj)
         elif isinstance(obj, ShareSiteSubs):
             return self.model.exists_sharesite_subs(obj)
+        elif isinstance(obj, WarehouseType):
+            return self.model.exists_warehouse_type(obj)
+        elif isinstance(obj, Warehouse):
+            return self.model.exists_warehouse(obj)
 
 
 
@@ -123,9 +129,8 @@ class Model:
 
 
     # GET
-    def get_all(self, table_name: str, limit: int = None,
-                offset: int = 0, alfabetic: bool = False) ->\
-    List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite]]:
+    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
+                ) -> List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite, WarehouseType]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -152,6 +157,8 @@ class Model:
             return self.model.get_all_platform(limit, offset, alfabetic)
         elif table_name == ShareSite.table_name:
             return self.model.get_all_sharesite(limit, offset, alfabetic)
+        elif table_name == WarehouseType.table_name:
+            return self.model.get_all_warehouse_type(limit, offset, alfabetic)
 
 
     # GET BY X
@@ -241,7 +248,8 @@ class Model:
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
-                                MediaIssue, Platform, ShareSiteType, ShareSite]
+                                MediaIssue, Platform, ShareSiteType, ShareSite,
+                                WarehouseType, Warehouse]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -269,6 +277,10 @@ class Model:
             return self.model.insert_sharesite(obj)
         elif isinstance(obj, ShareSiteSubs):
             return self.model.insert_sharesite_subs(obj)
+        elif isinstance(obj, WarehouseType):
+            return self.model.insert_warehouse_type(obj)
+        elif isinstance(obj, Warehouse):
+            return self.model.insert_warehouse(obj)
 
 
 # ------------------------------------------------------------------------------

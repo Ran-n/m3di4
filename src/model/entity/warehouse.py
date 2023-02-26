@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 00:18:35.149777
-#+ Editado:	2023/02/24 20:17:28.179809
+#+ Editado:	2023/02/26 15:48:27.154051
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -21,7 +21,6 @@ class Warehouse(BaseEntity):
                             default=Config().get_table_name('Warehouse'))
     name: str
     type_: WarehouseType
-    desc: Optional[str] = field(default=None)
     size: Optional[int] = field(default=None)
     filled: Optional[int] = field(default=None)
     content: Optional[str] = field(default=None)

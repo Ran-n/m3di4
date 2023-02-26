@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/26 13:55:26.697248
+#+ Editado:	2023/02/26 16:02:02.170361
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -21,6 +21,7 @@ from src.model.entity import Warehouse, WarehouseType
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
+from src.model.entity import WarehouseType, Warehouse
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -99,7 +100,8 @@ class Sqlite(iModel):
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
+            ShareSiteType, ShareSite, WarehouseType, Warehouse]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -135,7 +137,8 @@ class Sqlite(iModel):
         return False
 
     def exists_sharesite(self, obj: ShareSite) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{ShareSite.table_name}" where link like "{obj.link}"').fetchall()
+        sql_result = self.get_cur_db().execute(f'select id from "{ShareSite.table_name}" \
+                where link like "{obj.link}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -144,6 +147,24 @@ class Sqlite(iModel):
         sql_result = self.get_cur_db().execute(f'select id from "{ShareSiteSubs.table_name}" where \
                 id_share_site={obj.share_site.id_} and sub_num={obj.sub_num} \
                 and added_ts like "{obj.added_ts}%"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+    def exists_warehouse_type(self, obj: WarehouseType) -> bool:
+        """
+        """
+        sql_result = self.get_cur_db().execute(f'select id from "{WarehouseType.table_name}" \
+                where name like "{obj.name}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+    def exists_warehouse(self, obj: Warehouse) -> bool:
+        """
+        """
+        sql_result = self.get_cur_db().execute(f'select id from "{Warehouse.table_name}" \
+                where name like "{obj.name}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -172,9 +193,8 @@ class Sqlite(iModel):
 
 
     # GET
-    def get_all(self, table_name: str, limit: int = None,
-                offset: int = 0, alfabetic: bool = False) ->\
-    List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite]]:
+    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
+                ) -> List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite, WarehouseType]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -316,6 +336,26 @@ class Sqlite(iModel):
                     platform        = self.get_platform_by_id(result[7]),
                     added_ts        = result[8],
                     modified_ts     = result[9]
+            ))
+        return results
+
+    def get_all_warehouse_type(self, limit: int, offset: int, alfabetic: bool) -> List[WarehouseType]:
+        """
+        """
+        sentence = f'select id, active, name, added_ts, modified_ts from "{WarehouseType.table_name}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(WarehouseType(
+                    id_             = result[0],
+                    active          = result[1],
+                    name            = result[2],
+                    added_ts        = result[3],
+                    modified_ts     = result[4]
             ))
         return results
 
@@ -528,7 +568,9 @@ class Sqlite(iModel):
 
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup, MediaIssue, Platform]
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
+                                MediaIssue, Platform, ShareSiteType, ShareSite,
+                                WarehouseType, Warehouse]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -565,5 +607,15 @@ class Sqlite(iModel):
 
     def insert_sharesite_subs(self, obj: ShareSiteSubs) -> None:
         self.get_cur_db().execute(f'insert into "{ShareSiteSubs.table_name}" (id_share_site, sub_num) values (?, ?)', (obj.share_site.id_, obj.sub_num))
+
+    def insert_warehouse_type(self, obj: WarehouseType) -> None:
+        self.get_cur_db().execute(f'insert into "{WarehouseType.table_name}" \
+                (active, name) values (?, ?)', (obj.active, obj.name))
+
+    def insert_warehouse(self, obj: Warehouse) -> None:
+        self.get_cur_db().execute(f'insert into "{Warehouse.table_name}" \
+                (active, name, size, filled, content, id_type, health) values \
+                (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.size, obj.filled, \
+                obj.content, obj.type_.id_, obj.health))
 
 # ------------------------------------------------------------------------------

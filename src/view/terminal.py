@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/26 15:10:31.057530
+#+ Editado:	2023/02/26 16:02:31.257577
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -21,6 +21,7 @@ from src.utils import Config, center
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite
+from src.model.entity import WarehouseType, Warehouse
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
@@ -53,6 +54,8 @@ class Terminal(iView):
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
                 _('+st')        :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
                 _('+s')         :   [_('Add ShareSite'), self.controller.add_sharesite],
+                _('+wt')        :   [_('Add WarehouseType'), self.controller.add_warehouse_type],
+                _('+w')         :   [_('Add Warehouse'), self.controller.add_warehouse],
         }
 
         try:
@@ -707,11 +710,10 @@ class Terminal(iView):
         while True:
             name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
             if name != '':
-                if self.model.exists(ShareSiteType(name= name)):
-                    print(f'{Config().error_symbol} ' + _('The platform already exists, pick another name.'))
+                if self.model.exists(ShareSiteType(name=name)):
+                    print(f'{Config().error_symbol} ' + _('It already exists, pick another name.'))
                 else:
                     break
-        #print()
 
         print()
         print(self.separator)
@@ -719,9 +721,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return ShareSiteType(
-                name    =   name
-        )
+        return ShareSiteType(name=name)
 
     def add_sharesite(self) -> ShareSite:
         """
@@ -788,7 +788,6 @@ class Terminal(iView):
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Platform.table_name, limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
-        print()
 
         print()
         print(self.separator)
@@ -804,5 +803,105 @@ class Terminal(iView):
                 type_           =   type_,
                 platform        =   platform
         )
+
+    def add_warehouse_type(self) -> WarehouseType:
+        logging.info(_('Requesting the user for the information on the WarehouseType'))
+        title = f'{2*Config().title_symbol} ' + _('Add WarehouseType') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added WarehouseType') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+        # name
+        while True:
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
+            if name != '':
+                if self.model.exists(WarehouseType(name=name)):
+                    print(f'{Config().error_symbol} ' + _('It already exists, pick another name.'))
+                else:
+                    break
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+        print()
+
+        return WarehouseType(name=name)
+
+    def add_warehouse(self) -> Warehouse:
+        """
+        """
+        logging.info(_('Requesting the user for the information on the ShareSite'))
+        title = f'{2*Config().title_symbol} ' + _('Add Warehouse') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Warehouse') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+        # name
+        while True:
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
+            if name != '':
+                if self.model.exists(Warehouse(name=name, type_=None)):
+                    print(f'{Config().error_symbol} ' + _('It already exists, pick another name.'))
+                else:
+                    break
+        print()
+
+        # type
+        type_ = self.__pick_from_options(
+                message     =   {
+                    'title':    _('WarehouseTypes'),
+                    'pick':     _('WarehouseType'),
+                    'empty':    _('There are no WarehouseTypes available')
+                },
+                option_count    =   self.model.get_num(table_name=WarehouseType.table_name),
+                add_fn          =   self.controller.add_warehouse_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=WarehouseType.table_name, limit=limit, offset=offset),
+                limit           =   Config().pagination_limit
+        )
+        print()
+
+        # size
+        size = self.__pick_number(
+                message     =   _('Size (B)'),
+                nullable    =   True,
+                compare_msg =   [
+                    {'symbol': '>=', 'number': '0', 'message': 'The size number must be bigger than 0'}
+                ]
+        )
+        print()
+
+        # filled
+        filled = self.__pick_number(
+                message     =   _('Filled (B)'),
+                nullable    =   True,
+                compare_msg =   [
+                    {'symbol': '>=', 'number': '0', 'message': 'The filled number must be bigger than 0'}
+                ]
+        )
+        print()
+
+        # content
+        content = input(f'{Config().input_symbol} ' + _('Content') + ': ')
+        if content == '':
+            content = None
+        print()
+
+        # health
+        health = input(f'{Config().input_symbol} ' + _('Health') + ': ')
+        if health == '':
+            health = None
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+        print()
+
+        return Warehouse(name=name, type_=type_, size=size, filled=filled, content=content, health=health)
 
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/25 22:54:23.522421
+#+ Editado:	2023/02/26 15:59:34.060042
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -16,6 +16,7 @@ from typing import List, Union
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
+from src.model.entity import WarehouseType, Warehouse
 # ------------------------------------------------------------------------------
 
 
@@ -64,7 +65,8 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform, ShareSiteType, ShareSite]) -> bool:
+    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
+            ShareSiteType, ShareSite, WarehouseType, Warehouse]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -94,9 +96,8 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_all(self, table_name: str, limit: int = None,
-                offset: int = 0, alfabetic: bool = False) ->\
-    List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite]]:
+    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
+                ) -> List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite, WarehouseType]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -182,7 +183,8 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
-                                MediaIssue, Platform, ShareSiteType, ShareSite]
+                                MediaIssue, Platform, ShareSiteType, ShareSite,
+                                WarehouseType, Warehouse]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/26 14:50:45.826704
+#+ Editado:	2023/02/26 15:47:10.351100
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -130,5 +130,18 @@ class Controller:
         self.model.insert(self.view.add_sharesite())
         logging.info(_('The "Add ShareSite" process was finished'))
 
+    def add_warehouse_type(self) -> None:
+        """
+        """
+        logging.info(_('Starting the "Add WarehouseType" process'))
+        self.model.insert(self.view.add_warehouse_type())
+        logging.info(_('The "Add WarehouseType" process was finished'))
+
+    def add_warehouse(self) -> None:
+        """
+        """
+        logging.info(_('Starting the "Add Warehouse" process'))
+        self.model.insert(self.view.add_warehouse())
+        logging.info(_('The "Add Warehouse" process was finished'))
 
 # ------------------------------------------------------------------------------
