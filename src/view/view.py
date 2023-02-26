@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/02/25 13:49:25.302846
+#+ Editado:	2023/02/26 14:57:00.473379
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -38,6 +38,11 @@ class View:
 
     def exit(self) -> None:
         self.strategy.exit()
+
+    def update_member_count(self) -> None:
+        """
+        """
+        self.strategy.update_member_count()
 
 
     def add_media_type(self) -> MediaType:

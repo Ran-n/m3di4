@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/25 18:49:41.031878
+#+ Editado:	2023/02/26 15:01:29.493347
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,6 +12,7 @@ from src.view import iView
 import logging
 from datetime import datetime
 import validators as valid
+import readline
 from typing import List, Union, Callable
 
 from src.enum import PaginationEnum
@@ -67,7 +68,7 @@ class Terminal(iView):
         biggest_value_len = len(max([ele[0] for ele in options.values()], key=len)) + self.tab_len
 
         if not self.line_len:
-            self.line_len = biggest_key_len + biggest_value_len + self.tab_len
+            self.line_len = biggest_key_len + biggest_value_len + (self.tab_len*6)
             self.separator = Config().separator_symbol * self.line_len
 
             print(self.separator)
@@ -84,7 +85,7 @@ class Terminal(iView):
         #for key, value in zip(options.keys(), options.values()):
         for key, value in options.items():
             value0 = value[0]
-            print('▌'+center(f'{key:<{biggest_key_len}}▐\t{value0:<{biggest_value_len}}'.expandtabs(self.tab_len), self.line_len)+'▐')
+            print('▌'+center(f'\t{key:<{biggest_key_len}}\t\t▐\t\t{value0:<{biggest_value_len}}\t'.expandtabs(self.tab_len), self.line_len)+'▐')
 
 
         print('▀'*(self.line_len+2))
@@ -108,6 +109,16 @@ class Terminal(iView):
         text = _('Goodbye!')
         print(center(text, self.line_len))
         print(self.separator)
+
+    def update_member_count(self) -> None:
+        """
+        """
+        print()
+        print(self.separator)
+        text = f'{Config().title_symbol} ' + _('Searching for the values') + f' {Config().title_symbol}'
+        print(center(text, self.line_len))
+        print(self.separator)
+        print()
 
     def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
         """

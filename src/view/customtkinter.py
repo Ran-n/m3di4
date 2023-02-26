@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/02/25 14:37:08.702830
+#+ Editado:	2023/02/26 14:57:07.253443
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
@@ -31,6 +31,11 @@ class CustomTKinter(iView):
 
     def exit(self) -> None:
         # nothing need to be done here
+        pass
+
+    def update_member_count(self) -> None:
+        """
+        """
         pass
 
     def add_media_type(self) -> MediaType:

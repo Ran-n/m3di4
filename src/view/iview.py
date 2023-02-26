@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/02/25 13:49:06.959948
+#+ Editado:	2023/02/26 14:56:38.355898
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -25,6 +25,11 @@ class iView(ABC):
     @abstractmethod
     def exit(self) -> None:
         pass
+
+    @abstractmethod
+    def update_member_count(self) -> None:
+        """
+        """
 
     @abstractmethod
     def add_media_type(self) -> MediaType:

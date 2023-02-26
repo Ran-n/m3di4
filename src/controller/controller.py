@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/26 14:38:52.717160
+#+ Editado:	2023/02/26 14:50:45.826704
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -25,7 +25,7 @@ class Controller:
         self.view.controller = self
         self.view.strategy.controller = self
 
-        self.update_member_count()
+        self.update_member_count(show_user=False)
 
         self.view.start()
 
@@ -49,9 +49,10 @@ class Controller:
         logging.info(_('Exiting the program'))
         sys.exit()
 
-    def update_member_count(self) -> None:
+    def update_member_count(self, show_user: bool = True) -> None:
         logging.info(_('Starting the "Update Member Count" process'))
         Thread(target=self.__update_member_count_aux).start()
+        if show_user: self.view.update_member_count()
         logging.info(_('The "Update Member Count" process was finished'))
 
     def __update_member_count_aux(self) -> None:
