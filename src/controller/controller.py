@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/02/26 15:47:10.351100
+#+ Editado:	2023/03/04 21:35:28.342177
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -13,8 +13,9 @@ from threading import Thread
 from src.model import iModel
 from src.view import iView
 
-from src.service import MemberCountService
+from src.service import MemberCountService, FileInfoService
 
+from src.model.dao import FileDao
 from src.model.entity import ShareSite, ShareSiteSubs, Platform
 #from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
@@ -143,5 +144,23 @@ class Controller:
         logging.info(_('Starting the "Add Warehouse" process'))
         self.model.insert(self.view.add_warehouse())
         logging.info(_('The "Add Warehouse" process was finished'))
+
+    def add_file(self) -> None:
+        """
+        """
+        logging.info(_('Starting the "Add File" process'))
+
+        file_dao = FileDao(model=self.model)
+
+        fis = FileInfoService(self.view.add_file())
+        files_data = fis.run()
+
+        for file_data in files_data:
+            file_data.file=file_dao.save(file=file_data.file)
+
+            #file_data.streams
+
+
+        logging.info(_('The "Add File" process was finished'))
 
 # ------------------------------------------------------------------------------

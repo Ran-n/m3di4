@@ -2,13 +2,8 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/21 15:02:19.945715
-#+ Editado:	2023/03/04 19:13:51.846194
+#+ Creado: 	2023/03/04 20:13:02.827132
+#+ Editado:	2023/03/04 20:56:00.844851
 # ------------------------------------------------------------------------------
-from .Config import Config
-from .keys import *
-from .strings import *
-from .communication_objects import *
-from .file import *
-from .fractions import *
+from .file_dao import FileDao
 # ------------------------------------------------------------------------------

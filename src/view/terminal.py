@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/02/26 16:02:31.257577
+#+ Editado:	2023/03/04 13:30:19.315049
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,10 +13,14 @@ import logging
 from datetime import datetime
 import validators as valid
 import readline
-from typing import List, Union, Callable
+import os
+from pathlib import Path
+from typing import List, Union, Callable, Tuple
 
 from src.enum import PaginationEnum
 from src.utils import Config, center
+
+from src.utils import AddFileTerminalViewOutput
 
 from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
@@ -56,6 +60,7 @@ class Terminal(iView):
                 _('+s')         :   [_('Add ShareSite'), self.controller.add_sharesite],
                 _('+wt')        :   [_('Add WarehouseType'), self.controller.add_warehouse_type],
                 _('+w')         :   [_('Add Warehouse'), self.controller.add_warehouse],
+                _('+f')         :   [_('Add File'), self.controller.add_file],
         }
 
         try:
@@ -152,7 +157,7 @@ class Terminal(iView):
                 print(title)
 
                 for index, ele in enumerate(lst_option):
-                    print(f'{index + offset + 1}. {ele.name}')
+                    print(f'{index + offset + 1}. {ele}')
             choice = input(f'{Config().input_symbol} {message["pick"]}: ')
 
             # add new element
@@ -691,9 +696,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return Platform(
-                name    =   name.capitalize()
-        )
+        return Platform(name=name.capitalize())
 
     def add_sharesite_type(self) -> ShareSiteType:
         """
@@ -833,7 +836,7 @@ class Terminal(iView):
     def add_warehouse(self) -> Warehouse:
         """
         """
-        logging.info(_('Requesting the user for the information on the ShareSite'))
+        logging.info(_('Requesting the user for the information on the Warehouse'))
         title = f'{2*Config().title_symbol} ' + _('Add Warehouse') + f' {2*Config().title_symbol}'
         ender = f'{2*Config().title_symbol} ' + _('Added Warehouse') + f' {2*Config().title_symbol}'
         print()
@@ -903,5 +906,147 @@ class Terminal(iView):
         print()
 
         return Warehouse(name=name, type_=type_, size=size, filled=filled, content=content, health=health)
+
+    def add_file(self) -> AddFileTerminalViewOutput:
+        """
+        """
+        def ask_original_name(original_names) -> None:
+            """ Auxiliar function for asking the user the original filename."""
+            # original name
+            name = input(f'{Config().input_symbol} ' + _('Original filename') + ': ')
+            if name == '':
+                name = None
+            original_names.append(name)
+
+        logging.info(_('Requesting the user for the information on the File'))
+        title = f'{2*Config().title_symbol} ' + _('Add File') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added File') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+
+        # file path
+        while True:
+            file_path = os.path.expanduser(input(f'{Config().input_symbol} ' + _('File Path') + ': '))
+            if os.path.exists(file_path):
+                file_path = Path(file_path)
+                break
+            else:
+                print(f'{Config().error_symbol} ' + _('The file doesnt exist.'))
+        print()
+
+        is_media = True
+        if file_path.is_dir():
+            file_path = [file for file in file_path.glob('**/*') if file.is_file()]
+            is_media = False
+        else:
+            file_path = [file_path]
+
+        if is_media == False:
+            is_media = self.__yn_question(message=_('Are you inserting a Media?'))
+            print()
+
+        original_names = []
+        if is_media == 1:
+            # warehouse
+            warehouse = [self.__pick_from_options(
+                    message     =   {
+                        'title':    _('Warehouses'),
+                        'pick':     _('Warehouse'),
+                        'empty':    _('There are no Warehouses available')
+                    },
+                    option_count    =   self.model.get_num(table_name=Warehouse.table_name),
+                    add_fn          =   self.controller.add_warehouse,
+                    get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Warehouse.table_name, limit=limit, offset=offset),
+                    limit           =   Config().pagination_limit
+            )] * len(file_path)
+            print()
+
+            # media
+            media = [self.__pick_from_options(
+                    message     =   {
+                        'title':    _('Medias'),
+                        'pick':     _('Media'),
+                        'empty':    _('There are no Medias available')
+                    },
+                    option_count    =   self.model.get_num(table_name=Media.table_name),
+                    add_fn          =   self.controller.add_media,
+                    get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Media.table_name, limit=limit, offset=offset),
+                    limit           =   Config().pagination_limit
+            )] * len(file_path)
+
+            # original name
+            for path in file_path:
+                print()
+                if len(file_path) > 1:
+                    print(center(_('File')+f': "{path}"\n', self.line_len))
+                ask_original_name(original_names)
+
+            output_obj = AddFileTerminalViewOutput(original_names=original_names, file_paths=file_path,
+                                                   warehouses=warehouse, medias=media)
+        else:
+            # if they are all in the same warehouse dont ask again for warehouse
+            same_warehouse = self.__yn_question(message=_('Are all Issues in the same Warehouse?'))
+            ask_for_warehouse = True
+            media_issues = []
+            warehouses = []
+            for path in file_path:
+                print()
+                if not same_warehouse:
+                    print(center(_('File')+f': "{path}"\n', self.line_len))
+
+                if ask_for_warehouse:
+                    if same_warehouse: ask_for_warehouse = False
+
+                    # warehouse
+                    warehouses.append(self.__pick_from_options(
+                            message     =   {
+                                'title':    _('Warehouses'),
+                                'pick':     _('Warehouse'),
+                                'empty':    _('There are no Warehouses available')
+                            },
+                            option_count    =   self.model.get_num(table_name=Warehouse.table_name),
+                            add_fn          =   self.controller.add_warehouse,
+                            get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Warehouse.table_name, limit=limit, offset=offset),
+                            limit           =   Config().pagination_limit
+                    ))
+                    # if it wont ask for the warehouse again
+                    if not ask_for_warehouse:
+                        # fill the list of all the same warehouse
+                        warehouses = [warehouses[0]] * len(file_path)
+                    print()
+
+                if same_warehouse:
+                    print(center(_('File')+f': "{path}"\n', self.line_len))
+
+                # media issue
+                media_issues.append(self.__pick_from_options(
+                        message     =   {
+                            'title':    _('MediaIssues'),
+                            'pick':     _('MediaIssue'),
+                            'empty':    _('There are no MediaIssues available')
+                        },
+                        option_count    =   self.model.get_num(table_name=MediaIssue.table_name),
+                        add_fn          =   self.controller.add_media_issue,
+                        get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=MediaIssue.table_name, limit=limit, offset=offset),
+                        limit           =   Config().pagination_limit
+                ))
+                print()
+
+                # original name
+                ask_original_name(original_names)
+
+            output_obj = AddFileTerminalViewOutput(original_names=original_names, file_paths=file_path,
+                                                   warehouses=warehouses, media_issues=media_issues)
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+        print()
+
+        return output_obj
 
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/26 16:00:09.086379
+#+ Editado:	2023/03/05 14:17:19.235037
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -21,6 +21,7 @@ from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -76,7 +77,8 @@ class Model:
 
     # EXISTS
     def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
-            ShareSiteType, ShareSite, WarehouseType, Warehouse]) -> bool:
+            ShareSiteType, ShareSite, WarehouseType, Warehouse,
+            Extension]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -101,6 +103,8 @@ class Model:
             return self.model.exists_warehouse_type(obj)
         elif isinstance(obj, Warehouse):
             return self.model.exists_warehouse(obj)
+        elif isinstance(obj, Extension):
+            return self.model.exists_extension(obj)
 
 
 
@@ -130,7 +134,8 @@ class Model:
 
     # GET
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
-                ) -> List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite, WarehouseType]]:
+                ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
+                                WarehouseType, MediaIssue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -159,11 +164,18 @@ class Model:
             return self.model.get_all_sharesite(limit, offset, alfabetic)
         elif table_name == WarehouseType.table_name:
             return self.model.get_all_warehouse_type(limit, offset, alfabetic)
+        elif table_name == MediaIssue.table_name:
+            return self.model.get_all_media_issue(limit, offset, alfabetic)
+        elif table_name == Warehouse.table_name:
+            return self.model.get_all_warehouse(limit, offset, alfabetic)
 
 
-    # GET BY X
+    # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[None, MediaType, MediaStatus, Media, ShareSiteType, Platform]:
+            Union[MediaType, MediaStatus, Media, ShareSiteType,
+                  Platform, MediaGroup, WarehouseType, App,
+                  Extension, Warehouse, Folder, MediaIssue,
+                  AppVersion, Encoder]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -186,20 +198,50 @@ class Model:
             return self.model.get_sharesite_type_by_id(id_)
         elif table_name == Platform.table_name:
             return self.model.get_platform_by_id(id_)
+        elif table_name == MediaGroup.table_name:
+            return self.model.get_media_group_by_id(id_)
+        elif table_name == WarehouseType.table_name:
+            return self.model.get_warehouse_type_by_id(id_)
+        elif table_name == App.table_name:
+            return self.model.get_app_by_id(id_)
+        elif table_name == Extension.table_name:
+            return self.model.get_extension_by_id(id_)
+        elif table_name == Warehouse.table_name:
+            return self.model.get_warehouse_by_id(id_)
+        elif table_name == Folder.table_name:
+            return self.model.get_folder_by_id(id_)
+        elif table_name == MediaIssue.table_name:
+            return self.model.get_media_issue_by_id(id_)
+        elif table_name == AppVersion.table_name:
+            return self.model.get_app_version_by_id(id_)
+        elif table_name == Encoder.table_name:
+            return self.model.get_encoder_by_id(id_)
+    # GET BY ID #
 
-
-    def get_media_group_by_nk(self, obj: MediaGroup) -> MediaGroup:
+    # GET BY NK
+    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File]) -> \
+            Union[MediaGroup, AppVersion, Encoder, File]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   MediaGroup
-            └ The MediaGroup object to use in the search.
+        ╚═  · obj   -   Entity
+            └ The Entity object to use in the search.
         @ Output:
-        ╠═  MediaGroup   -   The element of the table discriminated by natural key.
-        ╚═  None         -   If no matches exists.
+        ╠═  Any Entity  -   The element of the table discriminated by natural key.
+        ╚═  None        -   If no matches exists.
         """
-        logging.info(_(f'Searching on "{table_name}" table any entries that match its natural key'))
-        return self.model.get_media_group_by_nk(obj)
+        logging.info(_(f'Searching on "{obj.table_name}" table any entries that match its natural key'))
+        if isinstance(obj, MediaGroup):
+            return self.model.get_media_group_by_nk(obj)
+        elif isinstance(obj, AppVersion):
+            return self.model.get_app_version_by_nk(obj)
+        elif isinstance(obj, Encoder):
+            return self.model.get_encoder_by_nk(obj)
+        elif isinstance(obj, File):
+            return self.model.get_file_by_nk(obj)
+    # GET BY NK
 
+
+    # GET BY X
     def get_media_group_by_media_id(self, id_: int, limit: int = None,
                                     offset: int = 0, alfabetic: bool = None
                                     ) -> Union[None, List[MediaGroup]]:
@@ -220,9 +262,11 @@ class Model:
         logging.info(_(f'Searching on "{MediaGroup.table_name}" table any entries that match its media foreign key {id_}'))
         return self.model.get_media_group_by_media_id(id_= id_, limit= limit, offset= offset, alfabetic= alfabetic)
 
+    # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[MediaType, MediaStatus]]]:
+                    ) -> Union[None, List[Union[MediaType, MediaStatus,
+                                                Extension, Folder, App]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
         ╠═  · table_name    -   str
@@ -244,12 +288,19 @@ class Model:
             return self.model.get_by_media_type_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
         elif table_name == MediaStatus.table_name:
             return self.model.get_by_media_status_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
-
+        elif table_name == Extension.table_name:
+            return self.model.get_extension_by_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
+        elif table_name == Folder.table_name:
+            return self.model.get_folder_by_name(name=name, limit=limit, offset=offset, alfabetic=alfabetic)
+        elif table_name == App.table_name:
+            return self.model.get_app_by_name(name=name, limit=limit, offset=offset, alfabetic=alfabetic)
+    # GET BY NAME
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
-                                WarehouseType, Warehouse]
+                                WarehouseType, Warehouse, Extension, Folder, App,
+                                AppVersion, Encoder, File]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -281,6 +332,18 @@ class Model:
             return self.model.insert_warehouse_type(obj)
         elif isinstance(obj, Warehouse):
             return self.model.insert_warehouse(obj)
-
+        elif isinstance(obj, Extension):
+            return self.model.insert_extension(obj)
+        elif isinstance(obj, Folder):
+            return self.model.insert_folder(obj)
+        elif isinstance(obj, App):
+            return self.model.insert_app(obj)
+        elif isinstance(obj, AppVersion):
+            return self.model.insert_app_version(obj)
+        elif isinstance(obj, Encoder):
+            return self.model.insert_encoder(obj)
+        elif isinstance(obj, File):
+            return self.model.insert_file(obj)
+    # INSERT #
 
 # ------------------------------------------------------------------------------

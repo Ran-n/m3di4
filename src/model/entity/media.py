@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/02/24 20:17:44.256096
+#+ Editado:	2023/02/27 20:39:01.776021
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -25,4 +25,10 @@ class Media(BaseEntity):
     year_start: int
     year_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
+
+    def __str__(self) -> str:
+        string = f'{self.name}'
+        if self.year_start:
+            string += ' ({self.year_start})'
+        return string
 # ------------------------------------------------------------------------------

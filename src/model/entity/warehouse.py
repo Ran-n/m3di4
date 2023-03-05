@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 00:18:35.149777
-#+ Editado:	2023/02/26 15:48:27.154051
+#+ Editado:	2023/02/27 22:13:35.482731
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -26,4 +26,7 @@ class Warehouse(BaseEntity):
     content: Optional[str] = field(default=None)
     health: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
+
+    def __str__(self) -> None:
+        return self.name
 # ------------------------------------------------------------------------------

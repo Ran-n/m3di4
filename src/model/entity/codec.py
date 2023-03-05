@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/07 13:31:54.424384
-#+ Editado:	2023/02/24 20:17:16.126015
+#+ Editado:	2023/03/04 15:15:44.052385
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -22,5 +22,7 @@ class Codec(BaseEntity):
     name: str
     type_: CodecType
     name_long: Optional[str] = field(default=None)
+    tag_string: Optional[str] = field(default=None)
+    tag: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
 # ------------------------------------------------------------------------------

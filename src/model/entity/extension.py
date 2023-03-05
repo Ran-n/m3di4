@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/26 18:06:57.300944
-#+ Editado:	2023/02/17 20:36:30.322167
+#+ Editado:	2023/03/04 21:34:38.172805
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -23,4 +23,8 @@ class Extension(BaseEntity):
     format_name: Optional[str] = field(default=None)
     format_name_long: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
+
+    def __post_init__(self):
+        if self.name.startswith('.'):
+            self.name = self.name[1:]
 # ------------------------------------------------------------------------------

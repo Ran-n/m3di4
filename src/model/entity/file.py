@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/02/24 15:48:55.203188
+#+ Editado:	2023/03/02 20:46:55.313186
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -23,18 +23,19 @@ class File(BaseEntity):
     name: str
     extension: Extension
     warehouse: Warehouse
-    title: str
-    nb_streams: int
-    nb_programs: int
-    start: float
-    duration: float
-    size: int
-    bit_rate: int
-    probe_score: int
-    creation_ts: str
+    title: Optional[str] = field(default=None)
+    nb_streams: Optional[int] = field(default=None)
+    nb_programs: Optional[int] = field(default=None)
+    start: Optional[float] = field(default=None)
+    duration: Optional[float] = field(default=None)
+    size: Optional[int] = field(default=None)
+    bit_rate: Optional[int] = field(default=None)
+    probe_score: Optional[int] = field(default=None)
+    creation_ts: Optional[str] = field(default=None)
     folder: Optional[Folder] = field(default=None)
-    encoder: Optional[Encoder] = field(default=None)
     app_version: Optional[AppVersion] = field(default=None)
+    encoder: Optional[Encoder] = field(default=None)
+    original_name: Optional[str] = field(default=None)
     media: Optional[Media] = field(default=None)
     media_issue: Optional[MediaIssue] = field(default=None)
     active: Optional[int] = field(default=1)

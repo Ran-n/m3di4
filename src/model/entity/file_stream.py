@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/02/17 20:37:44.261812
+#+ Editado:	2023/03/04 19:12:01.469571
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -21,8 +21,8 @@ class FileStream(BaseEntity):
                             default=Config().get_table_name('FileStream'))
     file: File
     codec: Codec
-    language: Language
     index: int
+    language: Optional[Language] = field(default=None)
     title: Optional[str] = field(default=None)
     profile: Optional[str] = field(default=None)
     quality: Optional[str] = field(default=None)

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/02/26 15:59:34.060042
+#+ Editado:	2023/03/05 13:53:21.971706
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,6 +17,7 @@ from src.model.entity import Media, MediaGroup, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
 # ------------------------------------------------------------------------------
 
 
@@ -66,7 +67,8 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
-            ShareSiteType, ShareSite, WarehouseType, Warehouse]) -> bool:
+            ShareSiteType, ShareSite, WarehouseType, Warehouse,
+            Extension]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -97,7 +99,8 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
-                ) -> List[Union[MediaType, MediaStatus, ShareSiteType, Platform, ShareSite, WarehouseType]]:
+                ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
+                                WarehouseType, MediaIssue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -116,7 +119,10 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[None, MediaType, MediaStatus, Media, ShareSiteType, Platform]:
+            Union[MediaType, MediaStatus, Media, ShareSiteType,
+                  Platform, MediaGroup, WarehouseType, App,
+                  Extension, Warehouse, Folder, MediaIssue,
+                  AppVersion, Encoder]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -129,14 +135,15 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_media_group_by_nk(self, obj: MediaGroup) -> Union[None, MediaGroup]:
+    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File]) -> \
+            Union[MediaGroup, AppVersion, Encoder, File]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   MediaGroup
-            └ The MediaGroup object to use in the search.
+        ╚═  · obj   -   Entity
+            └ The Entity object to use in the search.
         @ Output:
-        ╠═  MediaGroup   -   The element of the table discriminated by natural key.
-        ╚═  None         -   If no matches exists.
+        ╠═  Any Entity  -   The element of the table discriminated by natural key.
+        ╚═  None        -   If no matches exists.
         """
 
     @abstractmethod
@@ -161,7 +168,8 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[MediaType, MediaStatus]]]:
+                    ) -> Union[None, List[Union[MediaType, MediaStatus,
+                                                Extension, Folder, App]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
         ╠═  · table_name    -   str
@@ -184,7 +192,8 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
-                                WarehouseType, Warehouse]
+                                WarehouseType, Warehouse, Extension, Folder, App,
+                                AppVersion, Encoder]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
