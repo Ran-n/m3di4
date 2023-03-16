@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/03/16 18:56:15.949834
+#+ Editado:	2023/03/16 21:04:16.669284
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -30,7 +30,7 @@ from .share_site import ShareSite
 from .warehouse import Warehouse
 from .language_code import LanguageCode
 from .media import Media
-from .media_group import MediaGroup
+from .group import Group
 from .media_issue import MediaIssue
 from .media_poster import MediaPoster
 from .file import File
@@ -48,7 +48,7 @@ from .share_site_type_name import ShareSiteTypeName
 from .media_status_name import MediaStatusName
 from .country_name import CountryName
 from .media_name import MediaName
-from .media_group_name import MediaGroupName
+from .group_name import GroupName
 from .media_issue_name import MediaIssueName
 
 from .language_name_language import LanguageNameLanguage
@@ -59,7 +59,7 @@ from .share_site_type_name_language import ShareSiteTypeNameLanguage
 from .media_status_name_language import MediaStatusNameLanguage
 from .country_name_language import CountryNameLanguage
 from .media_name_language import MediaNameLanguage
-from .media_group_name_language import MediaGroupNameLanguage
+from .group_name_language import GroupNameLanguage
 from .media_issue_name_language import MediaIssueNameLanguage
 
 from .language_description import LanguageDescription
@@ -80,7 +80,7 @@ from .codec_description import CodecDescription
 from .share_site_description import ShareSiteDescription
 from .warehouse_description import WarehouseDescription
 from .media_description import MediaDescription
-from .media_group_description import MediaGroupDescription
+from .group_description import GroupDescription
 from .media_issue_description import MediaIssueDescription
 
 from .language_description_language import LanguageDescriptionLanguage
@@ -101,7 +101,7 @@ from .codec_description_language import CodecDescriptionLanguage
 from .share_site_description_language import ShareSiteDescriptionLanguage
 from .warehouse_description_language import WarehouseDescriptionLanguage
 from .media_description_language import MediaDescriptionLanguage
-from .media_group_description_language import MediaGroupDescriptionLanguage
+from .group_description_language import GroupDescriptionLanguage
 from .media_issue_description_language import MediaIssueDescriptionLanguage
 
 from .media_name_country import MediaNameCountry

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/16 19:03:59.307840
+#+ Editado:	2023/03/16 21:00:07.746938
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -102,10 +102,10 @@ class Controller:
         self.model.insert(self.view.add_media())
         logging.info(_('The "Add Media" process was finished'))
 
-    def add_media_group(self, id_media: int = None) -> None:
-        logging.info(_('Starting the "Add Media Group" process'))
-        self.model.insert(self.view.add_media_group(id_media))
-        logging.info(_('The "Add Media Group" process was finished'))
+    def add_group(self, id_media: int = None) -> None:
+        logging.info(_('Starting the "Add Group" process'))
+        self.model.insert(self.view.add_group(id_media))
+        logging.info(_('The "Add Group" process was finished'))
 
     def add_media_issue(self) -> None:
         logging.info(_('Starting the "Add Media Issue" process'))

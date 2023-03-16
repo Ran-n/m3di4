@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 19:01:21.677683
+#+ Editado:	2023/03/16 21:05:09.597309
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,8 +12,7 @@ from abc import ABC, abstractmethod
 from sqlite3 import Connection, Cursor
 from typing import List, Union
 
-#from src.model.entity import Warehouse, WarehouseType
-from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import Media, Group, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
@@ -68,7 +67,7 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
+    def exists(self, obj: Union[Group, MediaIssue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
@@ -90,7 +89,7 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_media_group_num_by_media_id(self, media_id: int) -> int:
+    def get_group_num_by_media_id(self, media_id: int) -> int:
         """ Returns the number of group elements discriminating by media id.
         @ Input:
         ╚═  · media_id  -   int
@@ -122,7 +121,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_by_id(self, table_name: str, id_: int) ->\
             Union[MediaType, MediaStatus, Media, ShareSiteType,
-                  Platform, MediaGroup, WarehouseType, App,
+                  Platform, Group, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
                   AppVersion, Encoder, CodecType, File, Codec,
                   Track, Language]:
@@ -138,8 +137,8 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, AppVersion, Encoder, File, CodecType, Codec]) -> \
+            Union[None, Group, AppVersion, Encoder, File, CodecType, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -151,9 +150,9 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_media_group_by_media_id(self, id_: int, limit: int = None,
+    def get_group_by_media_id(self, id_: int, limit: int = None,
                                     offset: int = 0, alfabetic: bool = None
-                                    ) -> Union[None, List[MediaGroup]]:
+                                    ) -> Union[None, List[Group]]:
         """ Returns a group discriminated by its id.
         @ Input:
         ╠═  · id_       -   int
@@ -165,7 +164,7 @@ class iModel(ABC):  # pylint: disable=C0103
         ╚═  · alfabetic -   bool    -   None
             └ Indicate if the output should be alfabetically ordered.
         @ Output:
-        ╠═  MediaGroup   -   The element of the table discriminated by natural key.
+        ╠═  Group   -   The element of the table discriminated by natural key.
         ╚═  None         -   If no matches exists.
         """
 
@@ -212,7 +211,7 @@ class iModel(ABC):  # pylint: disable=C0103
     # ---
 
     @abstractmethod
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
                                 AppVersion, Encoder, CodecType, Codec, Track,

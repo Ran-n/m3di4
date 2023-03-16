@@ -3,21 +3,21 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/18 22:10:05.616205
-#+ Editado:	2023/02/18 22:10:10.824799
+#+ Editado:	2023/03/16 21:03:19.966581
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
 from src.utils import Config
-from src.model.entity import BaseEntity, MediaGroupDescription, Language
+from src.model.entity import BaseEntity, GroupDescription, Language
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaGroupDescriptionLanguage(BaseEntity):
+class GroupDescriptionLanguage(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaGroupDescriptionLanguage'))
-    media_group_name: MediaGroupDescription
+                            default=Config().get_table_name('GroupDescriptionLanguage'))
+    group_name: GroupDescription
     language: Language
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 19:01:37.611517
+#+ Editado:	2023/03/16 21:05:23.332433
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -16,8 +16,7 @@ from typing import List, Union
 
 from src.exception import InheritException
 
-from src.model.entity import Warehouse, WarehouseType
-from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import Media, Group, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
@@ -78,7 +77,7 @@ class Model:
 
 
     # EXISTS
-    def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
+    def exists(self, obj: Union[Group, MediaIssue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
@@ -89,8 +88,8 @@ class Model:
         ╚═  bool    -   Indicating if the object exists or not.
         """
         logging.info(_(f'Checking on table "{obj.table_name}" if the information already exists'))
-        if isinstance(obj, MediaGroup):
-            return self.model.exists_media_group(obj)
+        if isinstance(obj, Group):
+            return self.model.exists_group(obj)
         elif isinstance(obj, MediaIssue):
             return self.model.exists_media_issue(obj)
         elif isinstance(obj, Platform):
@@ -123,7 +122,7 @@ class Model:
         logging.info(_(f'Counting the number of elements saved on table "{table_name}"'))
         return self.model.get_num(table_name)
 
-    def get_media_group_num_by_media_id(self, media_id: int) -> int:
+    def get_group_num_by_media_id(self, media_id: int) -> int:
         """Returns the number of group elements discriminating by media id.
         @ Input:
         ╚═  · media_id  -   int
@@ -131,8 +130,8 @@ class Model:
         @ Output:
         ╚═  int - Number of entries on the table that meet the criteria.
         """
-        logging.info(_(f'Counting the number of elements saved on table "{MediaGroup.table_name}" using the media id "{media_id}"'))
-        return self.model.get_media_group_num_by_media_id(media_id)
+        logging.info(_(f'Counting the number of elements saved on table "{Group.table_name}" using the media id "{media_id}"'))
+        return self.model.get_group_num_by_media_id(media_id)
     # GET NUM #
 
     # GET ALL
@@ -176,7 +175,7 @@ class Model:
     # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
             Union[MediaType, MediaStatus, Media, ShareSiteType,
-                  Platform, MediaGroup, WarehouseType, App,
+                  Platform, Group, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
                   AppVersion, Encoder, CodecType, File, Codec,
                   Track, Language]:
@@ -203,8 +202,8 @@ class Model:
             return self.model.get_sharesite_type_by_id(id_)
         elif table_name == Platform.table_name:
             return self.model.get_platform_by_id(id_)
-        elif table_name == MediaGroup.table_name:
-            return self.model.get_media_group_by_id(id_)
+        elif table_name == Group.table_name:
+            return self.model.get_group_by_id(id_)
         elif table_name == WarehouseType.table_name:
             return self.model.get_warehouse_type_by_id(id_)
         elif table_name == App.table_name:
@@ -234,8 +233,8 @@ class Model:
     # GET BY ID #
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, AppVersion, Encoder, File, CodecType, Codec]) -> \
+            Union[None, Group, AppVersion, Encoder, File, CodecType, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -246,8 +245,8 @@ class Model:
         ╚═  None        -   If no matches exists.
         """
         logging.info(_(f'Searching on "{obj.table_name}" table any entries that match its natural key'))
-        if isinstance(obj, MediaGroup):
-            return self.model.get_media_group_by_nk(obj)
+        if isinstance(obj, Group):
+            return self.model.get_group_by_nk(obj)
         elif isinstance(obj, AppVersion):
             return self.model.get_app_version_by_nk(obj)
         elif isinstance(obj, Encoder):
@@ -267,9 +266,9 @@ class Model:
     # GET BY NK
 
     # GET BY X
-    def get_media_group_by_media_id(self, id_: int, limit: int = None,
+    def get_group_by_media_id(self, id_: int, limit: int = None,
                                     offset: int = 0, alfabetic: bool = None
-                                    ) -> Union[None, List[MediaGroup]]:
+                                    ) -> Union[None, List[Group]]:
         """ Returns a group discriminated by its id.
         @ Input:
         ╠═  · id_       -   int
@@ -281,12 +280,12 @@ class Model:
         ╚═  · alfabetic -   bool    -   None
             └ Indicate if the output should be alfabetically ordered.
         @ Output:
-        ╠═  MediaGroup   -   The element of the table discriminated by natural key.
+        ╠═  Group   -   The element of the table discriminated by natural key.
         ╚═  None         -   If no matches exists.
         """
-        logging.info(_(f'Searching on "{MediaGroup.table_name}" table any entries '+
+        logging.info(_(f'Searching on "{Group.table_name}" table any entries '+
         'that match its media foreign key "{id_}"'))
-        return self.model.get_media_group_by_media_id(id_= id_, limit= limit,
+        return self.model.get_group_by_media_id(id_= id_, limit= limit,
                                                       offset= offset, alfabetic= alfabetic)
 
     def get_language_by_codename(self, codename: str) -> Union[None, Language]:
@@ -349,7 +348,7 @@ class Model:
     # GET BY NAME
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
+    def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
                                 AppVersion, Encoder, CodecType, Codec, Track,
@@ -369,8 +368,8 @@ class Model:
             return self.model.insert_media_type(obj)
         elif isinstance(obj, Media):
             return self.model.insert_media(obj)
-        elif isinstance(obj, MediaGroup):
-            return self.model.insert_media_group(obj)
+        elif isinstance(obj, Group):
+            return self.model.insert_group(obj)
         elif isinstance(obj, MediaIssue):
             return self.model.insert_media_issue(obj)
         elif isinstance(obj, Platform):

@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/02/26 19:36:55.792356
+#+ Editado:	2023/03/16 21:01:20.084848
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from abc import ABC, abstractmethod
 # ------------------------------------------------------------------------------
-from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import Media, Group, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite
 from src.model.entity import WarehouseType, Warehouse
@@ -45,7 +45,7 @@ class iView(ABC):
         pass
 
     @abstractmethod
-    def add_media_group(self, id_media: int = None) -> MediaGroup:
+    def add_group(self, id_media: int = None) -> Group:
         pass
 
     @abstractmethod

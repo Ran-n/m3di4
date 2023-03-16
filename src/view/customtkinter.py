@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/02/26 19:37:08.125633
+#+ Editado:	2023/03/16 21:01:12.058043
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
 import customtkinter
 
-from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import Media, Group, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite
 from src.model.entity import WarehouseType, Warehouse
@@ -49,7 +49,7 @@ class CustomTKinter(iView):
     def add_media(self) -> Media:
         pass
 
-    def add_media_group(self) -> MediaGroup:
+    def add_group(self) -> Group:
         pass
 
     def add_media_issue(self) -> MediaIssue:

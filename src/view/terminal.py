@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/04 13:30:19.315049
+#+ Editado:	2023/03/16 21:01:32.920336
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from src.utils import Config, center
 
 from src.utils import AddFileTerminalViewOutput
 
-from src.model.entity import Media, MediaGroup, MediaIssue
+from src.model.entity import Media, Group, MediaIssue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite
 from src.model.entity import WarehouseType, Warehouse
@@ -53,7 +53,7 @@ class Terminal(iView):
                 _('+mt')        :   [_('Add Media Type'), self.controller.add_media_type],
                 _('+ms')        :   [_('Add Media Status'), self.controller.add_media_status],
                 _('+m')         :   [_('Add Media'), self.controller.add_media],
-                _('+mg')        :   [_('Add Media Group'), self.controller.add_media_group],
+                _('+mg')        :   [_('Add Media Group'), self.controller.add_group],
                 _('+mi')        :   [_('Add Media Issue'), self.controller.add_media_issue],
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
                 _('+st')        :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
@@ -460,13 +460,13 @@ class Terminal(iView):
                 year_end    =   year_end
         )
 
-    def add_media_group(self, id_media: int) -> MediaGroup:
+    def add_group(self, id_media: int) -> Group:
         """ Terminal View function for adding a media group element.
         @ Input:
         ╚═  · id_media  -   int -   None
             └ The id of the media the group should be added to.
         @ Output:
-        ╚═  MediaGroup  -   The MediaGroup created by the user.
+        ╚═  Group  -   The Group created by the user.
         """
         logging.info(_('Requesting the user for the information on the media group'))
 
@@ -503,7 +503,7 @@ class Terminal(iView):
                     ]
             )
 
-            if not self.model.exists(MediaGroup(media= media, number= number)):
+            if not self.model.exists(Group(media= media, number= number)):
                 break
             else:
                 logging.info(_('The requested media group to be added already exists, a number change will be adviced'))
@@ -555,7 +555,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return MediaGroup(
+        return Group(
                 media       =   media,
                 number      =   number,
                 name        =   name,
@@ -593,15 +593,15 @@ class Terminal(iView):
         print()
 
         # media group
-        media_group = self.__pick_from_options(
+        group = self.__pick_from_options(
                 message         =   {
                     'title':    _('Media Groups'),
                     'pick':     _('Media'),
                     'empty':    _('There are no media groups available')
                 },
-                option_count    =   self.model.get_media_group_num_by_media_id(media_id= media.id_),
-                add_fn          =   lambda: self.controller.add_media_group(id_media= media.id_),
-                get_opts_fn     =   lambda limit, offset: self.model.get_media_group_by_media_id(id_= media.id_, limit= limit, offset= offset),
+                option_count    =   self.model.get_group_num_by_media_id(media_id= media.id_),
+                add_fn          =   lambda: self.controller.add_group(id_media= media.id_),
+                get_opts_fn     =   lambda limit, offset: self.model.get_group_by_media_id(id_= media.id_, limit= limit, offset= offset),
                 limit           =   Config().pagination_limit
         )
         print()
@@ -616,7 +616,7 @@ class Terminal(iView):
                     ]
             )
 
-            if not self.model.exists(MediaIssue(media= media, media_group= media_group, position= position)):
+            if not self.model.exists(MediaIssue(media= media, group= group, position= position)):
                 break
             else:
                 logging.info(_('The requested media issue to be added already exists, a number change will be adviced'))
@@ -652,7 +652,7 @@ class Terminal(iView):
         return MediaIssue(
                 position    =   position,
                 media       =   media,
-                media_group =   media_group,
+                group =   group,
                 name        =   name,
                 date        =   date
         )
