@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:41:42.686442
-#+ Editado:	2023/03/16 21:02:35.994756
+#+ Editado:	2023/03/16 22:00:41.013364
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -25,4 +25,7 @@ class Group(BaseEntity):
     year_start: Optional[int] = field(default=None)
     year_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
+
+    def __str__(self) -> str:
+        return f'{self.media} - {self.number}'
 # ------------------------------------------------------------------------------
