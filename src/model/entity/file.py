@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/12 21:14:43.067215
+#+ Editado:	2023/03/16 21:52:03.505303
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 from blake3 import blake3
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Warehouse, Folder, Media, MediaIssue
+from src.model.entity import BaseEntity, Warehouse, Folder, Media, Issue
 from src.model.entity import Extension, Encoder, AppVersion
 # ------------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ class File(BaseEntity):
     folder: Folder
     hash_: Optional[str] = field(default=None)
     media: Optional[Media] = field(default=None)
-    media_issue: Optional[MediaIssue] = field(default=None)
+    issue: Optional[Issue] = field(default=None)
     title: Optional[str] = field(default=None)
     nb_streams: Optional[int] = field(default=None)
     nb_programs: Optional[int] = field(default=None)
@@ -43,10 +43,10 @@ class File(BaseEntity):
     active: Optional[int] = field(default=1)
 
     def __post_init__(self) -> None:
-        # make either media or media_issue required on object creation
-        if not any([self.media, self.media_issue]):
+        # make either media or issue required on object creation
+        if not any([self.media, self.issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
-                    1 required positional argument: "media" or "media_issue"')
+                    1 required positional argument: "media" or "issue"')
         self.__calculate_hash()
 
     def __calculate_hash(self) -> None:

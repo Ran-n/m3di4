@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 21:05:34.980735
+#+ Editado:	2023/03/16 21:50:33.577107
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ from typing import List, Union
 
 from src.utils import Config
 
-from src.model.entity import Media, Group, MediaIssue
+from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
@@ -104,7 +104,7 @@ class Sqlite(iModel):
 
 
     # EXISTS
-    def exists(self, obj: Union[Group, MediaIssue, Platform,
+    def exists(self, obj: Union[Group, Issue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
@@ -123,8 +123,8 @@ class Sqlite(iModel):
             return True
         return False
 
-    def exists_media_issue(self, obj: MediaIssue) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{MediaIssue.table_name}" where id_media="{obj.media.id_}" and id_group="{obj.group.id_}" and position="{obj.position}"').fetchall()
+    def exists_issue(self, obj: Issue) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{Issue.table_name}" where id_media="{obj.media.id_}" and id_group="{obj.group.id_}" and position="{obj.position}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -218,7 +218,7 @@ class Sqlite(iModel):
     # GET ALL
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
                 ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
-                                WarehouseType, MediaIssue, Warehouse]]:
+                                WarehouseType, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -383,10 +383,10 @@ class Sqlite(iModel):
             ))
         return results
 
-    def get_all_media_issue(self, limit: int, offset: int, alfabetic: bool) -> List[MediaIssue]:
+    def get_all_issue(self, limit: int, offset: int, alfabetic: bool) -> List[Issue]:
         """
         """
-        sentence = f'select id, active, position, name, date, id_media, id_group, added_ts, modified_ts from "{MediaIssue.table_name}"'
+        sentence = f'select id, active, position, name, date, id_media, id_group, added_ts, modified_ts from "{Issue.table_name}"'
         if alfabetic: sentence += ' order by name asc'
         if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
 
@@ -394,7 +394,7 @@ class Sqlite(iModel):
 
         results = []
         for result in sql_results:
-            results.append(MediaIssue(
+            results.append(Issue(
                     id_             = result[0],
                     active          = result[1],
                     position        = result[2],
@@ -438,7 +438,7 @@ class Sqlite(iModel):
     def get_by_id(self, table_name: str, id_: int) ->\
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, Group, WarehouseType, App,
-                  Extension, Warehouse, Folder, MediaIssue,
+                  Extension, Warehouse, Folder, Issue,
                   AppVersion, Encoder, CodecType, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
@@ -603,12 +603,12 @@ class Sqlite(iModel):
                     modified_ts = sql_result[4]
             )
 
-    def get_media_issue_by_id(self, id_: int) -> MediaIssue:
+    def get_issue_by_id(self, id_: int) -> Issue:
         sql_result = self.get_cur_db().execute(f'select id, active, position, \
                 name, date, id_media, id_group, added_ts, modified_ts \
-                from "{MediaIssue.table_name}" where id="{id_}"').fetchone()
+                from "{Issue.table_name}" where id="{id_}"').fetchone()
         if sql_result:
-            return MediaIssue(
+            return Issue(
                     id_         = sql_result[0],
                     active      = sql_result[1],
                     position    = sql_result[2],
@@ -663,7 +663,7 @@ class Sqlite(iModel):
 
     def get_file_by_id(self, id_: int) -> File:
         sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
-                id_warehouse, id_folder, id_media, id_media_issue, title, nb_streams, \
+                id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
                 id_app_version, id_encoder, original_name, added_ts, modified_ts \
                 from "{File.table_name}" where id="{id_}"').fetchone()
@@ -677,7 +677,7 @@ class Sqlite(iModel):
                     warehouse       = self.get_warehouse_by_id(sql_result[5]),
                     folder          = self.get_folder_by_id(sql_result[6]),
                     media           = self.get_media_by_id(sql_result[7]),
-                    media_issue     = self.get_media_issue_by_id(sql_result[8]),
+                    issue     = self.get_issue_by_id(sql_result[8]),
                     title           = sql_result[9],
                     nb_streams      = sql_result[10],
                     start           = sql_result[11],
@@ -895,7 +895,7 @@ class Sqlite(iModel):
         ╚═  None    -   If no matches exists.
         """
         sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
-                id_warehouse, id_folder, id_media, id_media_issue, title, nb_streams, \
+                id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
                 id_app_version, id_encoder, original_name, added_ts, modified_ts \
                 from "{File.table_name}" where name="{obj.name}" and \
@@ -911,7 +911,7 @@ class Sqlite(iModel):
                     warehouse       = self.get_warehouse_by_id(sql_result[5]),
                     folder          = self.get_folder_by_id(sql_result[6]),
                     media           = self.get_media_by_id(sql_result[7]),
-                    media_issue     = self.get_media_issue_by_id(sql_result[8]),
+                    issue     = self.get_issue_by_id(sql_result[8]),
                     title           = sql_result[9],
                     nb_streams      = sql_result[10],
                     start           = sql_result[11],
@@ -1343,7 +1343,7 @@ class Sqlite(iModel):
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
-                                MediaIssue, Platform, ShareSiteType, ShareSite,
+                                Issue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
                                 AppVersion, Encoder, CodecType, Codec, Track,
                                 TrackLanguage]
@@ -1369,8 +1369,8 @@ class Sqlite(iModel):
     def insert_group(self, obj: Group) -> None:
         self.get_cur_db().execute(f'insert into "{Group.table_name}" (active, name, number, year_start, year_end, id_media) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.number, obj.year_start, obj.year_end, obj.media.id_))
 
-    def insert_media_issue(self, obj: Group) -> None:
-        self.get_cur_db().execute(f'insert into "{MediaIssue.table_name}" (active, position, name, date, id_media, id_group) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.position, obj.name, obj.date, obj.media.id_, obj.group.id_))
+    def insert_issue(self, obj: Group) -> None:
+        self.get_cur_db().execute(f'insert into "{Issue.table_name}" (active, position, name, date, id_media, id_group) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.position, obj.name, obj.date, obj.media.id_, obj.group.id_))
 
     def insert_platform(self, obj: Platform) -> None:
         self.get_cur_db().execute(f'insert into "{Platform.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
@@ -1420,8 +1420,8 @@ class Sqlite(iModel):
     def insert_file(self, obj: File) -> None:
         id_media=None
         if obj.media: id_media=obj.media.id_
-        id_media_issue=None
-        if obj.media_issue: id_media_issue=obj.media_issue.id_
+        id_issue=None
+        if obj.issue: id_issue=obj.issue.id_
         id_app_version=None
         if obj.app_version: id_app_version=obj.app_version.id_
         id_encoder=None
@@ -1429,12 +1429,12 @@ class Sqlite(iModel):
 
         self.get_cur_db().execute(f'insert into "{File.table_name}" \
                 (active, hash, name, id_extension, id_warehouse, id_folder, id_media, \
-                id_media_issue, title, nb_streams, nb_programs, start, duration, \
+                id_issue, title, nb_streams, nb_programs, start, duration, \
                 size, bit_rate, probe_score, creation_ts, id_app_version, id_encoder, \
                 original_name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
                 ?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.hash_, obj.name, obj.extension.id_,
                                      obj.warehouse.id_, obj.folder.id_, id_media,
-                                     id_media_issue, obj.title, obj.nb_streams,
+                                     id_issue, obj.title, obj.nb_streams,
                                      obj.nb_programs, obj.start, obj.duration, obj.size,
                                      obj.bit_rate, obj.probe_score, obj.creation_ts,
                                      id_app_version, id_encoder, obj.original_name))

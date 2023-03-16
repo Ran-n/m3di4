@@ -3,21 +3,21 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/18 22:06:03.157874
-#+ Editado:	2023/02/18 22:06:46.897629
+#+ Editado:	2023/03/16 21:47:21.267868
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 
 from src.utils import Config
-from src.model.entity import BaseEntity, MediaIssueName, Language
+from src.model.entity import BaseEntity, IssueName, Language
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaIssueNameLanguage(BaseEntity):
+class IssueNameLanguage(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaIssueNameLanguage'))
-    media_issue_name: MediaIssueName
+                            default=Config().get_table_name('IssueNameLanguage'))
+    issue_name: IssueName
     language: Language
 # ------------------------------------------------------------------------------

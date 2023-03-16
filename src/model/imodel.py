@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 21:05:09.597309
+#+ Editado:	2023/03/16 21:50:22.682632
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ from abc import ABC, abstractmethod
 from sqlite3 import Connection, Cursor
 from typing import List, Union
 
-from src.model.entity import Media, Group, MediaIssue
+from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
@@ -67,7 +67,7 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def exists(self, obj: Union[Group, MediaIssue, Platform,
+    def exists(self, obj: Union[Group, Issue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
@@ -101,7 +101,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
                 ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
-                                WarehouseType, MediaIssue, Warehouse]]:
+                                WarehouseType, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -122,7 +122,7 @@ class iModel(ABC):  # pylint: disable=C0103
     def get_by_id(self, table_name: str, id_: int) ->\
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, Group, WarehouseType, App,
-                  Extension, Warehouse, Folder, MediaIssue,
+                  Extension, Warehouse, Folder, Issue,
                   AppVersion, Encoder, CodecType, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
@@ -212,7 +212,7 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
-                                MediaIssue, Platform, ShareSiteType, ShareSite,
+                                Issue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
                                 AppVersion, Encoder, CodecType, Codec, Track,
                                 TrackLanguage]

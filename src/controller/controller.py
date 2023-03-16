@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/16 21:00:07.746938
+#+ Editado:	2023/03/16 21:49:58.893209
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -17,7 +17,6 @@ from src.service import MemberCountService, FileInfoService
 
 from src.model.dao import FileDao, TrackDao, TrackLanguageDao
 from src.model.entity import ShareSite, ShareSiteSubs, Platform
-#from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
 class Controller:
     def __init__(self, model: iModel, view: iView):
@@ -107,9 +106,9 @@ class Controller:
         self.model.insert(self.view.add_group(id_media))
         logging.info(_('The "Add Group" process was finished'))
 
-    def add_media_issue(self) -> None:
+    def add_issue(self) -> None:
         logging.info(_('Starting the "Add Media Issue" process'))
-        self.model.insert(self.view.add_media_issue())
+        self.model.insert(self.view.add_issue())
         logging.info(_('The "Add Media Issue" process was finished'))
 
     def add_platform(self) -> None:

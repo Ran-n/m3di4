@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 21:05:23.332433
+#+ Editado:	2023/03/16 21:50:28.809713
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ from typing import List, Union
 
 from src.exception import InheritException
 
-from src.model.entity import Media, Group, MediaIssue
+from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
@@ -77,7 +77,7 @@ class Model:
 
 
     # EXISTS
-    def exists(self, obj: Union[Group, MediaIssue, Platform,
+    def exists(self, obj: Union[Group, Issue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
@@ -90,8 +90,8 @@ class Model:
         logging.info(_(f'Checking on table "{obj.table_name}" if the information already exists'))
         if isinstance(obj, Group):
             return self.model.exists_group(obj)
-        elif isinstance(obj, MediaIssue):
-            return self.model.exists_media_issue(obj)
+        elif isinstance(obj, Issue):
+            return self.model.exists_issue(obj)
         elif isinstance(obj, Platform):
             return self.model.exists_platform(obj)
         elif isinstance(obj, ShareSiteType):
@@ -137,7 +137,7 @@ class Model:
     # GET ALL
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
                 ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
-                                WarehouseType, MediaIssue, Warehouse]]:
+                                WarehouseType, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -166,8 +166,8 @@ class Model:
             return self.model.get_all_sharesite(limit, offset, alfabetic)
         elif table_name == WarehouseType.table_name:
             return self.model.get_all_warehouse_type(limit, offset, alfabetic)
-        elif table_name == MediaIssue.table_name:
-            return self.model.get_all_media_issue(limit, offset, alfabetic)
+        elif table_name == Issue.table_name:
+            return self.model.get_all_issue(limit, offset, alfabetic)
         elif table_name == Warehouse.table_name:
             return self.model.get_all_warehouse(limit, offset, alfabetic)
     # GET ALL #
@@ -176,7 +176,7 @@ class Model:
     def get_by_id(self, table_name: str, id_: int) ->\
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, Group, WarehouseType, App,
-                  Extension, Warehouse, Folder, MediaIssue,
+                  Extension, Warehouse, Folder, Issue,
                   AppVersion, Encoder, CodecType, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
@@ -214,8 +214,8 @@ class Model:
             return self.model.get_warehouse_by_id(id_)
         elif table_name == Folder.table_name:
             return self.model.get_folder_by_id(id_)
-        elif table_name == MediaIssue.table_name:
-            return self.model.get_media_issue_by_id(id_)
+        elif table_name == Issue.table_name:
+            return self.model.get_issue_by_id(id_)
         elif table_name == AppVersion.table_name:
             return self.model.get_app_version_by_id(id_)
         elif table_name == Encoder.table_name:
@@ -349,7 +349,7 @@ class Model:
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
-                                MediaIssue, Platform, ShareSiteType, ShareSite,
+                                Issue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
                                 AppVersion, Encoder, CodecType, Codec, Track,
                                 TrackLanguage]
@@ -370,8 +370,8 @@ class Model:
             return self.model.insert_media(obj)
         elif isinstance(obj, Group):
             return self.model.insert_group(obj)
-        elif isinstance(obj, MediaIssue):
-            return self.model.insert_media_issue(obj)
+        elif isinstance(obj, Issue):
+            return self.model.insert_issue(obj)
         elif isinstance(obj, Platform):
             return self.model.insert_platform(obj)
         elif isinstance(obj, ShareSiteType):

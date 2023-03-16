@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/16 21:01:32.920336
+#+ Editado:	2023/03/16 21:51:31.896119
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from src.utils import Config, center
 
 from src.utils import AddFileTerminalViewOutput
 
-from src.model.entity import Media, Group, MediaIssue
+from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite
 from src.model.entity import WarehouseType, Warehouse
@@ -54,7 +54,7 @@ class Terminal(iView):
                 _('+ms')        :   [_('Add Media Status'), self.controller.add_media_status],
                 _('+m')         :   [_('Add Media'), self.controller.add_media],
                 _('+mg')        :   [_('Add Media Group'), self.controller.add_group],
-                _('+mi')        :   [_('Add Media Issue'), self.controller.add_media_issue],
+                _('+mi')        :   [_('Add Media Issue'), self.controller.add_issue],
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
                 _('+st')        :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
                 _('+s')         :   [_('Add ShareSite'), self.controller.add_sharesite],
@@ -563,11 +563,11 @@ class Terminal(iView):
                 year_end    =   year_end
         )
 
-    def add_media_issue(self) -> MediaIssue:
+    def add_issue(self) -> Issue:
         """ Terminal View function for adding a media issue element.
         @ Input:
         @ Output:
-        ╚═  MediaIssue  -   The MediaIssue created by the user.
+        ╚═  Issue  -   The Issue created by the user.
         """
         logging.info(_('Requesting the user for the information on the media issue'))
 
@@ -616,7 +616,7 @@ class Terminal(iView):
                     ]
             )
 
-            if not self.model.exists(MediaIssue(media= media, group= group, position= position)):
+            if not self.model.exists(Issue(media= media, group= group, position= position)):
                 break
             else:
                 logging.info(_('The requested media issue to be added already exists, a number change will be adviced'))
@@ -649,7 +649,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return MediaIssue(
+        return Issue(
                 position    =   position,
                 media       =   media,
                 group =   group,
@@ -990,7 +990,7 @@ class Terminal(iView):
             # if they are all in the same warehouse dont ask again for warehouse
             same_warehouse = self.__yn_question(message=_('Are all Issues in the same Warehouse?'))
             ask_for_warehouse = True
-            media_issues = []
+            issues = []
             warehouses = []
             for path in file_path:
                 print()
@@ -1022,15 +1022,15 @@ class Terminal(iView):
                     print(center(_('File')+f': "{path}"\n', self.line_len))
 
                 # media issue
-                media_issues.append(self.__pick_from_options(
+                issues.append(self.__pick_from_options(
                         message     =   {
-                            'title':    _('MediaIssues'),
-                            'pick':     _('MediaIssue'),
-                            'empty':    _('There are no MediaIssues available')
+                            'title':    _('Issues'),
+                            'pick':     _('Issue'),
+                            'empty':    _('There are no Issues available')
                         },
-                        option_count    =   self.model.get_num(table_name=MediaIssue.table_name),
-                        add_fn          =   self.controller.add_media_issue,
-                        get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=MediaIssue.table_name, limit=limit, offset=offset),
+                        option_count    =   self.model.get_num(table_name=Issue.table_name),
+                        add_fn          =   self.controller.add_issue,
+                        get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Issue.table_name, limit=limit, offset=offset),
                         limit           =   Config().pagination_limit
                 ))
                 print()
@@ -1039,7 +1039,7 @@ class Terminal(iView):
                 ask_original_name(original_names)
 
             output_obj = AddFileTerminalViewOutput(original_names=original_names, file_paths=file_path,
-                                                   warehouses=warehouses, media_issues=media_issues)
+                                                   warehouses=warehouses, issues=issues)
 
         print()
         print(self.separator)

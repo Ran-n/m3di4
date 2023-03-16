@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS "Group" (
 	CONSTRAINT "Group_NK" UNIQUE("number", "id_media"),
 	CONSTRAINT "Group_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "MediaIssue" (
+CREATE TABLE IF NOT EXISTS "Issue" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"active"			INTEGER NOT NULL,
 	"position"			INTEGER NOT NULL,
@@ -248,10 +248,10 @@ CREATE TABLE IF NOT EXISTS "MediaIssue" (
 	"id_group"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaIssue_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaIssue_FK2" FOREIGN KEY("id_group") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaIssue_NK" UNIQUE("id_media", "id_group", "position"),
-	CONSTRAINT "MediaIssue_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "Issue_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Issue_FK2" FOREIGN KEY("id_group") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Issue_NK" UNIQUE("id_media", "id_group", "position"),
+	CONSTRAINT "Issue_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "MediaPoster" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -273,7 +273,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	"id_warehouse"		INTEGER NOT NULL,
 	"id_folder"			INTEGER NOT NULL,
 	"id_media"			INTEGER,
-	"id_media_issue"	INTEGER,
+	"id_issue"			INTEGER,
 	"title"				TEXT,
 	"nb_streams"		INTEGER,
 	"nb_programs"		INTEGER,
@@ -288,11 +288,11 @@ CREATE TABLE IF NOT EXISTS "File" (
 	"original_name"		TEXT,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "File_NN1" CHECK (("id_media" IS NOT NULL AND "id_media_issue" IS NULL) OR ("id_media" IS NULL AND "id_media_issue" IS NOT NULL)),
+	CONSTRAINT "File_NN1" CHECK (("id_media" IS NOT NULL AND "id_issue" IS NULL) OR ("id_media" IS NULL AND "id_issue" IS NOT NULL)),
 	CONSTRAINT "File_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK2" FOREIGN KEY("id_warehouse") REFERENCES "Warehouse"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK3" FOREIGN KEY("id_folder") REFERENCES "Folder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "File_FK4" FOREIGN KEY("id_media_issue") REFERENCES "MediaIssue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "File_FK4" FOREIGN KEY("id_issue") REFERENCES "Issue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK5" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK6" FOREIGN KEY("id_encoder") REFERENCES "Encoder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK7" FOREIGN KEY("id_app_version") REFERENCES "AppVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
@@ -526,15 +526,15 @@ CREATE TABLE IF NOT EXISTS "GroupName" (
 	CONSTRAINT "MediaName_NK" UNIQUE("name", "id_group"),
 	CONSTRAINT "MediaName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "MediaIssueName" (
-	"id"				INTEGER NOT NULL UNIQUE,
-	"active"			INTEGER NOT NULL,
-	"name"				TEXT NOT NULL,
-	"id_media_issue"	INTEGER NOT NULL,
-	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_media_issue") REFERENCES "MediaIssue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaName_NK" UNIQUE("name", "id_media_issue"),
+CREATE TABLE IF NOT EXISTS "IssueName" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
+	"name"			TEXT NOT NULL,
+	"id_issue"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_issue") REFERENCES "Issue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaName_NK" UNIQUE("name", "id_issue"),
 	CONSTRAINT "MediaName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 /** **/
@@ -642,16 +642,16 @@ CREATE TABLE IF NOT EXISTS "GroupNameLanguage" (
 	CONSTRAINT "GroupNameLanguage_NK" UNIQUE("id_group_name", "id_language"),
 	CONSTRAINT "GroupNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "MediaIssueNameLanguage" (
-	"id"					INTEGER NOT NULL UNIQUE,
-	"id_media_issue_name"	INTEGER NOT NULL,
-	"id_language"			INTEGER NOT NULL,
-	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaIssueNameLanguage_FK1" FOREIGN KEY("id_media_issue_name") REFERENCES "MediaIssueName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaIssueNameLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaIssueNameLanguage_NK" UNIQUE("id_media_issue_name", "id_language"),
-	CONSTRAINT "MediaIssueNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+CREATE TABLE IF NOT EXISTS "IssueNameLanguage" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"id_issue_name"	INTEGER NOT NULL,
+	"id_language"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "IssueNameLanguage_FK1" FOREIGN KEY("id_issue_name") REFERENCES "IssueName"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "IssueNameLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "IssueNameLanguage_NK" UNIQUE("id_issue_name", "id_language"),
+	CONSTRAINT "IssueNameLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 /** **/
 
@@ -870,16 +870,16 @@ CREATE TABLE IF NOT EXISTS "GroupDescription" (
 	CONSTRAINT "GroupName_NK" UNIQUE("description", "id_group"),
 	CONSTRAINT "GroupName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "MediaIssueDescription" (
-	"id"				INTEGER NOT NULL UNIQUE,
-	"active"			INTEGER NOT NULL,
-	"description"		TEXT NOT NULL,
-	"id_media_issue"	INTEGER NOT NULL,
-	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaIssueName_FK1" FOREIGN KEY("id_media_issue") REFERENCES "MediaIssue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaIssueName_NK" UNIQUE("description", "id_media_issue"),
-	CONSTRAINT "MediaIssueName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+CREATE TABLE IF NOT EXISTS "IssueDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
+	"description"	TEXT NOT NULL,
+	"id_issue"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "IssueName_FK1" FOREIGN KEY("id_issue") REFERENCES "Issue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "IssueName_NK" UNIQUE("description", "id_issue"),
+	CONSTRAINT "IssueName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 /***/
 
@@ -1092,15 +1092,15 @@ CREATE TABLE IF NOT EXISTS "GroupDescriptionLanguage" (
 	CONSTRAINT "GroupDescriptionLanguage_NK" UNIQUE("id_group_description", "id_language"),
 	CONSTRAINT "GroupDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "MediaIssueDescriptionLanguage" (
+CREATE TABLE IF NOT EXISTS "IssueDescriptionLanguage" (
 	"id"					INTEGER NOT NULL UNIQUE,
 	"id_group_description"	INTEGER NOT NULL,
 	"id_language"			INTEGER NOT NULL,
 	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaIssueDescriptionLanguage_FK1" FOREIGN KEY("id_group_description") REFERENCES "MediaIssueDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaIssueDescriptionLanguage_NK" UNIQUE("id_group_description", "id_language"),
-	CONSTRAINT "MediaIssueDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "IssueDescriptionLanguage_FK1" FOREIGN KEY("id_group_description") REFERENCES "IssueDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "IssueDescriptionLanguage_NK" UNIQUE("id_group_description", "id_language"),
+	CONSTRAINT "IssueDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 /** **/
 
@@ -1267,9 +1267,9 @@ AFTER UPDATE ON "Group" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_media_issue
-AFTER UPDATE ON "MediaIssue" BEGIN
-	UPDATE "MediaIssue"
+CREATE TRIGGER IF NOT EXISTS update_issue
+AFTER UPDATE ON "Issue" BEGIN
+	UPDATE "Issue"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1377,9 +1377,9 @@ AFTER UPDATE ON "GroupName" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_media_issue_name
-AFTER UPDATE ON "MediaIssueName" BEGIN
-	UPDATE "MediaIssueName"
+CREATE TRIGGER IF NOT EXISTS update_issue_name
+AFTER UPDATE ON "IssueName" BEGIN
+	UPDATE "IssueName"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1445,9 +1445,9 @@ AFTER UPDATE ON "GroupNameLanguage" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_media_issue_name_language
-AFTER UPDATE ON "MediaIssueNameLanguage" BEGIN
-	UPDATE "MediaIssueNameLanguage"
+CREATE TRIGGER IF NOT EXISTS update_issue_name_language
+AFTER UPDATE ON "IssueNameLanguage" BEGIN
+	UPDATE "IssueNameLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1573,9 +1573,9 @@ AFTER UPDATE ON "GroupDescription" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_media_issue_description
-AFTER UPDATE ON "MediaIssueDescription" BEGIN
-	UPDATE "MediaIssueDescription"
+CREATE TRIGGER IF NOT EXISTS update_issue_description
+AFTER UPDATE ON "IssueDescription" BEGIN
+	UPDATE "IssueDescription"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1701,9 +1701,9 @@ AFTER UPDATE ON "GroupDescriptionLanguage" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_media_issue_description_language
-AFTER UPDATE ON "MediaIssueDescriptionLanguage" BEGIN
-	UPDATE "MediaIssueDescriptionLanguage"
+CREATE TRIGGER IF NOT EXISTS update_issue_description_language
+AFTER UPDATE ON "IssueDescriptionLanguage" BEGIN
+	UPDATE "IssueDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

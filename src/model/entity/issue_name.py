@@ -2,36 +2,24 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:41:48.278353
-#+ Editado:	2023/03/16 21:07:05.467011
+#+ Creado: 	2023/02/18 22:01:20.014519
+#+ Editado:	2023/03/16 21:47:11.290055
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Media, Group
+from src.model.entity import BaseEntity, Issue
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaIssue(BaseEntity):
+class IssueName(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaIssue'))
-    position: int
-    media: Media
-    group: Optional[Group]
-    name: Optional[str] = field(default=None)
-    date: Optional[str] = field(default=None)
+                            default=Config().get_table_name('IssueName'))
+    name: str
+    issue: Issue
     active: Optional[int] = field(default=1)
-
-    def __str__(self) -> str:
-        string = f'{self.media} - '
-
-        if self.group:
-            string += f'{self.group.number}x{self.position:0{2}}'
-        else:
-            string += f'{self.position}'
-        return string
 # ------------------------------------------------------------------------------

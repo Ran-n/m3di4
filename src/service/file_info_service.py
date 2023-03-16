@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/26 21:12:03.645397
-#+ Editado:	2023/03/16 19:20:18.584524
+#+ Editado:	2023/03/16 21:50:42.539765
 # ------------------------------------------------------------------------------
 import logging
 from pathlib import Path
@@ -14,7 +14,7 @@ from typing import Union, List, Tuple, Dict
 from src.utils import AddFileTerminalViewOutput, FileInfoServiceOutput
 from src.utils import get_app_version, fraction_2_float
 
-from src.model.entity import Extension, Warehouse, Media, MediaIssue, File
+from src.model.entity import Extension, Warehouse, Media, Issue, File
 from src.model.entity import Track, TrackLanguage, Encoder, Folder
 from src.model.entity import Codec, CodecType, Language
 # ------------------------------------------------------------------------------
@@ -33,13 +33,13 @@ class FileInfoService:
         self.warehouses = file_data.warehouses
         if file_data.medias:
             self.medias = file_data.medias
-        elif file_data.media_issues:
-            self.medias = file_data.media_issues
+        elif file_data.issues:
+            self.medias = file_data.issues
 
 
     @staticmethod
     def get_file_info(file_path: str, original_name: str,
-                      warehouse: Warehouse, media: Union[Media, MediaIssue],
+                      warehouse: Warehouse, media: Union[Media, Issue],
                       format_: dict, tags: dict, tracks: List[dict]) -> File:
         """
         """
@@ -55,9 +55,9 @@ class FileInfoService:
         if isinstance(media, Media):
             f = File(name=file_name, folder=Folder(path=str(folder)),
                      extension=extension, warehouse=warehouse, media=media)
-        elif isinstance(media, MediaIssue):
+        elif isinstance(media, Issue):
             f = File(name=file_name, folder=Folder(path=str(folder)),
-                     extension=extension, warehouse=warehouse, media_issue=media)
+                     extension=extension, warehouse=warehouse, issue=media)
 
         if original_name: f.original_name = original_name
         if ('title' in tags): f.title=tags['title']

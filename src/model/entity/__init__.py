@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/03/16 21:04:16.669284
+#+ Editado:	2023/03/16 21:47:30.789536
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -31,7 +31,7 @@ from .warehouse import Warehouse
 from .language_code import LanguageCode
 from .media import Media
 from .group import Group
-from .media_issue import MediaIssue
+from .issue import Issue
 from .media_poster import MediaPoster
 from .file import File
 from .track import Track
@@ -49,7 +49,7 @@ from .media_status_name import MediaStatusName
 from .country_name import CountryName
 from .media_name import MediaName
 from .group_name import GroupName
-from .media_issue_name import MediaIssueName
+from .issue_name import IssueName
 
 from .language_name_language import LanguageNameLanguage
 from .warehouse_type_name_language import WarehouseTypeNameLanguage
@@ -60,7 +60,7 @@ from .media_status_name_language import MediaStatusNameLanguage
 from .country_name_language import CountryNameLanguage
 from .media_name_language import MediaNameLanguage
 from .group_name_language import GroupNameLanguage
-from .media_issue_name_language import MediaIssueNameLanguage
+from .issue_name_language import IssueNameLanguage
 
 from .language_description import LanguageDescription
 from .platform_description import PlatformDescription
@@ -81,7 +81,7 @@ from .share_site_description import ShareSiteDescription
 from .warehouse_description import WarehouseDescription
 from .media_description import MediaDescription
 from .group_description import GroupDescription
-from .media_issue_description import MediaIssueDescription
+from .issue_description import IssueDescription
 
 from .language_description_language import LanguageDescriptionLanguage
 from .platform_description_language import PlatformDescriptionLanguage
@@ -102,7 +102,7 @@ from .share_site_description_language import ShareSiteDescriptionLanguage
 from .warehouse_description_language import WarehouseDescriptionLanguage
 from .media_description_language import MediaDescriptionLanguage
 from .group_description_language import GroupDescriptionLanguage
-from .media_issue_description_language import MediaIssueDescriptionLanguage
+from .issue_description_language import IssueDescriptionLanguage
 
 from .media_name_country import MediaNameCountry
 # ------------------------------------------------------------------------------
