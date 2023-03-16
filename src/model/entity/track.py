@@ -15,10 +15,10 @@ from src.model.entity import BaseEntity, File, Codec
 
 # ------------------------------------------------------------------------------
 @dataclass
-class FileStream(BaseEntity):
+class Track(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('FileStream'))
+                            default=Config().get_table_name('Track'))
     file: File
     codec: Codec
     index: int

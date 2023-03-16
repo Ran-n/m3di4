@@ -23,7 +23,7 @@ from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
 from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
-from src.model.entity import CodecType, Codec, Language, FileStream, FileStreamLanguage
+from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode, CodeName
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
@@ -441,7 +441,7 @@ class Sqlite(iModel):
                   Platform, MediaGroup, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
                   AppVersion, Encoder, CodecType, File, Codec,
-                  FileStream, Language]:
+                  Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -709,7 +709,7 @@ class Sqlite(iModel):
                     modified_ts = sql_result[6]
             )
 
-    def get_file_stream_by_id(self, id_: int) -> FileStream:
+    def get_track_by_id(self, id_: int) -> Track:
         sql_result = self.get_cur_db().execute(f'select id, active, id_file, id_codec, index_, title, profile, \
                 quality, width, height, coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
                 sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, color_range, color_space, \
@@ -719,9 +719,9 @@ class Sqlite(iModel):
                 visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, descriptions, metadata, \
                 dependent, still_image, start, duration, size, bit_rate, sample_rate, sample_format, channels, \
                 channel_layout, bps, frame_number, dmix_mode, text_subtitle, added_ts, modified_ts \
-                from "{FileStream.table_name}" where id="{id_}"').fetchone()
+                from "{Track.table_name}" where id="{id_}"').fetchone()
         if sql_result:
-            return FileStream(
+            return Track(
                     id_                     = sql_result[0],
                     active                  = sql_result[1],
                     file                    = self.get_file_by_id(sql_result[2]),
@@ -808,8 +808,8 @@ class Sqlite(iModel):
 
     # GET BY NK
     def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, FileStream,
-                  Language, FileStreamLanguage]:
+            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, Track,
+                  Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -971,13 +971,13 @@ class Sqlite(iModel):
                     modified_ts = sql_result[6]
             )
 
-    def get_file_stream_by_nk(self, obj: FileStream) -> Union[None, FileStream]:
+    def get_track_by_nk(self, obj: Track) -> Union[None, Track]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   FileStream
+        ╚═  · obj   -   Track
             └ The AppVersion object to use in the search.
         @ Output:
-        ╠═  FileStream  -   The element of the table discriminated by natural key.
+        ╠═  Track  -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
         """
         sql_result = self.get_cur_db().execute(f'select id, active, id_file, id_codec, index_, title, profile, \
@@ -989,9 +989,9 @@ class Sqlite(iModel):
                 visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, descriptions, metadata, \
                 dependent, still_image, start, duration, size, bit_rate, sample_rate, sample_format, channels, \
                 channel_layout, bps, frame_number, dmix_mode, text_subtitle, added_ts, modified_ts \
-                from "{FileStream.table_name}" where id_file="{obj.file.id_}" and index_="{obj.index}"').fetchone()
+                from "{Track.table_name}" where id_file="{obj.file.id_}" and index_="{obj.index}"').fetchone()
         if sql_result:
-            return FileStream(
+            return Track(
                     id_                     = sql_result[0],
                     active                  = sql_result[1],
                     file                    = self.get_file_by_id(sql_result[2]),
@@ -1083,23 +1083,23 @@ class Sqlite(iModel):
                     modified_ts = sql_result[5]
             )
 
-    def get_file_stream_language_by_nk(self, obj: FileStreamLanguage) -> Union[None, FileStreamLanguage]:
+    def get_track_language_by_nk(self, obj: TrackLanguage) -> Union[None, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   FileStreamLanguage
-            └ The FileStreamLanguage to use in the search.
+        ╚═  · obj   -   TrackLanguage
+            └ The TrackLanguage to use in the search.
         @ Output:
-        ╠═  FileStreamLanguage      -   The element of the table discriminated by natural key.
+        ╠═  TrackLanguage      -   The element of the table discriminated by natural key.
         ╚═  None                    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, id_file_stream, \
-                id_language, added_ts, modified_ts from "{FileStreamLanguage.table_name}"\
-                where id_file_stream="{obj.file_stream.id_}" and id_language="{obj.language.id_}"').fetchone()
+        sql_result = self.get_cur_db().execute(f'select id, active, id_track, \
+                id_language, added_ts, modified_ts from "{TrackLanguage.table_name}"\
+                where id_track="{obj.track.id_}" and id_language="{obj.language.id_}"').fetchone()
         if sql_result:
-            return FileStreamLanguage(
+            return TrackLanguage(
                     id_         = sql_result[0],
                     active      = sql_result[1],
-                    file_stream = self.get_file_stream_by_id(sql_result[2]),
+                    track = self.get_track_by_id(sql_result[2]),
                     language    = self.get_language_by_id(sql_result[3]),
                     added_ts    = sql_result[4],
                     modified_ts = sql_result[5]
@@ -1346,8 +1346,8 @@ class Sqlite(iModel):
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, CodecType, Codec, FileStream,
-                                FileStreamLanguage]
+                                AppVersion, Encoder, CodecType, Codec, Track,
+                                TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -1449,8 +1449,8 @@ class Sqlite(iModel):
                 (active, name, name_long, id_type) values (?, ?, ?, ?)',
                                   (obj.active, obj.name, obj.name_long, obj.type_.id_))
 
-    def insert_file_stream(self, obj: FileStream) -> None:
-        self.get_cur_db().execute(f'insert into "{FileStream.table_name}" (active, \
+    def insert_track(self, obj: Track) -> None:
+        self.get_cur_db().execute(f'insert into "{Track.table_name}" (active, \
                 id_file, id_codec, index_, title, profile, quality, width, height, \
                 coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
                 sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, \
@@ -1481,9 +1481,9 @@ class Sqlite(iModel):
                                     obj.sample_format, obj.channels, obj.channel_layout, obj.bps,
                                     obj.frame_number, obj.dmix_mode, obj.text_subtitle))
 
-    def insert_file_stream_language(self, obj: FileStreamLanguage) -> None:
-        self.get_cur_db().execute(f'insert into "{FileStreamLanguage.table_name}" \
-                (active, id_file_stream, id_language) values (?, ?, ?)',
-                                  (obj.active, obj.file_stream.id_, obj.language.id_))
+    def insert_track_language(self, obj: TrackLanguage) -> None:
+        self.get_cur_db().execute(f'insert into "{TrackLanguage.table_name}" \
+                (active, id_track, id_language) values (?, ?, ?)',
+                                  (obj.active, obj.track.id_, obj.language.id_))
     # INSERT #
 # ------------------------------------------------------------------------------

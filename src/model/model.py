@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/15 21:23:18.569016
+#+ Editado:	2023/03/16 19:01:37.611517
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
 from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
-from src.model.entity import CodecType, Codec, Language, FileStream, FileStreamLanguage
+from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
 class Model:
@@ -179,7 +179,7 @@ class Model:
                   Platform, MediaGroup, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
                   AppVersion, Encoder, CodecType, File, Codec,
-                  FileStream, Language]:
+                  Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -227,16 +227,16 @@ class Model:
             return self.model.get_file_by_id(id_)
         elif table_name == Codec.table_name:
             return self.model.get_codec_by_id(id_)
-        elif table_name == FileStream.table_name:
-            return self.model.get_file_stream_by_id(id_)
+        elif table_name == Track.table_name:
+            return self.model.get_track_by_id(id_)
         elif table_name == Language.table_name:
             return self.model.get_language_by_id(id_)
     # GET BY ID #
 
     # GET BY NK
     def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, FileStream,
-                  Language, FileStreamLanguage]:
+            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, Track,
+                  Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -258,12 +258,12 @@ class Model:
             return self.model.get_codec_type_by_nk(obj)
         elif isinstance(obj, Codec):
             return self.model.get_codec_by_nk(obj)
-        elif isinstance(obj, FileStream):
-            return self.model.get_file_stream_by_nk(obj)
+        elif isinstance(obj, Track):
+            return self.model.get_track_by_nk(obj)
         elif isinstance(obj, Language):
             return self.model.get_language_by_nk(obj)
-        elif isinstance(obj, FileStreamLanguage):
-            return self.model.get_file_stream_language_by_nk(obj)
+        elif isinstance(obj, TrackLanguage):
+            return self.model.get_track_language_by_nk(obj)
     # GET BY NK
 
     # GET BY X
@@ -352,8 +352,8 @@ class Model:
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, CodecType, Codec, FileStream,
-                                FileStreamLanguage]
+                                AppVersion, Encoder, CodecType, Codec, Track,
+                                TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -401,10 +401,10 @@ class Model:
             return self.model.insert_codec_type(obj)
         elif isinstance(obj, Codec):
             return self.model.insert_codec(obj)
-        elif isinstance(obj, FileStream):
-            return self.model.insert_file_stream(obj)
-        elif isinstance(obj, FileStreamLanguage):
-            return self.model.insert_file_stream_language(obj)
+        elif isinstance(obj, Track):
+            return self.model.insert_track(obj)
+        elif isinstance(obj, TrackLanguage):
+            return self.model.insert_track_language(obj)
     # INSERT #
 
 # ------------------------------------------------------------------------------

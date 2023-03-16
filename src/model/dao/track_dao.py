@@ -3,16 +3,16 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/03/08 18:48:53.576098
-#+ Editado:	2023/03/13 21:57:01.412361
+#+ Editado:	2023/03/16 18:58:33.356176
 # ------------------------------------------------------------------------------
 from src.model import iModel
 
-from src.model.entity import File, FileStream, Codec, CodecType
+from src.model.entity import File, Track, Codec, CodecType
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
-class FileStreamDao:
+class TrackDao:
     """Data Access Object"""
 
     def __init__(self, model: iModel) -> None:
@@ -37,21 +37,21 @@ class FileStreamDao:
                 return self.__get_codec(codec)
             return found_codec
 
-    def save(self, stream: FileStream) -> FileStream:
-        found_stream = self.model.get_by_nk(stream)
-        if found_stream:
-            return found_stream
+    def save(self, track: Track) -> Track:
+        found_track = self.model.get_by_nk(track)
+        if found_track:
+            return found_track
 
-        stream.codec=self.__get_codec(stream.codec)
+        track.codec=self.__get_codec(track.codec)
 
-        self.model.insert(stream)
-        return self.model.get_by_nk(stream)
+        self.model.insert(track)
+        return self.model.get_by_nk(track)
 
         """
-        if stream.language is not None:
-            if self.model.exists(LanguageCode(language=None, code=None, codename=stream.language.name)):
+        if track.language is not None:
+            if self.model.exists(LanguageCode(language=None, code=None, codename=track.language.name)):
                 print('existe')
             else:
-                raise UnknownLanguageException(codename=stream.language.name)
+                raise UnknownLanguageException(codename=track.language.name)
         """
 # ------------------------------------------------------------------------------

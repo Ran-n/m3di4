@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	CONSTRAINT "File_NK" UNIQUE("name", "id_extension", "id_folder", "id_warehouse"),
 	CONSTRAINT "File_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "FileStream" (
+CREATE TABLE IF NOT EXISTS "Track" (
 	"id"					INTEGER NOT NULL UNIQUE,
 	"active"				INTEGER NOT NULL,
 	"id_file"				INTEGER NOT NULL,
@@ -367,22 +367,22 @@ CREATE TABLE IF NOT EXISTS "FileStream" (
 	"text_subtitle"			INTEGER,
 	"added_ts"				TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "FileStream_FK1" FOREIGN KEY("id_file") REFERENCES "File"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "FileStream_FK2" FOREIGN KEY("id_codec") REFERENCES "Codec"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "FileStream_NK" UNIQUE("id_file", "index_"),
-	CONSTRAINT "FileStream_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "Track_FK1" FOREIGN KEY("id_file") REFERENCES "File"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Track_FK2" FOREIGN KEY("id_codec") REFERENCES "Codec"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Track_NK" UNIQUE("id_file", "index_"),
+	CONSTRAINT "Track_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "FileStreamLanguage" (
-	"id"				INTEGER NOT NULL UNIQUE,
-	"active"			INTEGER NOT NULL,
-	"id_file_stream"	INTEGER NOT NULL,
-	"id_language"		INTEGER NOT NULL,
-	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "FileStreamLanguage_FK1" FOREIGN KEY("id_file_stream") REFERENCES "FileStream"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "FileStreamLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "FileStreamLanguage_NK" UNIQUE("id_file_stream", "id_language"),
-	CONSTRAINT "FileStreamLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+CREATE TABLE IF NOT EXISTS "TrackLanguage" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
+	"id_track"		INTEGER NOT NULL,
+	"id_language"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "TrackLanguage_FK1" FOREIGN KEY("id_track") REFERENCES "Track"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "TrackLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "TrackLanguage_NK" UNIQUE("id_track", "id_language"),
+	CONSTRAINT "TrackLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "ShareSiteSubs" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -1285,15 +1285,15 @@ AFTER UPDATE ON "File" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_file_stream
-AFTER UPDATE ON "FileStream" BEGIN
-	UPDATE "FileStream"
+CREATE TRIGGER IF NOT EXISTS update_track
+AFTER UPDATE ON "Track" BEGIN
+	UPDATE "Track"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_file_stream_language
-AFTER UPDATE ON "FileStreamLanguage" BEGIN
-	UPDATE "FileStreamLanguage"
+CREATE TRIGGER IF NOT EXISTS update_track_language
+AFTER UPDATE ON "TrackLanguage" BEGIN
+	UPDATE "TrackLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

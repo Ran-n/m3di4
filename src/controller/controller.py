@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/15 21:18:59.441545
+#+ Editado:	2023/03/16 19:03:59.307840
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -15,7 +15,7 @@ from src.view import iView
 
 from src.service import MemberCountService, FileInfoService
 
-from src.model.dao import FileDao, FileStreamDao, FileStreamLanguageDao
+from src.model.dao import FileDao, TrackDao, TrackLanguageDao
 from src.model.entity import ShareSite, ShareSiteSubs, Platform
 #from src.controller.insertar import insertar
 # ------------------------------------------------------------------------------
@@ -156,13 +156,13 @@ class Controller:
         for file_data in files_data:
             # file
             file_data.file=FileDao(model=self.model).save(file=file_data.file)
-            # stream
-            for stream, stream_langs in file_data.streams:
-                stream.file=file_data.file
-                stream=FileStreamDao(model=self.model).save(stream=stream)
-                for lang in stream_langs:
-                    lang.file_stream=stream
-                    FileStreamLanguageDao(model=self.model).save(stream_language=lang)
+            # track
+            for track, track_langs in file_data.tracks:
+                track.file=file_data.file
+                track=TrackDao(model=self.model).save(track=track)
+                for lang in track_langs:
+                    lang.track=track
+                    TrackLanguageDao(model=self.model).save(track_language=lang)
 
         logging.info(_('The "Add File" process was finished'))
 

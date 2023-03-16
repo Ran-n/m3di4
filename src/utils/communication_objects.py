@@ -3,14 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/27 21:28:18.456217
-#+ Editado:	2023/03/04 14:47:19.429974
+#+ Editado:	2023/03/16 19:15:18.210862
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Optional, Union, Tuple
 
 from src.model.entity import Media, MediaIssue, Warehouse
-from src.model.entity import File, FileStream, FileStreamLanguage
+from src.model.entity import File, Track, TrackLanguage
 # ------------------------------------------------------------------------------
 
 
@@ -39,5 +39,5 @@ class FileInfoServiceOutput:
     """Class that encapsulates the return elements of the run method of the
     FileInfoService class."""
     file: File
-    streams: List[Tuple[FileStream, List[FileStreamLanguage]]]
+    tracks: List[Tuple[Track, List[TrackLanguage]]]
 # ------------------------------------------------------------------------------

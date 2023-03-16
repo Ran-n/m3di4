@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/15 21:04:47.472177
+#+ Editado:	2023/03/16 19:01:21.677683
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
 from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
-from src.model.entity import CodecType, Codec, Language, FileStream, FileStreamLanguage
+from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
 
@@ -125,7 +125,7 @@ class iModel(ABC):  # pylint: disable=C0103
                   Platform, MediaGroup, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
                   AppVersion, Encoder, CodecType, File, Codec,
-                  FileStream, Language]:
+                  Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -139,8 +139,8 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, FileStream,
-                  Language, FileStreamLanguage]:
+            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, Track,
+                  Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -215,8 +215,8 @@ class iModel(ABC):  # pylint: disable=C0103
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, CodecType, Codec, FileStream,
-                                FileStreamLanguage]
+                                AppVersion, Encoder, CodecType, Codec, Track,
+                                TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
