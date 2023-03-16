@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/05 21:40:40.367507
+#+ Editado:	2023/03/13 21:49:07.367707
 # ------------------------------------------------------------------------------
 from src.model import iModel
 
@@ -73,12 +73,15 @@ class FileDao:
     def save(self, file: File) -> File:
         file.extension=self.__get_extension(file.extension)
         file.folder=self.__get_folder(file.folder)
-        file.app_version=self.__get_app_version(file.app_version)
-        file.encoder=self.__get_encoder(file.encoder)
 
+        # at this point it can already be check if it exists
         found_file = self.model.get_by_nk(file)
         if found_file:
             return found_file
+
+        file.app_version=self.__get_app_version(file.app_version)
+        file.encoder=self.__get_encoder(file.encoder)
+
         self.model.insert(file)
-        return file
+        return self.model.get_by_nk(file)
 # ------------------------------------------------------------------------------

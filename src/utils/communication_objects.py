@@ -7,10 +7,10 @@
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Tuple
 
 from src.model.entity import Media, MediaIssue, Warehouse
-from src.model.entity import File, FileStream
+from src.model.entity import File, FileStream, FileStreamLanguage
 # ------------------------------------------------------------------------------
 
 
@@ -39,5 +39,5 @@ class FileInfoServiceOutput:
     """Class that encapsulates the return elements of the run method of the
     FileInfoService class."""
     file: File
-    streams: List[FileStream]
+    streams: List[Tuple[FileStream, List[FileStreamLanguage]]]
 # ------------------------------------------------------------------------------

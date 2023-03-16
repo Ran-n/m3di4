@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:24.413478 )
-[//]: # (+ Editado:	2023/02/24 16:25:07.617180 )
+[//]: # (+ Editado:	2023/03/12 20:16:17.611579 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -25,6 +25,7 @@ Explanation of what each table of the database was designed to contain.
 - [MediaPoster](#mediaposter)
 - [Language](#language)
 - [Code](#code)
+- [CodeName](#codename)
 - [App](#app)
 - [AppVersion](#appversion)
 - [File](#file)
@@ -98,6 +99,9 @@ Spoken and written languages arround the world.
 Represents what type of codes exist and with its relationship with other entities it assigns a code to each.
 Right now only related with [Language](#language) but it can be extended in the future.
 Examples os this can be "ISO 639-3", "Glottolog" or "LCID".
+
+## CodeName
+All the different types of names a [Code](#code) can have.
 
 ## App
 Application used for the creation of a [File](#file).

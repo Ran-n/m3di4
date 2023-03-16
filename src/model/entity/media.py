@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/02/27 20:39:01.776021
+#+ Editado:	2023/03/14 17:24:15.588719
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -29,6 +29,10 @@ class Media(BaseEntity):
     def __str__(self) -> str:
         string = f'{self.name}'
         if self.year_start:
-            string += ' ({self.year_start})'
+            string += f' ({self.year_start}'
+        if self.year_end:
+            string += f'-{self.year_end})'
+        else:
+            string += ')'
         return string
 # ------------------------------------------------------------------------------

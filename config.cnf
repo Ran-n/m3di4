@@ -6,9 +6,9 @@ language = eng
 ##
 
 ## DATABASE
-# indicates if the insert script with curated inserts
-# should be run or not if not run the database will
-# be completetly empty
+# indicates wheather or not the script with the useful
+# extra data is run or not.
+# The language insert one is always run.
 populate_db = true
 ##/ LANGUAGE
 

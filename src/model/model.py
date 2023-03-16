@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/05 14:17:19.235037
+#+ Editado:	2023/03/15 21:23:18.569016
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,6 +22,8 @@ from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
 from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
+from src.model.entity import CodecType, Codec, Language, FileStream, FileStreamLanguage
+from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -78,7 +80,7 @@ class Model:
     # EXISTS
     def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
-            Extension]) -> bool:
+            Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -105,8 +107,9 @@ class Model:
             return self.model.exists_warehouse(obj)
         elif isinstance(obj, Extension):
             return self.model.exists_extension(obj)
-
-
+        elif isinstance(obj, LanguageCode):
+            return self.model.exists_language_code(obj)
+    # EXISTS #
 
     # GET NUM
     def get_num(self, table_name: str) -> int:
@@ -130,9 +133,9 @@ class Model:
         """
         logging.info(_(f'Counting the number of elements saved on table "{MediaGroup.table_name}" using the media id "{media_id}"'))
         return self.model.get_media_group_num_by_media_id(media_id)
+    # GET NUM #
 
-
-    # GET
+    # GET ALL
     def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
                 ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
                                 WarehouseType, MediaIssue, Warehouse]]:
@@ -168,14 +171,15 @@ class Model:
             return self.model.get_all_media_issue(limit, offset, alfabetic)
         elif table_name == Warehouse.table_name:
             return self.model.get_all_warehouse(limit, offset, alfabetic)
-
+    # GET ALL #
 
     # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, MediaGroup, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
-                  AppVersion, Encoder]:
+                  AppVersion, Encoder, CodecType, File, Codec,
+                  FileStream, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -188,7 +192,8 @@ class Model:
         """
         logging.info(_(f'Searching on "{table_name}" table any entries that\
                 match the given id "{id_}"'))
-        if table_name == MediaType.table_name:
+        if id_ is None: return None
+        elif table_name == MediaType.table_name:
             return self.model.get_media_type_by_id(id_)
         elif table_name == MediaStatus.table_name:
             return self.model.get_media_status_by_id(id_)
@@ -216,11 +221,22 @@ class Model:
             return self.model.get_app_version_by_id(id_)
         elif table_name == Encoder.table_name:
             return self.model.get_encoder_by_id(id_)
+        elif table_name == CodecType.table_name:
+            return self.model.get_codec_type_by_id(id_)
+        elif table_name == File.table_name:
+            return self.model.get_file_by_id(id_)
+        elif table_name == Codec.table_name:
+            return self.model.get_codec_by_id(id_)
+        elif table_name == FileStream.table_name:
+            return self.model.get_file_stream_by_id(id_)
+        elif table_name == Language.table_name:
+            return self.model.get_language_by_id(id_)
     # GET BY ID #
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File]) -> \
-            Union[MediaGroup, AppVersion, Encoder, File]:
+    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
+            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, FileStream,
+                  Language, FileStreamLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -238,8 +254,17 @@ class Model:
             return self.model.get_encoder_by_nk(obj)
         elif isinstance(obj, File):
             return self.model.get_file_by_nk(obj)
+        elif isinstance(obj, CodecType):
+            return self.model.get_codec_type_by_nk(obj)
+        elif isinstance(obj, Codec):
+            return self.model.get_codec_by_nk(obj)
+        elif isinstance(obj, FileStream):
+            return self.model.get_file_stream_by_nk(obj)
+        elif isinstance(obj, Language):
+            return self.model.get_language_by_nk(obj)
+        elif isinstance(obj, FileStreamLanguage):
+            return self.model.get_file_stream_language_by_nk(obj)
     # GET BY NK
-
 
     # GET BY X
     def get_media_group_by_media_id(self, id_: int, limit: int = None,
@@ -259,14 +284,39 @@ class Model:
         ╠═  MediaGroup   -   The element of the table discriminated by natural key.
         ╚═  None         -   If no matches exists.
         """
-        logging.info(_(f'Searching on "{MediaGroup.table_name}" table any entries that match its media foreign key {id_}'))
-        return self.model.get_media_group_by_media_id(id_= id_, limit= limit, offset= offset, alfabetic= alfabetic)
+        logging.info(_(f'Searching on "{MediaGroup.table_name}" table any entries '+
+        'that match its media foreign key "{id_}"'))
+        return self.model.get_media_group_by_media_id(id_= id_, limit= limit,
+                                                      offset= offset, alfabetic= alfabetic)
+
+    def get_language_by_codename(self, codename: str) -> Union[None, Language]:
+        """ Returns a language discriminated by the given codename.
+        If a new code is added that makes it so codenames are reused
+        for different languages this function must be rewritten.
+        @ Input:
+        ╠═  · codename  -   str
+        ║   └ Code that identifies the language in some system.
+        ╠═  · limit     -   int     -   None
+        ║   └ Maximum number of elements to retrieve.
+        ╠═  · offset    -   int     -   0
+        ║   └ How far removed from the start should the results to return start.
+        ╚═  · alfabetic -   bool    -   None
+            └ Indicate if the output should be alfabetically ordered.
+        @ Output:
+        ╠═  Language    -   That matches the codename posibilities.
+        ╚═  None        -   If no matches exists.
+        """
+        logging.info(_(f'Searching on "{Language.table_name}" and "{LanguageCode.table_name}"'+
+        'tables the entry that matches the codename "{codename}."'))
+        return self.model.get_language_by_codename(codename=codename)
+
+    # GET BY X #
 
     # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
                     ) -> Union[None, List[Union[MediaType, MediaStatus,
-                                                Extension, Folder, App]]]:
+                                                Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
         ╠═  · table_name    -   str
@@ -294,13 +344,16 @@ class Model:
             return self.model.get_folder_by_name(name=name, limit=limit, offset=offset, alfabetic=alfabetic)
         elif table_name == App.table_name:
             return self.model.get_app_by_name(name=name, limit=limit, offset=offset, alfabetic=alfabetic)
+        elif table_name == Language.table_name:
+            return self.model.get_language_by_name(name=name, limit=limit, offset=offset, alfabetic=alfabetic)
     # GET BY NAME
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, File]
+                                AppVersion, Encoder, CodecType, Codec, FileStream,
+                                FileStreamLanguage]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -344,6 +397,14 @@ class Model:
             return self.model.insert_encoder(obj)
         elif isinstance(obj, File):
             return self.model.insert_file(obj)
+        elif isinstance(obj, CodecType):
+            return self.model.insert_codec_type(obj)
+        elif isinstance(obj, Codec):
+            return self.model.insert_codec(obj)
+        elif isinstance(obj, FileStream):
+            return self.model.insert_file_stream(obj)
+        elif isinstance(obj, FileStreamLanguage):
+            return self.model.insert_file_stream_language(obj)
     # INSERT #
 
 # ------------------------------------------------------------------------------

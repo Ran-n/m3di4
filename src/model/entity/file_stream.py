@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/03/04 19:12:01.469571
+#+ Editado:	2023/03/13 17:22:10.116922
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, File, Codec, Language
+from src.model.entity import BaseEntity, File, Codec
 # ------------------------------------------------------------------------------
 
 
@@ -22,7 +22,6 @@ class FileStream(BaseEntity):
     file: File
     codec: Codec
     index: int
-    language: Optional[Language] = field(default=None)
     title: Optional[str] = field(default=None)
     profile: Optional[str] = field(default=None)
     quality: Optional[str] = field(default=None)

@@ -3,19 +3,19 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/26 21:12:03.645397
-#+ Editado:	2023/03/04 21:22:04.657915
+#+ Editado:	2023/03/16 17:59:05.689883
 # ------------------------------------------------------------------------------
 import logging
 from pathlib import Path
 import ffmpeg
-from typing import Union, List
+from pymediainfo import MediaInfo
+from typing import Union, List, Tuple, Dict
 
 from src.utils import AddFileTerminalViewOutput, FileInfoServiceOutput
 from src.utils import get_app_version, fraction_2_float
 
 from src.model.entity import Extension, Warehouse, Media, MediaIssue, File
-from src.model.entity import FileStream, Encoder, Folder
-#from src.model.entity import AppVersion, App
+from src.model.entity import FileStream, FileStreamLanguage, Encoder, Folder
 from src.model.entity import Codec, CodecType, Language
 # ------------------------------------------------------------------------------
 
@@ -53,11 +53,12 @@ class FileInfoService:
                       format_name_long=format_.get('format_long_name'))
 
         if isinstance(media, Media):
-            f = File(name=file_name, extension=extension, warehouse=warehouse, media=media)
+            f = File(name=file_name, folder=Folder(path=str(folder)),
+                     extension=extension, warehouse=warehouse, media=media)
         elif isinstance(media, MediaIssue):
-            f = File(name=file_name, extension=extension, warehouse=warehouse, media_issue=media)
+            f = File(name=file_name, folder=Folder(path=str(folder)),
+                     extension=extension, warehouse=warehouse, media_issue=media)
 
-        f.folder=Folder(path=str(folder))
         if original_name: f.original_name = original_name
         if ('title' in tags): f.title=tags['title']
         if ('nb_streams' in format_): f.nb_streams=format_['nb_streams']
@@ -79,8 +80,11 @@ class FileInfoService:
         return f
 
     @staticmethod
-    def get_stream_info(file: File, format_: dict, tags: dict,
-                        stream: dict) -> FileStream:
+    def get_stream_info(file: File, format_: Dict, tags: Dict,
+                        stream: Tuple[Dict, List[Dict]]) -> Tuple[FileStream, List[FileStreamLanguage]]:
+        stream, stream2 = stream
+
+        languages = []
 
         tags = stream.get('tags')
         disposition = stream.get('disposition')
@@ -92,6 +96,7 @@ class FileInfoService:
 
         fs = FileStream(file=file, codec=codec, index=stream.get('index'))
 
+        # xFCR
         #if 'quality' in stream: fs.quality
         #if 'text_subtitle' in stream: fs.text_subtitle=stream.get('text_subtitle')
         #if 'color' in stream: fs.color=stream.get('color')
@@ -150,14 +155,21 @@ class FileInfoService:
             if 'dependent' in disposition: fs.dependent=disposition.get('dependent')
             if 'still_image' in disposition: fs.still_image=disposition.get('still_image')
         if tags:
-            if 'language' in tags: fs.language=Language(name=tags.get('language'))
+            if 'language' in tags:
+                # i leave this like this since when i make the dtos it will make more sense
+                if isinstance(tags.get('language'), list):
+                    for lang in tags.get('language'):
+                        languages.append(Language(name=lang))
+                else:
+                    #languages.append(Language(name=tags.get('language')))
+                    languages.append(Language(name=stream2.get('language')))
             if 'title' in tags: fs.title=tags.get('title')
             if 'BPS' in tags: fs.bps=tags.get('BPS')
             if 'DURATION' in tags: fs.duration=tags.get('DURATION')
             if 'NUMBER_OF_FRAMES' in stream: fs.frame_number=stream.get('NUMBER_OF_FRAMES')
             if 'NUMBER_OF_BYTES' in tags: fs.size=tags.get('NUMBER_OF_BYTES')
 
-        return fs
+        return (fs, [FileStreamLanguage(file_stream=fs, language=lang) for lang in languages])
 
     def run(self) -> List[FileInfoServiceOutput]:
         logging.info(_(f'Executing the run method of the FileInfoService class'))
@@ -166,6 +178,7 @@ class FileInfoService:
                                                               self.warehouses, self.medias):
             output_streams = []
             file_info = ffmpeg.probe(file_path)
+            file_info2 = MediaInfo.parse(file_path).to_data()['tracks']
 
             streams = file_info.get('streams', None)
             format_ = file_info.get('format', None)
@@ -176,9 +189,9 @@ class FileInfoService:
             file=self.get_file_info(file_path=file_path, original_name=original_name,
                                  warehouse=warehouse, media=media, format_=format_,
                                  tags=tags, streams=streams)
-            for stream in streams:
+            for stream, stream2 in zip(streams, file_info2[1:]):
                 output_streams.append(self.get_stream_info(file=file, format_=format_,
-                                                           tags=tags, stream=stream))
+                                                           tags=tags, stream=(stream, stream2)))
 
             output.append(FileInfoServiceOutput(file=file, streams=output_streams))
         return output

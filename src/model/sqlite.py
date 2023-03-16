@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/05 21:42:49.981918
+#+ Editado:	2023/03/15 21:23:50.863182
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,6 +23,8 @@ from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
 from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
+from src.model.entity import CodecType, Codec, Language, FileStream, FileStreamLanguage
+from src.model.entity import LanguageCode, CodeName
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -36,9 +38,11 @@ class Sqlite(iModel):
         if(self.__get_num_tables_db() < Config().get_num_entities()):
             logging.info(_('Creating the sqlite database'))
             self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.create.sql')))
+            logging.info(_('Adding language information to the sqlite database'))
+            self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.insert.languages.sql')))
             if Config().populate_db:
-                logging.info(_('Populating the sqlite database'))
-                self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.insert.sql')))
+                logging.info(_('Populating the sqlite database with extra data'))
+                self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.insert.extra.sql')))
 
     def __get_num_tables_db(self) -> int:
         self.connect_db()
@@ -103,7 +107,7 @@ class Sqlite(iModel):
     # EXISTS
     def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
-            Extension]) -> bool:
+            Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -176,6 +180,15 @@ class Sqlite(iModel):
         """
         sql_result = self.get_cur_db().execute(f'select id from "{Extension.table_name}" \
                 where name like "{obj.name}"').fetchall()
+        if len(sql_result) > 0:
+            return True
+        return False
+
+    def exists_language_code(self, obj: LanguageCode) -> bool:
+        """
+        """
+        sql_result = self.get_cur_db().execute(f'select id from "{LanguageCode.table_name}" \
+                where codename like "{obj.codename}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -427,7 +440,8 @@ class Sqlite(iModel):
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, MediaGroup, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
-                  AppVersion, Encoder]:
+                  AppVersion, Encoder, CodecType, File, Codec,
+                  FileStream, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -634,11 +648,168 @@ class Sqlite(iModel):
                     added_ts            = sql_result[3],
                     modified_ts         = sql_result[4]
             )
+
+    def get_codec_type_by_id(self, id_: int) -> CodecType:
+        sql_result = self.get_cur_db().execute(f'select id, active, name, \
+                added_ts, modified_ts from "{CodecType.table_name}" \
+                where id="{id_}"').fetchone()
+        if sql_result:
+            return CodecType(
+                    id_                 = sql_result[0],
+                    active              = sql_result[1],
+                    name                = sql_result[2],
+                    added_ts            = sql_result[3],
+                    modified_ts         = sql_result[4]
+            )
+
+    def get_file_by_id(self, id_: int) -> File:
+        sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
+                id_warehouse, id_folder, id_media, id_media_issue, title, nb_streams, \
+                nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
+                id_app_version, id_encoder, original_name, added_ts, modified_ts \
+                from "{File.table_name}" where id="{id_}"').fetchone()
+        if sql_result:
+            return File(
+                    id_             = sql_result[0],
+                    active          = sql_result[1],
+                    hash_           = sql_result[2],
+                    name            = sql_result[3],
+                    extension       = self.get_extension_by_id(sql_result[4]),
+                    warehouse       = self.get_warehouse_by_id(sql_result[5]),
+                    folder          = self.get_folder_by_id(sql_result[6]),
+                    media           = self.get_media_by_id(sql_result[7]),
+                    media_issue     = self.get_media_issue_by_id(sql_result[8]),
+                    title           = sql_result[9],
+                    nb_streams      = sql_result[10],
+                    start           = sql_result[11],
+                    duration        = sql_result[12],
+                    size            = sql_result[13],
+                    bit_rate        = sql_result[14],
+                    probe_score     = sql_result[15],
+                    creation_ts     = sql_result[16],
+                    app_version     = self.get_app_version_by_id(sql_result[17]),
+                    encoder         = self.get_encoder_by_id(sql_result[18]),
+                    original_name   = sql_result[19],
+                    added_ts        = sql_result[20],
+                    modified_ts     = sql_result[21]
+            )
+
+    def get_codec_by_id(self, id_: int) -> Codec:
+        sql_result = self.get_cur_db().execute(f'select id, active, name, name_long, \
+                id_type, added_ts, modified_ts from "{Codec.table_name}" \
+                where id="{id_}"').fetchone()
+        if sql_result:
+            return Codec(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    name_long   = sql_result[3],
+                    type_       = self.get_codec_type_by_id(sql_result[4]),
+                    added_ts    = sql_result[5],
+                    modified_ts = sql_result[6]
+            )
+
+    def get_file_stream_by_id(self, id_: int) -> FileStream:
+        sql_result = self.get_cur_db().execute(f'select id, active, id_file, id_codec, index_, title, profile, \
+                quality, width, height, coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
+                sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, color_range, color_space, \
+                color_transfer, color_primaries, chroma_location, field_order, refs, is_avc, nal_length_size, \
+                r_frame_rate, avg_frame_rate, time_base, start_pts, bits_per_raw_sample, bits_per_sample, \
+                extradata_size, default_, dub, original, comment, lyrics, karaoke, forced, hearing_impaired, \
+                visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, descriptions, metadata, \
+                dependent, still_image, start, duration, size, bit_rate, sample_rate, sample_format, channels, \
+                channel_layout, bps, frame_number, dmix_mode, text_subtitle, added_ts, modified_ts \
+                from "{FileStream.table_name}" where id="{id_}"').fetchone()
+        if sql_result:
+            return FileStream(
+                    id_                     = sql_result[0],
+                    active                  = sql_result[1],
+                    file                    = self.get_file_by_id(sql_result[2]),
+                    codec                   = self.get_codec_by_id(sql_result[3]),
+                    index                   = sql_result[4],
+                    title                   = sql_result[5],
+                    profile                 = sql_result[6],
+                    quality                 = sql_result[7],
+                    width                   = sql_result[8],
+                    height                  = sql_result[9],
+                    coded_width             = sql_result[10],
+                    coded_height            = sql_result[11],
+                    closed_captions         = sql_result[12],
+                    film_grain              = sql_result[13],
+                    has_b_frames            = sql_result[14],
+                    sample_aspect_ratio     = sql_result[15],
+                    display_aspect_ratio    = sql_result[16],
+                    pixel_format            = sql_result[17],
+                    level                   = sql_result[18],
+                    color                   = sql_result[19],
+                    color_range             = sql_result[20],
+                    color_space             = sql_result[21],
+                    color_transfer          = sql_result[22],
+                    color_primaries         = sql_result[23],
+                    chroma_location         = sql_result[24],
+                    field_order             = sql_result[25],
+                    refs                    = sql_result[26],
+                    is_avc                  = sql_result[27],
+                    nal_length_size         = sql_result[28],
+                    r_frame_rate            = sql_result[29],
+                    avg_frame_rate          = sql_result[30],
+                    time_base               = sql_result[31],
+                    start_pts               = sql_result[32],
+                    bits_per_raw_sample     = sql_result[33],
+                    bits_per_sample         = sql_result[34],
+                    extradata_size          = sql_result[35],
+                    default                 = sql_result[36],
+                    dub                     = sql_result[37],
+                    original                = sql_result[38],
+                    comment                 = sql_result[39],
+                    lyrics                  = sql_result[40],
+                    karaoke                 = sql_result[41],
+                    forced                  = sql_result[42],
+                    hearing_impaired        = sql_result[43],
+                    visual_impaired         = sql_result[44],
+                    clean_effects           = sql_result[45],
+                    attached_pic            = sql_result[46],
+                    timed_thumbnails        = sql_result[47],
+                    captions                = sql_result[48],
+                    descriptions            = sql_result[49],
+                    metadata                = sql_result[50],
+                    dependent               = sql_result[51],
+                    still_image             = sql_result[52],
+                    start                   = sql_result[53],
+                    duration                = sql_result[54],
+                    size                    = sql_result[55],
+                    bit_rate                = sql_result[56],
+                    sample_rate             = sql_result[57],
+                    sample_format           = sql_result[58],
+                    channels                = sql_result[59],
+                    channel_layout          = sql_result[60],
+                    bps                     = sql_result[61],
+                    frame_number            = sql_result[62],
+                    dmix_mode               = sql_result[63],
+                    text_subtitle           = sql_result[64],
+                    added_ts                = sql_result[65],
+                    modified_ts             = sql_result[66]
+            )
+
+    def get_language_by_id(self, id_: int) -> Language:
+        sql_result = self.get_cur_db().execute(f'select id, active, name, \
+                id_language, added_ts, modified_ts from "{Language.table_name}" \
+                where id="{id_}"').fetchone()
+        if sql_result:
+            return Language(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    language    = self.get_language_by_id(sql_result[3]),
+                    added_ts    = sql_result[4],
+                    modified_ts = sql_result[5]
+            )
     # GET BY ID
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File]) -> \
-            Union[MediaGroup, AppVersion, Encoder, File]:
+    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
+            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, FileStream,
+                  Language, FileStreamLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -724,7 +895,7 @@ class Sqlite(iModel):
         ╠═  File    -   The element of the table discriminated by natural key.
         ╚═  None    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, name, id_extension, \
+        sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
                 id_warehouse, id_folder, id_media, id_media_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
                 id_app_version, id_encoder, original_name, added_ts, modified_ts \
@@ -735,25 +906,203 @@ class Sqlite(iModel):
             return File(
                     id_             = sql_result[0],
                     active          = sql_result[1],
-                    name            = sql_result[2],
-                    extension       = self.get_extension_by_id(sql_result[3]),
-                    warehouse       = self.get_warehouse_by_id(sql_result[4]),
-                    folder          = self.get_folder_by_id(sql_result[5]),
-                    media           = self.get_media_by_id(sql_result[6]),
-                    media_issue     = self.get_media_issue_by_id(sql_result[7]),
-                    title           = sql_result[8],
-                    nb_streams      = sql_result[9],
-                    start           = sql_result[10],
-                    duration        = sql_result[11],
-                    size            = sql_result[12],
-                    bit_rate        = sql_result[13],
-                    probe_score     = sql_result[14],
-                    creation_ts     = sql_result[15],
-                    app_version     = self.get_app_version_by_id(sql_result[16]),
-                    encoder         = self.get_encoder_by_id(sql_result[17]),
-                    original_name   = sql_result[18],
-                    added_ts        = sql_result[19],
-                    modified_ts     = sql_result[20]
+                    hash_           = sql_result[2],
+                    name            = sql_result[3],
+                    extension       = self.get_extension_by_id(sql_result[4]),
+                    warehouse       = self.get_warehouse_by_id(sql_result[5]),
+                    folder          = self.get_folder_by_id(sql_result[6]),
+                    media           = self.get_media_by_id(sql_result[7]),
+                    media_issue     = self.get_media_issue_by_id(sql_result[8]),
+                    title           = sql_result[9],
+                    nb_streams      = sql_result[10],
+                    start           = sql_result[11],
+                    duration        = sql_result[12],
+                    size            = sql_result[13],
+                    bit_rate        = sql_result[14],
+                    probe_score     = sql_result[15],
+                    creation_ts     = sql_result[16],
+                    app_version     = self.get_app_version_by_id(sql_result[17]),
+                    encoder         = self.get_encoder_by_id(sql_result[18]),
+                    original_name   = sql_result[19],
+                    added_ts        = sql_result[20],
+                    modified_ts     = sql_result[21]
+            )
+
+    def get_codec_type_by_nk(self, obj: CodecType) -> Union[None, CodecType]:
+        """ Returns a group discriminated by its natural key (NK).
+        @ Input:
+        ╚═  · obj   -   CodecType
+            └ The AppVersion object to use in the search.
+        @ Output:
+        ╠═  CodecType   -   The element of the table discriminated by natural key.
+        ╚═  None        -   If no matches exists.
+        """
+        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
+                modified_ts from "{CodecType.table_name}" where name="{obj.name}"').fetchone()
+        if sql_result:
+            return CodecType(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    added_ts    = sql_result[3],
+                    modified_ts = sql_result[4]
+            )
+
+    def get_codec_by_nk(self, obj: Codec) -> Union[None, Codec]:
+        """ Returns a group discriminated by its natural key (NK).
+        @ Input:
+        ╚═  · obj   -   CodecType
+            └ The AppVersion object to use in the search.
+        @ Output:
+        ╠═  CodecType   -   The element of the table discriminated by natural key.
+        ╚═  None        -   If no matches exists.
+        """
+        sql_result = self.get_cur_db().execute(f'select id, active, name, name_long, \
+                id_type, added_ts, modified_ts from "{Codec.table_name}" \
+                where name="{obj.name}" or name_long="{obj.name_long}"').fetchone()
+        if sql_result:
+            return Codec(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    name_long   = sql_result[3],
+                    type_       = self.get_codec_type_by_id(sql_result[4]),
+                    added_ts    = sql_result[5],
+                    modified_ts = sql_result[6]
+            )
+
+    def get_file_stream_by_nk(self, obj: FileStream) -> Union[None, FileStream]:
+        """ Returns a group discriminated by its natural key (NK).
+        @ Input:
+        ╚═  · obj   -   FileStream
+            └ The AppVersion object to use in the search.
+        @ Output:
+        ╠═  FileStream  -   The element of the table discriminated by natural key.
+        ╚═  None        -   If no matches exists.
+        """
+        sql_result = self.get_cur_db().execute(f'select id, active, id_file, id_codec, index_, title, profile, \
+                quality, width, height, coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
+                sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, color_range, color_space, \
+                color_transfer, color_primaries, chroma_location, field_order, refs, is_avc, nal_length_size, \
+                r_frame_rate, avg_frame_rate, time_base, start_pts, bits_per_raw_sample, bits_per_sample, \
+                extradata_size, default_, dub, original, comment, lyrics, karaoke, forced, hearing_impaired, \
+                visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, descriptions, metadata, \
+                dependent, still_image, start, duration, size, bit_rate, sample_rate, sample_format, channels, \
+                channel_layout, bps, frame_number, dmix_mode, text_subtitle, added_ts, modified_ts \
+                from "{FileStream.table_name}" where id_file="{obj.file.id_}" and index_="{obj.index}"').fetchone()
+        if sql_result:
+            return FileStream(
+                    id_                     = sql_result[0],
+                    active                  = sql_result[1],
+                    file                    = self.get_file_by_id(sql_result[2]),
+                    codec                   = self.get_codec_by_id(sql_result[3]),
+                    index                   = sql_result[4],
+                    title                   = sql_result[5],
+                    profile                 = sql_result[6],
+                    quality                 = sql_result[7],
+                    width                   = sql_result[8],
+                    height                  = sql_result[9],
+                    coded_width             = sql_result[10],
+                    coded_height            = sql_result[11],
+                    closed_captions         = sql_result[12],
+                    film_grain              = sql_result[13],
+                    has_b_frames            = sql_result[14],
+                    sample_aspect_ratio     = sql_result[15],
+                    display_aspect_ratio    = sql_result[16],
+                    pixel_format            = sql_result[17],
+                    level                   = sql_result[18],
+                    color                   = sql_result[19],
+                    color_range             = sql_result[20],
+                    color_space             = sql_result[21],
+                    color_transfer          = sql_result[22],
+                    color_primaries         = sql_result[23],
+                    chroma_location         = sql_result[24],
+                    field_order             = sql_result[25],
+                    refs                    = sql_result[26],
+                    is_avc                  = sql_result[27],
+                    nal_length_size         = sql_result[28],
+                    r_frame_rate            = sql_result[29],
+                    avg_frame_rate          = sql_result[30],
+                    time_base               = sql_result[31],
+                    start_pts               = sql_result[32],
+                    bits_per_raw_sample     = sql_result[33],
+                    bits_per_sample         = sql_result[34],
+                    extradata_size          = sql_result[35],
+                    default                 = sql_result[36],
+                    dub                     = sql_result[37],
+                    original                = sql_result[38],
+                    comment                 = sql_result[39],
+                    lyrics                  = sql_result[40],
+                    karaoke                 = sql_result[41],
+                    forced                  = sql_result[42],
+                    hearing_impaired        = sql_result[43],
+                    visual_impaired         = sql_result[44],
+                    clean_effects           = sql_result[45],
+                    attached_pic            = sql_result[46],
+                    timed_thumbnails        = sql_result[47],
+                    captions                = sql_result[48],
+                    descriptions            = sql_result[49],
+                    metadata                = sql_result[50],
+                    dependent               = sql_result[51],
+                    still_image             = sql_result[52],
+                    start                   = sql_result[53],
+                    duration                = sql_result[54],
+                    size                    = sql_result[55],
+                    bit_rate                = sql_result[56],
+                    sample_rate             = sql_result[57],
+                    sample_format           = sql_result[58],
+                    channels                = sql_result[59],
+                    channel_layout          = sql_result[60],
+                    bps                     = sql_result[61],
+                    frame_number            = sql_result[62],
+                    dmix_mode               = sql_result[63],
+                    text_subtitle           = sql_result[64],
+                    added_ts                = sql_result[65],
+                    modified_ts             = sql_result[66]
+            )
+
+    def get_language_by_nk(self, obj: Language) -> Union[None, Language]:
+        """ Returns a group discriminated by its natural key (NK).
+        @ Input:
+        ╚═  · obj   -   Language
+            └ The AppVersion object to use in the search.
+        @ Output:
+        ╠═  Language    -   The element of the table discriminated by natural key.
+        ╚═  None        -   If no matches exists.
+        """
+        sql_result = self.get_cur_db().execute(f'select id, active, name, \
+                id_language, added_ts, modified_ts from "{Language.table_name}" \
+                where name="{obj.name}"').fetchone()
+        if sql_result:
+            return Language(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    name        = sql_result[2],
+                    id_language = self.get_language_by_id(sql_result[3]),
+                    added_ts    = sql_result[4],
+                    modified_ts = sql_result[5]
+            )
+
+    def get_file_stream_language_by_nk(self, obj: FileStreamLanguage) -> Union[None, FileStreamLanguage]:
+        """ Returns a group discriminated by its natural key (NK).
+        @ Input:
+        ╚═  · obj   -   FileStreamLanguage
+            └ The FileStreamLanguage to use in the search.
+        @ Output:
+        ╠═  FileStreamLanguage      -   The element of the table discriminated by natural key.
+        ╚═  None                    -   If no matches exists.
+        """
+        sql_result = self.get_cur_db().execute(f'select id, active, id_file_stream, \
+                id_language, added_ts, modified_ts from "{FileStreamLanguage.table_name}"\
+                where id_file_stream="{obj.file_stream.id_}" and id_language="{obj.language.id_}"').fetchone()
+        if sql_result:
+            return FileStreamLanguage(
+                    id_         = sql_result[0],
+                    active      = sql_result[1],
+                    file_stream = self.get_file_stream_by_id(sql_result[2]),
+                    language    = self.get_language_by_id(sql_result[3]),
+                    added_ts    = sql_result[4],
+                    modified_ts = sql_result[5]
             )
     # GET BY NK #
 
@@ -797,13 +1146,58 @@ class Sqlite(iModel):
                     modified_ts =   result[8]
             ))
         return results
+
+    def get_language_by_codename(self, codename: str) -> Union[None, Language]:
+        """ Returns a language discriminated by the given codename.
+        If a new code is added that makes it so codenames are reused
+        for different languages this function must be rewritten.
+        @ Input:
+        ╠═  · codename  -   str
+        ║   └ Code that identifies the language in some system.
+        ╠═  · bcp47     -   bool    -   False
+        ║   └ Identifies the codename as a bcp47 value.
+        ╠═  · limit     -   int     -   None
+        ║   └ Maximum number of elements to retrieve.
+        ╠═  · offset    -   int     -   0
+        ║   └ How far removed from the start should the results to return start.
+        ╚═  · alfabetic -   bool    -   None
+            └ Indicate if the output should be alfabetically ordered.
+        @ Output:
+        ╠═  Language    -   That matches the codename posibilities.
+        ╚═  None        -   If no matches exists.
+        """
+        # This should only return one result even without the bcp47 modifier
+        sentence = f'select distinct l.id, l.active, l.name, l.id_language, l.added_ts, l.modified_ts \
+                from "{Language.table_name}" l left join "{LanguageCode.table_name}" lc on lc.id_language=l.id \
+                where lc.codename=?'
+        sentence_bcp47 = sentence + f' and lc.id_code=(select code_id from "{CodeName.table_name}" where name=?)'
+
+        sql_result_bcp47 = self.get_cur_db().execute(sentence_bcp47, (codename, 'BCP 47')).fetchone()
+
+        if sql_result_bcp47:
+            sql_result = sql_result_bcp47
+        else:
+            sql_result = self.get_cur_db().execute(sentence, (codename,)).fetchone()
+
+        # ^ that logic means that first it looks for the bcp47 code and if it doesnt exist
+        # looks for any code that matches.
+
+        if sql_result:
+            return Language(
+                    id_         =   sql_result[0],
+                    active      =   sql_result[1],
+                    name        =   sql_result[2],
+                    language    =   self.get_language_by_id(sql_result[3]),
+                    added_ts    =   sql_result[4],
+                    modified_ts =   sql_result[5]
+            )
     # GET BY X #
 
     # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
                     ) -> Union[None, List[Union[MediaType, MediaStatus,
-                                                Extension, Folder, App]]]:
+                                                Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
         ╠═  · table_name    -   str
@@ -822,6 +1216,7 @@ class Sqlite(iModel):
         """
         pass
 
+    # xfcr
     def get_by_media_type_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
         sentence = f'select id, active, name, groupable, added_ts, modified_ts from {MediaType.table_name} where name="{name}"'
         if alfabetic:
@@ -843,6 +1238,7 @@ class Sqlite(iModel):
             ))
         return results
 
+    # xfcr
     def get_by_media_status_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaStatus]:
         sentence = f'select id, active, name, added_ts, modified_ts from {MediaStatus.table_name} where name="{name}"'
         if alfabetic:
@@ -930,13 +1326,28 @@ class Sqlite(iModel):
             ))
         if results:
             return results[0]
+
+    def get_language_by_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> Union[None, List[Language]]:
+        sentence = f'select distinct id_language from {LanguageName.table_name} where name like "{name}"'
+        if alfabetic:
+            sentence += ' order by name asc'
+        if limit != None and offset != None:
+            sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_language_names = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for language_name in sql_language_names:
+            results.append(self.get_language_by_id(language_name[0]))
+        if results: return results
     # GET BY NAME #
 
     # INSERT
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, File]
+                                AppVersion, Encoder, CodecType, Codec, FileStream,
+                                FileStreamLanguage]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -1018,15 +1429,61 @@ class Sqlite(iModel):
         if obj.encoder: id_encoder=obj.encoder.id_
 
         self.get_cur_db().execute(f'insert into "{File.table_name}" \
-                (active, name, id_extension, id_warehouse, id_folder, id_media, \
+                (active, hash, name, id_extension, id_warehouse, id_folder, id_media, \
                 id_media_issue, title, nb_streams, nb_programs, start, duration, \
                 size, bit_rate, probe_score, creation_ts, id_app_version, id_encoder, \
                 original_name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
-                ?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.extension.id_,
+                ?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.hash_, obj.name, obj.extension.id_,
                                      obj.warehouse.id_, obj.folder.id_, id_media,
                                      id_media_issue, obj.title, obj.nb_streams,
                                      obj.nb_programs, obj.start, obj.duration, obj.size,
                                      obj.bit_rate, obj.probe_score, obj.creation_ts,
                                      id_app_version, id_encoder, obj.original_name))
+
+    def insert_codec_type(self, obj: CodecType) -> None:
+        self.get_cur_db().execute(f'insert into "{CodecType.table_name}" \
+                (active, name) values (?, ?)', (obj.active, obj.name))
+
+    def insert_codec(self, obj: Codec) -> None:
+        self.get_cur_db().execute(f'insert into "{Codec.table_name}" \
+                (active, name, name_long, id_type) values (?, ?, ?, ?)',
+                                  (obj.active, obj.name, obj.name_long, obj.type_.id_))
+
+    def insert_file_stream(self, obj: FileStream) -> None:
+        self.get_cur_db().execute(f'insert into "{FileStream.table_name}" (active, \
+                id_file, id_codec, index_, title, profile, quality, width, height, \
+                coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
+                sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, \
+                color_range, color_space, color_transfer, color_primaries, chroma_location, \
+                field_order, refs, is_avc, nal_length_size, r_frame_rate, avg_frame_rate, \
+                time_base, start_pts, bits_per_raw_sample, bits_per_sample, extradata_size, \
+                default_, dub, original, comment, lyrics, karaoke, forced, hearing_impaired, \
+                visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, \
+                descriptions, metadata, dependent, still_image, start, duration, size, \
+                bit_rate, sample_rate, sample_format, channels, channel_layout, bps, \
+                frame_number, dmix_mode, text_subtitle) values (?, ?, ?, ?, ?, ?, ?, ?, ?\
+                , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\
+                , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\
+                , ?, ?, ?, ?, ?)', (obj.active, obj.file.id_, obj.codec.id_, obj.index,
+                                    obj.title, obj.profile, obj.quality, obj.width, obj.height,
+                                    obj.coded_width, obj.coded_height, obj.closed_captions, obj.film_grain,
+                                    obj.has_b_frames, obj.sample_aspect_ratio, obj.display_aspect_ratio,
+                                    obj.pixel_format, obj.level, obj.color, obj.color_range, obj.color_space,
+                                    obj.color_transfer, obj.color_primaries, obj.chroma_location,
+                                    obj.field_order, obj.refs, obj.is_avc, obj.nal_length_size,
+                                    obj.r_frame_rate, obj.avg_frame_rate, obj.time_base, obj.start_pts,
+                                    obj.bits_per_raw_sample, obj.bits_per_sample, obj.extradata_size,
+                                    obj.default, obj.dub, obj.original, obj.comment, obj.lyrics,
+                                    obj.karaoke, obj.forced, obj.hearing_impaired, obj.visual_impaired,
+                                    obj.clean_effects, obj.attached_pic, obj.timed_thumbnails, obj.captions,
+                                    obj.descriptions, obj.metadata, obj.dependent, obj.still_image,
+                                    obj.start, obj.duration, obj.size, obj.bit_rate, obj.sample_rate,
+                                    obj.sample_format, obj.channels, obj.channel_layout, obj.bps,
+                                    obj.frame_number, obj.dmix_mode, obj.text_subtitle))
+
+    def insert_file_stream_language(self, obj: FileStreamLanguage) -> None:
+        self.get_cur_db().execute(f'insert into "{FileStreamLanguage.table_name}" \
+                (active, id_file_stream, id_language) values (?, ?, ?)',
+                                  (obj.active, obj.file_stream.id_, obj.language.id_))
     # INSERT #
 # ------------------------------------------------------------------------------

@@ -1,14 +1,6 @@
 BEGIN TRANSACTION;
 /*** TABLES ***/
 /** Without FK **/
-CREATE TABLE IF NOT EXISTS "Language" (
-	"id"			INTEGER NOT NULL UNIQUE,
-	"active"		INTEGER NOT NULL,
-	"name"			TEXT NOT NULL UNIQUE,
-	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "Language_PK" PRIMARY KEY("id" AUTOINCREMENT)
-);
 CREATE TABLE IF NOT EXISTS "Platform" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
@@ -129,6 +121,28 @@ CREATE TABLE IF NOT EXISTS "Country" (
 
 
 /** With FK **/
+CREATE TABLE IF NOT EXISTS "Language" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
+	"name"			TEXT NOT NULL UNIQUE,
+	"id_language"	INTEGER,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "Language_FK1" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Language_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "CodeName" (
+	"id"			INTEGER NOT NULL UNIQUE,
+	"active"		INTEGER NOT NULL,
+	"name"			TEXT NOT NULL,
+	"code_id"		INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "CodeName_FK1" FOREIGN KEY("code_id") REFERENCES "Code"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "AppVersion_NK" UNIQUE("name", "code_id"),
+	CONSTRAINT "CodeName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+
 CREATE TABLE IF NOT EXISTS "AppVersion" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"active"			INTEGER NOT NULL,
@@ -253,6 +267,7 @@ CREATE TABLE IF NOT EXISTS "MediaPoster" (
 CREATE TABLE IF NOT EXISTS "File" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"active"			INTEGER NOT NULL,
+	"hash"				TEXT NOT NULL UNIQUE,
 	"name"				TEXT NOT NULL,
 	"id_extension"		INTEGER NOT NULL,
 	"id_warehouse"		INTEGER NOT NULL,
@@ -289,8 +304,7 @@ CREATE TABLE IF NOT EXISTS "FileStream" (
 	"active"				INTEGER NOT NULL,
 	"id_file"				INTEGER NOT NULL,
 	"id_codec"				INTEGER NOT NULL,
-	"id_language"			INTEGER,
-	"index"					INTEGER NOT NULL,
+	"index_"				INTEGER NOT NULL,
 	"title"					TEXT,
 	"profile"				TEXT,
 	"quality"				TEXT,
@@ -322,7 +336,7 @@ CREATE TABLE IF NOT EXISTS "FileStream" (
 	"bits_per_raw_sample"	INTEGER,
 	"bits_per_sample"		INTEGER,
 	"extradata_size"		INTEGER,
-	"default"				INTEGER,
+	"default_"				INTEGER,
 	"dub"					INTEGER,
 	"original"				INTEGER,
 	"comment"				INTEGER,
@@ -355,9 +369,20 @@ CREATE TABLE IF NOT EXISTS "FileStream" (
 	"modified_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "FileStream_FK1" FOREIGN KEY("id_file") REFERENCES "File"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "FileStream_FK2" FOREIGN KEY("id_codec") REFERENCES "Codec"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "FileStream_FK3" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "FileStream_NK" UNIQUE("id_file", "index"),
+	CONSTRAINT "FileStream_NK" UNIQUE("id_file", "index_"),
 	CONSTRAINT "FileStream_PK" PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "FileStreamLanguage" (
+	"id"				INTEGER NOT NULL UNIQUE,
+	"active"			INTEGER NOT NULL,
+	"id_file_stream"	INTEGER NOT NULL,
+	"id_language"		INTEGER NOT NULL,
+	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "FileStreamLanguage_FK1" FOREIGN KEY("id_file_stream") REFERENCES "FileStream"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "FileStreamLanguage_FK2" FOREIGN KEY("id_language") REFERENCES "Language"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "FileStreamLanguage_NK" UNIQUE("id_file_stream", "id_language"),
+	CONSTRAINT "FileStreamLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "ShareSiteSubs" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -1194,6 +1219,12 @@ END;
 
 
 /** With FK **/
+CREATE TRIGGER IF NOT EXISTS update_code_name
+AFTER UPDATE ON "CodeName" BEGIN
+	UPDATE "CodeName"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
 CREATE TRIGGER IF NOT EXISTS update_app_version
 AFTER UPDATE ON "AppVersion" BEGIN
 	UPDATE "AppVersion"
@@ -1257,6 +1288,12 @@ END;
 CREATE TRIGGER IF NOT EXISTS update_file_stream
 AFTER UPDATE ON "FileStream" BEGIN
 	UPDATE "FileStream"
+	SET modified_ts = current_timestamp
+	WHERE rowid = new.rowid;
+END;
+CREATE TRIGGER IF NOT EXISTS update_file_stream_language
+AFTER UPDATE ON "FileStreamLanguage" BEGIN
+	UPDATE "FileStreamLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

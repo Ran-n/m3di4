@@ -251,7 +251,7 @@
     <polygon style="fill: #ffffff" points="642.596,889.948 670.296,873.328 697.996,889.948 670.296,906.568 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="642.596,889.948 670.296,873.328 697.996,889.948 670.296,906.568 "/>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="674.296" y="867.328">N</text>
-    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="674.296" y="928.568">1</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="674.296" y="928.568">N</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="670.296" y="893.948">in</text>
   </g>
   <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="670.296,828.982 670.296,829.982 670.296,872.328 670.296,873.328 "/>
@@ -788,4 +788,20 @@
     <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #90ee90" cx="1114.55" cy="1067.56" rx="35.4" ry="18"/>
     <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="1114.55" y="1071.56">i18n</text>
   </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="588.696" cy="1128.41" rx="35.4" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="588.696" cy="1128.41" rx="35.4" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="588.696" cy="1128.41" rx="27.4" ry="14"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="588.696" y="1132.41">name</text>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="624.844" y1="1126.18" x2="639.915" y2="1125.26"/>
+  <g>
+    <polygon style="fill: #ffffff" points="515.502,899.36 566.302,868.88 617.102,899.36 566.302,929.84 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="515.502,899.36 566.302,868.88 617.102,899.36 566.302,929.84 "/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="509.502" y="893.36">1</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="623.102" y="893.36">N</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="566.302" y="903.36">contains</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="617.102,899.36 617.102,940.314 670.296,940.314 670.296,959.722 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="515.502,899.36 515.502,949.266 625.496,949.266 625.496,959.722 "/>
 </svg>

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/05 13:53:21.971706
+#+ Editado:	2023/03/15 21:04:47.472177
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,6 +18,8 @@ from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
 from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
+from src.model.entity import CodecType, Codec, Language, FileStream, FileStreamLanguage
+from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
 
 
@@ -68,7 +70,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def exists(self, obj: Union[MediaGroup, MediaIssue, Platform,
             ShareSiteType, ShareSite, WarehouseType, Warehouse,
-            Extension]) -> bool:
+            Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -122,7 +124,8 @@ class iModel(ABC):  # pylint: disable=C0103
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, MediaGroup, WarehouseType, App,
                   Extension, Warehouse, Folder, MediaIssue,
-                  AppVersion, Encoder]:
+                  AppVersion, Encoder, CodecType, File, Codec,
+                  FileStream, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -135,8 +138,9 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File]) -> \
-            Union[MediaGroup, AppVersion, Encoder, File]:
+    def get_by_nk(self, obj: Union[MediaGroup, AppVersion, Encoder, File, CodecType, Codec]) -> \
+            Union[None, MediaGroup, AppVersion, Encoder, File, CodecType, Codec, FileStream,
+                  Language, FileStreamLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -165,11 +169,29 @@ class iModel(ABC):  # pylint: disable=C0103
         ╚═  None         -   If no matches exists.
         """
 
+    def get_language_by_codename(self, codename: str) -> Union[None, Language]:
+        """ Returns a language discriminated by the given codename.
+        If a new code is added that makes it so codenames are reused
+        for different languages this function must be rewritten.
+        @ Input:
+        ╠═  · codename  -   str
+        ║   └ Code that identifies the language in some system.
+        ╠═  · limit     -   int     -   None
+        ║   └ Maximum number of elements to retrieve.
+        ╠═  · offset    -   int     -   0
+        ║   └ How far removed from the start should the results to return start.
+        ╚═  · alfabetic -   bool    -   None
+            └ Indicate if the output should be alfabetically ordered.
+        @ Output:
+        ╠═  Language    -   That matches the codename posibilities.
+        ╚═  None        -   If no matches exists.
+        """
+
     @abstractmethod
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
                     ) -> Union[None, List[Union[MediaType, MediaStatus,
-                                                Extension, Folder, App]]]:
+                                                Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
         ╠═  · table_name    -   str
@@ -193,7 +215,8 @@ class iModel(ABC):  # pylint: disable=C0103
     def insert(self, obj: Union[MediaStatus, MediaType, Media, MediaGroup,
                                 MediaIssue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder]
+                                AppVersion, Encoder, CodecType, Codec, FileStream,
+                                FileStreamLanguage]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
