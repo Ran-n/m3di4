@@ -5,7 +5,7 @@
 [//]: # (+ Editado:	2023/02/25 12:52:33.519522 )
 [//]: # ( ---------------------------------------------------------------------- )
 
-# media4
+# Medi4
 Manager for your own personal media library.\
 Allows you to automatically add useful information about media files to a database and lets you manage your library and access information and stats regarding it.
 
