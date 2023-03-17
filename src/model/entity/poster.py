@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/23 18:39:20.569506
-#+ Editado:	2023/02/17 20:38:14.507080
+#+ Editado:	2023/03/17 16:02:29.979562
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -15,7 +15,7 @@ from src.model.entity import BaseEntity, Media, Extension
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaPoster(BaseEntity):
+class Poster(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('MediaPoster'))

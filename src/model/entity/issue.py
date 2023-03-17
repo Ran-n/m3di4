@@ -30,5 +30,5 @@ class Issue(BaseEntity):
         if self.group:
             # group __str__ add the media info
             return f'{self.group}x{self.position:0{2}}'
-        return f'self.media} - {self.position}'
+        return f'{self.media} - {self.position}'
 # ------------------------------------------------------------------------------

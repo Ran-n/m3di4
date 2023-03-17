@@ -253,16 +253,16 @@ CREATE TABLE IF NOT EXISTS "Issue" (
 	CONSTRAINT "Issue_NK" UNIQUE("id_media", "id_group", "position"),
 	CONSTRAINT "Issue_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "MediaPoster" (
+CREATE TABLE IF NOT EXISTS "Poster" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"id_media"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"id_extension"	INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaPoster_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaPoster_FK2" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "MediaPoster_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "Poster_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Poster_FK2" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Poster_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "File" (
 	"id"				INTEGER NOT NULL UNIQUE,
@@ -1273,9 +1273,9 @@ AFTER UPDATE ON "Issue" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_media_poster
-AFTER UPDATE ON "MediaPoster" BEGIN
-	UPDATE "MediaPoster"
+CREATE TRIGGER IF NOT EXISTS update_poster
+AFTER UPDATE ON "Poster" BEGIN
+	UPDATE "Poster"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

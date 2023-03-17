@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/03/16 21:47:30.789536
+#+ Editado:	2023/03/17 16:03:10.790119
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -32,7 +32,7 @@ from .language_code import LanguageCode
 from .media import Media
 from .group import Group
 from .issue import Issue
-from .media_poster import MediaPoster
+from .poster import Poster
 from .file import File
 from .track import Track
 from .track_language import TrackLanguage
