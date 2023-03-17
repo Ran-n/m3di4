@@ -18,18 +18,18 @@ Explanation of what each table of the database was designed to contain.
 - [Codec](#codec)
 - [CodecType](#codectype)
 - [Media](#media)
-- [MediaGroup](#mediagroup)
-- [MediaIssue](#mediaissue)
+- [Group](#group)
+- [Issue](#issue)
 - [MediaType](#mediatype)
 - [MediaStatus](#mediastatus)
-- [MediaPoster](#mediaposter)
+- [Poster](#poster)
 - [Language](#language)
 - [Code](#code)
 - [CodeName](#codename)
 - [App](#app)
-- [AppVersion](#appversion)
+- [Version](#version)
 - [File](#file)
-- [FileStream](#filestream)
+- [Track](#track)
 - [Country](#country)
 - [Web](#web)
 - [Encoder](#encoder)
@@ -75,13 +75,13 @@ Some examples are "video", "audio" or "subitle".
 Any element of media like a movie, a tv show, a documentary, a band, a youtube channel etc.
 The distinction of which type it is is made with the relationship with [MediaType](#mediatype).
 
-## MediaGroup
+## Group
 Intermedium grouping for [Media](#media) elements.
 A perfect example for this is a tv show season, though its also used for things like a music album.
 
-## MediaIssue
+## Issue
 Minimum entity separation a [Media](#media) can have.
-They can also have a related [MediaGroup](#mediaGroup).
+They can also have a related [Group](#Group).
 This can be an episode, a book chapter, a youtube video or even a song.
 
 ## MediaType
@@ -98,7 +98,7 @@ Spoken and written languages arround the world.
 ## Code
 Represents what type of codes exist and with its relationship with other entities it assigns a code to each.
 Right now only related with [Language](#language) but it can be extended in the future.
-Examples os this can be "ISO 639-3", "Glottolog" or "LCID".
+Examples os this can be "BCP 47", "ISO 639-3", "Glottolog" or "LCID".
 
 ## CodeName
 All the different types of names a [Code](#code) can have.
@@ -106,14 +106,14 @@ All the different types of names a [Code](#code) can have.
 ## App
 Application used for the creation of a [File](#file).
 
-## AppVersion
+## Version
 Specific version of an [App](#app) used in the creation of a [File](#file).
 
 ## File
-Particular physical representation of the [Media](#media) or [MediaIssue](#mediaissue) saved in the database.
-It can be composed of [streams](#filestreams).
+Particular physical representation of the [Media](#media) or [Issue](#issue) saved in the database.
+It can be composed of [tracks](#track).
 
-## FileStream
+## Track
 Some [Files](#file) such as vídeos or audios have something called streams.
 These are simply smaller components of whose combination results in the specific [File](#file) that contains them.
 
@@ -128,7 +128,7 @@ Website that currently or formerly existed.
 
 This data could technically overlap with the one inside [Platform](#platform) or [ShareSite](#sharesite) since any of those can be websites, but this table is thought more as a information website related to [Media](#media) (like imdb or tmdb).
 
-It could be interesting to also link both [MediaGroup](#mediagroup) and [MediaIssue](#mediaissue) to this table aswell; but for now this is postponned since it can be deduced from the present arrangement.
+It could be interesting to also link both [Group](#group) and [Issue](#issue) to this table aswell; but for now this is postponned since it can be deduced from the present arrangement.
 
 ## Encoder
 Information related to a [File](#file) creation.
@@ -153,7 +153,7 @@ For example, what folder and file name to pull all the images of all the [medias
 
 ## Extension
 What extension do the files posses.
-This is related to the tables [File](#file) and [MediaPoster](#mediaposter).
+This is related to the tables [File](#file) and [Poster](#poster).
 
 Some examples are: 'mkv', 'mp4', 'pdf', 'mp3', 'avi', 'png', 'gif', 'ogg', etc.
 
