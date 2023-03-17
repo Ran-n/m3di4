@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS "Media" (
 	CONSTRAINT "Media_NK" UNIQUE("name", "year_start", "id_type"),
 	CONSTRAINT "Media_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "Group" (
+CREATE TABLE IF NOT EXISTS "Group_" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
 	"number"		INTEGER NOT NULL,
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS "Issue" (
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "Issue_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "Issue_FK2" FOREIGN KEY("id_group") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Issue_FK2" FOREIGN KEY("id_group") REFERENCES "Group_"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "Issue_NK" UNIQUE("id_media", "id_group", "position"),
 	CONSTRAINT "Issue_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
@@ -522,7 +522,7 @@ CREATE TABLE IF NOT EXISTS "GroupName" (
 	"id_group"	INTEGER NOT NULL,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_group") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "MediaName_FK1" FOREIGN KEY("id_group") REFERENCES "Group_"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "MediaName_NK" UNIQUE("name", "id_group"),
 	CONSTRAINT "MediaName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
@@ -866,7 +866,7 @@ CREATE TABLE IF NOT EXISTS "GroupDescription" (
 	"id_group"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "GroupName_FK1" FOREIGN KEY("id_group") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "GroupName_FK1" FOREIGN KEY("id_group") REFERENCES "Group_"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "GroupName_NK" UNIQUE("description", "id_group"),
 	CONSTRAINT "GroupName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
@@ -1262,8 +1262,8 @@ AFTER UPDATE ON "Media" BEGIN
 	WHERE rowid = new.rowid;
 END;
 CREATE TRIGGER IF NOT EXISTS update_group
-AFTER UPDATE ON "Group" BEGIN
-	UPDATE "Group"
+AFTER UPDATE ON "Group_" BEGIN
+	UPDATE "Group_"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

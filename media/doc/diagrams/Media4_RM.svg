@@ -459,7 +459,7 @@
   <g>
     <rect style="fill: #ffffff" x="946.331" y="1869.27" width="172.3" height="18"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="946.331" y="1869.27" width="172.3" height="18"/>
-    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1032.48" y="1883.27">Group</text>
+    <text font-size="11.2" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1032.48" y="1883.27">Group_</text>
     <rect style="fill: #ffffff" x="946.331" y="1887.27" width="172.3" height="148"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="946.331" y="1887.27" width="172.3" height="148"/>
     <polygon style="fill: #000000" points="949.331,1897.27 951.331,1900.27 953.331,1897.27 951.331,1894.27 "/>
