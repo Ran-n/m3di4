@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/02/26 15:25:34.083621 )
+[//]: # (+ Editado:	2023/03/17 16:56:17.352849 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -26,6 +26,7 @@ Until
 - Created DB insertion script.
 - Created basic MVC program structure.
 - Created i18n tables for the DB.
+- Added automatic adding file and tracks information to the DB.
 
 ## To Done
 - [X] Remake the insert media option and add other options.
@@ -66,3 +67,8 @@ Until
     - [X] Make Add Function for ShareSite
     - [X] Make service to connect to the API of Telegram.
     - [X] Use the service for updating the subs of ShareSite depending on Platform (use thread).
+- [X] Automatically add all information about a File.
+    - [X] Make Add Function for WarehouseType
+    - [X] Make Add Function for Warehouse
+    - [X] Make "info.py" a service.
+- [X] Add a root/original/ur language to the language table. (For example American's English ur language would be English and english would not have an ur language.)
