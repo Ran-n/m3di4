@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/16 21:52:03.505303
+#+ Editado:	2023/03/17 16:31:39.807751
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -11,7 +11,7 @@ from blake3 import blake3
 
 from src.utils import Config
 from src.model.entity import BaseEntity, Warehouse, Folder, Media, Issue
-from src.model.entity import Extension, Encoder, AppVersion
+from src.model.entity import Extension, Encoder, Version
 # ------------------------------------------------------------------------------
 
 
@@ -37,7 +37,7 @@ class File(BaseEntity):
     bit_rate: Optional[int] = field(default=None)
     probe_score: Optional[int] = field(default=None)
     creation_ts: Optional[str] = field(default=None)
-    app_version: Optional[AppVersion] = field(default=None)
+    version: Optional[Version] = field(default=None)
     encoder: Optional[Encoder] = field(default=None)
     original_name: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)

@@ -139,11 +139,11 @@ CREATE TABLE IF NOT EXISTS "CodeName" (
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
 	CONSTRAINT "CodeName_FK1" FOREIGN KEY("code_id") REFERENCES "Code"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "AppVersion_NK" UNIQUE("name", "code_id"),
+	CONSTRAINT "Version_NK" UNIQUE("name", "code_id"),
 	CONSTRAINT "CodeName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-CREATE TABLE IF NOT EXISTS "AppVersion" (
+CREATE TABLE IF NOT EXISTS "Version" (
 	"id"				INTEGER NOT NULL UNIQUE,
 	"active"			INTEGER NOT NULL,
 	"id_app"			INTEGER NOT NULL,
@@ -152,9 +152,9 @@ CREATE TABLE IF NOT EXISTS "AppVersion" (
 	"num_bit_processor" INTEGER,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "AppVersion_FK1" FOREIGN KEY("id_app") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "AppVersion_NK" UNIQUE("id_app", "number"),
-	CONSTRAINT "AppVersion_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	CONSTRAINT "Version_FK1" FOREIGN KEY("id_app") REFERENCES "App"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "Version_NK" UNIQUE("id_app", "number"),
+	CONSTRAINT "Version_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "Codec" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	"bit_rate"			INTEGER,
 	"probe_score"		INTEGER,
 	"creation_ts"		TEXT,
-	"id_app_version"	INTEGER,
+	"id_version"		INTEGER,
 	"id_encoder"		INTEGER,
 	"original_name"		TEXT,
 	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS "File" (
 	CONSTRAINT "File_FK4" FOREIGN KEY("id_issue") REFERENCES "Issue"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK5" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_FK6" FOREIGN KEY("id_encoder") REFERENCES "Encoder"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "File_FK7" FOREIGN KEY("id_app_version") REFERENCES "AppVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "File_FK7" FOREIGN KEY("id_version") REFERENCES "Version"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "File_NK" UNIQUE("name", "id_extension", "id_folder", "id_warehouse"),
 	CONSTRAINT "File_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
@@ -804,16 +804,16 @@ CREATE TABLE IF NOT EXISTS "CountryDescription" (
 	CONSTRAINT "CountryDescription_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-CREATE TABLE IF NOT EXISTS "AppVersionDescription" (
-	"id"				INTEGER NOT NULL UNIQUE,
+CREATE TABLE IF NOT EXISTS "VersionDescription" (
+	"id"			INTEGER NOT NULL UNIQUE,
 	"active"		INTEGER NOT NULL,
-	"description"		TEXT NOT NULL,
-	"id_app_version"	INTEGER NOT NULL,
-	"added_ts"			TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"		TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "AppVersionName_FK1" FOREIGN KEY("id_app_version") REFERENCES "AppVersion"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "AppVersionName_NK" UNIQUE("description", "id_app_version"),
-	CONSTRAINT "AppVersionName_PK" PRIMARY KEY("id" AUTOINCREMENT)
+	"description"	TEXT NOT NULL,
+	"id_version"	INTEGER NOT NULL,
+	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "VersionName_FK1" FOREIGN KEY("id_version") REFERENCES "Version"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "VersionName_NK" UNIQUE("description", "id_version"),
+	CONSTRAINT "VersionName_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "CodecDescription" (
 	"id"			INTEGER NOT NULL UNIQUE,
@@ -1032,15 +1032,15 @@ CREATE TABLE IF NOT EXISTS "CountryDescriptionLanguage" (
 	CONSTRAINT "CountryDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 
-CREATE TABLE IF NOT EXISTS "AppVersionDescriptionLanguage" (
-	"id"							INTEGER NOT NULL UNIQUE,
-	"id_app_version_description"	INTEGER NOT NULL,
-	"id_language"					INTEGER NOT NULL,
-	"added_ts"						TEXT NOT NULL DEFAULT current_timestamp,
-	"modified_ts"					TEXT NOT NULL DEFAULT current_timestamp,
-	CONSTRAINT "AppVersionDescriptionLanguage_FK1" FOREIGN KEY("id_app_version_description") REFERENCES "AppVersionDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
-	CONSTRAINT "AppVersionDescriptionLanguage_NK" UNIQUE("id_app_version_description", "id_language"),
-	CONSTRAINT "AppVersionDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
+CREATE TABLE IF NOT EXISTS "VersionDescriptionLanguage" (
+	"id"						INTEGER NOT NULL UNIQUE,
+	"id_version_description"	INTEGER NOT NULL,
+	"id_language"				INTEGER NOT NULL,
+	"added_ts"					TEXT NOT NULL DEFAULT current_timestamp,
+	"modified_ts"				TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "VersionDescriptionLanguage_FK1" FOREIGN KEY("id_version_description") REFERENCES "VersionDescription"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
+	CONSTRAINT "VersionDescriptionLanguage_NK" UNIQUE("id_version_description", "id_language"),
+	CONSTRAINT "VersionDescriptionLanguage_PK" PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "CodecDescriptionLanguage" (
 	"id"					INTEGER NOT NULL UNIQUE,
@@ -1225,9 +1225,9 @@ AFTER UPDATE ON "CodeName" BEGIN
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
-CREATE TRIGGER IF NOT EXISTS update_app_version
-AFTER UPDATE ON "AppVersion" BEGIN
-	UPDATE "AppVersion"
+CREATE TRIGGER IF NOT EXISTS update_version
+AFTER UPDATE ON "Version" BEGIN
+	UPDATE "Version"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1537,9 +1537,9 @@ AFTER UPDATE ON "CountryDescription" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
-CREATE TRIGGER IF NOT EXISTS update_app_version_description
-AFTER UPDATE ON "AppVersionDescription" BEGIN
-	UPDATE "AppVersionDescription"
+CREATE TRIGGER IF NOT EXISTS update_version_description
+AFTER UPDATE ON "VersionDescription" BEGIN
+	UPDATE "VersionDescription"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;
@@ -1665,9 +1665,9 @@ AFTER UPDATE ON "CountryDescriptionLanguage" BEGIN
 	WHERE rowid = new.rowid;
 END;
 
-CREATE TRIGGER IF NOT EXISTS update_app_version_description_language
-AFTER UPDATE ON "AppVersionDescriptionLanguage" BEGIN
-	UPDATE "AppVersionDescriptionLanguage"
+CREATE TRIGGER IF NOT EXISTS update_version_description_language
+AFTER UPDATE ON "VersionDescriptionLanguage" BEGIN
+	UPDATE "VersionDescriptionLanguage"
 	SET modified_ts = current_timestamp
 	WHERE rowid = new.rowid;
 END;

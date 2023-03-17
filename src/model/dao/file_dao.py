@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/13 21:49:07.367707
+#+ Editado:	2023/03/17 16:32:00.388388
 # ------------------------------------------------------------------------------
 from src.model import iModel
 
-from src.model.entity import File, Extension, Folder, AppVersion, App, Encoder
+from src.model.entity import File, Extension, Folder, Version, App, Encoder
 # ------------------------------------------------------------------------------
 
 
@@ -51,15 +51,15 @@ class FileDao:
                 return self.__get_app(app)
             return found_app
 
-    def __get_app_version(self, app_version: AppVersion) -> AppVersion:
+    def __get_version(self, version: Version) -> Version:
         """Bring the full data of the object from DB or insert it."""
-        if app_version:
-            app_version.app=self.__get_app(app_version.app)
-            found_app_version = self.model.get_by_nk(app_version)
-            if not found_app_version:
-                self.model.insert(app_version)
-                return self.__get_app_version(app_version)
-            return found_app_version
+        if version:
+            version.app=self.__get_app(version.app)
+            found_version = self.model.get_by_nk(version)
+            if not found_version:
+                self.model.insert(version)
+                return self.__get_version(version)
+            return found_version
 
     def __get_encoder(self, encoder: Encoder) -> Encoder:
         """Bring the full data of the object from DB or insert it."""
@@ -79,7 +79,7 @@ class FileDao:
         if found_file:
             return found_file
 
-        file.app_version=self.__get_app_version(file.app_version)
+        file.version=self.__get_version(file.version)
         file.encoder=self.__get_encoder(file.encoder)
 
         self.model.insert(file)

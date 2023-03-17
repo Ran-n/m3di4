@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 21:50:33.577107
+#+ Editado:	2023/03/17 16:28:50.086526
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
-from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
+from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode, CodeName
 # ------------------------------------------------------------------------------
@@ -439,7 +439,7 @@ class Sqlite(iModel):
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, Group, WarehouseType, App,
                   Extension, Warehouse, Folder, Issue,
-                  AppVersion, Encoder, CodecType, File, Codec,
+                  Version, Encoder, CodecType, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
@@ -620,12 +620,12 @@ class Sqlite(iModel):
                     modified_ts = sql_result[8]
             )
 
-    def get_app_version_by_id(self, id_: int) -> AppVersion:
+    def get_version_by_id(self, id_: int) -> Version:
         sql_result = self.get_cur_db().execute(f'select id, active, number, name, \
-                num_bit_processor, added_ts, modified_ts from "{AppVersion.table_name}" \
+                num_bit_processor, added_ts, modified_ts from "{Version.table_name}" \
                 where id="{id_}"').fetchone()
         if sql_result:
-            return AppVersion(
+            return Version(
                     id_                 = sql_result[0],
                     active              = sql_result[1],
                     number              = sql_result[2],
@@ -665,7 +665,7 @@ class Sqlite(iModel):
         sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
                 id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
-                id_app_version, id_encoder, original_name, added_ts, modified_ts \
+                id_version, id_encoder, original_name, added_ts, modified_ts \
                 from "{File.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return File(
@@ -686,7 +686,7 @@ class Sqlite(iModel):
                     bit_rate        = sql_result[14],
                     probe_score     = sql_result[15],
                     creation_ts     = sql_result[16],
-                    app_version     = self.get_app_version_by_id(sql_result[17]),
+                    version     = self.get_version_by_id(sql_result[17]),
                     encoder         = self.get_encoder_by_id(sql_result[18]),
                     original_name   = sql_result[19],
                     added_ts        = sql_result[20],
@@ -806,8 +806,8 @@ class Sqlite(iModel):
     # GET BY ID
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[Group, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, Group, AppVersion, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, CodecType, Codec]) -> \
+            Union[None, Group, Version, Encoder, File, CodecType, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -842,20 +842,20 @@ class Sqlite(iModel):
                     modified_ts =   sql_result[8]
             )
 
-    def get_app_version_by_nk(self, obj: AppVersion) -> Union[None, AppVersion]:
+    def get_version_by_nk(self, obj: Version) -> Union[None, Version]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   AppVersion
-            └ The AppVersion object to use in the search.
+        ╚═  · obj   -   Version
+            └ The Version object to use in the search.
         @ Output:
-        ╠═  AppVersion  -   The element of the table discriminated by natural key.
+        ╠═  Version  -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
         """
         sql_result = self.get_cur_db().execute(f'select id, active, id_app, number, name, num_bit_processor, \
-                added_ts, modified_ts from "{AppVersion.table_name}" where id_app="{obj.app.id_}"\
+                added_ts, modified_ts from "{Version.table_name}" where id_app="{obj.app.id_}"\
                 and number="{obj.number}"').fetchone()
         if sql_result:
-            return AppVersion(
+            return Version(
                     id_         = sql_result[0],
                     active      = sql_result[1],
                     app         = self.get_app_by_id(sql_result[2]),
@@ -897,7 +897,7 @@ class Sqlite(iModel):
         sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
                 id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
-                id_app_version, id_encoder, original_name, added_ts, modified_ts \
+                id_version, id_encoder, original_name, added_ts, modified_ts \
                 from "{File.table_name}" where name="{obj.name}" and \
                 id_extension="{obj.extension.id_}" and id_folder="{obj.folder.id_}" and \
                 id_warehouse="{obj.warehouse.id_}"').fetchone()
@@ -920,7 +920,7 @@ class Sqlite(iModel):
                     bit_rate        = sql_result[14],
                     probe_score     = sql_result[15],
                     creation_ts     = sql_result[16],
-                    app_version     = self.get_app_version_by_id(sql_result[17]),
+                    version     = self.get_version_by_id(sql_result[17]),
                     encoder         = self.get_encoder_by_id(sql_result[18]),
                     original_name   = sql_result[19],
                     added_ts        = sql_result[20],
@@ -931,7 +931,7 @@ class Sqlite(iModel):
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   CodecType
-            └ The AppVersion object to use in the search.
+            └ The Version object to use in the search.
         @ Output:
         ╠═  CodecType   -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
@@ -951,7 +951,7 @@ class Sqlite(iModel):
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   CodecType
-            └ The AppVersion object to use in the search.
+            └ The Version object to use in the search.
         @ Output:
         ╠═  CodecType   -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
@@ -974,7 +974,7 @@ class Sqlite(iModel):
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Track
-            └ The AppVersion object to use in the search.
+            └ The Version object to use in the search.
         @ Output:
         ╠═  Track  -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
@@ -1064,7 +1064,7 @@ class Sqlite(iModel):
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Language
-            └ The AppVersion object to use in the search.
+            └ The Version object to use in the search.
         @ Output:
         ╠═  Language    -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
@@ -1345,7 +1345,7 @@ class Sqlite(iModel):
     def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
                                 Issue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, CodecType, Codec, Track,
+                                Version, Encoder, CodecType, Codec, Track,
                                 TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
@@ -1407,8 +1407,8 @@ class Sqlite(iModel):
         self.get_cur_db().execute(f'insert into "{App.table_name}" \
                 (active, name) values (?, ?)', (obj.active, obj.name))
 
-    def insert_app_version(self, obj: AppVersion) -> None:
-        self.get_cur_db().execute(f'insert into "{AppVersion.table_name}" \
+    def insert_version(self, obj: Version) -> None:
+        self.get_cur_db().execute(f'insert into "{Version.table_name}" \
                 (active, id_app, number, name, num_bit_processor) \
                 values (?, ?, ?, ?, ?)', (obj.active, obj.app.id_, obj.number,
                                           obj.name, obj.num_bit_processor))
@@ -1422,22 +1422,22 @@ class Sqlite(iModel):
         if obj.media: id_media=obj.media.id_
         id_issue=None
         if obj.issue: id_issue=obj.issue.id_
-        id_app_version=None
-        if obj.app_version: id_app_version=obj.app_version.id_
+        id_version=None
+        if obj.version: id_version=obj.version.id_
         id_encoder=None
         if obj.encoder: id_encoder=obj.encoder.id_
 
         self.get_cur_db().execute(f'insert into "{File.table_name}" \
                 (active, hash, name, id_extension, id_warehouse, id_folder, id_media, \
                 id_issue, title, nb_streams, nb_programs, start, duration, \
-                size, bit_rate, probe_score, creation_ts, id_app_version, id_encoder, \
+                size, bit_rate, probe_score, creation_ts, id_version, id_encoder, \
                 original_name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
                 ?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.hash_, obj.name, obj.extension.id_,
                                      obj.warehouse.id_, obj.folder.id_, id_media,
                                      id_issue, obj.title, obj.nb_streams,
                                      obj.nb_programs, obj.start, obj.duration, obj.size,
                                      obj.bit_rate, obj.probe_score, obj.creation_ts,
-                                     id_app_version, id_encoder, obj.original_name))
+                                     id_version, id_encoder, obj.original_name))
 
     def insert_codec_type(self, obj: CodecType) -> None:
         self.get_cur_db().execute(f'insert into "{CodecType.table_name}" \

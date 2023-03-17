@@ -2,24 +2,26 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/02/23 17:17:21.124687
-#+ Editado:	2023/02/24 22:03:36.361092
+#+ Creado: 	2023/02/02 22:59:18.477529
+#+ Editado:	2023/02/17 20:34:46.885118
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, AppVersion
+from src.model.entity import BaseEntity, App
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class AppVersionDescription(BaseEntity):
-    """Entity Object"""
+class Version(BaseEntity):
+    """Version Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('AppVersionDescription'))
-    desc: str
-    app_version: AppVersion
+                            default=Config().get_table_name('Version'))
+    app: App
+    number: int
+    name: Optional[str] = field(default=None)
     active: Optional[int] = field(default=1)
+    num_bit_processor: Optional[int] = field(default=None)
 # ------------------------------------------------------------------------------

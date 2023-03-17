@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/26 21:12:03.645397
-#+ Editado:	2023/03/16 21:50:42.539765
+#+ Editado:	2023/03/17 16:32:32.093865
 # ------------------------------------------------------------------------------
 import logging
 from pathlib import Path
@@ -12,7 +12,7 @@ from pymediainfo import MediaInfo
 from typing import Union, List, Tuple, Dict
 
 from src.utils import AddFileTerminalViewOutput, FileInfoServiceOutput
-from src.utils import get_app_version, fraction_2_float
+from src.utils import get_version, fraction_2_float
 
 from src.model.entity import Extension, Warehouse, Media, Issue, File
 from src.model.entity import Track, TrackLanguage, Encoder, Folder
@@ -74,7 +74,7 @@ class FileInfoService:
         try:
             # i can only try to access 1st since the tags are the same in all tracks
             if (tracks[0].get('tags') and '_STATISTICS_WRITING_APP' in tracks[0].get('tags')):
-                f.app_version=get_app_version(tracks[0].get('tags').get('_STATISTICS_WRITING_APP'))
+                f.version=get_version(tracks[0].get('tags').get('_STATISTICS_WRITING_APP'))
         except IndexError:
             pass
         return f

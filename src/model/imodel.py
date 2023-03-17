@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 21:50:22.682632
+#+ Editado:	2023/03/17 16:28:37.180268
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
-from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
+from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ class iModel(ABC):  # pylint: disable=C0103
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, Group, WarehouseType, App,
                   Extension, Warehouse, Folder, Issue,
-                  AppVersion, Encoder, CodecType, File, Codec,
+                  Version, Encoder, CodecType, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
@@ -137,8 +137,8 @@ class iModel(ABC):  # pylint: disable=C0103
         """
 
     @abstractmethod
-    def get_by_nk(self, obj: Union[Group, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, Group, AppVersion, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, CodecType, Codec]) -> \
+            Union[None, Group, Version, Encoder, File, CodecType, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -214,7 +214,7 @@ class iModel(ABC):  # pylint: disable=C0103
     def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
                                 Issue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, CodecType, Codec, Track,
+                                Version, Encoder, CodecType, Codec, Track,
                                 TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.

@@ -24,7 +24,7 @@ from .app import App
 from .country import Country
 
 from .code_name import CodeName
-from .app_version import AppVersion
+from .version import Version
 from .codec import Codec
 from .share_site import ShareSite
 from .warehouse import Warehouse
@@ -75,7 +75,7 @@ from .media_status_description import MediaStatusDescription
 from .web_description import WebDescription
 from .app_description import AppDescription
 from .country_description import CountryDescription
-from .app_version_description import AppVersionDescription
+from .version_description import VersionDescription
 from .codec_description import CodecDescription
 from .share_site_description import ShareSiteDescription
 from .warehouse_description import WarehouseDescription
@@ -96,7 +96,7 @@ from .media_status_description_language import MediaStatusDescriptionLanguage
 from .web_description_language import WebDescriptionLanguage
 from .app_description_language import AppDescriptionLanguage
 from .country_description_language import CountryDescriptionLanguage
-from .app_version_description_language import AppVersionDescriptionLanguage
+from .version_description_language import VersionDescriptionLanguage
 from .codec_description_language import CodecDescriptionLanguage
 from .share_site_description_language import ShareSiteDescriptionLanguage
 from .warehouse_description_language import WarehouseDescriptionLanguage

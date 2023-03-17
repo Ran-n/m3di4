@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/16 21:50:28.809713
+#+ Editado:	2023/03/17 16:28:43.110118
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ from src.model.entity import Media, Group, Issue
 from src.model.entity import MediaType, MediaStatus
 from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
 from src.model.entity import WarehouseType, Warehouse
-from src.model.entity import Extension, Folder, App, AppVersion, Encoder, File
+from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ class Model:
             Union[MediaType, MediaStatus, Media, ShareSiteType,
                   Platform, Group, WarehouseType, App,
                   Extension, Warehouse, Folder, Issue,
-                  AppVersion, Encoder, CodecType, File, Codec,
+                  Version, Encoder, CodecType, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
@@ -216,8 +216,8 @@ class Model:
             return self.model.get_folder_by_id(id_)
         elif table_name == Issue.table_name:
             return self.model.get_issue_by_id(id_)
-        elif table_name == AppVersion.table_name:
-            return self.model.get_app_version_by_id(id_)
+        elif table_name == Version.table_name:
+            return self.model.get_version_by_id(id_)
         elif table_name == Encoder.table_name:
             return self.model.get_encoder_by_id(id_)
         elif table_name == CodecType.table_name:
@@ -233,8 +233,8 @@ class Model:
     # GET BY ID #
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[Group, AppVersion, Encoder, File, CodecType, Codec]) -> \
-            Union[None, Group, AppVersion, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, CodecType, Codec]) -> \
+            Union[None, Group, Version, Encoder, File, CodecType, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -247,8 +247,8 @@ class Model:
         logging.info(_(f'Searching on "{obj.table_name}" table any entries that match its natural key'))
         if isinstance(obj, Group):
             return self.model.get_group_by_nk(obj)
-        elif isinstance(obj, AppVersion):
-            return self.model.get_app_version_by_nk(obj)
+        elif isinstance(obj, Version):
+            return self.model.get_version_by_nk(obj)
         elif isinstance(obj, Encoder):
             return self.model.get_encoder_by_nk(obj)
         elif isinstance(obj, File):
@@ -351,7 +351,7 @@ class Model:
     def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
                                 Issue, Platform, ShareSiteType, ShareSite,
                                 WarehouseType, Warehouse, Extension, Folder, App,
-                                AppVersion, Encoder, CodecType, Codec, Track,
+                                Version, Encoder, CodecType, Codec, Track,
                                 TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
@@ -390,8 +390,8 @@ class Model:
             return self.model.insert_folder(obj)
         elif isinstance(obj, App):
             return self.model.insert_app(obj)
-        elif isinstance(obj, AppVersion):
-            return self.model.insert_app_version(obj)
+        elif isinstance(obj, Version):
+            return self.model.insert_version(obj)
         elif isinstance(obj, Encoder):
             return self.model.insert_encoder(obj)
         elif isinstance(obj, File):
