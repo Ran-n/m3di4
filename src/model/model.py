@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/17 16:28:43.110118
+#+ Editado:	2023/03/18 11:09:39.779224
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -11,17 +11,17 @@ from src.model import iModel
 # ------------------------------------------------------------------------------
 from sqlite3 import Connection, Cursor
 import logging
-from typing import List, Union
+from typing import List, Union, Tuple
 
 
 from src.exception import InheritException
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
-from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Type, MediaStatus
+from src.model.entity import Platform, ShareSite, ShareSiteSubs
+from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
-from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
+from src.model.entity import Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode
 # ------------------------------------------------------------------------------
 class Model:
@@ -78,7 +78,7 @@ class Model:
 
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
-            ShareSiteType, ShareSite, WarehouseType, Warehouse,
+            Type, ShareSite, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
@@ -94,14 +94,12 @@ class Model:
             return self.model.exists_issue(obj)
         elif isinstance(obj, Platform):
             return self.model.exists_platform(obj)
-        elif isinstance(obj, ShareSiteType):
-            return self.model.exists_sharesite_type(obj)
+        elif isinstance(obj, Type):
+            return self.model.exists_type(obj)
         elif isinstance(obj, ShareSite):
             return self.model.exists_sharesite(obj)
         elif isinstance(obj, ShareSiteSubs):
             return self.model.exists_sharesite_subs(obj)
-        elif isinstance(obj, WarehouseType):
-            return self.model.exists_warehouse_type(obj)
         elif isinstance(obj, Warehouse):
             return self.model.exists_warehouse(obj)
         elif isinstance(obj, Extension):
@@ -111,16 +109,21 @@ class Model:
     # EXISTS #
 
     # GET NUM
-    def get_num(self, table_name: str) -> int:
+    def get_num(self, table_name: Union[str, Tuple[str, str]]) -> int:
         """ Returns the number of elements in a table.
         @ Input:
-        ╚═  · table_name    -   str
-            └ Name of the table to query.
+        ╚═  · table_name    -   str, Tuple[str]
+            └ Name/s of the table to query.
         @ Output:
-        ╚═  int - Number of entries on the table.
+        ╚═  int - Number of entries on the table/s.
         """
-        logging.info(_(f'Counting the number of elements saved on table "{table_name}"'))
-        return self.model.get_num(table_name)
+        if isinstance(table_name, tuple):
+            logging.info(_(f'''Counting the number of elements saved on the joined
+                           tables "{'" & "'.join(table_name)}"'''))
+            return self.model.get_num_type_of_x(table_name[1])
+        else:
+            logging.info(_(f'Counting the number of elements saved on table "{table_name}"'))
+            return self.model.get_num(table_name)
 
     def get_group_num_by_media_id(self, media_id: int) -> int:
         """Returns the number of group elements discriminating by media id.
@@ -135,9 +138,9 @@ class Model:
     # GET NUM #
 
     # GET ALL
-    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
-                ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
-                                WarehouseType, Issue, Warehouse]]:
+    def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
+                offset: int = 0, alfabetic: bool = False) -> List[Union[
+                    Type, MediaStatus, Media, Platform, ShareSite, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -151,21 +154,27 @@ class Model:
         @ Output:
         ╚═  List[Any Entity Object]   -   With all the information of the table.
         """
-        logging.info(_(f'Getting all entries of table "{table_name}" with limit "{limit}", offset "{offset}" and alfabetic order "{alfabetic}"'))
-        if table_name == MediaType.table_name:
-            return self.model.get_all_media_type(limit, offset, alfabetic)
+        if isinstance(table_name, tuple):
+            logging.info(_(f'''Getting all entries of joined tables "{'" & "'.join(table_name)}"
+                    with limit "{limit}", offset "{offset}" and alfabetic order "{alfabetic}"'''))
+        else:
+            logging.info(_(f'Getting all entries of table "{table_name}" with limit "{limit}", \
+                    offset "{offset}" and alfabetic order "{alfabetic}"'))
+
+        if isinstance(table_name, tuple) and table_name[0] == Type.table_name:
+            if len(table_name) > 1:
+                return self.model.get_all_type(table_name=table_name[1], limit=limit,
+                                               offset=offset, alfabetic=alfabetic)
+            else:
+                return self.model.get_all_type(limit=limit, offset=offset, alfabetic=alfabetic)
         elif table_name == MediaStatus.table_name:
             return self.model.get_all_media_status(limit, offset, alfabetic)
         elif table_name == Media.table_name:
             return self.model.get_all_media(limit, offset, alfabetic)
-        elif table_name == ShareSiteType.table_name:
-            return self.model.get_all_sharesite_type(limit, offset, alfabetic)
         elif table_name == Platform.table_name:
             return self.model.get_all_platform(limit, offset, alfabetic)
         elif table_name == ShareSite.table_name:
             return self.model.get_all_sharesite(limit, offset, alfabetic)
-        elif table_name == WarehouseType.table_name:
-            return self.model.get_all_warehouse_type(limit, offset, alfabetic)
         elif table_name == Issue.table_name:
             return self.model.get_all_issue(limit, offset, alfabetic)
         elif table_name == Warehouse.table_name:
@@ -174,10 +183,10 @@ class Model:
 
     # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[MediaType, MediaStatus, Media, ShareSiteType,
-                  Platform, Group, WarehouseType, App,
+            Union[Type, MediaStatus, Media,
+                  Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
-                  Version, Encoder, CodecType, File, Codec,
+                  Version, Encoder, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
@@ -192,20 +201,16 @@ class Model:
         logging.info(_(f'Searching on "{table_name}" table any entries that\
                 match the given id "{id_}"'))
         if id_ is None: return None
-        elif table_name == MediaType.table_name:
-            return self.model.get_media_type_by_id(id_)
+        elif table_name == Type.table_name:
+            return self.model.get_type_by_id(id_)
         elif table_name == MediaStatus.table_name:
             return self.model.get_media_status_by_id(id_)
         elif table_name == Media.table_name:
             return self.model.get_media_by_id(id_)
-        elif table_name == ShareSiteType.table_name:
-            return self.model.get_sharesite_type_by_id(id_)
         elif table_name == Platform.table_name:
             return self.model.get_platform_by_id(id_)
         elif table_name == Group.table_name:
             return self.model.get_group_by_id(id_)
-        elif table_name == WarehouseType.table_name:
-            return self.model.get_warehouse_type_by_id(id_)
         elif table_name == App.table_name:
             return self.model.get_app_by_id(id_)
         elif table_name == Extension.table_name:
@@ -220,8 +225,6 @@ class Model:
             return self.model.get_version_by_id(id_)
         elif table_name == Encoder.table_name:
             return self.model.get_encoder_by_id(id_)
-        elif table_name == CodecType.table_name:
-            return self.model.get_codec_type_by_id(id_)
         elif table_name == File.table_name:
             return self.model.get_file_by_id(id_)
         elif table_name == Codec.table_name:
@@ -233,8 +236,8 @@ class Model:
     # GET BY ID #
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, CodecType, Codec]) -> \
-            Union[None, Group, Version, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
+            Union[None, Group, Version, Encoder, File, Type, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -253,8 +256,8 @@ class Model:
             return self.model.get_encoder_by_nk(obj)
         elif isinstance(obj, File):
             return self.model.get_file_by_nk(obj)
-        elif isinstance(obj, CodecType):
-            return self.model.get_codec_type_by_nk(obj)
+        elif isinstance(obj, Type):
+            return self.model.get_type_by_nk(obj)
         elif isinstance(obj, Codec):
             return self.model.get_codec_by_nk(obj)
         elif isinstance(obj, Track):
@@ -314,7 +317,7 @@ class Model:
     # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[MediaType, MediaStatus,
+                    ) -> Union[None, List[Union[Type, MediaStatus,
                                                 Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
@@ -333,8 +336,8 @@ class Model:
         ╚═  None                    -   If no matches exists.
         """
         logging.info(_(f'Searching on "{table_name}" table any entries that match the given name "{name}"'))
-        if table_name == MediaType.table_name:
-            return self.model.get_by_media_type_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
+        if table_name == Type.table_name:
+            return self.model.get_by_type_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
         elif table_name == MediaStatus.table_name:
             return self.model.get_by_media_status_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
         elif table_name == Extension.table_name:
@@ -348,10 +351,10 @@ class Model:
     # GET BY NAME
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
-                                Issue, Platform, ShareSiteType, ShareSite,
-                                WarehouseType, Warehouse, Extension, Folder, App,
-                                Version, Encoder, CodecType, Codec, Track,
+    def insert(self, obj: Union[MediaStatus, Type, Media, Group,
+                                Issue, Platform, ShareSite,
+                                Warehouse, Extension, Folder, App,
+                                Version, Encoder, Codec, Track,
                                 TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
@@ -364,8 +367,8 @@ class Model:
         logging.info(_(f'Inserting new value in the table "{obj.table_name}"'))
         if isinstance(obj, MediaStatus):
             return self.model.insert_media_status(obj)
-        elif isinstance(obj, MediaType):
-            return self.model.insert_media_type(obj)
+        elif isinstance(obj, Type):
+            return self.model.insert_type(obj)
         elif isinstance(obj, Media):
             return self.model.insert_media(obj)
         elif isinstance(obj, Group):
@@ -374,14 +377,10 @@ class Model:
             return self.model.insert_issue(obj)
         elif isinstance(obj, Platform):
             return self.model.insert_platform(obj)
-        elif isinstance(obj, ShareSiteType):
-            return self.model.insert_sharesite_type(obj)
         elif isinstance(obj, ShareSite):
             return self.model.insert_sharesite(obj)
         elif isinstance(obj, ShareSiteSubs):
             return self.model.insert_sharesite_subs(obj)
-        elif isinstance(obj, WarehouseType):
-            return self.model.insert_warehouse_type(obj)
         elif isinstance(obj, Warehouse):
             return self.model.insert_warehouse(obj)
         elif isinstance(obj, Extension):
@@ -396,8 +395,6 @@ class Model:
             return self.model.insert_encoder(obj)
         elif isinstance(obj, File):
             return self.model.insert_file(obj)
-        elif isinstance(obj, CodecType):
-            return self.model.insert_codec_type(obj)
         elif isinstance(obj, Codec):
             return self.model.insert_codec(obj)
         elif isinstance(obj, Track):

@@ -14,55 +14,55 @@ INSERT INTO "PlatformDescriptionLanguage" ("id_platform_description", "id_langua
 
 
 
-INSERT INTO "ShareSiteType" ("id", "active", "name") VALUES (1, 1, "Group Chat");
-INSERT INTO "ShareSiteType" ("id", "active", "name") VALUES (2, 1, "Channel");
-INSERT INTO "ShareSiteType" ("id", "active", "name") VALUES (3, 1, "Website");
+INSERT INTO "Type" ("id", "active", "name") VALUES (1, 1, "Group Chat");
+INSERT INTO "Type" ("id", "active", "name") VALUES (2, 1, "Channel");
+INSERT INTO "Type" ("id", "active", "name") VALUES (3, 1, "Website");
 
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (1, 1, "Group Chat", 1);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (2, 1, "Chat grupal", 1);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (3, 1, "Chat de grupo", 1);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (4, 1, "Channel", 2);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (5, 1, "Canle", 2);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (6, 1, "Canal", 2);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (7, 1, "Website", 3);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (8, 1, "Páxina web", 3);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (9, 1, "Web", 3);
-INSERT INTO "ShareSiteTypeName" ("id", "active", "name", "id_share_site_type") VALUES (10, 1, "Página web", 3);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (1, 1, "Group Chat", 1);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (2, 1, "Chat grupal", 1);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (3, 1, "Chat de grupo", 1);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (4, 1, "Channel", 2);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (5, 1, "Canle", 2);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (6, 1, "Canal", 2);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (7, 1, "Website", 3);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (8, 1, "Páxina web", 3);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (9, 1, "Web", 3);
+INSERT INTO "TypeName" ("id", "active", "name", "id_type") VALUES (10, 1, "Página web", 3);
 
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (1, 2);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (2, 1);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (2, 3);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (3, 2);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (3, 3);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (4, 2);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (5, 1);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (6, 3);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (7, 2);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (8, 1);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (9, 1);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (9, 3);
-INSERT INTO "ShareSiteTypeNameLanguage" ("id_share_site_type_name", "id_language") VALUES (10, 3);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (1, 2);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (2, 1);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (2, 3);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (3, 2);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (3, 3);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (4, 2);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (5, 1);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (6, 3);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (7, 2);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (8, 1);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (9, 1);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (9, 3);
+INSERT INTO "TypeNameLanguage" ("id_type_name", "id_language") VALUES (10, 3);
 
 
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (1, 1, "A Telegram chat is a feature within the Telegram app that enables users to communicate with each other in real-time. Chats can be either one-on-one or in a group with up to 200,000 members. In a Telegram chat, users can send text messages, photos, videos, files, and other types of media. The chat interface is user-friendly and supports features such as emoji, stickers, and Gifs to enhance the messaging experience. Telegram chats are encrypted end-to-end, ensuring that only the sender and receiver can access the content of the messages.", 1);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (2, 1, "Unha conversa ou 'chat' de Telegram é unha función dentro da aplicación Telegram que permite aos usuarios comunicarse en tempo real. As conversas poden ser individuais ou en grupo con ata 200.000 membros. Nunha conversa de Telegram, os usuarios poden enviar mensaxes de texto, fotos, vídeos, ficheiros e outros tipos de contido multimedia. A interface da conversa é fácil de usar e admite características como emoticonos, pegatinas e GIFs para mellorar a experiencia de mensaxería. As conversas de Telegram están cifradas de extremo a extremo, garantindo que só o emisor e o receptor poidan acceder ao contido das mensaxes.", 1);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (3, 1, "Un chat de Telegram es una función dentro de la aplicación de Telegram que permite a los usuarios comunicarse en tiempo real. Los chats pueden ser individuales o en grupo con hasta 200.000 miembros. En un chat de Telegram, los usuarios pueden enviar mensajes de texto, fotos, videos, archivos y otros tipos de contenido multimedia. La interfaz del chat es fácil de usar y admite características como emojis, pegatinas y GIF para mejorar la experiencia de mensajería. Los chats de Telegram están cifrados de extremo a extremo, garantizando que solo el emisor y el receptor puedan acceder al contenido de los mensajes.", 1);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (4, 1, "A Telegram channel is a broadcast feature within the Telegram app that allows a user, group, or organization to broadcast messages to an unlimited number of subscribers. Unlike Telegram chats which are meant for direct communication between users, Telegram channels are meant for disseminating information to a large audience. Channel subscribers can receive notifications whenever a new message is posted and can also interact with the channel by sending comments and feedback. Channels can be used for various purposes such as sharing news, promoting products or services, or creating communities around a specific topic. Telegram channels are a useful tool for organizations and businesses to reach a large audience quickly and effectively.", 2);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (5, 1, "Un canal de Telegram é unha función de difusión dentro da aplicación de Telegram que permite a un usuario, grupo ou organización transmitir mensaxes a un número ilimitado de subscritores. Ao contrario dos chats de Telegram, que están destinados á comunicación directa entre usuarios, os canais de Telegram están destinados a difundir información a unha gran audiencia. Os subscritores do canal poden recibir notificacións cada vez que se publique unha nova mensaxe e tamén poden interactuar co canal enviando comentarios e feedback. Os canais poden ser utilizados para diversos fins, como compartir noticias, promocionar produtos ou servizos ou crear comunidades en torno a un tema específico. Os canais de Telegram son unha ferramenta útil para organizacións e empresas para chegar a unha gran audiencia de forma rápida e eficaz.", 2);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (6, 1, "Un canal de Telegram es una función de difusión dentro de la aplicación de Telegram que permite a un usuario, grupo u organización transmitir mensajes a un número ilimitado de suscriptores. A diferencia de los chats de Telegram, que están destinados a la comunicación directa entre usuarios, los canales de Telegram están destinados a difundir información a una gran audiencia. Los suscriptores del canal pueden recibir notificaciones cada vez que se publique un nuevo mensaje y también pueden interactuar con el canal enviando comentarios y feedback. Los canales pueden ser utilizados para diversos fines, como compartir noticias, promocionar productos o servicios o crear comunidades en torno a un tema específico. Los canales de Telegram son una herramienta útil para organizaciones y empresas para llegar a una gran audiencia de forma rápida y efectiva.", 2);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (7, 1, "A collection of web pages and related content, accessible via the internet, used for various purposes including personal, business, educational, and governmental purposes, and identified by a common domain name published on at least one web server.", 3);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (8, 1, "Unha colección de páxinas web e contido relacionado, accesible a través de internet, usado para diversos fins, incluíndo persoais, empresariais, educativos e gobernamentais, e identificado por un nome de dominio común publicado en polo menos un servidor web.", 3);
-INSERT INTO "ShareSiteTypeDescription" ("id", "active", "description", "id_share_site_type") VALUES (9, 1, "Una colección de páginas web y contenido relacionado, accesible a través de internet, utilizado para diversos fines, incluyendo personales, empresariales, educativos y gubernamentales, e identificado por un nombre de dominio común publicado en al menos un servidor web.", 3);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (1, 1, "A Telegram chat is a feature within the Telegram app that enables users to communicate with each other in real-time. Chats can be either one-on-one or in a group with up to 200,000 members. In a Telegram chat, users can send text messages, photos, videos, files, and other types of media. The chat interface is user-friendly and supports features such as emoji, stickers, and Gifs to enhance the messaging experience. Telegram chats are encrypted end-to-end, ensuring that only the sender and receiver can access the content of the messages.", 1);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (2, 1, "Unha conversa ou 'chat' de Telegram é unha función dentro da aplicación Telegram que permite aos usuarios comunicarse en tempo real. As conversas poden ser individuais ou en grupo con ata 200.000 membros. Nunha conversa de Telegram, os usuarios poden enviar mensaxes de texto, fotos, vídeos, ficheiros e outros tipos de contido multimedia. A interface da conversa é fácil de usar e admite características como emoticonos, pegatinas e GIFs para mellorar a experiencia de mensaxería. As conversas de Telegram están cifradas de extremo a extremo, garantindo que só o emisor e o receptor poidan acceder ao contido das mensaxes.", 1);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (3, 1, "Un chat de Telegram es una función dentro de la aplicación de Telegram que permite a los usuarios comunicarse en tiempo real. Los chats pueden ser individuales o en grupo con hasta 200.000 miembros. En un chat de Telegram, los usuarios pueden enviar mensajes de texto, fotos, videos, archivos y otros tipos de contenido multimedia. La interfaz del chat es fácil de usar y admite características como emojis, pegatinas y GIF para mejorar la experiencia de mensajería. Los chats de Telegram están cifrados de extremo a extremo, garantizando que solo el emisor y el receptor puedan acceder al contenido de los mensajes.", 1);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (4, 1, "A Telegram channel is a broadcast feature within the Telegram app that allows a user, group, or organization to broadcast messages to an unlimited number of subscribers. Unlike Telegram chats which are meant for direct communication between users, Telegram channels are meant for disseminating information to a large audience. Channel subscribers can receive notifications whenever a new message is posted and can also interact with the channel by sending comments and feedback. Channels can be used for various purposes such as sharing news, promoting products or services, or creating communities around a specific topic. Telegram channels are a useful tool for organizations and businesses to reach a large audience quickly and effectively.", 2);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (5, 1, "Un canal de Telegram é unha función de difusión dentro da aplicación de Telegram que permite a un usuario, grupo ou organización transmitir mensaxes a un número ilimitado de subscritores. Ao contrario dos chats de Telegram, que están destinados á comunicación directa entre usuarios, os canais de Telegram están destinados a difundir información a unha gran audiencia. Os subscritores do canal poden recibir notificacións cada vez que se publique unha nova mensaxe e tamén poden interactuar co canal enviando comentarios e feedback. Os canais poden ser utilizados para diversos fins, como compartir noticias, promocionar produtos ou servizos ou crear comunidades en torno a un tema específico. Os canais de Telegram son unha ferramenta útil para organizacións e empresas para chegar a unha gran audiencia de forma rápida e eficaz.", 2);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (6, 1, "Un canal de Telegram es una función de difusión dentro de la aplicación de Telegram que permite a un usuario, grupo u organización transmitir mensajes a un número ilimitado de suscriptores. A diferencia de los chats de Telegram, que están destinados a la comunicación directa entre usuarios, los canales de Telegram están destinados a difundir información a una gran audiencia. Los suscriptores del canal pueden recibir notificaciones cada vez que se publique un nuevo mensaje y también pueden interactuar con el canal enviando comentarios y feedback. Los canales pueden ser utilizados para diversos fines, como compartir noticias, promocionar productos o servicios o crear comunidades en torno a un tema específico. Los canales de Telegram son una herramienta útil para organizaciones y empresas para llegar a una gran audiencia de forma rápida y efectiva.", 2);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (7, 1, "A collection of web pages and related content, accessible via the internet, used for various purposes including personal, business, educational, and governmental purposes, and identified by a common domain name published on at least one web server.", 3);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (8, 1, "Unha colección de páxinas web e contido relacionado, accesible a través de internet, usado para diversos fins, incluíndo persoais, empresariais, educativos e gobernamentais, e identificado por un nome de dominio común publicado en polo menos un servidor web.", 3);
+INSERT INTO "TypeDescription" ("id", "active", "description", "id_type") VALUES (9, 1, "Una colección de páginas web y contenido relacionado, accesible a través de internet, utilizado para diversos fines, incluyendo personales, empresariales, educativos y gubernamentales, e identificado por un nombre de dominio común publicado en al menos un servidor web.", 3);
 
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (1, 2);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (2, 1);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (3, 3);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (4, 2);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (5, 1);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (6, 3);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (7, 2);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (8, 1);
-INSERT INTO "ShareSiteTypeDescriptionLanguage" ("id_share_site_type_description", "id_language") VALUES (9, 3);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (1, 2);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (2, 1);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (3, 3);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (4, 2);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (5, 1);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (6, 3);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (7, 2);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (8, 1);
+INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VALUES (9, 3);
 
 
 

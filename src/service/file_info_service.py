@@ -16,7 +16,7 @@ from src.utils import get_version, fraction_2_float
 
 from src.model.entity import Extension, Warehouse, Media, Issue, File
 from src.model.entity import Track, TrackLanguage, Encoder, Folder
-from src.model.entity import Codec, CodecType, Language
+from src.model.entity import Codec, Type, Language
 # ------------------------------------------------------------------------------
 
 
@@ -91,7 +91,7 @@ class FileInfoService:
 
         # we assume these are always in the track
         codec = Codec(name=track.get('codec_name'), name_long=track.get('codec_long_name'),
-                      type_=CodecType(name=track.get('codec_type')),
+                      type_=Type(name=track.get('codec_type')),
                       tag_string=track.get('codec_tag_string'), tag=track.get('codec_tag'))
 
         fs = Track(file=file, codec=codec, index=track.get('index'))

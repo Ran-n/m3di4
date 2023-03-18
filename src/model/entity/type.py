@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/27 16:44:24.358200
-#+ Editado:	2023/02/24 22:06:08.261711
+#+ Creado: 	2023/01/20 18:16:02.918934
+#+ Editado:	2023/03/18 12:34:14.408678
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -15,10 +15,26 @@ from src.model.entity import BaseEntity
 
 # ------------------------------------------------------------------------------
 @dataclass
-class CodecType(BaseEntity):
+class Type(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('CodecType'))
+                            default=Config().get_table_name('Type'))
     name: str
+    groupable: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
+
+    def __str__(self) -> str:
+        output =  f'{self.name}'
+
+        if groupable is not None:
+            output += ' ['
+            if self.groupable == 0:
+                output += _('Non ')
+            output += _('Groupable') + ']'
+
+        # xFCR? dormant symbol identifier
+        if self.active == 0:
+            output += ' ['+_('Dormant')+']'
+
+        return output
 # ------------------------------------------------------------------------------

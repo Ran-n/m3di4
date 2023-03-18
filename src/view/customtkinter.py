@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/03/16 21:51:22.249056
+#+ Editado:	2023/03/17 23:35:55.417554
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
@@ -11,9 +11,9 @@ import logging
 import customtkinter
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite
-from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Type, MediaStatus
+from src.model.entity import Platform, ShareSite
+from src.model.entity import Warehouse
 # ------------------------------------------------------------------------------
 class CustomTKinter(iView):
     def __init__(self) -> None:
@@ -39,12 +39,11 @@ class CustomTKinter(iView):
         """
         pass
 
-    def add_media_type(self) -> MediaType:
+    def add_type(self) -> Type:
         pass
 
     def add_media_status(self) -> MediaStatus:
         pass
-
 
     def add_media(self) -> Media:
         pass
@@ -58,22 +57,7 @@ class CustomTKinter(iView):
     def add_platform(self) -> Platform:
         pass
 
-    def add_sharesite_type(self) -> Platform:
-        """
-        """
-        pass
-
-    def add_sharesite_type(self) -> ShareSiteType:
-        """
-        """
-        pass
-
     def add_sharesite(self) -> ShareSite:
-        """
-        """
-        pass
-
-    def add_warehouse_type(self) -> WarehouseType:
         """
         """
         pass

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/16 21:49:58.893209
+#+ Editado:	2023/03/17 22:52:51.480518
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -86,10 +86,10 @@ class Controller:
                     are no ShareSites'))
         logging.info(_('Finishing the thread for the "Update Member Count"'))
 
-    def add_media_type(self) -> None:
-        logging.info(_('Starting the "Add Media Type" process'))
-        self.model.insert(self.view.add_media_type())
-        logging.info(_('The "Add Media Type" process was finished'))
+    def add_type(self) -> None:
+        logging.info(_('Starting the "Add Type" process'))
+        self.model.insert(self.view.add_type())
+        logging.info(_('The "Add Type" process was finished'))
 
     def add_media_status(self) -> None:
         logging.info(_('Starting the "Add Media Status" process'))
@@ -116,26 +116,12 @@ class Controller:
         self.model.insert(self.view.add_platform())
         logging.info(_('The "Add Platform" process was finished'))
 
-    def add_sharesite_type(self) -> None:
-        """
-        """
-        logging.info(_('Starting the "Add ShareSiteType" process'))
-        self.model.insert(self.view.add_sharesite_type())
-        logging.info(_('The "Add ShareSiteType" process was finished'))
-
     def add_sharesite(self) -> None:
         """
         """
         logging.info(_('Starting the "Add ShareSite" process'))
         self.model.insert(self.view.add_sharesite())
         logging.info(_('The "Add ShareSite" process was finished'))
-
-    def add_warehouse_type(self) -> None:
-        """
-        """
-        logging.info(_('Starting the "Add WarehouseType" process'))
-        self.model.insert(self.view.add_warehouse_type())
-        logging.info(_('The "Add WarehouseType" process was finished'))
 
     def add_warehouse(self) -> None:
         """

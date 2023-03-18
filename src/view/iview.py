@@ -3,16 +3,16 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/03/16 21:51:26.723262
+#+ Editado:	2023/03/17 19:48:09.004445
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from abc import ABC, abstractmethod
 # ------------------------------------------------------------------------------
 from src.model.entity import Media, Group, Issue
-from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite
-from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Type, MediaStatus
+from src.model.entity import Platform, ShareSite
+from src.model.entity import Warehouse
 # ------------------------------------------------------------------------------
 class iView(ABC):
     @abstractmethod
@@ -33,7 +33,7 @@ class iView(ABC):
         """
 
     @abstractmethod
-    def add_media_type(self) -> MediaType:
+    def add_type(self) -> Type:
         pass
 
     @abstractmethod
@@ -57,17 +57,7 @@ class iView(ABC):
         pass
 
     @abstractmethod
-    def add_sharesite_type(self) -> ShareSiteType:
-        """
-        """
-
-    @abstractmethod
     def add_sharesite(self) -> ShareSite:
-        """
-        """
-
-    @abstractmethod
-    def add_warehouse_type(self) -> WarehouseType:
         """
         """
 

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/16 21:51:31.896119
+#+ Editado:	2023/03/18 11:35:09.082663
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,9 +23,9 @@ from src.utils import Config, center
 from src.utils import AddFileTerminalViewOutput
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite
-from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Type, MediaStatus
+from src.model.entity import Platform, ShareSite
+from src.model.entity import Warehouse
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
@@ -50,15 +50,13 @@ class Terminal(iView):
                 '.'             :   [_('Exit'), self.controller.exit_save],
                 '..'            :   [_('Exit (No Save)'), self.controller.exit_no_save],
                 _('#members')   :   [_('Update Member Count'), self.controller.update_member_count],
-                _('+mt')        :   [_('Add Media Type'), self.controller.add_media_type],
+                _('+t')         :   [_('Add a Type'), self.controller.add_type],
                 _('+ms')        :   [_('Add Media Status'), self.controller.add_media_status],
                 _('+m')         :   [_('Add Media'), self.controller.add_media],
                 _('+mg')        :   [_('Add Media Group'), self.controller.add_group],
                 _('+mi')        :   [_('Add Media Issue'), self.controller.add_issue],
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
-                _('+st')        :   [_('Add ShareSiteType'), self.controller.add_sharesite_type],
                 _('+s')         :   [_('Add ShareSite'), self.controller.add_sharesite],
-                _('+wt')        :   [_('Add WarehouseType'), self.controller.add_warehouse_type],
                 _('+w')         :   [_('Add Warehouse'), self.controller.add_warehouse],
                 _('+f')         :   [_('Add File'), self.controller.add_file],
         }
@@ -128,7 +126,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-    def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[MediaType, MediaStatus, Media]:
+    def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[Type, MediaStatus, Media]:
         """
             message
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
@@ -306,16 +304,16 @@ class Terminal(iView):
                 print(f'{Config().error_symbol} ' + _('The date format is incorrect'))
 
 
-    def add_media_type(self) -> MediaType:
+    def add_type(self) -> Type:
         """ Terminal View function for adding a media type element.
         @ Input:
         @ Output:
-        ╚═  MediaType   -   The MediaType created by the user.
+        ╚═  Type   -   The Type created by the user.
         """
         logging.info(_('Requesting the user for the information on the media type'))
 
-        title = f'{2*Config().title_symbol} ' + _('Add Media Type') + f' {2*Config().title_symbol}'
-        ender = f'{2*Config().title_symbol} ' + _('Added Media Type') + f' {2*Config().title_symbol}'
+        title = f'{2*Config().title_symbol} ' + _('Add Type') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Type') + f' {2*Config().title_symbol}'
         print()
         print(self.separator)
         print(center(title, self.line_len))
@@ -324,11 +322,13 @@ class Terminal(iView):
         while True:
             name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
             if name != '':
-                if len(self.model.get_by_name(MediaType.table_name, name)) == 0:
+                if len(self.model.get_by_name(Type.table_name, name)) == 0:
                     break
                 print(f'{Config().error_symbol} ' + _('The given name is already in use'))
 
-        groupable = self.__yn_question(_('Groupable?'))
+        groupable = None
+        if self.__yn_question(_('Is it a media type?')) == 1:
+            groupable = self.__yn_question(_('Groupable?'))
 
         print()
         print(self.separator)
@@ -336,7 +336,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return MediaType(name = name, groupable = groupable)
+        return Type(name=name, groupable=groupable)
 
     def add_media_status(self) -> MediaStatus:
         """ Terminal View function for adding a media status element.
@@ -405,9 +405,10 @@ class Terminal(iView):
                     'pick':     _('Type'),
                     'empty':    _('There are no media types available')
                 },
-                option_count    =   self.model.get_num(table_name= MediaType.table_name),
-                add_fn          =   self.controller.add_media_type,
-                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= MediaType.table_name, limit= limit, offset= offset),
+                option_count    =   self.model.get_num(table_name=(Type.table_name, Media.table_name)),
+                add_fn          =   self.controller.add_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=(Type.table_name, Media.table_name), limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
         print()
@@ -419,9 +420,10 @@ class Terminal(iView):
                     'pick':     _('Status'),
                     'empty':    _('There are no media statuses available')
                 },
-                option_count    =   self.model.get_num(table_name= MediaStatus.table_name),
+                option_count    =   self.model.get_num(table_name=MediaStatus.table_name),
                 add_fn          =   self.controller.add_media_status,
-                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= MediaStatus.table_name, limit= limit, offset= offset),
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=MediaStatus.table_name, limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
         print()
@@ -485,9 +487,10 @@ class Terminal(iView):
                         'pick':     _('Media'),
                         'empty':    _('There are no medias available')
                     },
-                    option_count    =   self.model.get_num(table_name= Media.table_name),
+                    option_count    =   self.model.get_num(table_name=Media.table_name),
                     add_fn          =   self.controller.add_media,
-                    get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
+                    get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                        table_name=Media.table_name, limit=limit, offset=offset),
                     limit           =   Config().pagination_limit
             )
         else:
@@ -585,9 +588,10 @@ class Terminal(iView):
                     'pick':     _('Media'),
                     'empty':    _('There are no medias available')
                 },
-                option_count    =   self.model.get_num(table_name= Media.table_name),
+                option_count    =   self.model.get_num(table_name=Media.table_name),
                 add_fn          =   self.controller.add_media,
-                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name= Media.table_name, limit= limit, offset= offset),
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=Media.table_name, limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
         print()
@@ -698,34 +702,6 @@ class Terminal(iView):
 
         return Platform(name=name.capitalize())
 
-    def add_sharesite_type(self) -> ShareSiteType:
-        """
-        """
-        logging.info(_('Requesting the user for the information on the ShareSiteType'))
-        title = f'{2*Config().title_symbol} ' + _('Add ShareSiteType') + f' {2*Config().title_symbol}'
-        ender = f'{2*Config().title_symbol} ' + _('Added ShareSiteType') + f' {2*Config().title_symbol}'
-        print()
-        print(self.separator)
-        print(center(title, self.line_len))
-        print(self.separator)
-
-        # name
-        while True:
-            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
-            if name != '':
-                if self.model.exists(ShareSiteType(name=name)):
-                    print(f'{Config().error_symbol} ' + _('It already exists, pick another name.'))
-                else:
-                    break
-
-        print()
-        print(self.separator)
-        print(center(ender, self.line_len))
-        print(self.separator)
-        print()
-
-        return ShareSiteType(name=name)
-
     def add_sharesite(self) -> ShareSite:
         """
         """
@@ -768,13 +744,14 @@ class Terminal(iView):
         # type
         type_ = self.__pick_from_options(
                 message     =   {
-                    'title':    _('ShareSiteTypes'),
-                    'pick':     _('ShareSiteType'),
-                    'empty':    _('There are no ShareSiteTypes available')
+                    'title':    _('Types'),
+                    'pick':     _('Type'),
+                    'empty':    _('There are no Types available')
                 },
-                option_count    =   self.model.get_num(table_name=ShareSiteType.table_name),
-                add_fn          =   self.controller.add_sharesite_type,
-                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=ShareSiteType.table_name, limit=limit, offset=offset),
+                option_count    =   self.model.get_num(table_name=(Type.table_name, ShareSite.table_name)),
+                add_fn          =   self.controller.add_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=(Type.table_name, ShareSite.table_name), limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
         print()
@@ -788,7 +765,8 @@ class Terminal(iView):
                 },
                 option_count    =   self.model.get_num(table_name=Platform.table_name),
                 add_fn          =   self.controller.add_platform,
-                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Platform.table_name, limit=limit, offset=offset),
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=Platform.table_name, limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
 
@@ -806,32 +784,6 @@ class Terminal(iView):
                 type_           =   type_,
                 platform        =   platform
         )
-
-    def add_warehouse_type(self) -> WarehouseType:
-        logging.info(_('Requesting the user for the information on the WarehouseType'))
-        title = f'{2*Config().title_symbol} ' + _('Add WarehouseType') + f' {2*Config().title_symbol}'
-        ender = f'{2*Config().title_symbol} ' + _('Added WarehouseType') + f' {2*Config().title_symbol}'
-        print()
-        print(self.separator)
-        print(center(title, self.line_len))
-        print(self.separator)
-
-        # name
-        while True:
-            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
-            if name != '':
-                if self.model.exists(WarehouseType(name=name)):
-                    print(f'{Config().error_symbol} ' + _('It already exists, pick another name.'))
-                else:
-                    break
-
-        print()
-        print(self.separator)
-        print(center(ender, self.line_len))
-        print(self.separator)
-        print()
-
-        return WarehouseType(name=name)
 
     def add_warehouse(self) -> Warehouse:
         """
@@ -857,13 +809,14 @@ class Terminal(iView):
         # type
         type_ = self.__pick_from_options(
                 message     =   {
-                    'title':    _('WarehouseTypes'),
-                    'pick':     _('WarehouseType'),
-                    'empty':    _('There are no WarehouseTypes available')
+                    'title':    _('Types'),
+                    'pick':     _('Type'),
+                    'empty':    _('There are no Types available')
                 },
-                option_count    =   self.model.get_num(table_name=WarehouseType.table_name),
-                add_fn          =   self.controller.add_warehouse_type,
-                get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=WarehouseType.table_name, limit=limit, offset=offset),
+                option_count    =   self.model.get_num(table_name=(Type.table_name, Warehouse.table_name)),
+                add_fn          =   self.controller.add_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=(Type.table_name, Warehouse.table_name), limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
         print()
@@ -959,7 +912,8 @@ class Terminal(iView):
                     },
                     option_count    =   self.model.get_num(table_name=Warehouse.table_name),
                     add_fn          =   self.controller.add_warehouse,
-                    get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Warehouse.table_name, limit=limit, offset=offset),
+                    get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                        table_name=Warehouse.table_name, limit=limit, offset=offset),
                     limit           =   Config().pagination_limit
             )] * len(file_path)
             print()
@@ -973,7 +927,8 @@ class Terminal(iView):
                     },
                     option_count    =   self.model.get_num(table_name=Media.table_name),
                     add_fn          =   self.controller.add_media,
-                    get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Media.table_name, limit=limit, offset=offset),
+                    get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                        table_name=Media.table_name, limit=limit, offset=offset),
                     limit           =   Config().pagination_limit
             )] * len(file_path)
 
@@ -1009,7 +964,8 @@ class Terminal(iView):
                             },
                             option_count    =   self.model.get_num(table_name=Warehouse.table_name),
                             add_fn          =   self.controller.add_warehouse,
-                            get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Warehouse.table_name, limit=limit, offset=offset),
+                            get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                                table_name=Warehouse.table_name, limit=limit, offset=offset),
                             limit           =   Config().pagination_limit
                     ))
                     # if it wont ask for the warehouse again
@@ -1030,7 +986,8 @@ class Terminal(iView):
                         },
                         option_count    =   self.model.get_num(table_name=Issue.table_name),
                         add_fn          =   self.controller.add_issue,
-                        get_opts_fn     =   lambda limit, offset: self.model.get_all(table_name=Issue.table_name, limit=limit, offset=offset),
+                        get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                            table_name=Issue.table_name, limit=limit, offset=offset),
                         limit           =   Config().pagination_limit
                 ))
                 print()

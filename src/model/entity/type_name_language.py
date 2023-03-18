@@ -2,23 +2,22 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/24 22:20:00.157191
-#+ Editado:	2023/02/24 20:15:51.891924
+#+ Creado: 	2023/02/12 13:46:42.274532
+#+ Editado:	2023/03/17 19:45:06.632165
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
-from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity
+from src.model.entity import BaseEntity, TypeName, Language
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class ShareSiteType(BaseEntity):
+class TypeNameLanguage(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('ShareSiteType'))
-    name: str
-    active: Optional[int] = field(default=1)
+                            default=Config().get_table_name('TypeNameLanguage'))
+    type_name: TypeName
+    language: Language
 # ------------------------------------------------------------------------------

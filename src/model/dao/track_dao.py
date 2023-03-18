@@ -3,11 +3,11 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/03/08 18:48:53.576098
-#+ Editado:	2023/03/16 18:58:33.356176
+#+ Editado:	2023/03/17 23:38:08.213756
 # ------------------------------------------------------------------------------
 from src.model import iModel
 
-from src.model.entity import File, Track, Codec, CodecType
+from src.model.entity import File, Track, Codec, Type
 # ------------------------------------------------------------------------------
 
 
@@ -18,19 +18,19 @@ class TrackDao:
     def __init__(self, model: iModel) -> None:
         self.model = model
 
-    def __get_codec_type(self, codec_type: CodecType) -> CodecType:
+    def __get_type(self, type: Type) -> Type:
         """Bring the full data of the object from DB and insert it if new."""
-        if codec_type:
-            found_codec_type=self.model.get_by_nk(codec_type)
-            if not found_codec_type:
-                self.model.insert(codec_type)
-                return self.__get_codec_type(codec_type)
-            return found_codec_type
+        if type:
+            found_type=self.model.get_by_nk(type)
+            if not found_type:
+                self.model.insert(type)
+                return self.__get_type(type)
+            return found_type
 
     def __get_codec(self, codec: Codec) -> Codec:
         """Bring the full data of the object from DB and insert it if new."""
         if codec:
-            codec.type_=self.__get_codec_type(codec.type_)
+            codec.type_=self.__get_type(codec.type_)
             found_codec=self.model.get_by_nk(codec)
             if not found_codec:
                 self.model.insert(codec)

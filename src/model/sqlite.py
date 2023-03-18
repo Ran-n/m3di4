@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/17 16:28:50.086526
+#+ Editado:	2023/03/17 23:42:08.063359
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,16 +13,16 @@ import sqlite3
 from sqlite3 import Connection, Cursor, IntegrityError
 from uteis.ficheiro import cargarFich as load_file
 import logging
-from typing import List, Union
+from typing import List, Union, Tuple
 
 from src.utils import Config
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import MediaType, MediaStatus
-from src.model.entity import Platform, ShareSiteType, ShareSite, ShareSiteSubs
-from src.model.entity import WarehouseType, Warehouse
+from src.model.entity import Type, MediaStatus
+from src.model.entity import Platform, ShareSite, ShareSiteSubs
+from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
-from src.model.entity import CodecType, Codec, Language, Track, TrackLanguage
+from src.model.entity import Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode, CodeName
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
@@ -105,7 +105,7 @@ class Sqlite(iModel):
 
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
-            ShareSiteType, ShareSite, WarehouseType, Warehouse,
+            Type, ShareSite, Warehouse,
             Extension, LanguageCode]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
@@ -135,8 +135,8 @@ class Sqlite(iModel):
             return True
         return False
 
-    def exists_sharesite_type(self, obj: ShareSiteType) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{ShareSiteType.table_name}" where name like "{obj.name}"').fetchall()
+    def exists_type(self, obj: Type) -> bool:
+        sql_result = self.get_cur_db().execute(f'select id from "{Type.table_name}" where name like "{obj.name}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -152,15 +152,6 @@ class Sqlite(iModel):
         sql_result = self.get_cur_db().execute(f'select id from "{ShareSiteSubs.table_name}" where \
                 id_share_site={obj.share_site.id_} and sub_num={obj.sub_num} \
                 and added_ts like "{obj.added_ts}%"').fetchall()
-        if len(sql_result) > 0:
-            return True
-        return False
-
-    def exists_warehouse_type(self, obj: WarehouseType) -> bool:
-        """
-        """
-        sql_result = self.get_cur_db().execute(f'select id from "{WarehouseType.table_name}" \
-                where name like "{obj.name}"').fetchall()
         if len(sql_result) > 0:
             return True
         return False
@@ -197,12 +188,23 @@ class Sqlite(iModel):
     def get_num(self, table_name: str) -> int:
         """ Returns the number of elements in a table.
         @ Input:
+        ╚═  · table_name    -   str, Tuple[str]
+            └ Name/s of the table to query.
+        @ Output:
+        ╚═  int - Number of entries on the table/s.
+        """
+        return self.get_cur_db().execute(f'select count(*) from "{table_name}"').fetchone()[0]
+
+    def get_num_type_of_x(self, table_name: str) -> int:
+        """ Returns the number of elements in a table.
+        @ Input:
         ╚═  · table_name    -   str
             └ Name of the table to query.
         @ Output:
         ╚═  int - Number of entries on the table.
         """
-        return self.get_cur_db().execute(f'select count(*) from "{table_name}"').fetchone()[0]
+        return self.get_cur_db().execute(f'select count(*) from "{Type.table_name}" t \
+                right join {table_name} x on x.id_type=t.id').fetchone()[0]
 
     def get_group_num_by_media_id(self, media_id: int) -> int:
         """Returns the number of group elements discriminating by media id.
@@ -216,9 +218,9 @@ class Sqlite(iModel):
     # GET NUM #
 
     # GET ALL
-    def get_all(self, table_name: str, limit: int = None, offset: int = 0, alfabetic: bool = False
-                ) -> List[Union[MediaType, MediaStatus, Media, ShareSiteType, Platform, ShareSite,
-                                WarehouseType, Issue, Warehouse]]:
+    def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
+                offset: int = 0, alfabetic: bool = False) -> List[Union[
+                    Type, MediaStatus, Media, Platform, ShareSite, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -234,8 +236,9 @@ class Sqlite(iModel):
         """
         pass
 
-    def get_all_media_type(self, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
-        sentence = f'select id, active, name, groupable, added_ts, modified_ts from "{MediaType.table_name}"'
+    def get_all_type(self, table_name: str, limit: int, offset: int, alfabetic: bool) -> List[Type]:
+        sentence = f'select distinct t.id, t.active, t.name, t.groupable, t.added_ts, t.modified_ts \
+                from "{Type.table_name}" t right join "{table_name}" x on x.id_type=t.id'
         if alfabetic:
             sentence += ' order by name asc'
         if limit != None and offset != None:
@@ -245,7 +248,7 @@ class Sqlite(iModel):
 
         results = []
         for result in sql_results:
-            results.append(MediaType(
+            results.append(Type(
                 id_         = result[0],
                 active      = result[1],
                 name        = result[2],
@@ -290,30 +293,10 @@ class Sqlite(iModel):
                     name        = result[2],
                     year_start  = result[3],
                     year_end    = result[4],
-                    type_       = self.get_media_type_by_id(result[5]),
+                    type_       = self.get_type_by_id(result[5]),
                     status      = self.get_media_status_by_id(result[6]),
                     added_ts    = result[7],
                     modified_ts = result[8]
-            ))
-        return results
-
-    def get_all_sharesite_type(self, limit: int, offset: int, alfabetic: bool) -> List[ShareSiteType]:
-        """
-        """
-        sentence = f'select id, active, name, added_ts, modified_ts from "{ShareSiteType.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
-
-        sql_results = self.get_cur_db().execute(sentence).fetchall()
-
-        results = []
-        for result in sql_results:
-            results.append(ShareSiteType(
-                    id_         = result[0],
-                    active      = result[1],
-                    name        = result[2],
-                    added_ts    = result[3],
-                    modified_ts = result[4]
             ))
         return results
 
@@ -356,30 +339,10 @@ class Sqlite(iModel):
                     name            = result[3],
                     private         = result[4],
                     link            = result[5],
-                    type_           = self.get_sharesite_type_by_id(result[6]),
+                    type_           = self.get_type_by_id(result[6]),
                     platform        = self.get_platform_by_id(result[7]),
                     added_ts        = result[8],
                     modified_ts     = result[9]
-            ))
-        return results
-
-    def get_all_warehouse_type(self, limit: int, offset: int, alfabetic: bool) -> List[WarehouseType]:
-        """
-        """
-        sentence = f'select id, active, name, added_ts, modified_ts from "{WarehouseType.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
-
-        sql_results = self.get_cur_db().execute(sentence).fetchall()
-
-        results = []
-        for result in sql_results:
-            results.append(WarehouseType(
-                    id_             = result[0],
-                    active          = result[1],
-                    name            = result[2],
-                    added_ts        = result[3],
-                    modified_ts     = result[4]
             ))
         return results
 
@@ -426,7 +389,7 @@ class Sqlite(iModel):
                     size        = result[3],
                     filled      = result[4],
                     content     = result[5],
-                    type_       = self.get_warehouse_type_by_id(result[6]),
+                    type_       = self.get_type_by_id(result[6]),
                     health      = result[7],
                     added_ts    = result[8],
                     modified_ts = result[9]
@@ -436,10 +399,10 @@ class Sqlite(iModel):
 
     # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[MediaType, MediaStatus, Media, ShareSiteType,
-                  Platform, Group, WarehouseType, App,
+            Union[Type, MediaStatus, Media,
+                  Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
-                  Version, Encoder, CodecType, File, Codec,
+                  Version, Encoder, File, Codec,
                   Track, Language]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
@@ -453,10 +416,10 @@ class Sqlite(iModel):
         """
         pass
 
-    def get_media_type_by_id(self, id_: int) -> Union[None, MediaType]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, groupable, added_ts, modified_ts from "{MediaType.table_name}" where id={id_}').fetchone()
+    def get_type_by_id(self, id_: int) -> Union[None, Type]:
+        sql_result = self.get_cur_db().execute(f'select id, active, name, groupable, added_ts, modified_ts from "{Type.table_name}" where id={id_}').fetchone()
         if sql_result:
-            return MediaType(
+            return Type(
                 id_         = sql_result[0],
                 active      = sql_result[1],
                 name        = sql_result[2],
@@ -486,23 +449,10 @@ class Sqlite(iModel):
                     name        = sql_result[2],
                     year_start  = sql_result[3],
                     year_end    = sql_result[4],
-                    type_       = self.get_media_type_by_id(sql_result[5]),
+                    type_       = self.get_type_by_id(sql_result[5]),
                     status      = self.get_media_status_by_id(sql_result[6]),
                     added_ts    = sql_result[7],
                     modified_ts = sql_result[8]
-            )
-
-    def get_sharesite_type_by_id(self, id_: int) -> Union[None, ShareSiteType]:
-        """"""
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{ShareSiteType.table_name}" where id="{id_}"').fetchone()
-        if sql_result:
-            return ShareSiteType(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
             )
 
     def get_platform_by_id(self, id_: int) -> Union[None, Platform]:
@@ -532,18 +482,6 @@ class Sqlite(iModel):
                     media       = self.get_media_by_id(sql_result[6]),
                     added_ts    = sql_result[7],
                     modified_ts = sql_result[8]
-            )
-
-    def get_warehouse_type_by_id(self, id_: int) -> WarehouseType:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{WarehouseType.table_name}" where id="{id_}"').fetchone()
-        if sql_result:
-            return WarehouseType(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
             )
 
     def get_app_by_id(self, id_: int) -> App:
@@ -585,7 +523,7 @@ class Sqlite(iModel):
                     size        = sql_result[3],
                     filled      = sql_result[4],
                     content     = sql_result[5],
-                    type_       = self.get_warehouse_type_by_id(sql_result[6]),
+                    type_       = self.get_type_by_id(sql_result[6]),
                     health      = sql_result[7],
                     added_ts    = sql_result[8],
                     modified_ts = sql_result[9]
@@ -648,19 +586,6 @@ class Sqlite(iModel):
                     modified_ts         = sql_result[4]
             )
 
-    def get_codec_type_by_id(self, id_: int) -> CodecType:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, \
-                added_ts, modified_ts from "{CodecType.table_name}" \
-                where id="{id_}"').fetchone()
-        if sql_result:
-            return CodecType(
-                    id_                 = sql_result[0],
-                    active              = sql_result[1],
-                    name                = sql_result[2],
-                    added_ts            = sql_result[3],
-                    modified_ts         = sql_result[4]
-            )
-
     def get_file_by_id(self, id_: int) -> File:
         sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
                 id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
@@ -703,7 +628,7 @@ class Sqlite(iModel):
                     active      = sql_result[1],
                     name        = sql_result[2],
                     name_long   = sql_result[3],
-                    type_       = self.get_codec_type_by_id(sql_result[4]),
+                    type_       = self.get_type_by_id(sql_result[4]),
                     added_ts    = sql_result[5],
                     modified_ts = sql_result[6]
             )
@@ -806,8 +731,8 @@ class Sqlite(iModel):
     # GET BY ID
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, CodecType, Codec]) -> \
-            Union[None, Group, Version, Encoder, File, CodecType, Codec, Track,
+    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
+            Union[None, Group, Version, Encoder, File, Type, Codec, Track,
                   Language, TrackLanguage]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -927,19 +852,19 @@ class Sqlite(iModel):
                     modified_ts     = sql_result[21]
             )
 
-    def get_codec_type_by_nk(self, obj: CodecType) -> Union[None, CodecType]:
+    def get_type_by_nk(self, obj: Type) -> Union[None, Type]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   CodecType
+        ╚═  · obj   -   Type
             └ The Version object to use in the search.
         @ Output:
-        ╠═  CodecType   -   The element of the table discriminated by natural key.
-        ╚═  None        -   If no matches exists.
+        ╠═  Type    -   The element of the table discriminated by natural key.
+        ╚═  None    -   If no matches exists.
         """
         sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{CodecType.table_name}" where name="{obj.name}"').fetchone()
+                modified_ts from "{Type.table_name}" where name="{obj.name}"').fetchone()
         if sql_result:
-            return CodecType(
+            return Type(
                     id_         = sql_result[0],
                     active      = sql_result[1],
                     name        = sql_result[2],
@@ -950,11 +875,11 @@ class Sqlite(iModel):
     def get_codec_by_nk(self, obj: Codec) -> Union[None, Codec]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
-        ╚═  · obj   -   CodecType
+        ╚═  · obj   -   Codec
             └ The Version object to use in the search.
         @ Output:
-        ╠═  CodecType   -   The element of the table discriminated by natural key.
-        ╚═  None        -   If no matches exists.
+        ╠═  Codec   -   The element of the table discriminated by natural key.
+        ╚═  None    -   If no matches exists.
         """
         sql_result = self.get_cur_db().execute(f'select id, active, name, name_long, \
                 id_type, added_ts, modified_ts from "{Codec.table_name}" \
@@ -965,7 +890,7 @@ class Sqlite(iModel):
                     active      = sql_result[1],
                     name        = sql_result[2],
                     name_long   = sql_result[3],
-                    type_       = self.get_codec_type_by_id(sql_result[4]),
+                    type_       = self.get_type_by_id(sql_result[4]),
                     added_ts    = sql_result[5],
                     modified_ts = sql_result[6]
             )
@@ -1060,6 +985,7 @@ class Sqlite(iModel):
                     modified_ts             = sql_result[66]
             )
 
+    # xFCR
     def get_language_by_nk(self, obj: Language) -> Union[None, Language]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -1195,7 +1121,7 @@ class Sqlite(iModel):
     # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[MediaType, MediaStatus,
+                    ) -> Union[None, List[Union[Type, MediaStatus,
                                                 Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
@@ -1216,8 +1142,8 @@ class Sqlite(iModel):
         pass
 
     # xfcr
-    def get_by_media_type_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaType]:
-        sentence = f'select id, active, name, groupable, added_ts, modified_ts from {MediaType.table_name} where name="{name}"'
+    def get_by_type_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[Type]:
+        sentence = f'select id, active, name, groupable, added_ts, modified_ts from {Type.table_name} where name="{name}"'
         if alfabetic:
             sentence += ' order by name asc'
         if limit != None and offset != None:
@@ -1227,7 +1153,7 @@ class Sqlite(iModel):
 
         results = []
         for result in sql_results:
-            results.append(MediaType(
+            results.append(Type(
                 id_         = result[0],
                 active      = result[1],
                 name        = result[2],
@@ -1342,10 +1268,10 @@ class Sqlite(iModel):
     # GET BY NAME #
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, MediaType, Media, Group,
-                                Issue, Platform, ShareSiteType, ShareSite,
-                                WarehouseType, Warehouse, Extension, Folder, App,
-                                Version, Encoder, CodecType, Codec, Track,
+    def insert(self, obj: Union[MediaStatus, Type, Media, Group,
+                                Issue, Platform, ShareSite,
+                                Warehouse, Extension, Folder, App,
+                                Version, Encoder, Codec, Track,
                                 TrackLanguage]
                ) -> None:
         """ Adds an element to a DB table.
@@ -1360,8 +1286,8 @@ class Sqlite(iModel):
     def insert_media_status(self, obj: MediaStatus) -> None:
         self.get_cur_db().execute(f'insert into "{MediaStatus.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
 
-    def insert_media_type(self, obj: MediaType) -> None:
-        self.get_cur_db().execute(f'insert into "{MediaType.table_name}" (active, name, groupable) values (?, ?, ?)', (obj.active, obj.name, obj.groupable))
+    def insert_type(self, obj: Type) -> None:
+        self.get_cur_db().execute(f'insert into "{Type.table_name}" (active, name, groupable) values (?, ?, ?)', (obj.active, obj.name, obj.groupable))
 
     def insert_media(self, obj: Media) -> None:
         self.get_cur_db().execute(f'insert into "{Media.table_name}" (active, name, year_start, year_end, id_type, id_status) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.year_start, obj.year_end, obj.type_.id_, obj.status.id_))
@@ -1375,18 +1301,11 @@ class Sqlite(iModel):
     def insert_platform(self, obj: Platform) -> None:
         self.get_cur_db().execute(f'insert into "{Platform.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
 
-    def insert_sharesite_type(self, obj: ShareSiteType) -> None:
-        self.get_cur_db().execute(f'insert into "{ShareSiteType.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
-
     def insert_sharesite(self, obj: ShareSite) -> None:
         self.get_cur_db().execute(f'insert into "{ShareSite.table_name}" (active, in_platform_id, name, private, link, id_type, id_platform) values (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.in_platform_id, obj.name, obj.private, obj.link, obj.type_.id_, obj.platform.id_))
 
     def insert_sharesite_subs(self, obj: ShareSiteSubs) -> None:
         self.get_cur_db().execute(f'insert into "{ShareSiteSubs.table_name}" (id_share_site, sub_num) values (?, ?)', (obj.share_site.id_, obj.sub_num))
-
-    def insert_warehouse_type(self, obj: WarehouseType) -> None:
-        self.get_cur_db().execute(f'insert into "{WarehouseType.table_name}" \
-                (active, name) values (?, ?)', (obj.active, obj.name))
 
     def insert_warehouse(self, obj: Warehouse) -> None:
         self.get_cur_db().execute(f'insert into "{Warehouse.table_name}" \
@@ -1438,10 +1357,6 @@ class Sqlite(iModel):
                                      obj.nb_programs, obj.start, obj.duration, obj.size,
                                      obj.bit_rate, obj.probe_score, obj.creation_ts,
                                      id_version, id_encoder, obj.original_name))
-
-    def insert_codec_type(self, obj: CodecType) -> None:
-        self.get_cur_db().execute(f'insert into "{CodecType.table_name}" \
-                (active, name) values (?, ?)', (obj.active, obj.name))
 
     def insert_codec(self, obj: Codec) -> None:
         self.get_cur_db().execute(f'insert into "{Codec.table_name}" \
