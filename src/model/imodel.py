@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/17 23:24:17.066062
+#+ Editado:	2023/03/18 12:44:17.736486
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ from sqlite3 import Connection, Cursor
 from typing import List, Union, Tuple
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import Type, MediaStatus
+from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
@@ -101,7 +101,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, MediaStatus, Media, Platform, ShareSite, Issue, Warehouse]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -120,7 +120,7 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[Type, MediaStatus, Media,
+            Union[Type, Status, Media,
                   Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
                   Version, Encoder, File, Codec,
@@ -189,7 +189,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[Type, MediaStatus,
+                    ) -> Union[None, List[Union[Type, Status,
                                                 Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
@@ -211,7 +211,7 @@ class iModel(ABC):  # pylint: disable=C0103
     # ---
 
     @abstractmethod
-    def insert(self, obj: Union[MediaStatus, Type, Media, Group,
+    def insert(self, obj: Union[Status, Type, Media, Group,
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,

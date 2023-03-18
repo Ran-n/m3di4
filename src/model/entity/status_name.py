@@ -2,31 +2,24 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/01/04 23:38:25.313276
-#+ Editado:	2023/03/16 21:26:35.483523
+#+ Creado: 	2023/01/29 23:17:57.682598
+#+ Editado:	2023/03/18 12:40:50.867786
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity
+from src.model.entity import BaseEntity, Status
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaStatus(BaseEntity):
+class StatusName(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaStatus'))
+                            default=Config().get_table_name('StatusName'))
     name: str
+    status: Status
     active: Optional[int] = field(default=1)
-
-    def __str__(self) -> str:
-        output =  self.name
-
-        if self.active == 0:
-            output += '['+_('Dormant')+']'
-
-        return output
 # ------------------------------------------------------------------------------

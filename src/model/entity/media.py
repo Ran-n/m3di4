@@ -3,13 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/03/17 19:47:10.571829
+#+ Editado:	2023/03/18 12:47:24.711192
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Type, MediaStatus
+from src.model.entity import BaseEntity, Type, Status
 # ------------------------------------------------------------------------------
 
 
@@ -21,7 +21,7 @@ class Media(BaseEntity):
                             default=Config().get_table_name('Media'))
     name: str
     type_: Type
-    status: MediaStatus
+    status: Status
     year_start: int
     year_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)

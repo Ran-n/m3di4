@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/17 22:52:51.480518
+#+ Editado:	2023/03/18 12:45:31.509257
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -68,8 +68,9 @@ class Controller:
 
             # sort the ids by platform
             for ele in share_sites:
-                chat_ids[ele.platform.name.lower()].append(ele.in_platform_id)
-                platform_share_sites[ele.platform.name.lower()].append(ele)
+                if ele.in_platform_id is not None:
+                    chat_ids[ele.platform.name.lower()].append(ele.in_platform_id)
+                    platform_share_sites[ele.platform.name.lower()].append(ele)
 
             members = MemberCountService().run(chat_ids.copy())
 
@@ -91,9 +92,9 @@ class Controller:
         self.model.insert(self.view.add_type())
         logging.info(_('The "Add Type" process was finished'))
 
-    def add_media_status(self) -> None:
+    def add_status(self) -> None:
         logging.info(_('Starting the "Add Media Status" process'))
-        self.model.insert(self.view.add_media_status())
+        self.model.insert(self.view.add_status())
         logging.info(_('The "Add Media Status" process was finished'))
 
     def add_media(self) -> None:

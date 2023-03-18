@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/17 23:42:08.063359
+#+ Editado:	2023/03/18 14:24:57.263967
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ from typing import List, Union, Tuple
 from src.utils import Config
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import Type, MediaStatus
+from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
@@ -203,7 +203,7 @@ class Sqlite(iModel):
         @ Output:
         ╚═  int - Number of entries on the table.
         """
-        return self.get_cur_db().execute(f'select count(*) from "{Type.table_name}" t \
+        return self.get_cur_db().execute(f'select count(distinct t.id) from "{Type.table_name}" t \
                 right join {table_name} x on x.id_type=t.id').fetchone()[0]
 
     def get_group_num_by_media_id(self, media_id: int) -> int:
@@ -220,7 +220,7 @@ class Sqlite(iModel):
     # GET ALL
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, MediaStatus, Media, Platform, ShareSite, Issue, Warehouse]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -258,8 +258,8 @@ class Sqlite(iModel):
             ))
         return results
 
-    def get_all_media_status(self, limit: int, offset: int, alfabetic: bool) -> List[MediaStatus]:
-        sentence = f'select id, active, name, added_ts, modified_ts from "{MediaStatus.table_name}"'
+    def get_all_status(self, limit: int, offset: int, alfabetic: bool) -> List[Status]:
+        sentence = f'select id, active, name, added_ts, modified_ts from "{Status.table_name}"'
         if alfabetic:
             sentence += ' order by name asc'
         if limit != None and offset != None:
@@ -269,7 +269,7 @@ class Sqlite(iModel):
 
         results = []
         for result in sql_results:
-            results.append(MediaStatus(
+            results.append(Status(
                 id_         = result[0],
                 active      = result[1],
                 name        = result[2],
@@ -294,7 +294,7 @@ class Sqlite(iModel):
                     year_start  = result[3],
                     year_end    = result[4],
                     type_       = self.get_type_by_id(result[5]),
-                    status      = self.get_media_status_by_id(result[6]),
+                    status      = self.get_status_by_id(result[6]),
                     added_ts    = result[7],
                     modified_ts = result[8]
             ))
@@ -399,7 +399,7 @@ class Sqlite(iModel):
 
     # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[Type, MediaStatus, Media,
+            Union[Type, Status, Media,
                   Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
                   Version, Encoder, File, Codec,
@@ -428,10 +428,10 @@ class Sqlite(iModel):
                 modified_ts = sql_result[5]
             )
 
-    def get_media_status_by_id(self, id_: int) -> Union[None, MediaStatus]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, modified_ts from "{MediaStatus.table_name}" where id="{id_}"').fetchone()
+    def get_status_by_id(self, id_: int) -> Union[None, Status]:
+        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, modified_ts from "{Status.table_name}" where id="{id_}"').fetchone()
         if sql_result:
-            return MediaStatus(
+            return Status(
                 id_         = sql_result[0],
                 active      = sql_result[1],
                 name        = sql_result[2],
@@ -450,7 +450,7 @@ class Sqlite(iModel):
                     year_start  = sql_result[3],
                     year_end    = sql_result[4],
                     type_       = self.get_type_by_id(sql_result[5]),
-                    status      = self.get_media_status_by_id(sql_result[6]),
+                    status      = self.get_status_by_id(sql_result[6]),
                     added_ts    = sql_result[7],
                     modified_ts = sql_result[8]
             )
@@ -1121,7 +1121,7 @@ class Sqlite(iModel):
     # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[Type, MediaStatus,
+                    ) -> Union[None, List[Union[Type, Status,
                                                 Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
@@ -1164,8 +1164,8 @@ class Sqlite(iModel):
         return results
 
     # xfcr
-    def get_by_media_status_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[MediaStatus]:
-        sentence = f'select id, active, name, added_ts, modified_ts from {MediaStatus.table_name} where name="{name}"'
+    def get_by_status_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[Status]:
+        sentence = f'select id, active, name, added_ts, modified_ts from {Status.table_name} where name="{name}"'
         if alfabetic:
             sentence += ' order by name asc'
         if limit != None and offset != None:
@@ -1175,7 +1175,7 @@ class Sqlite(iModel):
 
         results = []
         for result in sql_results:
-            results.append(MediaStatus(
+            results.append(Status(
                 id_         = result[0],
                 active      = result[1],
                 name        = result[2],
@@ -1268,7 +1268,7 @@ class Sqlite(iModel):
     # GET BY NAME #
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, Type, Media, Group,
+    def insert(self, obj: Union[Status, Type, Media, Group,
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
@@ -1283,8 +1283,8 @@ class Sqlite(iModel):
         """
         pass
 
-    def insert_media_status(self, obj: MediaStatus) -> None:
-        self.get_cur_db().execute(f'insert into "{MediaStatus.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
+    def insert_status(self, obj: Status) -> None:
+        self.get_cur_db().execute(f'insert into "{Status.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
 
     def insert_type(self, obj: Type) -> None:
         self.get_cur_db().execute(f'insert into "{Type.table_name}" (active, name, groupable) values (?, ?, ?)', (obj.active, obj.name, obj.groupable))

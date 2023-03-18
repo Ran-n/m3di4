@@ -8,16 +8,16 @@
 from dataclasses import dataclass, field
 
 from src.utils import Config
-from src.model.entity import BaseEntity, MediaStatusDescription, Language
+from src.model.entity import BaseEntity, StatusDescription, Language
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class MediaStatusDescriptionLanguage(BaseEntity):
+class StatusDescriptionLanguage(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('MediaStatusDescriptionLanguage'))
-    media_type_desc: MediaStatusDescription
+                            default=Config().get_table_name('StatusDescriptionLanguage'))
+    status_desc: StatusDescription
     language: Language
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/18 11:09:39.779224
+#+ Editado:	2023/03/18 12:44:32.722370
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ from typing import List, Union, Tuple
 from src.exception import InheritException
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import Type, MediaStatus
+from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
@@ -140,7 +140,7 @@ class Model:
     # GET ALL
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, MediaStatus, Media, Platform, ShareSite, Issue, Warehouse]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -167,8 +167,8 @@ class Model:
                                                offset=offset, alfabetic=alfabetic)
             else:
                 return self.model.get_all_type(limit=limit, offset=offset, alfabetic=alfabetic)
-        elif table_name == MediaStatus.table_name:
-            return self.model.get_all_media_status(limit, offset, alfabetic)
+        elif table_name == Status.table_name:
+            return self.model.get_all_status(limit, offset, alfabetic)
         elif table_name == Media.table_name:
             return self.model.get_all_media(limit, offset, alfabetic)
         elif table_name == Platform.table_name:
@@ -183,7 +183,7 @@ class Model:
 
     # GET BY ID
     def get_by_id(self, table_name: str, id_: int) ->\
-            Union[Type, MediaStatus, Media,
+            Union[Type, Status, Media,
                   Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
                   Version, Encoder, File, Codec,
@@ -203,8 +203,8 @@ class Model:
         if id_ is None: return None
         elif table_name == Type.table_name:
             return self.model.get_type_by_id(id_)
-        elif table_name == MediaStatus.table_name:
-            return self.model.get_media_status_by_id(id_)
+        elif table_name == Status.table_name:
+            return self.model.get_status_by_id(id_)
         elif table_name == Media.table_name:
             return self.model.get_media_by_id(id_)
         elif table_name == Platform.table_name:
@@ -317,7 +317,7 @@ class Model:
     # GET BY NAME
     def get_by_name(self, table_name: str, name: str, limit: int = None,
                     offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[Type, MediaStatus,
+                    ) -> Union[None, List[Union[Type, Status,
                                                 Extension, Folder, App, Language]]]:
         """ Returns all elements of table that match the given name.
         @ Input:
@@ -338,8 +338,8 @@ class Model:
         logging.info(_(f'Searching on "{table_name}" table any entries that match the given name "{name}"'))
         if table_name == Type.table_name:
             return self.model.get_by_type_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
-        elif table_name == MediaStatus.table_name:
-            return self.model.get_by_media_status_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
+        elif table_name == Status.table_name:
+            return self.model.get_by_status_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
         elif table_name == Extension.table_name:
             return self.model.get_extension_by_name(name= name, limit= limit, offset= offset, alfabetic= alfabetic)
         elif table_name == Folder.table_name:
@@ -351,7 +351,7 @@ class Model:
     # GET BY NAME
 
     # INSERT
-    def insert(self, obj: Union[MediaStatus, Type, Media, Group,
+    def insert(self, obj: Union[Status, Type, Media, Group,
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
@@ -365,8 +365,8 @@ class Model:
         ╚═  None
         """
         logging.info(_(f'Inserting new value in the table "{obj.table_name}"'))
-        if isinstance(obj, MediaStatus):
-            return self.model.insert_media_status(obj)
+        if isinstance(obj, Status):
+            return self.model.insert_status(obj)
         elif isinstance(obj, Type):
             return self.model.insert_type(obj)
         elif isinstance(obj, Media):

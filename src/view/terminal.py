@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/18 11:35:09.082663
+#+ Editado:	2023/03/18 14:04:14.612529
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ from src.utils import Config, center
 from src.utils import AddFileTerminalViewOutput
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import Type, MediaStatus
+from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite
 from src.model.entity import Warehouse
 # ------------------------------------------------------------------------------
@@ -51,12 +51,12 @@ class Terminal(iView):
                 '..'            :   [_('Exit (No Save)'), self.controller.exit_no_save],
                 _('#members')   :   [_('Update Member Count'), self.controller.update_member_count],
                 _('+t')         :   [_('Add a Type'), self.controller.add_type],
-                _('+ms')        :   [_('Add Media Status'), self.controller.add_media_status],
+                _('+s')         :   [_('Add a Status'), self.controller.add_status],
                 _('+m')         :   [_('Add Media'), self.controller.add_media],
                 _('+mg')        :   [_('Add Media Group'), self.controller.add_group],
                 _('+mi')        :   [_('Add Media Issue'), self.controller.add_issue],
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
-                _('+s')         :   [_('Add ShareSite'), self.controller.add_sharesite],
+                _('+ss')        :   [_('Add ShareSite'), self.controller.add_sharesite],
                 _('+w')         :   [_('Add Warehouse'), self.controller.add_warehouse],
                 _('+f')         :   [_('Add File'), self.controller.add_file],
         }
@@ -126,7 +126,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-    def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[Type, MediaStatus, Media]:
+    def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[Type, Status, Media]:
         """
             message
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
@@ -338,16 +338,16 @@ class Terminal(iView):
 
         return Type(name=name, groupable=groupable)
 
-    def add_media_status(self) -> MediaStatus:
+    def add_status(self) -> Status:
         """ Terminal View function for adding a media status element.
         @ Input:
         @ Output:
-        ╚═  MediaStatus   -   The MediaStatus created by the user.
+        ╚═  Status   -   The Status created by the user.
         """
         logging.info(_('Requesting the user for the information on the media status'))
 
-        title = f'{2*Config().title_symbol} ' + _('Add Media Status') + f' {2*Config().title_symbol}'
-        ender = f'{2*Config().title_symbol} ' + _('Added Media Status') + f' {2*Config().title_symbol}'
+        title = f'{2*Config().title_symbol} ' + _('Add Status') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added Status') + f' {2*Config().title_symbol}'
         print()
         print(self.separator)
         print(center(title, self.line_len))
@@ -356,7 +356,7 @@ class Terminal(iView):
         while True:
             name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
             if name != '':
-                if len(self.model.get_by_name(MediaStatus.table_name, name)) == 0:
+                if len(self.model.get_by_name(Status.table_name, name)) == 0:
                     break
                 print(f'{Config().error_symbol} ' + _('The given name is already in use'))
 
@@ -366,7 +366,7 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return MediaStatus(name= name)
+        return Status(name= name)
 
     def add_media(self) -> Media:
         """ Terminal View function for adding a media element.
@@ -420,10 +420,10 @@ class Terminal(iView):
                     'pick':     _('Status'),
                     'empty':    _('There are no media statuses available')
                 },
-                option_count    =   self.model.get_num(table_name=MediaStatus.table_name),
-                add_fn          =   self.controller.add_media_status,
+                option_count    =   self.model.get_num(table_name=Status.table_name),
+                add_fn          =   self.controller.add_status,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
-                    table_name=MediaStatus.table_name, limit=limit, offset=offset),
+                    table_name=Status.table_name, limit=limit, offset=offset),
                 limit           =   Config().pagination_limit
         )
         print()

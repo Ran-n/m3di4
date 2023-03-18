@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/03/17 19:16:58.064043
+#+ Editado:	2023/03/18 12:44:07.742094
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
@@ -15,7 +15,7 @@ from .extension import Extension
 from .folder import Folder
 from .type import Type
 from .code import Code
-from .media_status import MediaStatus
+from .status import Status
 from .web import Web
 from .app import App
 from .country import Country
@@ -39,7 +39,7 @@ from .media_web import MediaWeb
 
 from .language_name import LanguageName
 from .type_name import TypeName
-from .media_status_name import MediaStatusName
+from .status_name import StatusName
 from .country_name import CountryName
 from .media_name import MediaName
 from .group_name import GroupName
@@ -47,7 +47,7 @@ from .issue_name import IssueName
 
 from .language_name_language import LanguageNameLanguage
 from .type_name_language import TypeNameLanguage
-from .media_status_name_language import MediaStatusNameLanguage
+from .status_name_language import StatusNameLanguage
 from .country_name_language import CountryNameLanguage
 from .media_name_language import MediaNameLanguage
 from .group_name_language import GroupNameLanguage
@@ -59,7 +59,7 @@ from .encoder_description import EncoderDescription
 from .extension_description import ExtensionDescription
 from .type_description import TypeDescription
 from .code_description import CodeDescription
-from .media_status_description import MediaStatusDescription
+from .status_description import StatusDescription
 from .web_description import WebDescription
 from .app_description import AppDescription
 from .country_description import CountryDescription
@@ -77,7 +77,7 @@ from .encoder_description_language import EncoderDescriptionLanguage
 from .extension_description_language import ExtensionDescriptionLanguage
 from .type_description_language import TypeDescriptionLanguage
 from .code_description_language import CodeDescriptionLanguage
-from .media_status_description_language import MediaStatusDescriptionLanguage
+from .status_description_language import StatusDescriptionLanguage
 from .web_description_language import WebDescriptionLanguage
 from .app_description_language import AppDescriptionLanguage
 from .country_description_language import CountryDescriptionLanguage

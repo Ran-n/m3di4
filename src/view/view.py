@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/03/17 23:47:43.741709
+#+ Editado:	2023/03/18 12:46:59.541033
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ from src.model import iModel
 from src.exception import InheritException
 
 from src.model.entity import Media, Group, Issue
-from src.model.entity import Type, MediaStatus
+from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite
 from src.model.entity import Warehouse
 # ------------------------------------------------------------------------------
@@ -49,8 +49,8 @@ class View:
     def add_type(self) -> Type:
         return self.strategy.add_type()
 
-    def add_media_status(self) -> MediaStatus:
-        return self.strategy.add_media_status()
+    def add_status(self) -> Status:
+        return self.strategy.add_status()
 
     def add_media(self) -> Media:
         return self.strategy.add_media()

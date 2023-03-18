@@ -26,7 +26,7 @@ class Type(BaseEntity):
     def __str__(self) -> str:
         output =  f'{self.name}'
 
-        if groupable is not None:
+        if self.groupable is not None:
             output += ' ['
             if self.groupable == 0:
                 output += _('Non ')
