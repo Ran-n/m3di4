@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/30 23:00:23.885215
-#+ Editado:	2023/02/24 20:13:58.217962
+#+ Editado:	2023/03/18 17:29:41.787201
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -21,4 +21,7 @@ class Platform(BaseEntity):
                             default=Config().get_table_name('Platform'))
     name: str
     active: Optional[int] = field(default=1)
+
+    def __str__(self) -> str:
+        return self.name
 # ------------------------------------------------------------------------------
