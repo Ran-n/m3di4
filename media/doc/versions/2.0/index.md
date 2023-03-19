@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/03/17 16:56:17.352849 )
+[//]: # (+ Editado:	2023/03/19 12:53:33.756450 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -26,6 +26,7 @@ Until
 - Created DB insertion script.
 - Created basic MVC program structure.
 - Created i18n tables for the DB.
+- Created app string translations.
 - Added automatic adding file and tracks information to the DB.
 
 ## To Done
@@ -72,3 +73,4 @@ Until
     - [X] Make Add Function for Warehouse
     - [X] Make "info.py" a service.
 - [X] Add a root/original/ur language to the language table. (For example American's English ur language would be English and english would not have an ur language.)
+- [X] Made a global type and status tables instead of one for each element.

@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:24.413478 )
-[//]: # (+ Editado:	2023/03/12 20:16:17.611579 )
+[//]: # (+ Editado:	2023/03/19 12:54:43.389396 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -20,8 +20,8 @@ Explanation of what each table of the database was designed to contain.
 - [Media](#media)
 - [Group](#group)
 - [Issue](#issue)
-- [MediaType](#mediatype)
-- [MediaStatus](#mediastatus)
+- [Type](#type)
+- [Status](#status)
 - [Poster](#poster)
 - [Language](#language)
 - [Code](#code)
@@ -73,7 +73,7 @@ Some examples are "video", "audio" or "subitle".
 
 ## Media
 Any element of media like a movie, a tv show, a documentary, a band, a youtube channel etc.
-The distinction of which type it is is made with the relationship with [MediaType](#mediatype).
+The distinction of which type it is is made with the relationship with [Type](#type).
 
 ## Group
 Intermedium grouping for [Media](#media) elements.
@@ -84,11 +84,11 @@ Minimum entity separation a [Media](#media) can have.
 They can also have a related [Group](#Group).
 This can be an episode, a book chapter, a youtube video or even a song.
 
-## MediaType
+## Type
 What is the type of the [Media](#media) its related with.
 This can be a film, a tv show, a book, a youtube channel or even a music band.
 
-## MediaStatus
+## Status
 What is the status of the [Media](#media) its related with.
 This can be in emision, canceled, premiered, etc.
 

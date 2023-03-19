@@ -9,9 +9,10 @@
 
 # TODO
 - [ ] Make Groups and Issues able to have a related Poster too.
-- [ ] Entertain the idea of making a global type and/or status table instead of one for each typed element.
 - [ ] Make queries (like get\_all) to discriminate against dormant (non active) entries.
 - [ ] Fix terminal view so that it doesnt assume that adding a single file means its a media, it can be an issue.
+- [ ] Entertain the idea of summing up Platform and Web tables.
+- [ ] Migrate from ffprobe to mediainfo.
 - [ ] Make the CustomTKinter GUI.
 - [ ] Allow inserting dates before year 0.
 - [ ] Check if a date of an issue is in between the appropiate years according to its group/media
