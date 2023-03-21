@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/21 20:44:43.581166
+#+ Editado:	2023/03/21 22:34:10.044560
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -134,6 +134,9 @@ class Terminal(iView):
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
         """
 
+        original_limit = limit
+        original_offset = offset
+
         if not isinstance(option_count, int):
             option_count_fn = option_count
             option_count = option_count()
@@ -180,26 +183,42 @@ class Terminal(iView):
             # move in pagination (limit = None | 0 will be false)
             elif limit and (choice in PaginationEnum.OPTIONS.value):
                 choice_enum = PaginationEnum(choice)
-                if (choice_enum == PaginationEnum.NEXT) and (option_count > offset + limit):
-                    offset += limit
+                if (choice_enum == PaginationEnum.NEXT):
+                    if (option_count > offset + limit):
+                        offset += limit
+                    else:
+                        offset = 0
+                        limit = original_limit
                     load_options = True
-                elif (choice_enum == PaginationEnum.PREVIOUS) and (offset != 0):
-                    offset -= limit
+                elif (choice_enum == PaginationEnum.PREVIOUS):
+                    if offset > 0:
+                        offset -= limit
+                    else:
+                        limit = option_count
+                        module = option_count % original_limit
+                        if module == 0:
+                            offset = option_count - original_limit
+                        else:
+                            offset = option_count - module
+
+                    if offset < 0:
+                        offset = 0
+                        limit = original_limit
                     load_options = True
             # user selected something in the list
             elif choice.isdigit():
                 choice = int(choice)
-                # xFCR when on number seven and selected 3
-                if (choice > 0 and choice <= (len(lst_option) + offset)):
+                if (choice > offset and choice <= (len(lst_option) + offset)):
                     value = lst_option[choice - offset - 1]
                     break
         return value
 
     def __pick_from_joined_options(self, message: dict[str, str], option_count: Union[int, Callable],
                             add_fn: Callable, get_opts_fn: Callable,
-                            base_table: str, limit: int = None, 
+                            base_table: str, limit: int = None,
                             offset: int = 0) -> Union[Status, Media]:
-        """"""
+        """When you want to use a joined table you may want to unjoin you use this function
+        to call the pick_from_options one."""
         value = self.__pick_from_options(message=message, option_count=option_count,
                                         add_fn=add_fn, get_opts_fn=get_opts_fn,
                                         limit=limit, offset=offset)
