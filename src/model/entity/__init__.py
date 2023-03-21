@@ -3,23 +3,22 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:13:42.859161
-#+ Editado:	2023/03/18 12:44:07.742094
+#+ Editado:	2023/03/20 17:36:57.844136
 # ------------------------------------------------------------------------------
 from .base_entity import BaseEntity
 from .sequence import Sequence
 
-from .language import Language
-from .platform import Platform
 from .encoder import Encoder
 from .extension import Extension
 from .folder import Folder
 from .type import Type
 from .code import Code
 from .status import Status
-from .web import Web
 from .app import App
 from .country import Country
 
+from .platform import Platform
+from .language import Language
 from .code_name import CodeName
 from .version import Version
 from .codec import Codec
@@ -35,7 +34,7 @@ from .track import Track
 from .track_language import TrackLanguage
 from .share_site_subs import ShareSiteSubs
 from .file_share_site import FileShareSite
-from .media_web import MediaWeb
+from .media_platform import MediaPlatform
 
 from .language_name import LanguageName
 from .type_name import TypeName
@@ -60,7 +59,6 @@ from .extension_description import ExtensionDescription
 from .type_description import TypeDescription
 from .code_description import CodeDescription
 from .status_description import StatusDescription
-from .web_description import WebDescription
 from .app_description import AppDescription
 from .country_description import CountryDescription
 from .version_description import VersionDescription
@@ -78,7 +76,6 @@ from .extension_description_language import ExtensionDescriptionLanguage
 from .type_description_language import TypeDescriptionLanguage
 from .code_description_language import CodeDescriptionLanguage
 from .status_description_language import StatusDescriptionLanguage
-from .web_description_language import WebDescriptionLanguage
 from .app_description_language import AppDescriptionLanguage
 from .country_description_language import CountryDescriptionLanguage
 from .version_description_language import VersionDescriptionLanguage

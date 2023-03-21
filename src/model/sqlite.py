@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/18 14:24:57.263967
+#+ Editado:	2023/03/21 16:22:57.316952
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -236,9 +236,13 @@ class Sqlite(iModel):
         """
         pass
 
-    def get_all_type(self, table_name: str, limit: int, offset: int, alfabetic: bool) -> List[Type]:
-        sentence = f'select distinct t.id, t.active, t.name, t.groupable, t.added_ts, t.modified_ts \
-                from "{Type.table_name}" t right join "{table_name}" x on x.id_type=t.id'
+    def get_all_type(self, table_name: Union[None, str], limit: int, offset: int, alfabetic: bool) -> List[Type]:
+        if table_name is not None:
+            sentence = f'select distinct t.id, t.active, t.name, t.groupable, t.added_ts, t.modified_ts \
+                    from "{Type.table_name}" t right join "{table_name}" x on x.id_type=t.id'
+        else:
+            sentence = f'select distinct id, active, name, groupable, added_ts, modified_ts \
+                    from "{Type.table_name}"'
         if alfabetic:
             sentence += ' order by name asc'
         if limit != None and offset != None:
@@ -303,7 +307,8 @@ class Sqlite(iModel):
     def get_all_platform(self, limit: int, offset: int, alfabetic: bool) -> List[Platform]:
         """
         """
-        sentence = f'select id, active, name, added_ts, modified_ts from "{Platform.table_name}"'
+        sentence = f'select id, active, acronym, name, name_long, link, id_type, added_ts,\
+                modified_ts from "{Platform.table_name}"'
         if alfabetic: sentence += ' order by name asc'
         if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
 
@@ -314,9 +319,13 @@ class Sqlite(iModel):
             results.append(Platform(
                     id_         = result[0],
                     active      = result[1],
-                    name        = result[2],
-                    added_ts    = result[3],
-                    modified_ts = result[4]
+                    acronym     = result[2],
+                    name        = result[3],
+                    name_long   = result[4],
+                    link        = result[5],
+                    type_       = self.get_type_by_id(result[6]),
+                    added_ts    = result[7],
+                    modified_ts = result[8]
             ))
         return results
 
@@ -417,7 +426,8 @@ class Sqlite(iModel):
         pass
 
     def get_type_by_id(self, id_: int) -> Union[None, Type]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, groupable, added_ts, modified_ts from "{Type.table_name}" where id={id_}').fetchone()
+        sql_result = self.get_cur_db().execute(f'select id, active, name, groupable, added_ts, \
+                modified_ts from "{Type.table_name}" where id={id_}').fetchone()
         if sql_result:
             return Type(
                 id_         = sql_result[0],
@@ -457,15 +467,20 @@ class Sqlite(iModel):
 
     def get_platform_by_id(self, id_: int) -> Union[None, Platform]:
         """"""
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{Platform.table_name}" where id="{id_}"').fetchone()
+        sql_result = self.get_cur_db().execute(f'select id, active, acronym, name, \
+                name_long, link, id_type, added_ts, modified_ts from \
+                "{Platform.table_name}" where id="{id_}"').fetchone()
         if sql_result:
             return Platform(
                     id_         = sql_result[0],
                     active      = sql_result[1],
-                    name        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
+                    acronym     = sql_result[2],
+                    name        = sql_result[3],
+                    name_long   = sql_result[4],
+                    link        = sql_result[5],
+                    type_       = self.get_type_by_id(sql_result[6]),
+                    added_ts    = sql_result[7],
+                    modified_ts = sql_result[8]
             )
 
     def get_group_by_id(self, id_: int) -> Union[None, Group]:
@@ -985,7 +1000,7 @@ class Sqlite(iModel):
                     modified_ts             = sql_result[66]
             )
 
-    # xFCR
+    # xFCR ??
     def get_language_by_nk(self, obj: Language) -> Union[None, Language]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
@@ -1299,7 +1314,10 @@ class Sqlite(iModel):
         self.get_cur_db().execute(f'insert into "{Issue.table_name}" (active, position, name, date, id_media, id_group) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.position, obj.name, obj.date, obj.media.id_, obj.group.id_))
 
     def insert_platform(self, obj: Platform) -> None:
-        self.get_cur_db().execute(f'insert into "{Platform.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
+        self.get_cur_db().execute(f'insert into "{Platform.table_name}" \
+                (active, acronym, name, name_long, link, id_type) values \
+                (?, ?, ?, ?, ?, ?)', (obj.active, obj.acronym, obj.name,
+                                      obj.name_long, obj.link, obj.type_.id_))
 
     def insert_sharesite(self, obj: ShareSite) -> None:
         self.get_cur_db().execute(f'insert into "{ShareSite.table_name}" (active, in_platform_id, name, private, link, id_type, id_platform) values (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.in_platform_id, obj.name, obj.private, obj.link, obj.type_.id_, obj.platform.id_))

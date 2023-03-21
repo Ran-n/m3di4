@@ -37,7 +37,7 @@ telegram_bot_token =
 # Default: terminal
 user_inteface = terminal
 
-# ui terminal
+# UI - TERMINAL
 # pagination
 # how many elements you want to be shown at once.
 pagination_limit = 5
@@ -59,4 +59,7 @@ add_symbol = +
 remove_symbol = -
 # used to indicate an end date want to be set to be the same as a start one
 equal_symbol = =
+# used for specifying you want to see all existing elements
+all_symbol = *
+#/ UI - TERMINAL
 ##/ UI

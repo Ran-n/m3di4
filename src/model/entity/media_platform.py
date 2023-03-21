@@ -2,24 +2,25 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/02/19 15:26:10.629501
-#+ Editado:	2023/02/24 22:05:45.079942
+#+ Creado: 	2023/01/05 00:06:39.547649
+#+ Editado:	2023/03/20 17:35:15.980037
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
 
 from src.utils import Config
-from src.model.entity import BaseEntity, Web
+from src.model.entity import BaseEntity, Media, Platform
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
 @dataclass
-class WebDescription(BaseEntity):
+class MediaPlatform(BaseEntity):
     """Entity Object"""
     table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('WebDescription'))
-    desc: str
-    web: Web
-    active: Optional[int] = field(default=1)
+                            default=Config().get_table_name('MediaPlatform'))
+    media: Media
+    platform: Platform
+    link: str
+    active: Optional[str] = field(default=1)
 # ------------------------------------------------------------------------------

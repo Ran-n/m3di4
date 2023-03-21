@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/18 14:04:14.612529
+#+ Editado:	2023/03/21 20:44:43.581166
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -126,11 +126,17 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-    def __pick_from_options(self, message: dict[str, str], option_count: int, add_fn: Callable, get_opts_fn: Callable, limit: int = None, offset: int = 0) -> Union[Type, Status, Media]:
+    def __pick_from_options(self, message: dict[str, str], option_count: Union[int, Callable],
+                            add_fn: Callable, get_opts_fn: Callable, limit: int = None,
+                            offset: int = 0, show_all: bool = True) -> Union[Type, Status, Media]:
         """
             message
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
         """
+
+        if not isinstance(option_count, int):
+            option_count_fn = option_count
+            option_count = option_count()
 
         # if not option exists, it starts the add option function
         while option_count == 0:
@@ -138,7 +144,10 @@ class Terminal(iView):
             print()
             print(f'{Config().error_symbol} {message["empty"]}')
             add_fn()
-            option_count += 1
+            if option_count_fn:
+                option_count = option_count_fn()
+            else:
+                option_count += 1
 
         # this variable allows the print to be smart and only reprint
         # and reask for the options if anyting was changed
@@ -148,7 +157,7 @@ class Terminal(iView):
             if load_options:
                 load_options = False
 
-                lst_option = get_opts_fn(limit= limit, offset= offset)
+                lst_option = get_opts_fn(limit=limit, offset=offset)
 
                 title = f'{Config().option_title_symbol} {message["title"]}'
                 if limit: title += f' {len(lst_option) + offset}/{option_count}'
@@ -161,8 +170,13 @@ class Terminal(iView):
             # add new element
             if choice == Config().add_symbol:
                 add_fn()
-                option_count += 1
+                if option_count_fn:
+                    option_count = option_count_fn()
+                else:
+                    option_count += 1
                 load_options = True
+            elif choice == Config().all_symbol and show_all:
+                return None
             # move in pagination (limit = None | 0 will be false)
             elif limit and (choice in PaginationEnum.OPTIONS.value):
                 choice_enum = PaginationEnum(choice)
@@ -175,9 +189,28 @@ class Terminal(iView):
             # user selected something in the list
             elif choice.isdigit():
                 choice = int(choice)
+                # xFCR when on number seven and selected 3
                 if (choice > 0 and choice <= (len(lst_option) + offset)):
                     value = lst_option[choice - offset - 1]
                     break
+        return value
+
+    def __pick_from_joined_options(self, message: dict[str, str], option_count: Union[int, Callable],
+                            add_fn: Callable, get_opts_fn: Callable,
+                            base_table: str, limit: int = None, 
+                            offset: int = 0) -> Union[Status, Media]:
+        """"""
+        value = self.__pick_from_options(message=message, option_count=option_count,
+                                        add_fn=add_fn, get_opts_fn=get_opts_fn,
+                                        limit=limit, offset=offset)
+        if value is None:
+            print()
+            option_count = lambda: self.model.get_num(table_name=base_table)
+            get_opts_fn = lambda limit, offset: self.model.get_all(table_name=base_table,
+                                                                   limit=limit, offset=offset)
+            value = self.__pick_from_options(message=message, option_count=option_count,
+                                            add_fn=add_fn, get_opts_fn=get_opts_fn,
+                                             limit=limit, offset=offset, show_all=False)
         return value
 
     @staticmethod
@@ -678,21 +711,53 @@ class Terminal(iView):
 
         # name
         while True:
-            name = input(f'{Config().input_symbol} ' + _('Name') + ': ')
+            name = input(f'{Config().input_symbol} ' + _('Name') + ': ').capitalize()
             if name != '':
                 if self.model.exists(Platform(name= name)):
                     print(f'{Config().error_symbol} ' + _('The platform already exists, pick another name.'))
                 else:
                     break
-        #print()
-
-        """
-        # description
-        desc = input(f'{Config().input_symbol} ' + _('Description') + ': ')
-        if desc == '':
-            desc = None
         print()
-        """
+
+        # name_long
+        name_long = input(f'{Config().input_symbol} ' + _('Long name') + ': ').capitalize()
+        if name_long == '':
+            name_long = None
+        print()
+
+        # acronym
+        acronym = input(f'{Config().input_symbol} ' + _('Acronym') + ': ')
+        print()
+
+        # link
+        while True:
+            link = input(f'{Config().input_symbol} ' + _('Link') + ': ')
+            if link == '':
+                link = None
+                break
+            elif valid.url(link):
+                if not self.model.exists(ShareSite(name=name, type_=None, link=link)):
+                    break
+                else:
+                    logging.info(_('The requested Platform to be added already exists, a link change will be adviced'))
+                    print(f'{Config().error_symbol} '+_('The Platform already exists, pick another link.'))
+        print()
+
+        # type
+        type_ = self.__pick_from_joined_options(
+                message     =   {
+                    'title':    _('Types'),
+                    'pick':     _('Type'),
+                    'empty':    _('There are no Types available')
+                },
+                option_count    =   lambda: self.model.get_num(table_name=(Type.table_name, Platform.table_name)),
+                add_fn          =   self.controller.add_type,
+                get_opts_fn     =   lambda limit, offset: self.model.get_all(
+                    table_name=(Type.table_name, Platform.table_name), limit=limit, offset=offset),
+                limit           =   Config().pagination_limit,
+                base_table      = Type.table_name
+        )
+        print()
 
         print()
         print(self.separator)
@@ -700,7 +765,8 @@ class Terminal(iView):
         print(self.separator)
         print()
 
-        return Platform(name=name.capitalize())
+        return Platform(name=name, name_long=name_long,
+                        acronym=acronym, link=link, type_=type_)
 
     def add_sharesite(self) -> ShareSite:
         """

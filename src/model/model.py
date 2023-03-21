@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/18 12:44:32.722370
+#+ Editado:	2023/03/21 16:20:47.704499
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -161,12 +161,12 @@ class Model:
             logging.info(_(f'Getting all entries of table "{table_name}" with limit "{limit}", \
                     offset "{offset}" and alfabetic order "{alfabetic}"'))
 
-        if isinstance(table_name, tuple) and table_name[0] == Type.table_name:
-            if len(table_name) > 1:
-                return self.model.get_all_type(table_name=table_name[1], limit=limit,
-                                               offset=offset, alfabetic=alfabetic)
-            else:
-                return self.model.get_all_type(limit=limit, offset=offset, alfabetic=alfabetic)
+        if isinstance(table_name, tuple) and table_name[0] == Type.table_name and len(table_name) > 1:
+            return self.model.get_all_type(table_name=table_name[1], limit=limit,
+                                            offset=offset, alfabetic=alfabetic)
+        elif table_name == Type.table_name or table_name[0] == Type.table_name:
+            return self.model.get_all_type(table_name=None, limit=limit,
+                                            offset=offset, alfabetic=alfabetic)
         elif table_name == Status.table_name:
             return self.model.get_all_status(limit, offset, alfabetic)
         elif table_name == Media.table_name:

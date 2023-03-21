@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/02/25 17:41:20.807419
+#+ Editado:	2023/03/21 20:57:58.923041
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -49,7 +49,7 @@ class Config(object):
             # ui
             self.ui = self.file_content.get('user_interface', 'terminal')
             # pagination
-            self.pagination_limit = self.file_content.get('pagination_limit', 5)
+            self.pagination_limit = int(self.file_content.get('pagination_limit', 5))
             # terminal symbols
             self.title_symbol = self.file_content.get('title_symbol', '*')
             self.input_symbol = self.file_content.get('input_symbol', '>')
@@ -59,6 +59,7 @@ class Config(object):
             self.add_symbol = self.file_content.get('add_symbol', '+')
             self.remove_symbol = self.file_content.get('remove_symbol', '-')
             self.equal_symbol = self.file_content.get('equal_symbol', '=')
+            self.all_symbol = self.file_content.get('all_symbol', '*')
             ##
 
             # checking of the attributes

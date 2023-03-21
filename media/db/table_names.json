@@ -45,7 +45,7 @@
     "MediaName": "MediaName",
     "MediaNameCountry": "MediaNameCountry",
     "MediaNameLanguage": "MediaNameLanguage",
-    "MediaWeb": "MediaWeb",
+    "MediaPlatform": "MediaPlatform",
     "Platform": "Platform",
     "PlatformDescription": "PlatformDescription",
     "PlatformDescriptionLanguage": "PlatformDescriptionLanguage",
@@ -71,8 +71,5 @@
     "VersionDescriptionLanguage": "VersionDescriptionLanguage",
     "Warehouse": "Warehouse",
     "WarehouseDescription": "WarehouseDescription",
-    "WarehouseDescriptionLanguage": "WarehouseDescriptionLanguage",
-    "Web": "Web",
-    "WebDescription": "WebDescription",
-    "WebDescriptionLanguage": "WebDescriptionLanguage"
+    "WarehouseDescriptionLanguage": "WarehouseDescriptionLanguage"
 }

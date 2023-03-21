@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/12 15:28:24.413478 )
-[//]: # (+ Editado:	2023/03/19 12:54:43.389396 )
+[//]: # (+ Editado:	2023/03/20 17:28:50.129184 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -11,17 +11,15 @@
 Explanation of what each table of the database was designed to contain.
 
 ## Index
+- [Type](#type)
+- [Status](#status)
 - [Platform](#platform)
 - [ShareSite](#sharesite)
-- [ShareSiteType](#sharesitetype)
 - [ShareSiteSubs](#sharesitesubs)
 - [Codec](#codec)
-- [CodecType](#codectype)
 - [Media](#media)
 - [Group](#group)
 - [Issue](#issue)
-- [Type](#type)
-- [Status](#status)
 - [Poster](#poster)
 - [Language](#language)
 - [Code](#code)
@@ -31,20 +29,34 @@ Explanation of what each table of the database was designed to contain.
 - [File](#file)
 - [Track](#track)
 - [Country](#country)
-- [Web](#web)
 - [Encoder](#encoder)
 - [Warehouse](#warehouse)
-- [WarehouseType](#warehousetype)
 - [Extension](#extension)
 - [Folder](#folder)
 
+## Type
+Global type object, used to categorize elements.
+For [Media](#media) this can be a "film", "tv show", "book", "youtube channel" or simply "channel" and even a "music band".
+For [ShareSite](#sharesite) this can be mediums such as "group" or "channel".
+For [Codec](#codec) some examples are "video", "audio" or "subitle".
+For [Warehouse](#warehouse) and building on its own provided examples: the type of the library of Alexandria could be library, of a personal computer could be hard drive or computer, of a cloud storage place could be cloud, web or cloud/web hard drive and of a external hard drive could be hard drive.
+Making "library", hard drive" or "cloud storage" some examples of types for [Warehouse](#warehouse).
+
+## Status
+Global status object, used to show the status of any type of object.
+Whe used with the [Media](#media) table some examples would be: "emitting", "returning", "ended", "canceled", "premiered", "released", etc.
+
 ## Platform
-Refers to the place that holds the ShareSite site.
-The ShareSite may not have a platform it is enclosed in.
+Any system outside of this program.
+More specifically it refers to the place that holds the [ShareSite](#sharesite) site or information about a [Media](#media).
+Though the [ShareSite](#sharesite) may not have a platform it is enclosed in.
 
 For example:
 If the [ShareSite](#sharesite) is a Telegram Channel its related [Platform](#platform) would be "Telegram".
 On the other hand, if the [ShareSite](#sharesite) is a website the [Platform](#platform) would be null.
+For [Media](#media) it is usually linked to information pages/services like imdb, tmdb or omdb.
+
+It could be interesting to also link both [Group](#group) and [Issue](#issue) to this table aswell; but for now this is postponned since it can be deduced from the present arrangement.
 
 ## ShareSite
 What medium/site is the [Media](#media) shared at, this [ShareSite](#sharesite) can have a platform (like "Telegram") or not (if it its own website).
@@ -53,23 +65,14 @@ For example:
 If the [ShareSite](#sharesite) is a Telegram Channel its related [Platform](#platform) would be "Telegram".
 On the other hand, if the [ShareSite](#sharesite) is a website the [Platform](#platform) would be null.
 
-## ShareSiteType
-What is the type of the [ShareSite](#sharesite) medium its related to.
-
-Examples of these would be "group" or "channel".
-
 ## ShareSiteSubs
 Number of people that are subscribed on a particular [ShareSite](#sharesite).
 This is its own table since the number its regularly updated and records of its previous value are kept.
 
 ## Codec
-Property related to a [File](#file) stream.
+Property related to a [File](#file) track.
 It gives information of what type of encoding it has.
 Some examples are "h264", "ac3" or "subrip".
-
-## CodecType
-The type of the [Codec](#codec) related to the [File](#file) stream.
-Some examples are "video", "audio" or "subitle".
 
 ## Media
 Any element of media like a movie, a tv show, a documentary, a band, a youtube channel etc.
@@ -83,14 +86,6 @@ A perfect example for this is a tv show season, though its also used for things 
 Minimum entity separation a [Media](#media) can have.
 They can also have a related [Group](#Group).
 This can be an episode, a book chapter, a youtube video or even a song.
-
-## Type
-What is the type of the [Media](#media) its related with.
-This can be a film, a tv show, a book, a youtube channel or even a music band.
-
-## Status
-What is the status of the [Media](#media) its related with.
-This can be in emision, canceled, premiered, etc.
 
 ## Language
 Spoken and written languages arround the world.
@@ -114,21 +109,14 @@ Particular physical representation of the [Media](#media) or [Issue](#issue) sav
 It can be composed of [tracks](#track).
 
 ## Track
-Some [Files](#file) such as vídeos or audios have something called streams.
+Some [Files](#file) such as vídeos or audios have something called tracks.
 These are simply smaller components of whose combination results in the specific [File](#file) that contains them.
 
-For example, in a video [File](#file), some streams could be the video image, its sound, a embedded image and a subtitle track.
-In the case of a standard audio [File](#file), it would have one single stream being the sound.
+For example, in a video [File](#file), some tracks could be the video image, its sound, a embedded image and a subtitle track.
+In the case of a standard audio [File](#file), it would have one single track being the sound.
 
 ## Country
 Contains states/nations that currently exist or existed in the past.
-
-## Web
-Website that currently or formerly existed.
-
-This data could technically overlap with the one inside [Platform](#platform) or [ShareSite](#sharesite) since any of those can be websites, but this table is thought more as a information website related to [Media](#media) (like imdb or tmdb).
-
-It could be interesting to also link both [Group](#group) and [Issue](#issue) to this table aswell; but for now this is postponned since it can be deduced from the present arrangement.
 
 ## Encoder
 Information related to a [File](#file) creation.
@@ -140,11 +128,6 @@ Location where a [File](#file) is stored at.
 This can be a physical or virtual, its [type](#warehousetype) will determine it.
 
 Examples of this would be: The library of Alexandria, a personal computer, a cloud storage place or a external hard drive.
-
-## WarehouseType
-Determines the type of a [Warehouse](#warehouse) element.
-
-Building on the previous examples: the type of the library of Alexandria could be library, of a personal computer could be hard drive or computer, of a cloud storage place could be cloud, web or cloud/web hard drive and of a external hard drive could be hard drive.
 
 ## MediaPoster
 This table is thought to be used by graphical user interfaces to know where to get from images for showing in the user interface.
