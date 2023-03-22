@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/21 22:34:10.044560
+#+ Editado:	2023/03/22 22:26:42.322725
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -88,11 +88,9 @@ class Terminal(iView):
         print('█'+ title +'█')
         print('█'+ '▄'*self.line_len +'█')
 
-        #for key, value in zip(options.keys(), options.values()):
         for key, value in options.items():
             value0 = value[0]
             print('▌'+center(f'\t{key:<{biggest_key_len}}\t\t▐\t\t{value0:<{biggest_value_len}}\t'.expandtabs(self.tab_len), self.line_len)+'▐')
-
 
         print('▀'*(self.line_len+2))
         while True:
@@ -128,7 +126,7 @@ class Terminal(iView):
 
     def __pick_from_options(self, message: dict[str, str], option_count: Union[int, Callable],
                             add_fn: Callable, get_opts_fn: Callable, limit: int = None,
-                            offset: int = 0, show_all: bool = True) -> Union[Type, Status, Media]:
+                            offset: int = 0, show_all: bool = False) -> Union[Type, Status, Media]:
         """
             message
             {'title': 'a', 'pick': 'b', 'empty': 'c'}
@@ -137,6 +135,7 @@ class Terminal(iView):
         original_limit = limit
         original_offset = offset
 
+        option_count_fn = None
         if not isinstance(option_count, int):
             option_count_fn = option_count
             option_count = option_count()
@@ -144,13 +143,16 @@ class Terminal(iView):
         # if not option exists, it starts the add option function
         while option_count == 0:
             logging.warning(message['empty'])
-            print()
-            print(f'{Config().error_symbol} {message["empty"]}')
-            add_fn()
-            if option_count_fn:
-                option_count = option_count_fn()
+            print(f'{Config().error_symbol} {message["empty"]}.')
+            if self.__yn_question(_('Add new?')):
+                add_fn()
+                if option_count_fn:
+                    option_count = option_count_fn()
+                else:
+                    option_count += 1
             else:
-                option_count += 1
+                print()
+                break
 
         # this variable allows the print to be smart and only reprint
         # and reask for the options if anyting was changed
@@ -178,19 +180,19 @@ class Terminal(iView):
                 else:
                     option_count += 1
                 load_options = True
-            elif choice == Config().all_symbol and show_all:
+            elif show_all and choice == Config().all_symbol:
                 return None
             # move in pagination (limit = None | 0 will be false)
             elif limit and (choice in PaginationEnum.OPTIONS.value):
                 choice_enum = PaginationEnum(choice)
-                if (choice_enum == PaginationEnum.NEXT):
+                if (choice_enum == PaginationEnum.NEXT) and (len(lst_option) < option_count):
                     if (option_count > offset + limit):
                         offset += limit
                     else:
                         offset = 0
                         limit = original_limit
                     load_options = True
-                elif (choice_enum == PaginationEnum.PREVIOUS):
+                elif (choice_enum == PaginationEnum.PREVIOUS) and (len(lst_option) < option_count):
                     if offset > 0:
                         offset -= limit
                     else:
@@ -221,7 +223,7 @@ class Terminal(iView):
         to call the pick_from_options one."""
         value = self.__pick_from_options(message=message, option_count=option_count,
                                         add_fn=add_fn, get_opts_fn=get_opts_fn,
-                                        limit=limit, offset=offset)
+                                        limit=limit, offset=offset, show_all=True)
         if value is None:
             print()
             option_count = lambda: self.model.get_num(table_name=base_table)
@@ -229,7 +231,7 @@ class Terminal(iView):
                                                                    limit=limit, offset=offset)
             value = self.__pick_from_options(message=message, option_count=option_count,
                                             add_fn=add_fn, get_opts_fn=get_opts_fn,
-                                             limit=limit, offset=offset, show_all=False)
+                                             limit=limit, offset=offset)
         return value
 
     @staticmethod
@@ -451,7 +453,7 @@ class Terminal(iView):
         """
 
         # type_
-        type_ = self.__pick_from_options(
+        type_ = self.__pick_from_joined_options(
                 message     =   {
                     'title':    _('Types'),
                     'pick':     _('Type'),
@@ -461,7 +463,8 @@ class Terminal(iView):
                 add_fn          =   self.controller.add_type,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
                     table_name=(Type.table_name, Media.table_name), limit=limit, offset=offset),
-                limit           =   Config().pagination_limit
+                limit           =   Config().pagination_limit,
+                base_table      = Type.table_name
         )
         print()
 
@@ -827,7 +830,7 @@ class Terminal(iView):
         print()
 
         # type
-        type_ = self.__pick_from_options(
+        type_ = self.__pick_from_joined_options(
                 message     =   {
                     'title':    _('Types'),
                     'pick':     _('Type'),
@@ -837,7 +840,8 @@ class Terminal(iView):
                 add_fn          =   self.controller.add_type,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
                     table_name=(Type.table_name, ShareSite.table_name), limit=limit, offset=offset),
-                limit           =   Config().pagination_limit
+                limit           =   Config().pagination_limit,
+                base_table      = Type.table_name
         )
         print()
 
@@ -892,7 +896,7 @@ class Terminal(iView):
         print()
 
         # type
-        type_ = self.__pick_from_options(
+        type_ = self.__pick_from_joined_options(
                 message     =   {
                     'title':    _('Types'),
                     'pick':     _('Type'),
@@ -902,7 +906,8 @@ class Terminal(iView):
                 add_fn          =   self.controller.add_type,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
                     table_name=(Type.table_name, Warehouse.table_name), limit=limit, offset=offset),
-                limit           =   Config().pagination_limit
+                limit           =   Config().pagination_limit,
+                base_table      = Type.table_name
         )
         print()
 
