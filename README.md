@@ -2,10 +2,10 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/02/25 12:52:33.519522 )
+[//]: # (+ Editado:	2023/03/22 18:12:04.904479 )
 [//]: # ( ---------------------------------------------------------------------- )
 
-# Medi4
+# M3di4
 Manager for your own personal media library.\
 Allows you to automatically add useful information about media files to a database and lets you manage your library and access information and stats regarding it.
 
