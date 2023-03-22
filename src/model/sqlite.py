@@ -1000,7 +1000,6 @@ class Sqlite(iModel):
                     modified_ts             = sql_result[66]
             )
 
-    # xFCR ??
     def get_language_by_nk(self, obj: Language) -> Union[None, Language]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/18 12:45:31.509257
+#+ Editado:	2023/03/22 17:00:27.856510
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -60,28 +60,29 @@ class Controller:
         share_sites = self.model.get_all(ShareSite.table_name)
         if len(share_sites) > 0:
             chat_ids = {}
-            platform_share_sites = {}
+            platforms_share_sites = {}
             platforms = [ele.name.lower() for ele in self.model.get_all(Platform.table_name)]
             for platform in platforms:
                 chat_ids[platform] = []
-                platform_share_sites[platform] = []
+                platforms_share_sites[platform] = []
 
             # sort the ids by platform
             for ele in share_sites:
                 if ele.in_platform_id is not None:
                     chat_ids[ele.platform.name.lower()].append(ele.in_platform_id)
-                    platform_share_sites[ele.platform.name.lower()].append(ele)
+                    platforms_share_sites[ele.platform.name.lower()].append(ele)
 
             members = MemberCountService().run(chat_ids.copy())
 
-            for share_site, sub_num in zip(*platform_share_sites.values(), *members.values()):
-                ss = ShareSiteSubs(
-                        share_site=share_site,
-                        sub_num=sub_num,
-                        added_ts=datetime.now().strftime("%Y-%m-%d")
-                        )
-                if sub_num and not self.model.exists(ss):
-                    self.model.insert(ss)
+            for platform_share_site, platform_sub_nums in zip(platforms_share_sites.values(), members.values()):
+                for share_site, sub_num in zip(platform_share_site, platform_sub_nums):
+                    ss = ShareSiteSubs(
+                            share_site=share_site,
+                            sub_num=sub_num,
+                            added_ts=datetime.now().strftime("%Y-%m-%d")
+                            )
+                    if sub_num and not self.model.exists(ss):
+                        self.model.insert(ss)
         else:
             logging.info(_('The member count was not updated since there \
                     are no ShareSites'))
