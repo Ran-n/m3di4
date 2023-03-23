@@ -35,7 +35,7 @@ telegram_bot_token =
 # What user interface do you wish to use
 # Accepted: terminal, customtkinter
 # Default: terminal
-user_inteface = terminal
+user_interface = terminal
 
 # UI - TERMINAL
 # pagination
