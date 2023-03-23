@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/22 22:26:42.322725
+#+ Editado:	2023/03/23 22:06:53.011372
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -459,7 +459,7 @@ class Terminal(iView):
                     'pick':     _('Type'),
                     'empty':    _('There are no media types available')
                 },
-                option_count    =   self.model.get_num(table_name=(Type.table_name, Media.table_name)),
+                option_count    =   lambda: self.model.get_num(table_name=(Type.table_name, Media.table_name)),
                 add_fn          =   self.controller.add_type,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
                     table_name=(Type.table_name, Media.table_name), limit=limit, offset=offset),
@@ -836,7 +836,7 @@ class Terminal(iView):
                     'pick':     _('Type'),
                     'empty':    _('There are no Types available')
                 },
-                option_count    =   self.model.get_num(table_name=(Type.table_name, ShareSite.table_name)),
+                option_count    =   lambda: self.model.get_num(table_name=(Type.table_name, ShareSite.table_name)),
                 add_fn          =   self.controller.add_type,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
                     table_name=(Type.table_name, ShareSite.table_name), limit=limit, offset=offset),
@@ -902,7 +902,7 @@ class Terminal(iView):
                     'pick':     _('Type'),
                     'empty':    _('There are no Types available')
                 },
-                option_count    =   self.model.get_num(table_name=(Type.table_name, Warehouse.table_name)),
+                option_count    =   lambda: self.model.get_num(table_name=(Type.table_name, Warehouse.table_name)),
                 add_fn          =   self.controller.add_type,
                 get_opts_fn     =   lambda limit, offset: self.model.get_all(
                     table_name=(Type.table_name, Warehouse.table_name), limit=limit, offset=offset),
