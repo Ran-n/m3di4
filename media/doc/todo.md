@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/03/17 17:12:49.032820 )
+[//]: # (+ Editado:	2023/03/23 22:29:15.547187 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -10,8 +10,7 @@
 # TODO
 - [ ] Make Groups and Issues able to have a related Poster too.
 - [ ] Make queries (like get\_all) to discriminate against dormant (non active) entries.
-- [ ] Fix terminal view so that it doesnt assume that adding a single file means its a media, it can be an issue.
-- [ ] Entertain the idea of summing up Platform and Web tables.
+- [ ] Add new config option to determine symbol for marking dormant element. (terminal view)
 - [ ] Migrate from ffprobe to mediainfo.
 - [ ] Make the CustomTKinter GUI.
 - [ ] Allow inserting dates before year 0.

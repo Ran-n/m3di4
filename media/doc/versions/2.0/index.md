@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/03/19 12:53:33.756450 )
+[//]: # (+ Editado:	2023/03/23 22:29:20.919691 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -28,6 +28,8 @@ Until
 - Created i18n tables for the DB.
 - Created app string translations.
 - Added automatic adding file and tracks information to the DB.
+- Created terminal UI.
+- Created graphical UI.
 
 ## To Done
 - [X] Remake the insert media option and add other options.
@@ -74,3 +76,5 @@ Until
     - [X] Make "info.py" a service.
 - [X] Add a root/original/ur language to the language table. (For example American's English ur language would be English and english would not have an ur language.)
 - [X] Made a global type and status tables instead of one for each element.
+- [X] Entertain the idea of summing up Platform and Web tables.
+- [X] Fix terminal view so that it doesnt assume that adding a single file means its a media, it can be an issue.

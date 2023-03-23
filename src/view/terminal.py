@@ -980,16 +980,13 @@ class Terminal(iView):
                 print(f'{Config().error_symbol} ' + _('The file doesnt exist.'))
         print()
 
-        is_media = True
         if file_path.is_dir():
             file_path = [file for file in file_path.glob('**/*') if file.is_file()]
-            is_media = False
         else:
             file_path = [file_path]
 
-        if is_media == False:
-            is_media = self.__yn_question(message=_('Are you inserting a Media?'))
-            print()
+        is_media = self.__yn_question(message=_('Are you inserting a Media?'))
+        print()
 
         original_names = []
         if is_media == 1:
