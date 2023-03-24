@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/03/23 22:29:20.919691 )
+[//]: # (+ Editado:	2023/03/24 17:56:12.932997 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -78,3 +78,4 @@ Until
 - [X] Made a global type and status tables instead of one for each element.
 - [X] Entertain the idea of summing up Platform and Web tables.
 - [X] Fix terminal view so that it doesnt assume that adding a single file means its a media, it can be an issue.
+- [X] Make Groups and Issues able to have a related Poster too.

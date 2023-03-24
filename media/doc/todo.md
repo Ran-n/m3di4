@@ -2,13 +2,12 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/03/23 22:29:15.547187 )
+[//]: # (+ Editado:	2023/03/24 17:56:07.882798 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
 
 # TODO
-- [ ] Make Groups and Issues able to have a related Poster too.
 - [ ] Make queries (like get\_all) to discriminate against dormant (non active) entries.
 - [ ] Add new config option to determine symbol for marking dormant element. (terminal view)
 - [ ] Migrate from ffprobe to mediainfo.

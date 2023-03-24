@@ -3,15 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/22 18:03:40.998968
+#+ Editado:	2023/03/24 17:40:16.830387
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 import os
-from blake3 import blake3
-import mmap
 from typing import Optional
 
-from src.utils import Config
+from src.utils import Config, calculate_hash
 from src.model.entity import BaseEntity, Warehouse, Folder, Media, Issue
 from src.model.entity import Extension, Encoder, Version
 # ------------------------------------------------------------------------------
@@ -50,10 +48,17 @@ class File(BaseEntity):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media" or "issue"')
         if self.hash_ is None:
-            self.__calculate_hash()
+            #self.__calculate_hash()
+            self.hash_ = calculate_hash(
+                    os.path.join(self.folder.path, f'{self.name}.{self.extension.name}')
+            )
 
+
+
+    """
     def __calculate_hash(self) -> None:
         with open(os.path.join(self.folder.path, f'{self.name}.{self.extension.name}'), 'rb') as f:
             with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
                 self.hash_ = blake3(mm).hexdigest()
+    """
 # ------------------------------------------------------------------------------
