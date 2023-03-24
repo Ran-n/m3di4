@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/22 23:02:43.954635
+#+ Editado:	2023/03/24 19:30:58.446459
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -24,6 +24,7 @@ from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode, CodeName, LanguageName
+from src.model.entity import Poster
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -220,7 +221,7 @@ class Sqlite(iModel):
     # GET ALL
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -404,6 +405,30 @@ class Sqlite(iModel):
                     modified_ts = result[9]
             ))
         return results
+
+    def get_all_poster(self, limit: int, offset: int, alfabetic: bool) -> List[Poster]:
+        """
+        """
+        sentence = f'select id, name, id_extension, id_media, id_group, \
+                id_issue, added_ts, modified_ts from "{Poster.table_name}" where id="{id_}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(Poster(
+                    id_         = result[0],
+                    name        = result[1],
+                    extension   = self.get_extension_by_id(result[2]),
+                    media       = self.get_media_by_id(result[3]),
+                    group       = self.get_group_by_id(result[4]),
+                    issue       = self.get_issue_by_id(result[5]),
+                    added_ts    = result[6],
+                    modified_ts = result[7]
+            ))
+        return results
     # GET ALL #
 
     # GET BY ID
@@ -412,7 +437,7 @@ class Sqlite(iModel):
                   Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
                   Version, Encoder, File, Codec,
-                  Track, Language]:
+                  Track, Language, Poster]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -743,12 +768,28 @@ class Sqlite(iModel):
                     added_ts    = sql_result[4],
                     modified_ts = sql_result[5]
             )
+
+    def get_poster_by_id(self, id_: int) -> Poster:
+        sql_result = self.get_cur_db().execute(f'select id, name, id_extension, \
+                id_media, id_group, id_issue, added_ts, modified_ts from "{Poster.table_name}" \
+                where id="{id_}"').fetchone()
+        if sql_result:
+            return Poster(
+                    id_         = sql_result[0],
+                    name        = sql_result[1],
+                    extension   = self.get_extension_by_id(sql_result[2]),
+                    media       = self.get_media_by_id(sql_result[3]),
+                    group       = self.get_group_by_id(sql_result[4]),
+                    issue       = self.get_issue_by_id(sql_result[5]),
+                    added_ts    = sql_result[6],
+                    modified_ts = sql_result[7]
+            )
     # GET BY ID
 
     # GET BY NK
     def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
-            Union[None, Group, Version, Encoder, File, Type, Codec, Track,
-                  Language, TrackLanguage]:
+            Union[Group, Version, Encoder, File, Type, Codec, Track,
+                  Language, TrackLanguage, Poster]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -1043,6 +1084,22 @@ class Sqlite(iModel):
                     added_ts    = sql_result[4],
                     modified_ts = sql_result[5]
             )
+
+    def get_poster_by_nk(self, obj: Poster) -> Poster:
+        sql_result = self.get_cur_db().execute(f'select id, name, id_extension, \
+                id_media, id_group, id_issue, added_ts, modified_ts from "{Poster.table_name}" \
+                where id="{id_}"').fetchone()
+        if sql_result:
+            return Poster(
+                    id_         = sql_result[0],
+                    name        = sql_result[1],
+                    extension   = self.get_extension_by_id(sql_result[2]),
+                    media       = self.get_media_by_id(sql_result[3]),
+                    group       = self.get_group_by_id(sql_result[4]),
+                    issue       = self.get_issue_by_id(sql_result[5]),
+                    added_ts    = sql_result[6],
+                    modified_ts = sql_result[7]
+            )
     # GET BY NK #
 
     # GET BY X
@@ -1286,7 +1343,7 @@ class Sqlite(iModel):
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
-                                TrackLanguage]
+                                TrackLanguage, Poster]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -1416,5 +1473,15 @@ class Sqlite(iModel):
         self.get_cur_db().execute(f'insert into "{TrackLanguage.table_name}" \
                 (active, id_track, id_language) values (?, ?, ?)',
                                   (obj.active, obj.track.id_, obj.language.id_))
+
+    def insert_poster(self, obj: Poster) -> None:
+        media_id = media_group = media_issue = None
+        if obj.media is not None: media_id = obj.media.id_
+        if obj.group is not None: group_id = obj.group.id_
+        if obj.issue is not None: group_id = obj.issue.id_
+
+        self.get_cur_db().execute(f'insert into "{TrackLanguage.table_name}" \
+                (name, id_media, id_group, id_issue, id_extension) values (?, ?, ?, ?, ?)',
+                                  (obj.name, media_id, group_id, issue_id, obj.extension.id_))
     # INSERT #
 # ------------------------------------------------------------------------------

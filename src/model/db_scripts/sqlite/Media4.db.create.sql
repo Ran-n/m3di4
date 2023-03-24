@@ -224,11 +224,14 @@ CREATE TABLE IF NOT EXISTS "Issue" (
 );
 CREATE TABLE IF NOT EXISTS "Poster" (
 	"id"			INTEGER NOT NULL UNIQUE,
-	"id_media"		INTEGER NOT NULL,
 	"name"			TEXT NOT NULL UNIQUE,
 	"id_extension"	INTEGER NOT NULL,
+	"id_media"		INTEGER,
+	"id_group"		INTEGER,
+	"id_issue"		INTEGER,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
+	CONSTRAINT "Poster_NN1" CHECK (("id_media" IS NOT NULL AND "id_group" IS NULL AND "id_issue" IS NULL) OR ("id_media" IS NULL AND "id_group" IS NOT NULL AND "id_issue" IS NULL) OR ("id_media" IS NULL AND "id_group" IS NULL AND "id_issue" IS NOT NULL)),
 	CONSTRAINT "Poster_FK1" FOREIGN KEY("id_media") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "Poster_FK2" FOREIGN KEY("id_extension") REFERENCES "Extension"("id") ON DELETE CASCADE ON UPDATE CASCADE MATCH FULL,
 	CONSTRAINT "Poster_PK" PRIMARY KEY("id" AUTOINCREMENT)

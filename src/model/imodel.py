@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/18 12:44:17.736486
+#+ Editado:	2023/03/24 19:31:29.329950
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
-from src.model.entity import LanguageCode
+from src.model.entity import LanguageCode, Poster
 # ------------------------------------------------------------------------------
 
 
@@ -101,7 +101,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -124,7 +124,7 @@ class iModel(ABC):  # pylint: disable=C0103
                   Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
                   Version, Encoder, File, Codec,
-                  Track, Language]:
+                  Track, Language, Poster]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -139,7 +139,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
             Union[None, Group, Version, Encoder, File, Type, Codec, Track,
-                  Language, TrackLanguage]:
+                  Language, TrackLanguage, Poster]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -215,7 +215,7 @@ class iModel(ABC):  # pylint: disable=C0103
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
-                                TrackLanguage]
+                                TrackLanguage, Poster]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:

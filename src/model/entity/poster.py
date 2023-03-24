@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/23 18:39:20.569506
-#+ Editado:	2023/03/24 19:04:26.673199
+#+ Editado:	2023/03/24 19:11:47.086003
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -20,11 +20,10 @@ class Poster(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('Poster'))
     extension: Extension
+    name: Optional[str] = field(init=False, default_factory=None)
     media: Optional[Media] = field(default_factory=None)
     group: Optional[Group] = field(default_factory=None)
     issue: Optional[Issue] = field(default_factory=None)
-    name: Optional[str] = field(init=False,
-                                default_factory=None)
 
     def __post_init__(self) -> None:
         # make either media, group or issue required on object creation

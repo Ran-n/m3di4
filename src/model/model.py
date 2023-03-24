@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/21 16:20:47.704499
+#+ Editado:	2023/03/24 19:31:20.988575
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
-from src.model.entity import LanguageCode
+from src.model.entity import LanguageCode, Poster
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -140,7 +140,7 @@ class Model:
     # GET ALL
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -179,6 +179,8 @@ class Model:
             return self.model.get_all_issue(limit, offset, alfabetic)
         elif table_name == Warehouse.table_name:
             return self.model.get_all_warehouse(limit, offset, alfabetic)
+        elif table_name == Poster.table_name:
+            return self.model.get_all_poster(limit, offset, alfabetic)
     # GET ALL #
 
     # GET BY ID
@@ -187,7 +189,7 @@ class Model:
                   Platform, Group, App,
                   Extension, Warehouse, Folder, Issue,
                   Version, Encoder, File, Codec,
-                  Track, Language]:
+                  Track, Language, Poster]:
         """ Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
@@ -233,12 +235,14 @@ class Model:
             return self.model.get_track_by_id(id_)
         elif table_name == Language.table_name:
             return self.model.get_language_by_id(id_)
+        elif table_name == Poster.table_name:
+            return self.model.get_poster_by_id(id_)
     # GET BY ID #
 
     # GET BY NK
     def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
-            Union[None, Group, Version, Encoder, File, Type, Codec, Track,
-                  Language, TrackLanguage]:
+            Union[Group, Version, Encoder, File, Type, Codec, Track,
+                  Language, TrackLanguage, Poster]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -266,6 +270,8 @@ class Model:
             return self.model.get_language_by_nk(obj)
         elif isinstance(obj, TrackLanguage):
             return self.model.get_track_language_by_nk(obj)
+        elif isinstance(obj, Poster):
+            return self.model.get_poster_by_nk(obj)
     # GET BY NK
 
     # GET BY X
@@ -355,7 +361,7 @@ class Model:
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
-                                TrackLanguage]
+                                TrackLanguage, Poster]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -401,6 +407,8 @@ class Model:
             return self.model.insert_track(obj)
         elif isinstance(obj, TrackLanguage):
             return self.model.insert_track_language(obj)
+        elif isinstance(obj, Poster):
+            return self.model.insert_poster(obj)
     # INSERT #
 
 # ------------------------------------------------------------------------------
