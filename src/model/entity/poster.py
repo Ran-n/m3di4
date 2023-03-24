@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/23 18:39:20.569506
-#+ Editado:	2023/03/24 17:50:46.983734
+#+ Editado:	2023/03/24 19:04:26.673199
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -31,5 +31,6 @@ class Poster(BaseEntity):
         if not any([self.media, self.group, self.issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media", "group" or "issue"')
-        self.name = calculate_hash(f'{self.name}.{self.extension.name}')
+        if self.name is None:
+            self.name = calculate_hash(f'{self.name}.{self.extension.name}')
 # ------------------------------------------------------------------------------
