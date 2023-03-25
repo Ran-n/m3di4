@@ -3,12 +3,13 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/16 23:05:21.520132
-#+ Editado:	2023/03/18 12:46:23.408040
+#+ Editado:	2023/03/24 22:25:47.218899
 # ------------------------------------------------------------------------------
 from src.view import iView
 # ------------------------------------------------------------------------------
 import logging
-import customtkinter
+import customtkinter as ctk
+import tkinter as tk
 
 from src.model.entity import Media, Group, Issue
 from src.model.entity import Type, Status
@@ -18,10 +19,11 @@ from src.model.entity import Warehouse
 class CustomTKinter(iView):
     def __init__(self) -> None:
         logging.info(_('Starting GUI view'))
-        customtkinter.set_appearance_mode("dark")
-        customtkinter.set_default_color_theme("dark-blue")
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
 
-        self.root = customtkinter.CTk()
+        #self.root = ctk.CTk()
+        self.root = tk.Tk()
 
     def start(self) -> None:
         self.root.geometry('800x500')

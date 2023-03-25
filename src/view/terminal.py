@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/23 22:06:53.011372
+#+ Editado:	2023/03/25 13:41:27.747849
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -15,6 +15,7 @@ import validators as valid
 import readline
 import os
 from pathlib import Path
+from dateutil.parser import parse
 from typing import List, Union, Callable, Tuple
 
 from src.enum import PaginationEnum
@@ -299,6 +300,7 @@ class Terminal(iView):
                 break
         return number
 
+    # this has high pctg of prob of going to a utils
     @staticmethod
     def __is_valid_date(date: str, date_format: str) -> bool:
         """
@@ -309,12 +311,12 @@ class Terminal(iView):
             return False
         return True
 
-    def __pick_date(self, message: str, date_format: str = '%Y-%m-%d', nullable: bool = False, equal_to: str = None, restrictions: List[List[str]] = None) -> str:
+    def __pick_date(self, message: str, date_formats: List[str] = ['%Y-%m-%d'], nullable: bool = False, equal_to: str = None, restrictions: List[List[str]] = None) -> str:
         """
         restrictions
             [['>=15', 'Is smaller than 15']]
         """
-        date_formats = {
+        dict_date_formats = {
                 '%Y'    :   'yyyy',
                 '%m'    :   'mm',
                 '%d'    :   'dd',
@@ -323,8 +325,8 @@ class Terminal(iView):
                 '%S'    :   'ss',
         }
 
-        date_format_ui = date_format
-        for key, value in date_formats.items():
+        date_format_ui = date_formats[0]
+        for key, value in dict_date_formats.items():
             date_format_ui = date_format_ui.replace(key, value)
 
         while True:
@@ -336,13 +338,22 @@ class Terminal(iView):
             if (equal_to != None) and (date == Config().equal_symbol):
                 return equal_to
 
-            if self.__is_valid_date(date= date, date_format= date_format):
+            if any([self.__is_valid_date(date=date, date_format=date_format) for date_format in date_formats]):
                 if restrictions:
                     exit_ = True
-                    for compare, error_msg in restrictions:
+                    for symbol, compare, error_msg in restrictions:
                         eval_value = True
                         try:
-                            eval_value = eval(f'{int(date)}{compare}')
+                            if symbol == '>':
+                                eval_value = parse(date) > parse(compare)
+                            elif symbol == '>=':
+                                eval_value = parse(date) >= parse(compare)
+                            elif symbol == '=' or symbol == '==':
+                                eval_value = parse(date) == parse(compare)
+                            elif symbol == '<':
+                                eval_value = parse(date) < parse(compare)
+                            elif symbol == '<=':
+                                eval_value = parse(date) <= parse(compare)
                         except TypeError:
                             pass
                         if not eval_value:
@@ -351,7 +362,6 @@ class Terminal(iView):
                             break
                     if exit_:
                         return date
-
                 else:
                     return date
             else:
@@ -432,10 +442,24 @@ class Terminal(iView):
 
         title = f'{2*Config().title_symbol} ' + _('Add Media') + f' {2*Config().title_symbol}'
         ender = f'{2*Config().title_symbol} ' + _('Added Media') + f' {2*Config().title_symbol}'
-        print()
-        print(self.separator)
-        print(center(title, self.line_len))
-        print(self.separator)
+
+        def start():
+            print()
+            print(self.separator)
+            print(center(title, self.line_len))
+            print(self.separator)
+
+        def finish(added: bool = True):
+            print()
+            print(self.separator)
+            if added:
+                print(center(ender, self.line_len))
+            else:
+                print(center(title, self.line_len))
+            print(self.separator)
+            print()
+
+        start()
 
         # name
         while True:
@@ -483,38 +507,43 @@ class Terminal(iView):
         )
         print()
 
-        # year_start
-        year_start = self.__pick_date(
-                message     =   _('Start Year'),
-                date_format =   '%Y',
-                nullable    =   True
+        # date_start
+        date_start = self.__pick_date(
+                message         =   _('Start Date'),
+                date_formats    =   ['%Y-%m-%d', '%Y'],
+                nullable        =   True
         )
         print()
 
-        # year_end
-        year_end = self.__pick_date(
-                message         =   _('End Year'),
-                date_format     =   '%Y',
+        if (self.model.exists(Media(name=name, type_=type_,
+                                    status=status, date_start=date_start))):
+            if self.__yn_question(_('The media already exists, retry?')):
+                print()
+                return self.add_media()
+            else:
+                finish(added=False)
+                return None
+
+        # date_end
+        date_end = self.__pick_date(
+                message         =   _('End Date'),
+                date_formats    =   ['%Y-%m-%d', '%Y'],
                 nullable        =   True,
-                equal_to        =   year_start,
+                equal_to        =   date_start,
                 restrictions    =   [
-                    [f'>={year_start}', _(f'The end year must be equal or bigger than the start one ({year_start})')],
+                    ['>=', date_start, _(f'The end date must be equal or bigger than the start one ({date_start})')],
                 ]
         )
         print()
 
-        print()
-        print(self.separator)
-        print(center(ender, self.line_len))
-        print(self.separator)
-        print()
+        finish()
 
         return Media(
                 name        =   name,
                 type_       =   type_,
                 status      =   status,
-                year_start  =   year_start,
-                year_end    =   year_end
+                date_start  =   date_start,
+                date_end    =   date_end
         )
 
     def add_group(self, id_media: int) -> Group:
@@ -582,28 +611,28 @@ class Terminal(iView):
         print()
         """
 
-        # year_start
-        year_start = self.__pick_date(
-                message         =   _('Start Year'),
-                date_format     =   '%Y',
+        # date_start
+        date_start = self.__pick_date(
+                message         =   _('Start Date'),
+                date_formats    =   ['%Y-%m-%d', '%Y'],
                 nullable        =   True,
                 restrictions    =   [
-                    [f'>={media.year_start}',   _(f'The start year must be equal or bigger than the start year of its Media ({media.year_start})')],
-                    [f'<={media.year_end}',     _(f'The start year must be equal or smaller than the end year of its Media ({media.year_end})')]
+                    ['>=', media.date_start, _(f'The start date must be equal or bigger than the start date of its Media ({media.date_start})')],
+                    ['<=', media.date_end, _(f'The start date must be equal or smaller than the end date of its Media ({media.date_end})')]
                 ]
         )
         print()
 
-        # year_end
-        year_end = self.__pick_date(
-                message         =   _('End Year'),
-                date_format     =   '%Y',
+        # date_end
+        date_end = self.__pick_date(
+                message         =   _('End Date'),
+                date_formats    =   ['%Y-%m-%d', '%Y'],
                 nullable        =   True,
-                equal_to        =   year_start,
+                equal_to        =   date_start,
                 restrictions    =   [
-                    [f'>={year_start}',         _(f'The end year must be equal or bigger than the start one ({year_start})')],
-                    [f'>={media.year_start}',   _(f'The end year must be equal or bigger than the start year of its Media ({year_start})')],
-                    [f'<={media.year_end}',     _(f'The end year must be equal or smaller than the end year of its Media ({media.year_end})')]
+                    ['>=', date_start, _(f'The end date must be equal or bigger than the start one ({date_start})')],
+                    ['>=', media.date_start, _(f'The end date must be equal or bigger than the start date of its Media ({date_start})')],
+                    ['<=', media.date_end, _(f'The end date must be equal or smaller than the end date of its Media ({media.date_end})')]
                 ]
         )
 
@@ -617,8 +646,8 @@ class Terminal(iView):
                 media       =   media,
                 number      =   number,
                 name        =   name,
-                year_start  =   year_start,
-                year_end    =   year_end
+                date_start  =   date_start,
+                date_end    =   date_end
         )
 
     def add_issue(self) -> Issue:
@@ -651,6 +680,7 @@ class Terminal(iView):
         )
         print()
 
+        # xFCR group is optional
         # media group
         group = self.__pick_from_options(
                 message         =   {
@@ -696,6 +726,7 @@ class Terminal(iView):
         print()
         """
 
+        # xFCR restrictions media and group
         # date
         date = self.__pick_date(
                 message     =   _('Date'),

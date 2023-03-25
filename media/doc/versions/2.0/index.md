@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/24 15:59:53.402052 )
-[//]: # (+ Editado:	2023/03/24 17:56:12.932997 )
+[//]: # (+ Editado:	2023/03/25 12:51:50.446187 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](../index.md#versions)
@@ -79,3 +79,4 @@ Until
 - [X] Entertain the idea of summing up Platform and Web tables.
 - [X] Fix terminal view so that it doesnt assume that adding a single file means its a media, it can be an issue.
 - [X] Make Groups and Issues able to have a related Poster too.
+- [X] Changed year\_start and year\_end for date\_start and date\_end.

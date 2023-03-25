@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/24 19:31:29.329950
+#+ Editado:	2023/03/25 13:21:51.196803
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def exists(self, obj: Union[Group, Issue, Platform,
             Type, ShareSite, Warehouse,
-            Extension, LanguageCode]) -> bool:
+            Extension, LanguageCode, Media]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -138,8 +138,8 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
-            Union[None, Group, Version, Encoder, File, Type, Codec, Track,
-                  Language, TrackLanguage, Poster]:
+            Union[Group, Version, Encoder, File, Type, Codec, Track,
+                  Language, TrackLanguage, Poster, Media]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity

@@ -2,13 +2,14 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/03/24 18:01:04.622647 )
+[//]: # (+ Editado:	2023/03/25 12:51:00.979885 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
 
 # TODO
 - [ ] Make queries (like get\_all) to discriminate against dormant (non active) entries.
+- [ ] Make medias that have a non groupable type unable to be attached to groups.
 - [ ] Create a service for downloading the posters without human interaction.
 - [ ] Add option for not downloading poster information?.
 - [ ] Add new config option to determine symbol for marking dormant element. (terminal view)

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/24 19:31:20.988575
+#+ Editado:	2023/03/25 13:22:08.973169
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ class Model:
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
             Type, ShareSite, Warehouse,
-            Extension, LanguageCode]) -> bool:
+            Extension, LanguageCode, Media]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -106,6 +106,8 @@ class Model:
             return self.model.exists_extension(obj)
         elif isinstance(obj, LanguageCode):
             return self.model.exists_language_code(obj)
+        elif isinstance(obj, Media):
+            return self.model.exists_media(obj)
     # EXISTS #
 
     # GET NUM
@@ -242,7 +244,7 @@ class Model:
     # GET BY NK
     def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
             Union[Group, Version, Encoder, File, Type, Codec, Track,
-                  Language, TrackLanguage, Poster]:
+                  Language, TrackLanguage, Poster, Media]:
         """ Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
@@ -272,6 +274,8 @@ class Model:
             return self.model.get_track_language_by_nk(obj)
         elif isinstance(obj, Poster):
             return self.model.get_poster_by_nk(obj)
+        elif isinstance(obj, Media):
+            return self.model.get_media_by_nk(obj)
     # GET BY NK
 
     # GET BY X

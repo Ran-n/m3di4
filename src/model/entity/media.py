@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:09:59.330936
-#+ Editado:	2023/03/18 12:47:24.711192
+#+ Editado:	2023/03/25 12:27:41.282587
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -22,16 +22,16 @@ class Media(BaseEntity):
     name: str
     type_: Type
     status: Status
-    year_start: int
-    year_end: Optional[int] = field(default=None)
+    date_start: int
+    date_end: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
 
     def __str__(self) -> str:
         string = f'{self.name}'
-        if self.year_start:
-            string += f' ({self.year_start}'
-            if self.year_end:
-                string += f'-{self.year_end}'
+        if self.date_start:
+            string += f' ({self.date_start}'
+            if self.date_end:
+                string += f'-{self.date_end}'
             elif self.type_.groupable == 1:
                 string += '-'
             string += ')'
