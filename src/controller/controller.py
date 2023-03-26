@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/25 13:38:08.279110
+#+ Editado:	2023/03/26 20:53:58.711612
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -51,9 +51,13 @@ class Controller:
 
     def update_member_count(self, show_user: bool = True) -> None:
         logging.info(_('Starting the "Update Member Count" process'))
-        Thread(target=self.__update_member_count_aux).start()
-        if show_user: self.view.update_member_count()
-        logging.info(_('The "Update Member Count" process was finished'))
+        if all([Config().telegram_bot_token]) is not None:
+            Thread(target=self.__update_member_count_aux).start()
+            if show_user: self.view.update_member_count()
+            logging.info(_('The "Update Member Count" process was finished'))
+        else:
+            logging.info(_('''The "Update Member Count" process was finished
+                           because all needed keys/tokens where not given'''))
 
     def __update_member_count_aux(self) -> None:
         logging.info(_('Starting the thread for the "Update Member Count"'))
