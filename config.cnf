@@ -9,7 +9,7 @@ language = eng
 # indicates wheather or not the script with the useful
 # extra data is run or not.
 # The language insert one is always run.
-populate_db = true
+populate_db = false
 ##/ LANGUAGE
 
 ## PATHS

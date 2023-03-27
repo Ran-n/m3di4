@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/03/24 17:54:08.052540
+#+ Editado:	2023/03/27 12:58:41.119887
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -37,7 +37,7 @@ class Config(object):
             # language
             self.language = self.file_content.get('language', 'eng')
             # database
-            self.populate_db = self.file_content.get('user_interface', 'true').capitalize()
+            self.populate_db = self.file_content.get('populate_db', 'false').capitalize()
             # folder locations
             self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
             self.log_folder = self.file_content.get('log_folder', 'media/logs')
