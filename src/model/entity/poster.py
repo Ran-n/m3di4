@@ -3,9 +3,10 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/23 18:39:20.569506
-#+ Editado:	2023/03/24 19:11:47.086003
+#+ Editado:	2023/03/26 21:16:33.707934
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
+import os
 from typing import Optional
 
 from src.utils import Config, calculate_hash
@@ -20,7 +21,8 @@ class Poster(BaseEntity):
     table_name: str = field(init=False, repr=False,
                             default=Config().get_table_name('Poster'))
     extension: Extension
-    name: Optional[str] = field(init=False, default_factory=None)
+    name: str
+    hash_: Optional[str] = field(init=False, default_factory=None)
     media: Optional[Media] = field(default_factory=None)
     group: Optional[Group] = field(default_factory=None)
     issue: Optional[Issue] = field(default_factory=None)
@@ -30,6 +32,7 @@ class Poster(BaseEntity):
         if not any([self.media, self.group, self.issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media", "group" or "issue"')
-        if self.name is None:
-            self.name = calculate_hash(f'{self.name}.{self.extension.name}')
+        if self.hash_ is None:
+            self.hash_ = calculate_hash(os.path.join(
+                Config().poster_folder, f'{self.name}.{self.extension.name}'))
 # ------------------------------------------------------------------------------

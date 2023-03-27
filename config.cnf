@@ -33,6 +33,8 @@ i18n_folder = media/i18n
 ## SERVICES
 # telegram bot token
 telegram_bot_token =
+# the movie db api key
+tmdb_api_key =
 ##/ SERVICES
 
 ## UI

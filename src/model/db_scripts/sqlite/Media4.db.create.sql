@@ -225,6 +225,7 @@ CREATE TABLE IF NOT EXISTS "Issue" (
 CREATE TABLE IF NOT EXISTS "Poster" (
 	"id"			INTEGER NOT NULL UNIQUE,
 	"name"			TEXT NOT NULL UNIQUE,
+	"hash"			TEXT NOT NULL UNIQUE,
 	"id_extension"	INTEGER NOT NULL,
 	"id_media"		INTEGER,
 	"id_group"		INTEGER,

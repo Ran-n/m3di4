@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:06:39.547649
-#+ Editado:	2023/03/20 17:35:15.980037
+#+ Editado:	2023/03/27 11:40:22.462715
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -22,5 +22,6 @@ class MediaPlatform(BaseEntity):
     media: Media
     platform: Platform
     link: str
+    in_platform_id: Optional[str] = field(default=None)
     active: Optional[str] = field(default=1)
 # ------------------------------------------------------------------------------
