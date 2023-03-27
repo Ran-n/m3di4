@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/25 13:41:27.747849
+#+ Editado:	2023/03/27 12:41:32.064064
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -54,8 +54,8 @@ class Terminal(iView):
                 _('+t')         :   [_('Add a Type'), self.controller.add_type],
                 _('+s')         :   [_('Add a Status'), self.controller.add_status],
                 _('+m')         :   [_('Add Media'), self.controller.add_media],
-                _('+mg')        :   [_('Add Media Group'), self.controller.add_group],
-                _('+mi')        :   [_('Add Media Issue'), self.controller.add_issue],
+                _('+g')         :   [_('Add Group'), self.controller.add_group],
+                _('+i')         :   [_('Add Issue'), self.controller.add_issue],
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
                 _('+ss')        :   [_('Add ShareSite'), self.controller.add_sharesite],
                 _('+w')         :   [_('Add Warehouse'), self.controller.add_warehouse],
