@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/27 12:36:28.370759
+#+ Editado:	2023/03/27 15:53:11.325220
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode, CodeName, LanguageName
-from src.model.entity import Poster
+from src.model.entity import Poster, MediaPlatform
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
@@ -107,7 +107,7 @@ class Sqlite(iModel):
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
             Type, ShareSite, Warehouse,
-            Extension, LanguageCode, Media]) -> bool:
+            Extension, LanguageCode, Media, MediaPlatform]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -185,12 +185,20 @@ class Sqlite(iModel):
         return False
 
     def exists_media(self, obj: Media) -> bool:
-        """
-        """
+        """"""
         sql_result = self.get_cur_db().execute(f'select id from "{Media.table_name}" \
                 where name="{obj.name}" and date_start="{obj.date_start}" \
                 and id_type="{obj.type_.id_}"').fetchall()
         if len(sql_result) > 0:
+            return True
+        return False
+
+    def exists_media_platform(self, obj: MediaPlatform) -> bool:
+        """"""
+        result = self.get_cur_db().execute(f'''select id from "{MediaPlatform.table_name}"
+        where id_media="{obj.media.id_}" and id_platform="{obj.platform.id_}" and
+                                               link="{obj.link}"''').fetchall()
+        if len(result) > 0:
             return True
         return False
     # EXISTS #
@@ -1371,7 +1379,7 @@ class Sqlite(iModel):
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
-                                TrackLanguage, Poster]
+                                TrackLanguage, Poster, MediaPlatform]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -1508,8 +1516,14 @@ class Sqlite(iModel):
         if obj.group is not None: group_id = obj.group.id_
         if obj.issue is not None: group_id = obj.issue.id_
 
-        self.get_cur_db().execute(f'insert into "{TrackLanguage.table_name}" \
+        self.get_cur_db().execute(f'insert into "{Poster.table_name}" \
                 (name, id_media, id_group, id_issue, id_extension) values (?, ?, ?, ?, ?)',
                                   (obj.name, media_id, group_id, issue_id, obj.extension.id_))
+
+    def insert_media_platform(self, obj: MediaPlatform) -> None:
+        self.get_cur_db().execute(f'insert into "{MediaPlatform.table_name}" \
+                (id_media, id_platform, link, in_platform_id, active) values (?, ?, ?, ?, ?)',
+                                  (obj.media.id_, obj.platform.id_, obj.link,
+                                   obj.in_platform_id, obj.active))
     # INSERT #
 # ------------------------------------------------------------------------------

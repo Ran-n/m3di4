@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/27 12:37:28.126538
+#+ Editado:	2023/03/27 15:46:54.257795
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -140,8 +140,7 @@ class Controller:
         logging.info(_('The "Add Warehouse" process was finished'))
 
     def add_file(self) -> None:
-        """
-        """
+        """"""
         logging.info(_('Starting the "Add File" process'))
 
         fis = FileInfoService(self.view.add_file())
@@ -159,5 +158,12 @@ class Controller:
                     TrackLanguageDao(model=self.model).save(track_language=lang)
 
         logging.info(_('The "Add File" process was finished'))
+
+    def add_media_platform(self) -> None:
+        """"""
+        logging.info(_('Starting the "Add MediaPlatform" process'))
+        media_platform = self.view.add_media_platform()
+        if media_platform: self.model.insert(media_platform)
+        logging.info(_('The "Add MediaPlatform" process was finished'))
 
 # ------------------------------------------------------------------------------

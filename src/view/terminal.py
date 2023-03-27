@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/27 12:41:32.064064
+#+ Editado:	2023/03/27 15:52:08.455651
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ from src.utils import AddFileTerminalViewOutput
 from src.model.entity import Media, Group, Issue
 from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite
-from src.model.entity import Warehouse
+from src.model.entity import Warehouse, MediaPlatform
 # ------------------------------------------------------------------------------
 class Terminal(iView):
     def __init__(self) -> None:
@@ -44,8 +44,7 @@ class Terminal(iView):
             self.__menu()
 
     def __menu(self) -> None:
-        """
-        """
+        """"""
         options = {
                 '+'             :   [_('Save'), self.controller.save],
                 '.'             :   [_('Exit'), self.controller.exit_save],
@@ -59,6 +58,7 @@ class Terminal(iView):
                 _('+p')         :   [_('Add Platform'), self.controller.add_platform],
                 _('+ss')        :   [_('Add ShareSite'), self.controller.add_sharesite],
                 _('+w')         :   [_('Add Warehouse'), self.controller.add_warehouse],
+                _('+mp')        :   [_('Add Media Platform'), self.controller.add_media_platform],
                 _('+f')         :   [_('Add File'), self.controller.add_file],
         }
 
@@ -116,8 +116,7 @@ class Terminal(iView):
         print(self.separator)
 
     def update_member_count(self) -> None:
-        """
-        """
+        """"""
         print()
         print(self.separator)
         text = f'{Config().title_symbol} ' + _('Searching for the values') + f' {Config().title_symbol}'
@@ -303,8 +302,7 @@ class Terminal(iView):
     # this has high pctg of prob of going to a utils
     @staticmethod
     def __is_valid_date(date: str, date_format: str) -> bool:
-        """
-        """
+        """"""
         try:
             datetime.strptime(date, date_format)
         except:
@@ -906,8 +904,7 @@ class Terminal(iView):
         )
 
     def add_warehouse(self) -> Warehouse:
-        """
-        """
+        """"""
         logging.info(_('Requesting the user for the information on the Warehouse'))
         title = f'{2*Config().title_symbol} ' + _('Add Warehouse') + f' {2*Config().title_symbol}'
         ender = f'{2*Config().title_symbol} ' + _('Added Warehouse') + f' {2*Config().title_symbol}'
@@ -982,8 +979,7 @@ class Terminal(iView):
         return Warehouse(name=name, type_=type_, size=size, filled=filled, content=content, health=health)
 
     def add_file(self) -> AddFileTerminalViewOutput:
-        """
-        """
+        """"""
         def ask_original_name(original_names) -> None:
             """ Auxiliar function for asking the user the original filename."""
             # original name
@@ -1123,5 +1119,67 @@ class Terminal(iView):
         print()
 
         return output_obj
+
+    def add_media_platform(self) -> MediaPlatform:
+        """"""
+        logging.info(_('Requesting the user for the information on the MediaPlatform'))
+        title = f'{2*Config().title_symbol} ' + _('Add MediaPlatform') + f' {2*Config().title_symbol}'
+        ender = f'{2*Config().title_symbol} ' + _('Added MediaPlatform') + f' {2*Config().title_symbol}'
+        print()
+        print(self.separator)
+        print(center(title, self.line_len))
+        print(self.separator)
+
+        # media
+        media = self.__pick_from_options(
+                message = {'title': _('Medias'),
+                          'pick': _('Media'),
+                          'empty': _('There are no Types available')},
+                option_count = lambda: self.model.get_num(table_name=Media.table_name),
+                add_fn = self.controller.add_media,
+                get_opts_fn = lambda limit, offset: self.model.get_all(
+                    table_name=Media.table_name, limit=limit, offset=offset),
+                limit = Config().pagination_limit
+        )
+        print()
+
+        # platform
+        platform = self.__pick_from_options(
+                message = {'title': _('Platforms'),
+                          'pick': _('Platform'),
+                          'empty': _('There are no Platforms available')},
+                option_count = lambda: self.model.get_num(table_name=Platform.table_name),
+                add_fn = self.controller.add_platform,
+                get_opts_fn = lambda limit, offset: self.model.get_all(
+                    table_name=Platform.table_name, limit=limit, offset=offset),
+                limit = Config().pagination_limit
+        )
+        print()
+
+        # link
+        while True:
+            link = input(f'{Config().input_symbol} ' + _('Link') + ': ')
+            if link != '' and valid.url(link):
+                break
+        print()
+
+        # check if exits
+        if self.model.exists(MediaPlatform(media=media, platform=platform, link=link)):
+            print(_('It already exists'))
+            return None
+
+        # in_platform_id
+        in_platform_id = input(f'{Config().input_symbol} ' + _('In platform id') + ': ')
+        if in_platform_id == '':
+            in_platform_id = None
+        print()
+
+        print()
+        print(self.separator)
+        print(center(ender, self.line_len))
+        print(self.separator)
+        print()
+
+        return MediaPlatform(media=media, platform=platform, link=link, in_platform_id=in_platform_id)
 
 # ------------------------------------------------------------------------------

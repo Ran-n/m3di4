@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/03/18 12:46:59.541033
+#+ Editado:	2023/03/27 15:34:15.964934
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -12,11 +12,12 @@ from src.view import iView
 from src.model import iModel
 # ------------------------------------------------------------------------------
 from src.exception import InheritException
+from src.utils import AddFileTerminalViewOutput
 
 from src.model.entity import Media, Group, Issue
 from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite
-from src.model.entity import Warehouse
+from src.model.entity import Warehouse, MediaPlatform
 # ------------------------------------------------------------------------------
 class View:
     def __init__(self, strategy: iView, model: iModel) -> None:
@@ -70,6 +71,10 @@ class View:
     def add_warehouse(self) -> Warehouse:
         return self.strategy.add_warehouse()
 
-    def add_file(self) -> str:
+    def add_file(self) -> AddFileTerminalViewOutput:
         return self.strategy.add_file()
+
+    def add_media_platform(self) -> MediaPlatform:
+        return self.strategy.add_media_platform()
+
 # ------------------------------------------------------------------------------

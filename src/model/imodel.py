@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/25 13:21:51.196803
+#+ Editado:	2023/03/27 15:50:57.914343
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
-from src.model.entity import LanguageCode, Poster
+from src.model.entity import LanguageCode, Poster, MediaPlatform
 # ------------------------------------------------------------------------------
 
 
@@ -69,7 +69,7 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def exists(self, obj: Union[Group, Issue, Platform,
             Type, ShareSite, Warehouse,
-            Extension, LanguageCode, Media]) -> bool:
+            Extension, LanguageCode, Media, MediaPlatform]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -215,7 +215,7 @@ class iModel(ABC):  # pylint: disable=C0103
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
-                                TrackLanguage, Poster]
+                                TrackLanguage, Poster, MediaPlatform]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/25 13:22:08.973169
+#+ Editado:	2023/03/27 15:47:43.644631
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from src.model.entity import Platform, ShareSite, ShareSiteSubs
 from src.model.entity import Warehouse
 from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
-from src.model.entity import LanguageCode, Poster
+from src.model.entity import LanguageCode, Poster, MediaPlatform
 # ------------------------------------------------------------------------------
 class Model:
     def __init__(self, strategy: iModel):
@@ -79,7 +79,7 @@ class Model:
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
             Type, ShareSite, Warehouse,
-            Extension, LanguageCode, Media]) -> bool:
+            Extension, LanguageCode, Media, MediaPlatform]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -88,6 +88,7 @@ class Model:
         ╚═  bool    -   Indicating if the object exists or not.
         """
         logging.info(_(f'Checking on table "{obj.table_name}" if the information already exists'))
+
         if isinstance(obj, Group):
             return self.model.exists_group(obj)
         elif isinstance(obj, Issue):
@@ -108,6 +109,8 @@ class Model:
             return self.model.exists_language_code(obj)
         elif isinstance(obj, Media):
             return self.model.exists_media(obj)
+        elif isinstance(obj, MediaPlatform):
+            return self.model.exists_media_platform(obj)
     # EXISTS #
 
     # GET NUM
@@ -365,7 +368,7 @@ class Model:
                                 Issue, Platform, ShareSite,
                                 Warehouse, Extension, Folder, App,
                                 Version, Encoder, Codec, Track,
-                                TrackLanguage, Poster]
+                                TrackLanguage, Poster, MediaPlatform]
                ) -> None:
         """ Adds an element to a DB table.
         @ Input:
@@ -413,6 +416,8 @@ class Model:
             return self.model.insert_track_language(obj)
         elif isinstance(obj, Poster):
             return self.model.insert_poster(obj)
+        elif isinstance(obj, MediaPlatform):
+            return self.model.insert_media_platform(obj)
     # INSERT #
 
 # ------------------------------------------------------------------------------
