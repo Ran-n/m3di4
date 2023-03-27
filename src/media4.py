@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/04 23:17:25.456829
-#+ Editado:	2023/02/05 22:47:46.612752
+#+ Editado:	2023/03/27 12:30:04.679902
 # ------------------------------------------------------------------------------
 import logging
 import gettext
@@ -42,7 +42,7 @@ def main():
             UIEnum.CUSTOM_TKINTER: CustomTKinter
     }
 
-    model = Model(strategy = Sqlite(Config().file_content['db_file_location']))
+    model = Model(strategy = Sqlite(Config().database_file))
     view = View(strategy = views[Config().ui](), model = model)
     controller = Controller(model = model, view = view)
 

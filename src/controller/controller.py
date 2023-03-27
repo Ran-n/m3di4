@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/26 20:53:58.711612
+#+ Editado:	2023/03/27 12:30:31.773694
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -13,6 +13,7 @@ from threading import Thread
 from src.model import iModel
 from src.view import iView
 
+from src.utils import Config
 from src.service import MemberCountService, FileInfoService
 
 from src.model.dao import FileDao, TrackDao, TrackLanguageDao
