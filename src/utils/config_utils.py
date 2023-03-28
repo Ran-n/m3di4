@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/03/27 12:58:41.119887
+#+ Editado:	2023/03/28 18:50:56.475198
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
@@ -36,21 +36,34 @@ class Config(object):
             ## setup of class attributes
             # language
             self.language = self.file_content.get('language', 'eng')
+
             # database
             self.populate_db = self.file_content.get('populate_db', 'false').capitalize()
+            if self.populate_db == 'False':
+                self.populate_db = False
+            else:
+                self.populate_db = True
+
             # folder locations
             self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
             self.log_folder = self.file_content.get('log_folder', 'media/logs')
             self.poster_folder = self.file_content.get('poster_folder', 'media/poster')
+
             # database location
             self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
+
             # services
             token = self.file_content.get('telegram_bot_token', None)
             self.telegram_bot_token = token if token != '' else None
+            key = self.file_content.get('tmdb_api_key', None)
+            self.tmdb_api_key = key if key != '' else None
+
             # ui
             self.ui = self.file_content.get('user_interface', 'terminal')
+
             # pagination
             self.pagination_limit = int(self.file_content.get('pagination_limit', 5))
+
             # terminal symbols
             self.title_symbol = self.file_content.get('title_symbol', '*')
             self.input_symbol = self.file_content.get('input_symbol', '>')
