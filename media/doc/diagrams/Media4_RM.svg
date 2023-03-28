@@ -75,7 +75,7 @@
     <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="312.464" cy="1252.41" rx="2" ry="2"/>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="316.464" y="1258.41">name_long</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="411.164" y="1258.41">string</text>
-    <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="312.464" cy="1268.41" rx="2" ry="2"/>
+    <ellipse style="fill: #000000" cx="312.464" cy="1268.41" rx="2" ry="2"/>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="316.464" y="1274.41">link</text>
     <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="411.164" y="1274.41">string</text>
     <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="312.464" cy="1284.41" rx="2" ry="2"/>
@@ -1200,7 +1200,7 @@
     <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" points="946.332,1767.65 946.332,1767.65 533.64,1767.65 533.64,1443.04 489.5,1443.04 "/>
     <polygon style="fill: #000000" points="482,1443.04 492,1438.04 489.5,1443.04 492,1448.04 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="482,1443.04 492,1438.04 489.5,1443.04 492,1448.04 "/>
-    <text font-size="9.6" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="950.332" y="1779.65">1</text>
+    <text font-size="9.6" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="942.332" y="1763.65">1</text>
     <text font-size="9.6" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="483.764" y="1439.04">n</text>
   </g>
   <g>

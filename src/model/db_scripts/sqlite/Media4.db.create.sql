@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS "Platform" (
 	"acronym"		TEXT,
 	"name"			TEXT NOT NULL UNIQUE,
 	"name_long"		TEXT UNIQUE,
-	"link"			TEXT UNIQUE,
+	"link"			TEXT NOT NULL UNIQUE,
 	"id_type"		INTEGER NOT NULL,
 	"added_ts"		TEXT NOT NULL DEFAULT current_timestamp,
 	"modified_ts"	TEXT NOT NULL DEFAULT current_timestamp,
