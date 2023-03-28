@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 00:06:39.547649
-#+ Editado:	2023/03/28 19:32:02.717343
+#+ Editado:	2023/03/28 19:37:59.256737
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -26,6 +26,9 @@ class MediaPlatform(BaseEntity):
     active: Optional[str] = field(default=1)
 
     def __post_init__(self) -> None
-        if self.link is not None and not self.link.endswith('/'):
-            self.link += '/'
+        if self.link is not None
+            if not self.link.endswith('/'):
+                self.link += '/'
+            elif self.link.startswith(self.platform.link):
+                self.link = self.link[len(self.platform.link):]
 # ------------------------------------------------------------------------------
