@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/03/25 12:51:00.979885 )
+[//]: # (+ Editado:	2023/03/28 08:52:37.021653 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -20,6 +20,7 @@
 - [ ] Dont only show name on "Group"s since it can be null and number is more important anyways.
 - [ ] Make less confusing what part of input you are in when a subinput is opened (insert group of newly created media)
 - [ ] Add authors of medias or issues and of files (this is tricky because it would also imply, if done correctly, to add attributions).
+- [ ] Implement pysqlcipher3 for encrypting the DB.
 
 ## Tasks
 - [ ] Make Issue not always have Group.
