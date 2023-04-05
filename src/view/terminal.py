@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:57.231414
-#+ Editado:	2023/03/27 15:52:08.455651
+#+ Editado:	2023/03/28 22:15:34.603811
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -50,6 +50,7 @@ class Terminal(iView):
                 '.'             :   [_('Exit'), self.controller.exit_save],
                 '..'            :   [_('Exit (No Save)'), self.controller.exit_no_save],
                 _('#members')   :   [_('Update Member Count'), self.controller.update_member_count],
+                _('#posters')   :   [_('Download posters'), self.controller.download_posters],
                 _('+t')         :   [_('Add a Type'), self.controller.add_type],
                 _('+s')         :   [_('Add a Status'), self.controller.add_status],
                 _('+m')         :   [_('Add Media'), self.controller.add_media],
@@ -120,6 +121,15 @@ class Terminal(iView):
         print()
         print(self.separator)
         text = f'{Config().title_symbol} ' + _('Searching for the values') + f' {Config().title_symbol}'
+        print(center(text, self.line_len))
+        print(self.separator)
+        print()
+
+    def download_posters(self) -> None:
+        """"""
+        print()
+        print(self.separator)
+        text = f'{Config().title_symbol} ' + _('Downloading the posters') + f' {Config().title_symbol}'
         print(center(text, self.line_len))
         print(self.separator)
         print()
@@ -783,10 +793,7 @@ class Terminal(iView):
         # link
         while True:
             link = input(f'{Config().input_symbol} ' + _('Link') + ': ')
-            if link == '':
-                link = None
-                break
-            elif valid.url(link):
+            if link != '' and valid.url(link):
                 if not self.model.exists(ShareSite(name=name, type_=None, link=link)):
                     break
                 else:
@@ -1159,7 +1166,8 @@ class Terminal(iView):
         # link
         while True:
             link = input(f'{Config().input_symbol} ' + _('Link') + ': ')
-            if link != '' and valid.url(link):
+            if link != '' and valid.url(link) and link.startswith(platform.link):
+                link = link[len(platform.link):]
                 break
         print()
 

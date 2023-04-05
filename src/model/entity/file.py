@@ -3,13 +3,14 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/24 17:40:16.830387
+#+ Editado:	2023/03/30 22:12:27.202999
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 import os
+from pathlib import Path
 from typing import Optional
 
-from src.utils import Config, calculate_hash
+from src.utils import Config, file_hash
 from src.model.entity import BaseEntity, Warehouse, Folder, Media, Issue
 from src.model.entity import Extension, Encoder, Version
 # ------------------------------------------------------------------------------
@@ -47,18 +48,10 @@ class File(BaseEntity):
         if not any([self.media, self.issue]):
             raise TypeError(f'{self.__class__.__name__}.__init__() missing \
                     1 required positional argument: "media" or "issue"')
+
+        # xFCR change path in folder to Path
         if self.hash_ is None:
-            #self.__calculate_hash()
-            self.hash_ = calculate_hash(
-                    os.path.join(self.folder.path, f'{self.name}.{self.extension.name}')
+            self.hash_ = file_hash(
+                    Path(self.folder.path)/f'{self.name}.{self.extension.name}'
             )
-
-
-
-    """
-    def __calculate_hash(self) -> None:
-        with open(os.path.join(self.folder.path, f'{self.name}.{self.extension.name}'), 'rb') as f:
-            with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
-                self.hash_ = blake3(mm).hexdigest()
-    """
 # ------------------------------------------------------------------------------

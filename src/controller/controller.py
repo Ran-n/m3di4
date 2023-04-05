@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/03/27 15:46:54.257795
+#+ Editado:	2023/04/05 17:30:52.391516
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -14,10 +14,11 @@ from src.model import iModel
 from src.view import iView
 
 from src.utils import Config
-from src.service import MemberCountService, FileInfoService
+from src.enum import MetadataSourcesEnum
+from src.service import MemberCountService, FileInfoService, MetadataService
 
-from src.model.dao import FileDao, TrackDao, TrackLanguageDao
-from src.model.entity import ShareSite, ShareSiteSubs, Platform
+from src.model.dao import FileDao, TrackDao, TrackLanguageDao, PosterDAO
+from src.model.entity import ShareSite, ShareSiteSubs, Platform, MediaPlatform
 # ------------------------------------------------------------------------------
 class Controller:
     def __init__(self, model: iModel, view: iView):
@@ -52,9 +53,9 @@ class Controller:
 
     def update_member_count(self, show_user: bool = True) -> None:
         logging.info(_('Starting the "Update Member Count" process'))
-        if all([Config().telegram_bot_token]) is not None:
+        if show_user: self.view.update_member_count()
+        if all([Config().telegram_bot_token]):
             Thread(target=self.__update_member_count_aux).start()
-            if show_user: self.view.update_member_count()
             logging.info(_('The "Update Member Count" process was finished'))
         else:
             logging.info(_('''The "Update Member Count" process was finished
@@ -92,6 +93,26 @@ class Controller:
             logging.info(_('The member count was not updated since there \
                     are no ShareSites'))
         logging.info(_('Finishing the thread for the "Update Member Count"'))
+
+    def download_posters(self, show_user: bool = True) -> None:
+        logging.info(_('Starting the "Download Posters" process'))
+        if show_user: self.view.download_posters()
+        if Config().tmdb_api_key:
+            Thread(target=self.__download_posters_tmdb).start()
+            logging.info(_('The "Download Posters" process was finished'))
+        else:
+            logging.info(_('''The "Download Posters" process was finished
+                           because all needed keys/tokens where not given'''))
+
+    def __download_posters_tmdb(self) -> None:
+        logging.info(_('Starting the thread for the "Download Posters" from TMDB'))
+
+        posters = MetadataService(source=MetadataSourcesEnum.TMDB)\
+                .download_posters(media_platforms=self.model.get_all(MediaPlatform.table_name))
+
+        posters = [PosterDAO(self.model).save(ele) for ele in posters]
+
+        logging.info(_('Finishing the thread for the "Download Posters" from TMDB'))
 
     def add_type(self) -> None:
         logging.info(_('Starting the "Add Type" process'))

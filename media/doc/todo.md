@@ -2,7 +2,7 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/03/28 08:52:37.021653 )
+[//]: # (+ Editado:	2023/04/05 17:02:25.462887 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
@@ -21,6 +21,11 @@
 - [ ] Make less confusing what part of input you are in when a subinput is opened (insert group of newly created media)
 - [ ] Add authors of medias or issues and of files (this is tricky because it would also imply, if done correctly, to add attributions).
 - [ ] Implement pysqlcipher3 for encrypting the DB.
+- [ ] Change all os for pathlib.
+- [ ] Parametrize all sqlite.
+- [ ] Sanitize table names (something like this is bad -> table');Drop table name;--). Only allow one continous string with cases: snake, kebab, pascal and cammel
+- [ ] Pivot to a ORM using SQLAlchemy.
+- [ ] Create more objects than Entities.
 
 ## Tasks
 - [ ] Make Issue not always have Group.

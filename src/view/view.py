@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/03/27 15:34:15.964934
+#+ Editado:	2023/03/28 22:18:37.152236
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -42,9 +42,12 @@ class View:
         self.strategy.exit()
 
     def update_member_count(self) -> None:
-        """
-        """
+        """"""
         self.strategy.update_member_count()
+
+    def download_posters(self) -> None:
+        """"""
+        self.strategy.download_posters()
 
 
     def add_type(self) -> Type:

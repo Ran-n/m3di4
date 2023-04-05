@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/27 15:50:57.914343
+#+ Editado:	2023/03/30 22:19:42.404936
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -68,8 +68,8 @@ class iModel(ABC):  # pylint: disable=C0103
 
     @abstractmethod
     def exists(self, obj: Union[Group, Issue, Platform,
-            Type, ShareSite, Warehouse,
-            Extension, LanguageCode, Media, MediaPlatform]) -> bool:
+            Type, ShareSite, Warehouse, Extension,
+            LanguageCode, Media, MediaPlatform, Poster]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -101,7 +101,8 @@ class iModel(ABC):  # pylint: disable=C0103
     @abstractmethod
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster,
+                    MediaPlatform]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str

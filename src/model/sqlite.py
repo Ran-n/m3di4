@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/27 15:53:11.325220
+#+ Editado:	2023/04/05 15:16:17.823388
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -106,8 +106,8 @@ class Sqlite(iModel):
 
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
-            Type, ShareSite, Warehouse,
-            Extension, LanguageCode, Media, MediaPlatform]) -> bool:
+            Type, ShareSite, Warehouse, Extension,
+            LanguageCode, Media, MediaPlatform, Poster]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -201,6 +201,13 @@ class Sqlite(iModel):
         if len(result) > 0:
             return True
         return False
+
+    def exists_poster(self, obj: Poster) -> bool:
+        """"""
+        result = self.get_cur_db().execute(f'select id from "{Poster.table_name}" where hash=?', (obj.hash_, )).fetchall()
+        if len(result) > 0:
+            return True
+        return False
     # EXISTS #
 
     # GET NUM
@@ -239,7 +246,8 @@ class Sqlite(iModel):
     # GET ALL
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster,
+                    MediaPlatform]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -425,10 +433,9 @@ class Sqlite(iModel):
         return results
 
     def get_all_poster(self, limit: int, offset: int, alfabetic: bool) -> List[Poster]:
-        """
-        """
-        sentence = f'select id, name, id_extension, id_media, id_group, \
-                id_issue, added_ts, modified_ts from "{Poster.table_name}" where id="{id_}"'
+        """"""
+        sentence = f'select id, name, hash, id_extension, id_media, id_group, \
+                id_issue, added_ts, modified_ts from "{Poster.table_name}"'
         if alfabetic: sentence += ' order by name asc'
         if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
 
@@ -439,12 +446,36 @@ class Sqlite(iModel):
             results.append(Poster(
                     id_         = result[0],
                     name        = result[1],
-                    extension   = self.get_extension_by_id(result[2]),
-                    media       = self.get_media_by_id(result[3]),
-                    group       = self.get_group_by_id(result[4]),
-                    issue       = self.get_issue_by_id(result[5]),
-                    added_ts    = result[6],
-                    modified_ts = result[7]
+                    hash_       = result[2],
+                    extension   = self.get_extension_by_id(result[3]),
+                    media       = self.get_media_by_id(result[4]),
+                    group       = self.get_group_by_id(result[5]),
+                    issue       = self.get_issue_by_id(result[6]),
+                    added_ts    = result[7],
+                    modified_ts = result[8]
+            ))
+        return results
+
+    def get_all_media_platform(self, limit: int, offset: int, alfabetic: bool) -> List[MediaPlatform]:
+        """"""
+        sentence = f'select id, active, id_media, id_platform, in_platform_id, \
+                link, added_ts, modified_ts from "{MediaPlatform.table_name}"'
+        if alfabetic: sentence += ' order by name asc'
+        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+
+        sql_results = self.get_cur_db().execute(sentence).fetchall()
+
+        results = []
+        for result in sql_results:
+            results.append(MediaPlatform(
+                    id_             = result[0],
+                    active          = result[1],
+                    media           = self.get_media_by_id(result[2]),
+                    platform        = self.get_platform_by_id(result[3]),
+                    in_platform_id  = result[4],
+                    link            = result[5],
+                    added_ts        = result[6],
+                    modified_ts     = result[7]
             ))
         return results
     # GET ALL #
@@ -788,19 +819,20 @@ class Sqlite(iModel):
             )
 
     def get_poster_by_id(self, id_: int) -> Poster:
-        sql_result = self.get_cur_db().execute(f'select id, name, id_extension, \
+        sql_result = self.get_cur_db().execute(f'select id, name, hash, id_extension, \
                 id_media, id_group, id_issue, added_ts, modified_ts from "{Poster.table_name}" \
                 where id="{id_}"').fetchone()
         if sql_result:
             return Poster(
                     id_         = sql_result[0],
                     name        = sql_result[1],
-                    extension   = self.get_extension_by_id(sql_result[2]),
-                    media       = self.get_media_by_id(sql_result[3]),
-                    group       = self.get_group_by_id(sql_result[4]),
-                    issue       = self.get_issue_by_id(sql_result[5]),
-                    added_ts    = sql_result[6],
-                    modified_ts = sql_result[7]
+                    hash_       = sql_result[2],
+                    extension   = self.get_extension_by_id(sql_result[3]),
+                    media       = self.get_media_by_id(sql_result[4]),
+                    group       = self.get_group_by_id(sql_result[5]),
+                    issue       = self.get_issue_by_id(sql_result[6]),
+                    added_ts    = sql_result[7],
+                    modified_ts = sql_result[8]
             )
     # GET BY ID
 
@@ -1104,19 +1136,20 @@ class Sqlite(iModel):
             )
 
     def get_poster_by_nk(self, obj: Poster) -> Poster:
-        sql_result = self.get_cur_db().execute(f'select id, name, id_extension, \
+        sql_result = self.get_cur_db().execute(f'select id, name, hash, id_extension, \
                 id_media, id_group, id_issue, added_ts, modified_ts from "{Poster.table_name}" \
                 where name="{obj.name}"').fetchone()
         if sql_result:
             return Poster(
                     id_         = sql_result[0],
                     name        = sql_result[1],
-                    extension   = self.get_extension_by_id(sql_result[2]),
-                    media       = self.get_media_by_id(sql_result[3]),
-                    group       = self.get_group_by_id(sql_result[4]),
-                    issue       = self.get_issue_by_id(sql_result[5]),
-                    added_ts    = sql_result[6],
-                    modified_ts = sql_result[7]
+                    hash_       = sql_result[2],
+                    extension   = self.get_extension_by_id(sql_result[3]),
+                    media       = self.get_media_by_id(sql_result[4]),
+                    group       = self.get_group_by_id(sql_result[5]),
+                    issue       = self.get_issue_by_id(sql_result[6]),
+                    added_ts    = sql_result[7],
+                    modified_ts = sql_result[8]
             )
 
     def get_media_by_nk(self, obj: Media) -> Media:
@@ -1511,14 +1544,14 @@ class Sqlite(iModel):
                                   (obj.active, obj.track.id_, obj.language.id_))
 
     def insert_poster(self, obj: Poster) -> None:
-        media_id = media_group = media_issue = None
+        media_id = group_id = issue_id = None
         if obj.media is not None: media_id = obj.media.id_
         if obj.group is not None: group_id = obj.group.id_
         if obj.issue is not None: group_id = obj.issue.id_
 
         self.get_cur_db().execute(f'insert into "{Poster.table_name}" \
-                (name, id_media, id_group, id_issue, id_extension) values (?, ?, ?, ?, ?)',
-                                  (obj.name, media_id, group_id, issue_id, obj.extension.id_))
+                (name, hash, id_media, id_group, id_issue, id_extension) values (?, ?, ?, ?, ?, ?)',
+                                  (obj.name, obj.hash_, media_id, group_id, issue_id, obj.extension.id_))
 
     def insert_media_platform(self, obj: MediaPlatform) -> None:
         self.get_cur_db().execute(f'insert into "{MediaPlatform.table_name}" \

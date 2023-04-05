@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
-#+ Creado: 	2023/03/04 20:13:02.827132
-#+ Editado:	2023/04/05 17:29:33.669794
+#+ Creado: 	2023/03/28 19:12:40.671348
+#+ Editado:	2023/03/28 19:13:21.514352
 # ------------------------------------------------------------------------------
-from .file_dao import FileDao
-from .track_dao import TrackDao
-from .track_language_dao import TrackLanguageDao
-from .extension_dao import ExtensionDAO
-from .poster_dao import PosterDAO
+from enum import Enum
+# ------------------------------------------------------------------------------
+class MetadataSourcesEnum(Enum):
+    TMDB = 'tmdb'
 # ------------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 22:41:49.401227
-#+ Editado:	2023/03/27 15:34:03.206269
+#+ Editado:	2023/03/28 22:18:50.922523
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -31,8 +31,11 @@ class iView(ABC):
 
     @abstractmethod
     def update_member_count(self) -> None:
-        """
-        """
+        """"""
+
+    @abstractmethod
+    def download_posters(self) -> None:
+        """"""
 
     @abstractmethod
     def add_type(self) -> Type:

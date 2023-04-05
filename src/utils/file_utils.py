@@ -3,16 +3,17 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/03/24 17:37:25.316985
-#+ Editado:	2023/03/24 17:40:06.876019
+#+ Editado:	2023/03/29 17:42:24.682338
 # ------------------------------------------------------------------------------
 from blake3 import blake3
 import mmap
+from pathlib import Path
 # ------------------------------------------------------------------------------
 
 
 # ------------------------------------------------------------------------------
-def calculate_hash(filename: str) -> str:
-    with open(filename, 'rb') as f:
+def file_hash(filename: Path) -> str:
+    with filename.open('rb') as f:
         with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
             return blake3(mm).hexdigest()
 # ------------------------------------------------------------------------------

@@ -3,12 +3,12 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 03:06:54.968132
-#+ Editado:	2023/03/28 18:50:56.475198
+#+ Editado:	2023/03/29 17:36:04.592193
 # ------------------------------------------------------------------------------
 from configobj import ConfigObj
 from uteis.ficheiro import cargarJson as load_json
 import os
-import pathlib
+from pathlib import Path
 from datetime import datetime
 
 from src.enum import UIEnum
@@ -47,7 +47,7 @@ class Config(object):
             # folder locations
             self.i18n_folder = self.file_content.get('i18n_folder', 'media/i18n')
             self.log_folder = self.file_content.get('log_folder', 'media/logs')
-            self.poster_folder = self.file_content.get('poster_folder', 'media/poster')
+            self.poster_folder = Path(self.file_content.get('poster_folder', 'media/poster'))
 
             # database location
             self.database_file = self.file_content.get('db_file_location', 'media/db/Database.db')
@@ -87,7 +87,7 @@ class Config(object):
             #
 
             # create folders
-            for folder in [self.log_folder, pathlib.Path(self.database_file).parent]:
+            for folder in [self.log_folder, Path(self.database_file).parent]:
                 os.makedirs(folder, exist_ok=True)
 
         return self.instance

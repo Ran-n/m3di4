@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/02/25 16:47:35.526685
-#+ Editado:	2023/03/18 12:49:25.524425
+#+ Editado:	2023/03/28 21:48:47.285851
 # ------------------------------------------------------------------------------
 import aiohttp
 import logging
@@ -21,8 +21,8 @@ class TelegramService:
     base_url: str = 'https://api.telegram.org/'
 
     def __init__(self):
-        logging.info(_(f'Starting the TelegramService with bot_token=\
-                {Config().telegram_bot_token}'))
+        logging.info(_(f'''Starting the TelegramService with bot_token=
+                    {Config().telegram_bot_token}'''))
         self.bot_token = Config().telegram_bot_token
         self.url = self.base_url + f'bot{self.bot_token}/'
 

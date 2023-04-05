@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/27 15:47:43.644631
+#+ Editado:	2023/03/30 22:19:31.782560
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -78,8 +78,8 @@ class Model:
 
     # EXISTS
     def exists(self, obj: Union[Group, Issue, Platform,
-            Type, ShareSite, Warehouse,
-            Extension, LanguageCode, Media, MediaPlatform]) -> bool:
+            Type, ShareSite, Warehouse, Extension,
+            LanguageCode, Media, MediaPlatform, Poster]) -> bool:
         """ Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
@@ -111,6 +111,8 @@ class Model:
             return self.model.exists_media(obj)
         elif isinstance(obj, MediaPlatform):
             return self.model.exists_media_platform(obj)
+        elif isinstance(obj, Poster):
+            return self.model.exists_poster(obj)
     # EXISTS #
 
     # GET NUM
@@ -145,7 +147,8 @@ class Model:
     # GET ALL
     def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
                 offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster]]:
+                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster,
+                    MediaPlatform]]:
         """ Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
@@ -186,6 +189,8 @@ class Model:
             return self.model.get_all_warehouse(limit, offset, alfabetic)
         elif table_name == Poster.table_name:
             return self.model.get_all_poster(limit, offset, alfabetic)
+        elif table_name == MediaPlatform.table_name:
+            return self.model.get_all_media_platform(limit, offset, alfabetic)
     # GET ALL #
 
     # GET BY ID

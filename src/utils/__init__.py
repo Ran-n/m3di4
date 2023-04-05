@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/21 15:02:19.945715
-#+ Editado:	2023/03/24 17:52:11.283490
+#+ Editado:	2023/03/28 21:51:09.260428
 # ------------------------------------------------------------------------------
 from .config_utils import Config
 from .file_utils import *
@@ -12,4 +12,5 @@ from .strings import *
 from .communication_objects import *
 from .app_utils import *
 from .fractions import *
+from .web_utils import *
 # ------------------------------------------------------------------------------
