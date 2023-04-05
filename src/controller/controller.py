@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/04/05 17:30:52.391516
+#+ Editado:	2023/04/05 17:59:55.858841
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -108,7 +108,7 @@ class Controller:
         logging.info(_('Starting the thread for the "Download Posters" from TMDB'))
 
         posters = MetadataService(source=MetadataSourcesEnum.TMDB)\
-                .download_posters(media_platforms=self.model.get_all(MediaPlatform.table_name))
+                .download_posters(media_platforms=self.model.get_media_platform_with_no_poster())
 
         posters = [PosterDAO(self.model).save(ele) for ele in posters]
 

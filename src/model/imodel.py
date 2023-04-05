@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/30 22:19:42.404936
+#+ Editado:	2023/04/05 17:45:16.646236
 # ------------------------------------------------------------------------------
 #* Strategy Interface (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -150,6 +150,7 @@ class iModel(ABC):  # pylint: disable=C0103
         ╚═  None        -   If no matches exists.
         """
 
+    # GET BY X
     @abstractmethod
     def get_group_by_media_id(self, id_: int, limit: int = None,
                                     offset: int = 0, alfabetic: bool = None
@@ -186,6 +187,15 @@ class iModel(ABC):  # pylint: disable=C0103
         ╠═  Language    -   That matches the codename posibilities.
         ╚═  None        -   If no matches exists.
         """
+
+    @abstractmethod
+    def get_media_platform_with_no_poster(self) -> List[MediaPlatform]:
+        """ Returns all the MediaPlatforms that dont have a poster related
+        @ Input:
+        @ Output:
+        ╚═  List[MediaPlatform]: All the posterless MediaPlatforms
+        """
+    # GET BY X #
 
     @abstractmethod
     def get_by_name(self, table_name: str, name: str, limit: int = None,

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/04/05 15:16:17.823388
+#+ Editado:	2023/04/05 17:59:22.974479
 # ------------------------------------------------------------------------------
 #* Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -1256,6 +1256,34 @@ class Sqlite(iModel):
                     added_ts    =   sql_result[4],
                     modified_ts =   sql_result[5]
             )
+
+    def get_media_platform_with_no_poster(self) -> List[MediaPlatform]:
+        """ Returns all the MediaPlatforms that dont have a poster related
+        @ Input:
+        @ Output:
+        ╚═  List[MediaPlatform]: All the posterless MediaPlatforms
+        """
+
+        query = f'''select * from "{MediaPlatform.table_name}" where id
+        not in (select mp.id from "{MediaPlatform.table_name}" mp join
+        "{Poster.table_name}" p on mp.id_media=p.id_media)'''
+
+        query_results = self.get_cur_db().execute(query).fetchall()
+
+        results = []
+        for result in query_results:
+            results.append(MediaPlatform(
+                    id_             = result[0],
+                    active          = result[1],
+                    media           = self.get_media_by_id(result[2]),
+                    platform        = self.get_platform_by_id(result[3]),
+                    in_platform_id  = result[4],
+                    link            = result[5],
+                    added_ts        = result[6],
+                    modified_ts     = result[7]
+            ))
+        return results
+
     # GET BY X #
 
     # GET BY NAME

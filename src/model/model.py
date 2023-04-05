@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/03/30 22:19:31.782560
+#+ Editado:	2023/04/05 17:45:45.226485
 # ------------------------------------------------------------------------------
 #* Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
@@ -329,6 +329,14 @@ class Model:
         logging.info(_(f'Searching on "{Language.table_name}" and "{LanguageCode.table_name}"'+
         'tables the entry that matches the codename "{codename}."'))
         return self.model.get_language_by_codename(codename=codename)
+
+    def get_media_platform_with_no_poster(self) -> List[MediaPlatform]:
+        """ Returns all the MediaPlatforms that dont have a poster related
+        @ Input:
+        @ Output:
+        ╚═  List[MediaPlatform]: All the posterless MediaPlatforms
+        """
+        return self.model.get_media_platform_with_no_poster()
 
     # GET BY X #
 
