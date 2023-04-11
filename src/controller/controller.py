@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/01/11 18:38:56.570892
-#+ Editado:	2023/04/05 17:59:55.858841
+#+ Editado:	2023/04/10 16:42:05.858503
 # ------------------------------------------------------------------------------
 import sys
 import logging
@@ -107,10 +107,12 @@ class Controller:
     def __download_posters_tmdb(self) -> None:
         logging.info(_('Starting the thread for the "Download Posters" from TMDB'))
 
-        posters = MetadataService(source=MetadataSourcesEnum.TMDB)\
-                .download_posters(media_platforms=self.model.get_media_platform_with_no_poster())
+        posters_2_download = self.model.get_media_platform_with_no_poster()
+        if posters_2_download:
+            posters = MetadataService(source=MetadataSourcesEnum.TMDB)\
+                    .download_posters(media_platforms=posters_2_download)
 
-        posters = [PosterDAO(self.model).save(ele) for ele in posters]
+            posters = [PosterDAO(self.model).save(ele) for ele in posters]
 
         logging.info(_('Finishing the thread for the "Download Posters" from TMDB'))
 

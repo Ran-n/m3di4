@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 #+ Autor:  	Ran#
 #+ Creado: 	2023/03/28 19:05:06.665609
-#+ Editado:	2023/04/05 18:00:19.042815
+#+ Editado:	2023/04/11 22:23:18.434812
 # ------------------------------------------------------------------------------
 import asyncio
 from pathlib import Path
@@ -27,7 +27,6 @@ class MetadataService:
         self.source = source
 
     def download_posters(self, media_platforms: List[MediaPlatform]) -> List[Poster]:
-        print(media_platforms)
         if self.source == MetadataSourcesEnum.TMDB:
             links, paths = self.__download_poster_tmdb(links=[ele.link for ele in media_platforms])
 
@@ -38,7 +37,8 @@ class MetadataService:
 
     def __download_poster_tmdb(self, links: List[str]) -> Tuple[List[str], List[Path]]:
         links = asyncio.run(TMDBService().get_poster_links(links=links))
-        paths = asyncio.run(download_images(folder=Config().poster_folder, links=links))
+        paths = asyncio.run(download_images(folder=Config().poster_folder,
+                                            links=list(filter(lambda x: x, links))))
 
         return links, paths
 

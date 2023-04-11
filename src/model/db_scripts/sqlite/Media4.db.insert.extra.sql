@@ -89,7 +89,7 @@ INSERT INTO "TypeDescriptionLanguage" ("id_type_description", "id_language") VAL
 INSERT INTO "Platform" ("id", "active", "acronym", "name", "name_long", "link", "id_type") VALUES (1, 1, "tmdb", "TMDB", "The Movie Database", "https://www.themoviedb.org/", 3);
 INSERT INTO "Platform" ("id", "active", "acronym", "name", "name_long", "link", "id_type") VALUES (2, 1, "imdb", "IMDb", "Internet Movie Database", "https://www.imdb.com/", 3);
 INSERT INTO "Platform" ("id", "active", "acronym", "name", "name_long", "link", "id_type") VALUES (3, 1, "tvdb", "TheTVDB", "The TV Database", "https://thetvdb.com/", 3);
-INSERT INTO "Platform" ("id", "active", "acronym", "name", "name_long", "link", "id_type") VALUES (4, 1, "omdb", "OMDb", "The Open Movie Database", "https://www.omdbapi.com/", 3);
+INSERT INTO "Platform" ("id", "active", "acronym", "name", "name_long", "link", "id_type") VALUES (4, 1, "omdb", "OMDb", "The Open Movie Database", "https://www.omdb.com/", 3);
 INSERT INTO "Platform" ("id", "active", "name", "name_long", "link", "id_type") VALUES (5, 1, "Telegram", "Telegram Messenger", "https://telegram.org/", 2);
 
 INSERT INTO "PlatformDescription" ("id", "active", "description", "id_platform") VALUES (1, 1, "Community built movie and TV database. Every piece of data has been added by our amazing community dating back to 2008. TMDB's strong international focus and breadth of data is largely unmatched and something we're incredibly proud of. Put simply, we live and breathe community and that's precisely what makes us different.", 1);

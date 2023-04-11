@@ -2,13 +2,12 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/02/25 12:50:24.096207 )
-[//]: # (+ Editado:	2023/04/05 17:02:25.462887 )
+[//]: # (+ Editado:	2023/04/05 18:01:55.351712 )
 [//]: # ( ---------------------------------------------------------------------- )
 
 [↩️](index.md#documentation)
 
 # TODO
-- [ ] Make queries (like get\_all) to discriminate against dormant (non active) entries.
 - [ ] Make medias that have a non groupable type unable to be attached to groups.
 - [ ] Create a service for downloading the posters without human interaction.
 - [ ] Add option for not downloading poster information?.
@@ -26,6 +25,8 @@
 - [ ] Sanitize table names (something like this is bad -> table');Drop table name;--). Only allow one continous string with cases: snake, kebab, pascal and cammel
 - [ ] Pivot to a ORM using SQLAlchemy.
 - [ ] Create more objects than Entities.
+- [ ] Add function to go to poster folder and see if theres missing posters. If there are, download all the posters??
+- [ ] Make queries (like get\_all) to discriminate against dormant (non active) entries.
 
 ## Tasks
 - [ ] Make Issue not always have Group.
