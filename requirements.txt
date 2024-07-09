@@ -1,4 +1,4 @@
-aiohttp==3.8.5
+aiohttp~>3.8.6
 blake3==0.3.3
 configobj==5.1.0.dev0
 ffmpeg==1.4
