@@ -5,3 +5,8 @@
 *.log
 media/db/test_data.insert.sql
 media/poster
+.venv/
+dist/
+build/
+*.egg-info/
+__pycache__/

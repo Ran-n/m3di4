@@ -1,9 +1,0 @@
-aiohttp~=3.13.3
-blake3~=1.0.8
-configobj~=5.0.9
-ffmpeg==1.4
-python_dateutil~=2.9.0
-ffmpeg_python==0.2.0
-uteis~=0.1.2
-validators~=0.35.0
-customtkinter~=5.2.2
