@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/03/04 19:13:39.660119
-#+ Editado:	2023/03/04 19:38:30.100820
+# + Autor:  	Ran#
+# + Creado: 	2023/03/04 19:13:39.660119
+# + Editado:	2023/03/04 19:38:30.100820
 # ------------------------------------------------------------------------------
 from typing import List
 # ------------------------------------------------------------------------------
@@ -12,9 +12,10 @@ from typing import List
 # ------------------------------------------------------------------------------
 def fraction_2_float(fraction: str) -> float:
     """Given a fraction in str format it returns a float"""
-    num, div = [int(ele) for ele in fraction.split('/')]
-    if num==0:
+    num, div = [int(ele) for ele in fraction.split("/")]
+    if num == 0:
         return 0.0
-    return num/div
+    return num / div
+
 
 # ------------------------------------------------------------------------------

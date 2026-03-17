@@ -1,13 +1,14 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 21:26:41.185113
-#+ Editado:	2023/04/05 17:59:22.974479
+# + Autor:  	Ran#
+# + Creado: 	2023/01/05 21:26:41.185113
+# + Editado:	2023/04/05 17:59:22.974479
 # ------------------------------------------------------------------------------
-#* Concrete Strategy (Strategy Pattern)
+# * Concrete Strategy (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.model import iModel
+
 # ------------------------------------------------------------------------------
 import sqlite3
 from sqlite3 import Connection, Cursor, IntegrityError
@@ -25,42 +26,52 @@ from src.model.entity import Extension, Folder, App, Version, Encoder, File
 from src.model.entity import Codec, Language, Track, TrackLanguage
 from src.model.entity import LanguageCode, CodeName, LanguageName
 from src.model.entity import Poster, MediaPlatform
+
+
 # ------------------------------------------------------------------------------
 class Sqlite(iModel):
     def __init__(self, ficheiro: str) -> None:
-        logging.info(_('Starting the sqlite database'))
+        logging.info(_("Starting the sqlite database"))
         # xFCR check if better to add the declaration here an not in creation of object
         self.ficheiro = ficheiro
         self.conn = None
         self.cur = None
 
         # if the DB doesnt have all the number of supposed tables, run the creation script.
-        if(self.__get_num_tables_db() < Config().get_num_entities()):
-            logging.info(_('Creating the sqlite database'))
-            self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.create.sql')))
-            logging.info(_('Adding language information to the sqlite database'))
-            self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.insert.languages.sql')))
+        if self.__get_num_tables_db() < Config().get_num_entities():
+            logging.info(_("Creating the sqlite database"))
+            self.cur.executescript(
+                "".join(load_file("./src/model/db_scripts/sqlite/Media4.db.create.sql"))
+            )
+            logging.info(_("Adding language information to the sqlite database"))
+            self.cur.executescript(
+                "".join(load_file("./src/model/db_scripts/sqlite/Media4.db.insert.languages.sql"))
+            )
             if Config().populate_db:
-                logging.info(_('Populating the sqlite database with extra data'))
-                self.cur.executescript(''.join(load_file('./src/model/db_scripts/sqlite/Media4.db.insert.extra.sql')))
+                logging.info(_("Populating the sqlite database with extra data"))
+                self.cur.executescript(
+                    "".join(load_file("./src/model/db_scripts/sqlite/Media4.db.insert.extra.sql"))
+                )
 
     def __get_num_tables_db(self) -> int:
         self.connect_db()
-        return self.cur.execute('select count(*) from sqlite_master where type="table"').fetchone()[0];
+        return self.cur.execute(
+            'select count(*) from sqlite_master where type="table"'
+        ).fetchone()[0]
 
     def get_conn_db(self) -> Connection:
-        """ Returns a connection to the DB.
+        """Returns a connection to the DB.
         @ Input:
         @ Output:
         ╚═ Connection   -   Connection object to the DB.
         """
         if self.conn == None:
-            logging.info(_('Creating a new connection to the sqlite database'))
+            logging.info(_("Creating a new connection to the sqlite database"))
             return self.connect_db()[0]
         return self.conn
 
     def get_cur_db(self) -> Cursor:
-        """ Returns a cursor to the DB.
+        """Returns a cursor to the DB.
         @ Input:
         @ Output:
         ╚═ Cursor   -   Cursor object in the DB.
@@ -70,7 +81,7 @@ class Sqlite(iModel):
         return self.cur
 
     def connect_db(self) -> tuple([Connection, Cursor]):
-        """ Does the whole process of connecting to a DB.
+        """Does the whole process of connecting to a DB.
         @ Input:
         @ Ouput:
         ╚═ (Connection, Cursor) -   Tuple with objects of DB Connection and Cursor.
@@ -82,7 +93,7 @@ class Sqlite(iModel):
         return (self.conn, self.cur)
 
     def disconnect_db(self, commit: bool = True) -> None:
-        """ Does the whole process of disconnecting from a DB.
+        """Does the whole process of disconnecting from a DB.
         @ Input:
         ╚═  · commit -   bool    -   True
             └ Indicates if changes to the DB should be commited or rolled back.
@@ -96,19 +107,31 @@ class Sqlite(iModel):
             self.cur = None
 
     def save_db(self) -> None:
-        """ Saves the non commited changes to the DB.
+        """Saves the non commited changes to the DB.
         @ Input:
         @ Output:
         """
         if self.conn:
             self.conn.commit()
 
-
     # EXISTS
-    def exists(self, obj: Union[Group, Issue, Platform,
-            Type, ShareSite, Warehouse, Extension,
-            LanguageCode, Media, MediaPlatform, Poster]) -> bool:
-        """ Checks if a element is saved in the DB.
+    def exists(
+        self,
+        obj: Union[
+            Group,
+            Issue,
+            Platform,
+            Type,
+            ShareSite,
+            Warehouse,
+            Extension,
+            LanguageCode,
+            Media,
+            MediaPlatform,
+            Poster,
+        ],
+    ) -> bool:
+        """Checks if a element is saved in the DB.
         @ Input:
         ╚═  · obj   -   Any Entity Object   -   True
             └ Object to check if it exists in the DB.
@@ -119,100 +142,162 @@ class Sqlite(iModel):
         pass
 
     def exists_group(self, obj: Group) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{Group.table_name}" where id_media="{obj.media.id_}" and number="{obj.number}"').fetchall()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{Group.table_name}" where id_media="{obj.media.id_}" and number="{obj.number}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_issue(self, obj: Issue) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{Issue.table_name}" where id_media="{obj.media.id_}" and id_group="{obj.group.id_}" and position="{obj.position}"').fetchall()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{Issue.table_name}" where id_media="{obj.media.id_}" and id_group="{obj.group.id_}" and position="{obj.position}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_platform(self, obj: Platform) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{Platform.table_name}" where name like "{obj.name}"').fetchall()
+        sql_result = (
+            self.get_cur_db()
+            .execute(f'select id from "{Platform.table_name}" where name like "{obj.name}"')
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_type(self, obj: Type) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{Type.table_name}" where name like "{obj.name}"').fetchall()
+        sql_result = (
+            self.get_cur_db()
+            .execute(f'select id from "{Type.table_name}" where name like "{obj.name}"')
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_sharesite(self, obj: ShareSite) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{ShareSite.table_name}" \
-                where link like "{obj.link}"').fetchall()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{ShareSite.table_name}" \
+                where link like "{obj.link}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_sharesite_subs(self, obj: ShareSiteSubs) -> bool:
-        sql_result = self.get_cur_db().execute(f'select id from "{ShareSiteSubs.table_name}" where \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{ShareSiteSubs.table_name}" where \
                 id_share_site={obj.share_site.id_} and sub_num={obj.sub_num} \
-                and added_ts like "{obj.added_ts}%"').fetchall()
+                and added_ts like "{obj.added_ts}%"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_warehouse(self, obj: Warehouse) -> bool:
-        """
-        """
-        sql_result = self.get_cur_db().execute(f'select id from "{Warehouse.table_name}" \
-                where name like "{obj.name}"').fetchall()
+        """ """
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{Warehouse.table_name}" \
+                where name like "{obj.name}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_extension(self, obj: Extension) -> bool:
-        """
-        """
-        sql_result = self.get_cur_db().execute(f'select id from "{Extension.table_name}" \
-                where name like "{obj.name}"').fetchall()
+        """ """
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{Extension.table_name}" \
+                where name like "{obj.name}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_language_code(self, obj: LanguageCode) -> bool:
-        """
-        """
-        sql_result = self.get_cur_db().execute(f'select id from "{LanguageCode.table_name}" \
-                where codename like "{obj.codename}"').fetchall()
+        """ """
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{LanguageCode.table_name}" \
+                where codename like "{obj.codename}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_media(self, obj: Media) -> bool:
         """"""
-        sql_result = self.get_cur_db().execute(f'select id from "{Media.table_name}" \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id from "{Media.table_name}" \
                 where name="{obj.name}" and date_start="{obj.date_start}" \
-                and id_type="{obj.type_.id_}"').fetchall()
+                and id_type="{obj.type_.id_}"'
+            )
+            .fetchall()
+        )
         if len(sql_result) > 0:
             return True
         return False
 
     def exists_media_platform(self, obj: MediaPlatform) -> bool:
         """"""
-        result = self.get_cur_db().execute(f'''select id from "{MediaPlatform.table_name}"
+        result = (
+            self.get_cur_db()
+            .execute(f'''select id from "{MediaPlatform.table_name}"
         where id_media="{obj.media.id_}" and id_platform="{obj.platform.id_}" and
-                                               link="{obj.link}"''').fetchall()
+                                               link="{obj.link}"''')
+            .fetchall()
+        )
         if len(result) > 0:
             return True
         return False
 
     def exists_poster(self, obj: Poster) -> bool:
         """"""
-        result = self.get_cur_db().execute(f'select id from "{Poster.table_name}" where hash=?', (obj.hash_, )).fetchall()
+        result = (
+            self.get_cur_db()
+            .execute(f'select id from "{Poster.table_name}" where hash=?', (obj.hash_,))
+            .fetchall()
+        )
         if len(result) > 0:
             return True
         return False
+
     # EXISTS #
 
     # GET NUM
     def get_num(self, table_name: str) -> int:
-        """ Returns the number of elements in a table.
+        """Returns the number of elements in a table.
         @ Input:
         ╚═  · table_name    -   str, Tuple[str]
             └ Name/s of the table to query.
@@ -222,15 +307,21 @@ class Sqlite(iModel):
         return self.get_cur_db().execute(f'select count(*) from "{table_name}"').fetchone()[0]
 
     def get_num_type_of_x(self, table_name: str) -> int:
-        """ Returns the number of elements in a table.
+        """Returns the number of elements in a table.
         @ Input:
         ╚═  · table_name    -   str
             └ Name of the table to query.
         @ Output:
         ╚═  int - Number of entries on the table.
         """
-        return self.get_cur_db().execute(f'select count(distinct t.id) from "{Type.table_name}" t \
-                right join {table_name} x on x.id_type=t.id').fetchone()[0]
+        return (
+            self.get_cur_db()
+            .execute(
+                f'select count(distinct t.id) from "{Type.table_name}" t \
+                right join {table_name} x on x.id_type=t.id'
+            )
+            .fetchone()[0]
+        )
 
     def get_group_num_by_media_id(self, media_id: int) -> int:
         """Returns the number of group elements discriminating by media id.
@@ -240,15 +331,25 @@ class Sqlite(iModel):
         @ Output:
         ╚═  int - Number of entries on the table that meet the criteria.
         """
-        return self.get_cur_db().execute(f'select count(*) from "{Group.table_name}" where id_media = "{media_id}"').fetchone()[0]
+        return (
+            self.get_cur_db()
+            .execute(f'select count(*) from "{Group.table_name}" where id_media = "{media_id}"')
+            .fetchone()[0]
+        )
+
     # GET NUM #
 
     # GET ALL
-    def get_all(self, table_name: Union[str, Tuple[str, str]], limit: int = None,
-                offset: int = 0, alfabetic: bool = False) -> List[Union[
-                    Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster,
-                    MediaPlatform]]:
-        """ Return all elements of a table.
+    def get_all(
+        self,
+        table_name: Union[str, Tuple[str, str]],
+        limit: int = None,
+        offset: int = 0,
+        alfabetic: bool = False,
+    ) -> List[
+        Union[Type, Status, Media, Platform, ShareSite, Issue, Warehouse, Poster, MediaPlatform]
+    ]:
+        """Return all elements of a table.
         @ Input:
         ╠═  · table_name    -   str
         ║   └ Name of the table to query.
@@ -263,231 +364,281 @@ class Sqlite(iModel):
         """
         pass
 
-    def get_all_type(self, table_name: Union[None, str], limit: int, offset: int, alfabetic: bool) -> List[Type]:
+    def get_all_type(
+        self, table_name: Union[None, str], limit: int, offset: int, alfabetic: bool
+    ) -> List[Type]:
         if table_name is not None:
-            sentence = f'select distinct t.id, t.active, t.name, t.groupable, t.added_ts, t.modified_ts \
+            sentence = (
+                f'select distinct t.id, t.active, t.name, t.groupable, t.added_ts, t.modified_ts \
                     from "{Type.table_name}" t right join "{table_name}" x on x.id_type=t.id'
+            )
         else:
             sentence = f'select distinct id, active, name, groupable, added_ts, modified_ts \
                     from "{Type.table_name}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Type(
-                id_         = result[0],
-                active      = result[1],
-                name        = result[2],
-                groupable   = result[3],
-                added_ts    = result[4],
-                modified_ts = result[5]
-            ))
+            results.append(
+                Type(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    groupable=result[3],
+                    added_ts=result[4],
+                    modified_ts=result[5],
+                )
+            )
         return results
 
     def get_all_status(self, limit: int, offset: int, alfabetic: bool) -> List[Status]:
         sentence = f'select id, active, name, added_ts, modified_ts from "{Status.table_name}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Status(
-                id_         = result[0],
-                active      = result[1],
-                name        = result[2],
-                added_ts    = result[3],
-                modified_ts = result[4]
-            ))
+            results.append(
+                Status(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    added_ts=result[3],
+                    modified_ts=result[4],
+                )
+            )
         return results
 
     def get_all_media(self, limit: int, offset: int, alfabetic: bool) -> List[Media]:
         sentence = f'select id, active, name, date_start, date_end, id_type, id_status, added_ts, modified_ts from "{Media.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Media(
-                    id_         = result[0],
-                    active      = result[1],
-                    name        = result[2],
-                    date_start  = result[3],
-                    date_end    = result[4],
-                    type_       = self.get_type_by_id(result[5]),
-                    status      = self.get_status_by_id(result[6]),
-                    added_ts    = result[7],
-                    modified_ts = result[8]
-            ))
+            results.append(
+                Media(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    date_start=result[3],
+                    date_end=result[4],
+                    type_=self.get_type_by_id(result[5]),
+                    status=self.get_status_by_id(result[6]),
+                    added_ts=result[7],
+                    modified_ts=result[8],
+                )
+            )
         return results
 
     def get_all_platform(self, limit: int, offset: int, alfabetic: bool) -> List[Platform]:
-        """
-        """
+        """ """
         sentence = f'select id, active, acronym, name, name_long, link, id_type, added_ts,\
                 modified_ts from "{Platform.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Platform(
-                    id_         = result[0],
-                    active      = result[1],
-                    acronym     = result[2],
-                    name        = result[3],
-                    name_long   = result[4],
-                    link        = result[5],
-                    type_       = self.get_type_by_id(result[6]),
-                    added_ts    = result[7],
-                    modified_ts = result[8]
-            ))
+            results.append(
+                Platform(
+                    id_=result[0],
+                    active=result[1],
+                    acronym=result[2],
+                    name=result[3],
+                    name_long=result[4],
+                    link=result[5],
+                    type_=self.get_type_by_id(result[6]),
+                    added_ts=result[7],
+                    modified_ts=result[8],
+                )
+            )
         return results
 
     def get_all_sharesite(self, limit: int, offset: int, alfabetic: bool) -> List[ShareSite]:
-        """
-        """
+        """ """
         sentence = f'select id, active, in_platform_id, name, private, link, id_type, \
                 id_platform, added_ts, modified_ts from "{ShareSite.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(ShareSite(
-                    id_             = result[0],
-                    active          = result[1],
-                    in_platform_id  = result[2],
-                    name            = result[3],
-                    private         = result[4],
-                    link            = result[5],
-                    type_           = self.get_type_by_id(result[6]),
-                    platform        = self.get_platform_by_id(result[7]),
-                    added_ts        = result[8],
-                    modified_ts     = result[9]
-            ))
+            results.append(
+                ShareSite(
+                    id_=result[0],
+                    active=result[1],
+                    in_platform_id=result[2],
+                    name=result[3],
+                    private=result[4],
+                    link=result[5],
+                    type_=self.get_type_by_id(result[6]),
+                    platform=self.get_platform_by_id(result[7]),
+                    added_ts=result[8],
+                    modified_ts=result[9],
+                )
+            )
         return results
 
     def get_all_issue(self, limit: int, offset: int, alfabetic: bool) -> List[Issue]:
-        """
-        """
+        """ """
         sentence = f'select id, active, position, name, date, id_media, id_group, added_ts, modified_ts from "{Issue.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Issue(
-                    id_             = result[0],
-                    active          = result[1],
-                    position        = result[2],
-                    name            = result[3],
-                    date            = result[4],
-                    media           = self.get_media_by_id(result[5]),
-                    group     = self.get_group_by_id(result[6]),
-                    added_ts        = result[7],
-                    modified_ts     = result[8]
-            ))
+            results.append(
+                Issue(
+                    id_=result[0],
+                    active=result[1],
+                    position=result[2],
+                    name=result[3],
+                    date=result[4],
+                    media=self.get_media_by_id(result[5]),
+                    group=self.get_group_by_id(result[6]),
+                    added_ts=result[7],
+                    modified_ts=result[8],
+                )
+            )
         return results
 
     def get_all_warehouse(self, limit: int, offset: int, alfabetic: bool) -> List[Warehouse]:
-        """
-        """
+        """ """
         sentence = f'select id, active, name, size, filled, content, id_type, health, \
                 added_ts, modified_ts from "{Warehouse.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Warehouse(
-                    id_         = result[0],
-                    active      = result[1],
-                    name        = result[2],
-                    size        = result[3],
-                    filled      = result[4],
-                    content     = result[5],
-                    type_       = self.get_type_by_id(result[6]),
-                    health      = result[7],
-                    added_ts    = result[8],
-                    modified_ts = result[9]
-            ))
+            results.append(
+                Warehouse(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    size=result[3],
+                    filled=result[4],
+                    content=result[5],
+                    type_=self.get_type_by_id(result[6]),
+                    health=result[7],
+                    added_ts=result[8],
+                    modified_ts=result[9],
+                )
+            )
         return results
 
     def get_all_poster(self, limit: int, offset: int, alfabetic: bool) -> List[Poster]:
         """"""
         sentence = f'select id, name, hash, id_extension, id_media, id_group, \
                 id_issue, added_ts, modified_ts from "{Poster.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Poster(
-                    id_         = result[0],
-                    name        = result[1],
-                    hash_       = result[2],
-                    extension   = self.get_extension_by_id(result[3]),
-                    media       = self.get_media_by_id(result[4]),
-                    group       = self.get_group_by_id(result[5]),
-                    issue       = self.get_issue_by_id(result[6]),
-                    added_ts    = result[7],
-                    modified_ts = result[8]
-            ))
+            results.append(
+                Poster(
+                    id_=result[0],
+                    name=result[1],
+                    hash_=result[2],
+                    extension=self.get_extension_by_id(result[3]),
+                    media=self.get_media_by_id(result[4]),
+                    group=self.get_group_by_id(result[5]),
+                    issue=self.get_issue_by_id(result[6]),
+                    added_ts=result[7],
+                    modified_ts=result[8],
+                )
+            )
         return results
 
-    def get_all_media_platform(self, limit: int, offset: int, alfabetic: bool) -> List[MediaPlatform]:
+    def get_all_media_platform(
+        self, limit: int, offset: int, alfabetic: bool
+    ) -> List[MediaPlatform]:
         """"""
         sentence = f'select id, active, id_media, id_platform, in_platform_id, \
                 link, added_ts, modified_ts from "{MediaPlatform.table_name}"'
-        if alfabetic: sentence += ' order by name asc'
-        if limit != None and offset != None: sentence += f' LIMIT {limit} OFFSET {offset}'
+        if alfabetic:
+            sentence += " order by name asc"
+        if limit != None and offset != None:
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(MediaPlatform(
-                    id_             = result[0],
-                    active          = result[1],
-                    media           = self.get_media_by_id(result[2]),
-                    platform        = self.get_platform_by_id(result[3]),
-                    in_platform_id  = result[4],
-                    link            = result[5],
-                    added_ts        = result[6],
-                    modified_ts     = result[7]
-            ))
+            results.append(
+                MediaPlatform(
+                    id_=result[0],
+                    active=result[1],
+                    media=self.get_media_by_id(result[2]),
+                    platform=self.get_platform_by_id(result[3]),
+                    in_platform_id=result[4],
+                    link=result[5],
+                    added_ts=result[6],
+                    modified_ts=result[7],
+                )
+            )
         return results
+
     # GET ALL #
 
     # GET BY ID
-    def get_by_id(self, table_name: str, id_: int) ->\
-            Union[Type, Status, Media,
-                  Platform, Group, App,
-                  Extension, Warehouse, Folder, Issue,
-                  Version, Encoder, File, Codec,
-                  Track, Language, Poster]:
-        """ Returns a element of the table discriminating by its id.
+    def get_by_id(
+        self, table_name: str, id_: int
+    ) -> Union[
+        Type,
+        Status,
+        Media,
+        Platform,
+        Group,
+        App,
+        Extension,
+        Warehouse,
+        Folder,
+        Issue,
+        Version,
+        Encoder,
+        File,
+        Codec,
+        Track,
+        Language,
+        Poster,
+    ]:
+        """Returns a element of the table discriminating by its id.
         @ Input:
         ╠═  · table_name    -   str
         ║   └ Name of the table to query.
@@ -500,230 +651,317 @@ class Sqlite(iModel):
         pass
 
     def get_type_by_id(self, id_: int) -> Union[None, Type]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, groupable, added_ts, \
-                modified_ts from "{Type.table_name}" where id={id_}').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, groupable, added_ts, \
+                modified_ts from "{Type.table_name}" where id={id_}'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Type(
-                id_         = sql_result[0],
-                active      = sql_result[1],
-                name        = sql_result[2],
-                groupable   = sql_result[3],
-                added_ts    = sql_result[4],
-                modified_ts = sql_result[5]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                groupable=sql_result[3],
+                added_ts=sql_result[4],
+                modified_ts=sql_result[5],
             )
 
     def get_status_by_id(self, id_: int) -> Union[None, Status]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, modified_ts from "{Status.table_name}" where id="{id_}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, added_ts, modified_ts from "{Status.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Status(
-                id_         = sql_result[0],
-                active      = sql_result[1],
-                name        = sql_result[2],
-                added_ts    = sql_result[3],
-                modified_ts = sql_result[4]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                added_ts=sql_result[3],
+                modified_ts=sql_result[4],
             )
 
     def get_media_by_id(self, id_: int) -> Union[None, Media]:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, date_start, date_end, \
-                id_type, id_status, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, date_start, date_end, \
+                id_type, id_status, added_ts, modified_ts from "{Media.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Media(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    date_start  = sql_result[3],
-                    date_end    = sql_result[4],
-                    type_       = self.get_type_by_id(sql_result[5]),
-                    status      = self.get_status_by_id(sql_result[6]),
-                    added_ts    = sql_result[7],
-                    modified_ts = sql_result[8]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                date_start=sql_result[3],
+                date_end=sql_result[4],
+                type_=self.get_type_by_id(sql_result[5]),
+                status=self.get_status_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
 
     def get_platform_by_id(self, id_: int) -> Union[None, Platform]:
         """"""
-        sql_result = self.get_cur_db().execute(f'select id, active, acronym, name, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, acronym, name, \
                 name_long, link, id_type, added_ts, modified_ts from \
-                "{Platform.table_name}" where id="{id_}"').fetchone()
+                "{Platform.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Platform(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    acronym     = sql_result[2],
-                    name        = sql_result[3],
-                    name_long   = sql_result[4],
-                    link        = sql_result[5],
-                    type_       = self.get_type_by_id(sql_result[6]),
-                    added_ts    = sql_result[7],
-                    modified_ts = sql_result[8]
+                id_=sql_result[0],
+                active=sql_result[1],
+                acronym=sql_result[2],
+                name=sql_result[3],
+                name_long=sql_result[4],
+                link=sql_result[5],
+                type_=self.get_type_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
 
     def get_group_by_id(self, id_: int) -> Union[None, Group]:
-        sql_result = self.get_cur_db().execute(f'select id, active, number, name, date_start, \
-                date_end, id_media, added_ts, modified_ts from "{Group.table_name}" where id="{id_}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, number, name, date_start, \
+                date_end, id_media, added_ts, modified_ts from "{Group.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Group(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    number      = sql_result[2],
-                    name        = sql_result[3],
-                    date_start  = sql_result[4],
-                    date_end    = sql_result[5],
-                    media       = self.get_media_by_id(sql_result[6]),
-                    added_ts    = sql_result[7],
-                    modified_ts = sql_result[8]
+                id_=sql_result[0],
+                active=sql_result[1],
+                number=sql_result[2],
+                name=sql_result[3],
+                date_start=sql_result[4],
+                date_end=sql_result[5],
+                media=self.get_media_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
 
     def get_app_by_id(self, id_: int) -> App:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{App.table_name}" where id="{id_}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, added_ts, \
+                modified_ts from "{App.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return App(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                added_ts=sql_result[3],
+                modified_ts=sql_result[4],
             )
 
     def get_extension_by_id(self, id_: int) -> Extension:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, format_name, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, format_name, \
                 format_name_long, added_ts, modified_ts from "{Extension.table_name}" \
-                where id="{id_}"').fetchone()
+                where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Extension(
-                    id_                 = sql_result[0],
-                    active              = sql_result[1],
-                    name                = sql_result[2],
-                    format_name         = sql_result[3],
-                    format_name_long    = sql_result[4],
-                    added_ts            = sql_result[5],
-                    modified_ts         = sql_result[6]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                format_name=sql_result[3],
+                format_name_long=sql_result[4],
+                added_ts=sql_result[5],
+                modified_ts=sql_result[6],
             )
 
     def get_warehouse_by_id(self, id_: int) -> Warehouse:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, size, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, size, \
                 filled, content, id_type, health, added_ts, modified_ts \
-                from "{Warehouse.table_name}" where id="{id_}"').fetchone()
+                from "{Warehouse.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Warehouse(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    size        = sql_result[3],
-                    filled      = sql_result[4],
-                    content     = sql_result[5],
-                    type_       = self.get_type_by_id(sql_result[6]),
-                    health      = sql_result[7],
-                    added_ts    = sql_result[8],
-                    modified_ts = sql_result[9]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                size=sql_result[3],
+                filled=sql_result[4],
+                content=sql_result[5],
+                type_=self.get_type_by_id(sql_result[6]),
+                health=sql_result[7],
+                added_ts=sql_result[8],
+                modified_ts=sql_result[9],
             )
 
     def get_folder_by_id(self, id_: int) -> Folder:
-        sql_result = self.get_cur_db().execute(f'select id, active, path, added_ts, \
-                modified_ts from "{Folder.table_name}" where id="{id_}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, path, added_ts, \
+                modified_ts from "{Folder.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Folder(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    path        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
+                id_=sql_result[0],
+                active=sql_result[1],
+                path=sql_result[2],
+                added_ts=sql_result[3],
+                modified_ts=sql_result[4],
             )
 
     def get_issue_by_id(self, id_: int) -> Issue:
-        sql_result = self.get_cur_db().execute(f'select id, active, position, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, position, \
                 name, date, id_media, id_group, added_ts, modified_ts \
-                from "{Issue.table_name}" where id="{id_}"').fetchone()
+                from "{Issue.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Issue(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    position    = sql_result[2],
-                    name        = sql_result[3],
-                    date        = sql_result[4],
-                    media       = self.get_media_by_id(sql_result[5]),
-                    group = self.get_group_by_id(sql_result[6]),
-                    added_ts    = sql_result[7],
-                    modified_ts = sql_result[8]
+                id_=sql_result[0],
+                active=sql_result[1],
+                position=sql_result[2],
+                name=sql_result[3],
+                date=sql_result[4],
+                media=self.get_media_by_id(sql_result[5]),
+                group=self.get_group_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
 
     def get_version_by_id(self, id_: int) -> Version:
-        sql_result = self.get_cur_db().execute(f'select id, active, number, name, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, number, name, \
                 num_bit_processor, added_ts, modified_ts from "{Version.table_name}" \
-                where id="{id_}"').fetchone()
+                where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Version(
-                    id_                 = sql_result[0],
-                    active              = sql_result[1],
-                    number              = sql_result[2],
-                    name                = sql_result[3],
-                    num_bit_processor   = sql_result[4],
-                    added_ts            = sql_result[5],
-                    modified_ts         = sql_result[6]
+                id_=sql_result[0],
+                active=sql_result[1],
+                number=sql_result[2],
+                name=sql_result[3],
+                num_bit_processor=sql_result[4],
+                added_ts=sql_result[5],
+                modified_ts=sql_result[6],
             )
 
     def get_encoder_by_id(self, id_: int) -> Encoder:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, \
                 added_ts, modified_ts from "{Encoder.table_name}" \
-                where id="{id_}"').fetchone()
+                where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Encoder(
-                    id_                 = sql_result[0],
-                    active              = sql_result[1],
-                    name                = sql_result[2],
-                    added_ts            = sql_result[3],
-                    modified_ts         = sql_result[4]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                added_ts=sql_result[3],
+                modified_ts=sql_result[4],
             )
 
     def get_file_by_id(self, id_: int) -> File:
-        sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, hash, name, id_extension, \
                 id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
                 id_version, id_encoder, original_name, added_ts, modified_ts \
-                from "{File.table_name}" where id="{id_}"').fetchone()
+                from "{File.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return File(
-                    id_             = sql_result[0],
-                    active          = sql_result[1],
-                    hash_           = sql_result[2],
-                    name            = sql_result[3],
-                    extension       = self.get_extension_by_id(sql_result[4]),
-                    warehouse       = self.get_warehouse_by_id(sql_result[5]),
-                    folder          = self.get_folder_by_id(sql_result[6]),
-                    media           = self.get_media_by_id(sql_result[7]),
-                    issue     = self.get_issue_by_id(sql_result[8]),
-                    title           = sql_result[9],
-                    nb_streams      = sql_result[10],
-                    start           = sql_result[11],
-                    duration        = sql_result[12],
-                    size            = sql_result[13],
-                    bit_rate        = sql_result[14],
-                    probe_score     = sql_result[15],
-                    creation_ts     = sql_result[16],
-                    version     = self.get_version_by_id(sql_result[17]),
-                    encoder         = self.get_encoder_by_id(sql_result[18]),
-                    original_name   = sql_result[19],
-                    added_ts        = sql_result[20],
-                    modified_ts     = sql_result[21]
+                id_=sql_result[0],
+                active=sql_result[1],
+                hash_=sql_result[2],
+                name=sql_result[3],
+                extension=self.get_extension_by_id(sql_result[4]),
+                warehouse=self.get_warehouse_by_id(sql_result[5]),
+                folder=self.get_folder_by_id(sql_result[6]),
+                media=self.get_media_by_id(sql_result[7]),
+                issue=self.get_issue_by_id(sql_result[8]),
+                title=sql_result[9],
+                nb_streams=sql_result[10],
+                start=sql_result[11],
+                duration=sql_result[12],
+                size=sql_result[13],
+                bit_rate=sql_result[14],
+                probe_score=sql_result[15],
+                creation_ts=sql_result[16],
+                version=self.get_version_by_id(sql_result[17]),
+                encoder=self.get_encoder_by_id(sql_result[18]),
+                original_name=sql_result[19],
+                added_ts=sql_result[20],
+                modified_ts=sql_result[21],
             )
 
     def get_codec_by_id(self, id_: int) -> Codec:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, name_long, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, name_long, \
                 id_type, added_ts, modified_ts from "{Codec.table_name}" \
-                where id="{id_}"').fetchone()
+                where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Codec(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    name_long   = sql_result[3],
-                    type_       = self.get_type_by_id(sql_result[4]),
-                    added_ts    = sql_result[5],
-                    modified_ts = sql_result[6]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                name_long=sql_result[3],
+                type_=self.get_type_by_id(sql_result[4]),
+                added_ts=sql_result[5],
+                modified_ts=sql_result[6],
             )
 
     def get_track_by_id(self, id_: int) -> Track:
-        sql_result = self.get_cur_db().execute(f'select id, active, id_file, id_codec, index_, title, profile, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, id_file, id_codec, index_, title, profile, \
                 quality, width, height, coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
                 sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, color_range, color_space, \
                 color_transfer, color_primaries, chroma_location, field_order, refs, is_avc, nal_length_size, \
@@ -732,115 +970,133 @@ class Sqlite(iModel):
                 visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, descriptions, metadata, \
                 dependent, still_image, start, duration, size, bit_rate, sample_rate, sample_format, channels, \
                 channel_layout, bps, frame_number, dmix_mode, text_subtitle, added_ts, modified_ts \
-                from "{Track.table_name}" where id="{id_}"').fetchone()
+                from "{Track.table_name}" where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Track(
-                    id_                     = sql_result[0],
-                    active                  = sql_result[1],
-                    file                    = self.get_file_by_id(sql_result[2]),
-                    codec                   = self.get_codec_by_id(sql_result[3]),
-                    index                   = sql_result[4],
-                    title                   = sql_result[5],
-                    profile                 = sql_result[6],
-                    quality                 = sql_result[7],
-                    width                   = sql_result[8],
-                    height                  = sql_result[9],
-                    coded_width             = sql_result[10],
-                    coded_height            = sql_result[11],
-                    closed_captions         = sql_result[12],
-                    film_grain              = sql_result[13],
-                    has_b_frames            = sql_result[14],
-                    sample_aspect_ratio     = sql_result[15],
-                    display_aspect_ratio    = sql_result[16],
-                    pixel_format            = sql_result[17],
-                    level                   = sql_result[18],
-                    color                   = sql_result[19],
-                    color_range             = sql_result[20],
-                    color_space             = sql_result[21],
-                    color_transfer          = sql_result[22],
-                    color_primaries         = sql_result[23],
-                    chroma_location         = sql_result[24],
-                    field_order             = sql_result[25],
-                    refs                    = sql_result[26],
-                    is_avc                  = sql_result[27],
-                    nal_length_size         = sql_result[28],
-                    r_frame_rate            = sql_result[29],
-                    avg_frame_rate          = sql_result[30],
-                    time_base               = sql_result[31],
-                    start_pts               = sql_result[32],
-                    bits_per_raw_sample     = sql_result[33],
-                    bits_per_sample         = sql_result[34],
-                    extradata_size          = sql_result[35],
-                    default                 = sql_result[36],
-                    dub                     = sql_result[37],
-                    original                = sql_result[38],
-                    comment                 = sql_result[39],
-                    lyrics                  = sql_result[40],
-                    karaoke                 = sql_result[41],
-                    forced                  = sql_result[42],
-                    hearing_impaired        = sql_result[43],
-                    visual_impaired         = sql_result[44],
-                    clean_effects           = sql_result[45],
-                    attached_pic            = sql_result[46],
-                    timed_thumbnails        = sql_result[47],
-                    captions                = sql_result[48],
-                    descriptions            = sql_result[49],
-                    metadata                = sql_result[50],
-                    dependent               = sql_result[51],
-                    still_image             = sql_result[52],
-                    start                   = sql_result[53],
-                    duration                = sql_result[54],
-                    size                    = sql_result[55],
-                    bit_rate                = sql_result[56],
-                    sample_rate             = sql_result[57],
-                    sample_format           = sql_result[58],
-                    channels                = sql_result[59],
-                    channel_layout          = sql_result[60],
-                    bps                     = sql_result[61],
-                    frame_number            = sql_result[62],
-                    dmix_mode               = sql_result[63],
-                    text_subtitle           = sql_result[64],
-                    added_ts                = sql_result[65],
-                    modified_ts             = sql_result[66]
+                id_=sql_result[0],
+                active=sql_result[1],
+                file=self.get_file_by_id(sql_result[2]),
+                codec=self.get_codec_by_id(sql_result[3]),
+                index=sql_result[4],
+                title=sql_result[5],
+                profile=sql_result[6],
+                quality=sql_result[7],
+                width=sql_result[8],
+                height=sql_result[9],
+                coded_width=sql_result[10],
+                coded_height=sql_result[11],
+                closed_captions=sql_result[12],
+                film_grain=sql_result[13],
+                has_b_frames=sql_result[14],
+                sample_aspect_ratio=sql_result[15],
+                display_aspect_ratio=sql_result[16],
+                pixel_format=sql_result[17],
+                level=sql_result[18],
+                color=sql_result[19],
+                color_range=sql_result[20],
+                color_space=sql_result[21],
+                color_transfer=sql_result[22],
+                color_primaries=sql_result[23],
+                chroma_location=sql_result[24],
+                field_order=sql_result[25],
+                refs=sql_result[26],
+                is_avc=sql_result[27],
+                nal_length_size=sql_result[28],
+                r_frame_rate=sql_result[29],
+                avg_frame_rate=sql_result[30],
+                time_base=sql_result[31],
+                start_pts=sql_result[32],
+                bits_per_raw_sample=sql_result[33],
+                bits_per_sample=sql_result[34],
+                extradata_size=sql_result[35],
+                default=sql_result[36],
+                dub=sql_result[37],
+                original=sql_result[38],
+                comment=sql_result[39],
+                lyrics=sql_result[40],
+                karaoke=sql_result[41],
+                forced=sql_result[42],
+                hearing_impaired=sql_result[43],
+                visual_impaired=sql_result[44],
+                clean_effects=sql_result[45],
+                attached_pic=sql_result[46],
+                timed_thumbnails=sql_result[47],
+                captions=sql_result[48],
+                descriptions=sql_result[49],
+                metadata=sql_result[50],
+                dependent=sql_result[51],
+                still_image=sql_result[52],
+                start=sql_result[53],
+                duration=sql_result[54],
+                size=sql_result[55],
+                bit_rate=sql_result[56],
+                sample_rate=sql_result[57],
+                sample_format=sql_result[58],
+                channels=sql_result[59],
+                channel_layout=sql_result[60],
+                bps=sql_result[61],
+                frame_number=sql_result[62],
+                dmix_mode=sql_result[63],
+                text_subtitle=sql_result[64],
+                added_ts=sql_result[65],
+                modified_ts=sql_result[66],
             )
 
     def get_language_by_id(self, id_: int) -> Language:
-        sql_result = self.get_cur_db().execute(f'select id, active, name, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, \
                 id_language, added_ts, modified_ts from "{Language.table_name}" \
-                where id="{id_}"').fetchone()
+                where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Language(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    language    = self.get_language_by_id(sql_result[3]),
-                    added_ts    = sql_result[4],
-                    modified_ts = sql_result[5]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                language=self.get_language_by_id(sql_result[3]),
+                added_ts=sql_result[4],
+                modified_ts=sql_result[5],
             )
 
     def get_poster_by_id(self, id_: int) -> Poster:
-        sql_result = self.get_cur_db().execute(f'select id, name, hash, id_extension, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, name, hash, id_extension, \
                 id_media, id_group, id_issue, added_ts, modified_ts from "{Poster.table_name}" \
-                where id="{id_}"').fetchone()
+                where id="{id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Poster(
-                    id_         = sql_result[0],
-                    name        = sql_result[1],
-                    hash_       = sql_result[2],
-                    extension   = self.get_extension_by_id(sql_result[3]),
-                    media       = self.get_media_by_id(sql_result[4]),
-                    group       = self.get_group_by_id(sql_result[5]),
-                    issue       = self.get_issue_by_id(sql_result[6]),
-                    added_ts    = sql_result[7],
-                    modified_ts = sql_result[8]
+                id_=sql_result[0],
+                name=sql_result[1],
+                hash_=sql_result[2],
+                extension=self.get_extension_by_id(sql_result[3]),
+                media=self.get_media_by_id(sql_result[4]),
+                group=self.get_group_by_id(sql_result[5]),
+                issue=self.get_issue_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
+
     # GET BY ID
 
     # GET BY NK
-    def get_by_nk(self, obj: Union[Group, Version, Encoder, File, Type, Codec]) -> \
-            Union[Group, Version, Encoder, File, Type, Codec, Track,
-                  Language, TrackLanguage, Poster, Media]:
-        """ Returns a group discriminated by its natural key (NK).
+    def get_by_nk(
+        self, obj: Union[Group, Version, Encoder, File, Type, Codec]
+    ) -> Union[
+        Group, Version, Encoder, File, Type, Codec, Track, Language, TrackLanguage, Poster, Media
+    ]:
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Entity
             └ The Entity object to use in the search.
@@ -851,7 +1107,7 @@ class Sqlite(iModel):
         pass
 
     def get_group_by_nk(self, obj: Group) -> Union[None, Group]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Group
             └ The Group object to use in the search.
@@ -859,22 +1115,28 @@ class Sqlite(iModel):
         ╠═  Group   -   The element of the table discriminated by natural key.
         ╚═  None         -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, name, number, date_start, date_end, id_media, added_ts, modified_ts from "{Group.table_name}" where number="{obj.number}" and id_media="{obj.media.id_}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, number, date_start, date_end, id_media, added_ts, modified_ts from "{Group.table_name}" where number="{obj.number}" and id_media="{obj.media.id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Group(
-                    id_         =   sql_result[0],
-                    active      =   sql_result[1],
-                    name        =   sql_result[2],
-                    number      =   sql_result[3],
-                    date_start  =   sql_result[4],
-                    date_end    =   sql_result[5],
-                    media       =   self.get_media_by_id(sql_result[6]),
-                    added_ts    =   sql_result[7],
-                    modified_ts =   sql_result[8]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                number=sql_result[3],
+                date_start=sql_result[4],
+                date_end=sql_result[5],
+                media=self.get_media_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
 
     def get_version_by_nk(self, obj: Version) -> Union[None, Version]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Version
             └ The Version object to use in the search.
@@ -882,22 +1144,28 @@ class Sqlite(iModel):
         ╠═  Version  -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, id_app, number, name, num_bit_processor, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, id_app, number, name, num_bit_processor, \
                 added_ts, modified_ts from "{Version.table_name}" where id_app="{obj.app.id_}"\
-                and number="{obj.number}"').fetchone()
+                and number="{obj.number}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Version(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    app         = self.get_app_by_id(sql_result[2]),
-                    number      = sql_result[3],
-                    name        = sql_result[4],
-                    added_ts    = sql_result[5],
-                    modified_ts = sql_result[6]
+                id_=sql_result[0],
+                active=sql_result[1],
+                app=self.get_app_by_id(sql_result[2]),
+                number=sql_result[3],
+                name=sql_result[4],
+                added_ts=sql_result[5],
+                modified_ts=sql_result[6],
             )
 
     def get_encoder_by_nk(self, obj: Encoder) -> Union[None, Encoder]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Encoder
             └ The Encoder object to use in the search.
@@ -905,19 +1173,25 @@ class Sqlite(iModel):
         ╠═  Encoder -   The element of the table discriminated by natural key.
         ╚═  None    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{Encoder.table_name}" where name="{obj.name}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, added_ts, \
+                modified_ts from "{Encoder.table_name}" where name="{obj.name}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Encoder(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                added_ts=sql_result[3],
+                modified_ts=sql_result[4],
             )
 
     def get_file_by_nk(self, obj: File) -> Union[None, File]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   File
             └ The File object to use in the search.
@@ -925,41 +1199,47 @@ class Sqlite(iModel):
         ╠═  File    -   The element of the table discriminated by natural key.
         ╚═  None    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, hash, name, id_extension, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, hash, name, id_extension, \
                 id_warehouse, id_folder, id_media, id_issue, title, nb_streams, \
                 nb_programs, start, duration, size, bit_rate, probe_score, creation_ts, \
                 id_version, id_encoder, original_name, added_ts, modified_ts \
                 from "{File.table_name}" where name="{obj.name}" and \
                 id_extension="{obj.extension.id_}" and id_folder="{obj.folder.id_}" and \
-                id_warehouse="{obj.warehouse.id_}"').fetchone()
+                id_warehouse="{obj.warehouse.id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return File(
-                    id_             = sql_result[0],
-                    active          = sql_result[1],
-                    hash_           = sql_result[2],
-                    name            = sql_result[3],
-                    extension       = self.get_extension_by_id(sql_result[4]),
-                    warehouse       = self.get_warehouse_by_id(sql_result[5]),
-                    folder          = self.get_folder_by_id(sql_result[6]),
-                    media           = self.get_media_by_id(sql_result[7]),
-                    issue     = self.get_issue_by_id(sql_result[8]),
-                    title           = sql_result[9],
-                    nb_streams      = sql_result[10],
-                    start           = sql_result[11],
-                    duration        = sql_result[12],
-                    size            = sql_result[13],
-                    bit_rate        = sql_result[14],
-                    probe_score     = sql_result[15],
-                    creation_ts     = sql_result[16],
-                    version     = self.get_version_by_id(sql_result[17]),
-                    encoder         = self.get_encoder_by_id(sql_result[18]),
-                    original_name   = sql_result[19],
-                    added_ts        = sql_result[20],
-                    modified_ts     = sql_result[21]
+                id_=sql_result[0],
+                active=sql_result[1],
+                hash_=sql_result[2],
+                name=sql_result[3],
+                extension=self.get_extension_by_id(sql_result[4]),
+                warehouse=self.get_warehouse_by_id(sql_result[5]),
+                folder=self.get_folder_by_id(sql_result[6]),
+                media=self.get_media_by_id(sql_result[7]),
+                issue=self.get_issue_by_id(sql_result[8]),
+                title=sql_result[9],
+                nb_streams=sql_result[10],
+                start=sql_result[11],
+                duration=sql_result[12],
+                size=sql_result[13],
+                bit_rate=sql_result[14],
+                probe_score=sql_result[15],
+                creation_ts=sql_result[16],
+                version=self.get_version_by_id(sql_result[17]),
+                encoder=self.get_encoder_by_id(sql_result[18]),
+                original_name=sql_result[19],
+                added_ts=sql_result[20],
+                modified_ts=sql_result[21],
             )
 
     def get_type_by_nk(self, obj: Type) -> Union[None, Type]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Type
             └ The Version object to use in the search.
@@ -967,19 +1247,25 @@ class Sqlite(iModel):
         ╠═  Type    -   The element of the table discriminated by natural key.
         ╚═  None    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, name, added_ts, \
-                modified_ts from "{Type.table_name}" where name="{obj.name}"').fetchone()
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, added_ts, \
+                modified_ts from "{Type.table_name}" where name="{obj.name}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Type(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    added_ts    = sql_result[3],
-                    modified_ts = sql_result[4]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                added_ts=sql_result[3],
+                modified_ts=sql_result[4],
             )
 
     def get_codec_by_nk(self, obj: Codec) -> Union[None, Codec]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Codec
             └ The Version object to use in the search.
@@ -987,22 +1273,28 @@ class Sqlite(iModel):
         ╠═  Codec   -   The element of the table discriminated by natural key.
         ╚═  None    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, name, name_long, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, name_long, \
                 id_type, added_ts, modified_ts from "{Codec.table_name}" \
-                where name="{obj.name}" or name_long="{obj.name_long}"').fetchone()
+                where name="{obj.name}" or name_long="{obj.name_long}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Codec(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    name_long   = sql_result[3],
-                    type_       = self.get_type_by_id(sql_result[4]),
-                    added_ts    = sql_result[5],
-                    modified_ts = sql_result[6]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                name_long=sql_result[3],
+                type_=self.get_type_by_id(sql_result[4]),
+                added_ts=sql_result[5],
+                modified_ts=sql_result[6],
             )
 
     def get_track_by_nk(self, obj: Track) -> Union[None, Track]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Track
             └ The Version object to use in the search.
@@ -1010,7 +1302,10 @@ class Sqlite(iModel):
         ╠═  Track  -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, id_file, id_codec, index_, title, profile, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, id_file, id_codec, index_, title, profile, \
                 quality, width, height, coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
                 sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, color_range, color_space, \
                 color_transfer, color_primaries, chroma_location, field_order, refs, is_avc, nal_length_size, \
@@ -1019,80 +1314,83 @@ class Sqlite(iModel):
                 visual_impaired, clean_effects, attached_pic, timed_thumbnails, captions, descriptions, metadata, \
                 dependent, still_image, start, duration, size, bit_rate, sample_rate, sample_format, channels, \
                 channel_layout, bps, frame_number, dmix_mode, text_subtitle, added_ts, modified_ts \
-                from "{Track.table_name}" where id_file="{obj.file.id_}" and index_="{obj.index}"').fetchone()
+                from "{Track.table_name}" where id_file="{obj.file.id_}" and index_="{obj.index}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Track(
-                    id_                     = sql_result[0],
-                    active                  = sql_result[1],
-                    file                    = self.get_file_by_id(sql_result[2]),
-                    codec                   = self.get_codec_by_id(sql_result[3]),
-                    index                   = sql_result[4],
-                    title                   = sql_result[5],
-                    profile                 = sql_result[6],
-                    quality                 = sql_result[7],
-                    width                   = sql_result[8],
-                    height                  = sql_result[9],
-                    coded_width             = sql_result[10],
-                    coded_height            = sql_result[11],
-                    closed_captions         = sql_result[12],
-                    film_grain              = sql_result[13],
-                    has_b_frames            = sql_result[14],
-                    sample_aspect_ratio     = sql_result[15],
-                    display_aspect_ratio    = sql_result[16],
-                    pixel_format            = sql_result[17],
-                    level                   = sql_result[18],
-                    color                   = sql_result[19],
-                    color_range             = sql_result[20],
-                    color_space             = sql_result[21],
-                    color_transfer          = sql_result[22],
-                    color_primaries         = sql_result[23],
-                    chroma_location         = sql_result[24],
-                    field_order             = sql_result[25],
-                    refs                    = sql_result[26],
-                    is_avc                  = sql_result[27],
-                    nal_length_size         = sql_result[28],
-                    r_frame_rate            = sql_result[29],
-                    avg_frame_rate          = sql_result[30],
-                    time_base               = sql_result[31],
-                    start_pts               = sql_result[32],
-                    bits_per_raw_sample     = sql_result[33],
-                    bits_per_sample         = sql_result[34],
-                    extradata_size          = sql_result[35],
-                    default                 = sql_result[36],
-                    dub                     = sql_result[37],
-                    original                = sql_result[38],
-                    comment                 = sql_result[39],
-                    lyrics                  = sql_result[40],
-                    karaoke                 = sql_result[41],
-                    forced                  = sql_result[42],
-                    hearing_impaired        = sql_result[43],
-                    visual_impaired         = sql_result[44],
-                    clean_effects           = sql_result[45],
-                    attached_pic            = sql_result[46],
-                    timed_thumbnails        = sql_result[47],
-                    captions                = sql_result[48],
-                    descriptions            = sql_result[49],
-                    metadata                = sql_result[50],
-                    dependent               = sql_result[51],
-                    still_image             = sql_result[52],
-                    start                   = sql_result[53],
-                    duration                = sql_result[54],
-                    size                    = sql_result[55],
-                    bit_rate                = sql_result[56],
-                    sample_rate             = sql_result[57],
-                    sample_format           = sql_result[58],
-                    channels                = sql_result[59],
-                    channel_layout          = sql_result[60],
-                    bps                     = sql_result[61],
-                    frame_number            = sql_result[62],
-                    dmix_mode               = sql_result[63],
-                    text_subtitle           = sql_result[64],
-                    added_ts                = sql_result[65],
-                    modified_ts             = sql_result[66]
+                id_=sql_result[0],
+                active=sql_result[1],
+                file=self.get_file_by_id(sql_result[2]),
+                codec=self.get_codec_by_id(sql_result[3]),
+                index=sql_result[4],
+                title=sql_result[5],
+                profile=sql_result[6],
+                quality=sql_result[7],
+                width=sql_result[8],
+                height=sql_result[9],
+                coded_width=sql_result[10],
+                coded_height=sql_result[11],
+                closed_captions=sql_result[12],
+                film_grain=sql_result[13],
+                has_b_frames=sql_result[14],
+                sample_aspect_ratio=sql_result[15],
+                display_aspect_ratio=sql_result[16],
+                pixel_format=sql_result[17],
+                level=sql_result[18],
+                color=sql_result[19],
+                color_range=sql_result[20],
+                color_space=sql_result[21],
+                color_transfer=sql_result[22],
+                color_primaries=sql_result[23],
+                chroma_location=sql_result[24],
+                field_order=sql_result[25],
+                refs=sql_result[26],
+                is_avc=sql_result[27],
+                nal_length_size=sql_result[28],
+                r_frame_rate=sql_result[29],
+                avg_frame_rate=sql_result[30],
+                time_base=sql_result[31],
+                start_pts=sql_result[32],
+                bits_per_raw_sample=sql_result[33],
+                bits_per_sample=sql_result[34],
+                extradata_size=sql_result[35],
+                default=sql_result[36],
+                dub=sql_result[37],
+                original=sql_result[38],
+                comment=sql_result[39],
+                lyrics=sql_result[40],
+                karaoke=sql_result[41],
+                forced=sql_result[42],
+                hearing_impaired=sql_result[43],
+                visual_impaired=sql_result[44],
+                clean_effects=sql_result[45],
+                attached_pic=sql_result[46],
+                timed_thumbnails=sql_result[47],
+                captions=sql_result[48],
+                descriptions=sql_result[49],
+                metadata=sql_result[50],
+                dependent=sql_result[51],
+                still_image=sql_result[52],
+                start=sql_result[53],
+                duration=sql_result[54],
+                size=sql_result[55],
+                bit_rate=sql_result[56],
+                sample_rate=sql_result[57],
+                sample_format=sql_result[58],
+                channels=sql_result[59],
+                channel_layout=sql_result[60],
+                bps=sql_result[61],
+                frame_number=sql_result[62],
+                dmix_mode=sql_result[63],
+                text_subtitle=sql_result[64],
+                added_ts=sql_result[65],
+                modified_ts=sql_result[66],
             )
 
     def get_language_by_nk(self, obj: Language) -> Union[None, Language]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   Language
             └ The Version object to use in the search.
@@ -1100,21 +1398,27 @@ class Sqlite(iModel):
         ╠═  Language    -   The element of the table discriminated by natural key.
         ╚═  None        -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, name, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, \
                 id_language, added_ts, modified_ts from "{Language.table_name}" \
-                where name="{obj.name}"').fetchone()
+                where name="{obj.name}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Language(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    name        = sql_result[2],
-                    id_language = self.get_language_by_id(sql_result[3]),
-                    added_ts    = sql_result[4],
-                    modified_ts = sql_result[5]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                id_language=self.get_language_by_id(sql_result[3]),
+                added_ts=sql_result[4],
+                modified_ts=sql_result[5],
             )
 
     def get_track_language_by_nk(self, obj: TrackLanguage) -> Union[None, TrackLanguage]:
-        """ Returns a group discriminated by its natural key (NK).
+        """Returns a group discriminated by its natural key (NK).
         @ Input:
         ╚═  · obj   -   TrackLanguage
             └ The TrackLanguage to use in the search.
@@ -1122,60 +1426,79 @@ class Sqlite(iModel):
         ╠═  TrackLanguage      -   The element of the table discriminated by natural key.
         ╚═  None                    -   If no matches exists.
         """
-        sql_result = self.get_cur_db().execute(f'select id, active, id_track, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, id_track, \
                 id_language, added_ts, modified_ts from "{TrackLanguage.table_name}"\
-                where id_track="{obj.track.id_}" and id_language="{obj.language.id_}"').fetchone()
+                where id_track="{obj.track.id_}" and id_language="{obj.language.id_}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return TrackLanguage(
-                    id_         = sql_result[0],
-                    active      = sql_result[1],
-                    track = self.get_track_by_id(sql_result[2]),
-                    language    = self.get_language_by_id(sql_result[3]),
-                    added_ts    = sql_result[4],
-                    modified_ts = sql_result[5]
+                id_=sql_result[0],
+                active=sql_result[1],
+                track=self.get_track_by_id(sql_result[2]),
+                language=self.get_language_by_id(sql_result[3]),
+                added_ts=sql_result[4],
+                modified_ts=sql_result[5],
             )
 
     def get_poster_by_nk(self, obj: Poster) -> Poster:
-        sql_result = self.get_cur_db().execute(f'select id, name, hash, id_extension, \
+        sql_result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, name, hash, id_extension, \
                 id_media, id_group, id_issue, added_ts, modified_ts from "{Poster.table_name}" \
-                where name="{obj.name}"').fetchone()
+                where name="{obj.name}"'
+            )
+            .fetchone()
+        )
         if sql_result:
             return Poster(
-                    id_         = sql_result[0],
-                    name        = sql_result[1],
-                    hash_       = sql_result[2],
-                    extension   = self.get_extension_by_id(sql_result[3]),
-                    media       = self.get_media_by_id(sql_result[4]),
-                    group       = self.get_group_by_id(sql_result[5]),
-                    issue       = self.get_issue_by_id(sql_result[6]),
-                    added_ts    = sql_result[7],
-                    modified_ts = sql_result[8]
+                id_=sql_result[0],
+                name=sql_result[1],
+                hash_=sql_result[2],
+                extension=self.get_extension_by_id(sql_result[3]),
+                media=self.get_media_by_id(sql_result[4]),
+                group=self.get_group_by_id(sql_result[5]),
+                issue=self.get_issue_by_id(sql_result[6]),
+                added_ts=sql_result[7],
+                modified_ts=sql_result[8],
             )
 
     def get_media_by_nk(self, obj: Media) -> Media:
-        result = self.get_cur_db().execute(f'select id, active, name, date_start, \
+        result = (
+            self.get_cur_db()
+            .execute(
+                f'select id, active, name, date_start, \
                 date_end, id_type, id_status, added_ts, modified_ts from \
                 "{Media.table_name}" where name="{obj.name}" and date_start="{obj.date_start}" \
-                and id_type="{obj.type_.id_}"').fetchone()
+                and id_type="{obj.type_.id_}"'
+            )
+            .fetchone()
+        )
         if result:
             return Media(
-                    id_         = result[0],
-                    active      = result[1],
-                    name        = result[2],
-                    date_start  = result[3],
-                    date_end    = result[4],
-                    type_       = self.get_type_by_id(result[5]),
-                    status      = self.get_status_by_id(result[6]),
-                    added_ts    = result[7],
-                    modified_ts = result[8]
+                id_=result[0],
+                active=result[1],
+                name=result[2],
+                date_start=result[3],
+                date_end=result[4],
+                type_=self.get_type_by_id(result[5]),
+                status=self.get_status_by_id(result[6]),
+                added_ts=result[7],
+                modified_ts=result[8],
             )
+
     # GET BY NK #
 
     # GET BY X
-    def get_group_by_media_id(self, id_: int, limit: int = None,
-                                    offset: int = 0, alfabetic: bool = None
-                                    ) -> Union[None, List[Group]]:
-        """ Returns a group discriminated by its id.
+    def get_group_by_media_id(
+        self, id_: int, limit: int = None, offset: int = 0, alfabetic: bool = None
+    ) -> Union[None, List[Group]]:
+        """Returns a group discriminated by its id.
         @ Input:
         ╠═  · id_       -   int
         ║   └ Id of the media to use as a discriminator.
@@ -1191,29 +1514,31 @@ class Sqlite(iModel):
         """
         sentence = f'select id, active, name, number, date_start, date_end, id_media, added_ts, modified_ts from "{Group.table_name}" where id_media="{id_}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Group(
-                    id_         =   result[0],
-                    active      =   result[1],
-                    name        =   result[2],
-                    number      =   result[3],
-                    date_start  =   result[4],
-                    date_end    =   result[5],
-                    media       =   self.get_media_by_id(result[6]),
-                    added_ts    =   result[7],
-                    modified_ts =   result[8]
-            ))
+            results.append(
+                Group(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    number=result[3],
+                    date_start=result[4],
+                    date_end=result[5],
+                    media=self.get_media_by_id(result[6]),
+                    added_ts=result[7],
+                    modified_ts=result[8],
+                )
+            )
         return results
 
     def get_language_by_codename(self, codename: str) -> Union[None, Language]:
-        """ Returns a language discriminated by the given codename.
+        """Returns a language discriminated by the given codename.
         If a new code is added that makes it so codenames are reused
         for different languages this function must be rewritten.
         @ Input:
@@ -1232,12 +1557,19 @@ class Sqlite(iModel):
         ╚═  None        -   If no matches exists.
         """
         # This should only return one result even without the bcp47 modifier
-        sentence = f'select distinct l.id, l.active, l.name, l.id_language, l.added_ts, l.modified_ts \
+        sentence = (
+            f'select distinct l.id, l.active, l.name, l.id_language, l.added_ts, l.modified_ts \
                 from "{Language.table_name}" l left join "{LanguageCode.table_name}" lc on lc.id_language=l.id \
                 where lc.codename=?'
-        sentence_bcp47 = sentence + f' and lc.id_code=(select code_id from "{CodeName.table_name}" where name=?)'
+        )
+        sentence_bcp47 = (
+            sentence
+            + f' and lc.id_code=(select code_id from "{CodeName.table_name}" where name=?)'
+        )
 
-        sql_result_bcp47 = self.get_cur_db().execute(sentence_bcp47, (codename, 'BCP 47')).fetchone()
+        sql_result_bcp47 = (
+            self.get_cur_db().execute(sentence_bcp47, (codename, "BCP 47")).fetchone()
+        )
 
         if sql_result_bcp47:
             sql_result = sql_result_bcp47
@@ -1249,16 +1581,16 @@ class Sqlite(iModel):
 
         if sql_result:
             return Language(
-                    id_         =   sql_result[0],
-                    active      =   sql_result[1],
-                    name        =   sql_result[2],
-                    language    =   self.get_language_by_id(sql_result[3]),
-                    added_ts    =   sql_result[4],
-                    modified_ts =   sql_result[5]
+                id_=sql_result[0],
+                active=sql_result[1],
+                name=sql_result[2],
+                language=self.get_language_by_id(sql_result[3]),
+                added_ts=sql_result[4],
+                modified_ts=sql_result[5],
             )
 
     def get_media_platform_with_no_poster(self) -> List[MediaPlatform]:
-        """ Returns all the MediaPlatforms that dont have a poster related
+        """Returns all the MediaPlatforms that dont have a poster related
         @ Input:
         @ Output:
         ╚═  List[MediaPlatform]: All the posterless MediaPlatforms
@@ -1272,26 +1604,32 @@ class Sqlite(iModel):
 
         results = []
         for result in query_results:
-            results.append(MediaPlatform(
-                    id_             = result[0],
-                    active          = result[1],
-                    media           = self.get_media_by_id(result[2]),
-                    platform        = self.get_platform_by_id(result[3]),
-                    in_platform_id  = result[4],
-                    link            = result[5],
-                    added_ts        = result[6],
-                    modified_ts     = result[7]
-            ))
+            results.append(
+                MediaPlatform(
+                    id_=result[0],
+                    active=result[1],
+                    media=self.get_media_by_id(result[2]),
+                    platform=self.get_platform_by_id(result[3]),
+                    in_platform_id=result[4],
+                    link=result[5],
+                    added_ts=result[6],
+                    modified_ts=result[7],
+                )
+            )
         return results
 
     # GET BY X #
 
     # GET BY NAME
-    def get_by_name(self, table_name: str, name: str, limit: int = None,
-                    offset: int = 0, alfabetic: bool = False
-                    ) -> Union[None, List[Union[Type, Status,
-                                                Extension, Folder, App, Language]]]:
-        """ Returns all elements of table that match the given name.
+    def get_by_name(
+        self,
+        table_name: str,
+        name: str,
+        limit: int = None,
+        offset: int = 0,
+        alfabetic: bool = False,
+    ) -> Union[None, List[Union[Type, Status, Extension, Folder, App, Language]]]:
+        """Returns all elements of table that match the given name.
         @ Input:
         ╠═  · table_name    -   str
         ║   └ Id of the media to use as a discriminator.
@@ -1313,88 +1651,102 @@ class Sqlite(iModel):
     def get_by_type_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[Type]:
         sentence = f'select id, active, name, groupable, added_ts, modified_ts from {Type.table_name} where name="{name}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Type(
-                id_         = result[0],
-                active      = result[1],
-                name        = result[2],
-                groupable   = result[3],
-                added_ts    = result[4],
-                modified_ts = result[5]
-            ))
+            results.append(
+                Type(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    groupable=result[3],
+                    added_ts=result[4],
+                    modified_ts=result[5],
+                )
+            )
         return results
 
     # xfcr
-    def get_by_status_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[Status]:
+    def get_by_status_name(
+        self, name: str, limit: int, offset: int, alfabetic: bool
+    ) -> List[Status]:
         sentence = f'select id, active, name, added_ts, modified_ts from {Status.table_name} where name="{name}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Status(
-                id_         = result[0],
-                active      = result[1],
-                name        = result[2],
-                added_ts    = result[3],
-                modified_ts = result[4]
-            ))
+            results.append(
+                Status(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    added_ts=result[3],
+                    modified_ts=result[4],
+                )
+            )
         return results
 
-    def get_extension_by_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[Extension]:
+    def get_extension_by_name(
+        self, name: str, limit: int, offset: int, alfabetic: bool
+    ) -> List[Extension]:
         sentence = f'select id, active, name, format_name, format_name_long, added_ts, \
                 modified_ts from {Extension.table_name} where name="{name}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Extension(
-                id_                 = result[0],
-                active              = result[1],
-                name                = result[2],
-                format_name         = result[3],
-                format_name_long    = result[4],
-                added_ts            = result[5],
-                modified_ts         = result[6]
-            ))
+            results.append(
+                Extension(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    format_name=result[3],
+                    format_name_long=result[4],
+                    added_ts=result[5],
+                    modified_ts=result[6],
+                )
+            )
         if results:
             return results[0]
 
-    def get_folder_by_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> List[Folder]:
+    def get_folder_by_name(
+        self, name: str, limit: int, offset: int, alfabetic: bool
+    ) -> List[Folder]:
         sentence = f'select id, active, path, added_ts, modified_ts \
                 from {Folder.table_name} where path="{name}"'
         if alfabetic:
-            sentence += ' order by path asc'
+            sentence += " order by path asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(Folder(
-                id_         = result[0],
-                active      = result[1],
-                path        = result[2],
-                added_ts    = result[3],
-                modified_ts = result[4]
-            ))
+            results.append(
+                Folder(
+                    id_=result[0],
+                    active=result[1],
+                    path=result[2],
+                    added_ts=result[3],
+                    modified_ts=result[4],
+                )
+            )
         if results:
             return results[0]
 
@@ -1402,47 +1754,72 @@ class Sqlite(iModel):
         sentence = f'select id, active, name, added_ts, modified_ts \
                 from {App.table_name} where name="{name}"'
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_results = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for result in sql_results:
-            results.append(App(
-                id_         = result[0],
-                active      = result[1],
-                name        = result[2],
-                added_ts    = result[3],
-                modified_ts = result[4]
-            ))
+            results.append(
+                App(
+                    id_=result[0],
+                    active=result[1],
+                    name=result[2],
+                    added_ts=result[3],
+                    modified_ts=result[4],
+                )
+            )
         if results:
             return results[0]
 
-    def get_language_by_name(self, name: str, limit: int, offset: int, alfabetic: bool) -> Union[None, List[Language]]:
-        sentence = f'select distinct id_language from {LanguageName.table_name} where name like "{name}"'
+    def get_language_by_name(
+        self, name: str, limit: int, offset: int, alfabetic: bool
+    ) -> Union[None, List[Language]]:
+        sentence = (
+            f'select distinct id_language from {LanguageName.table_name} where name like "{name}"'
+        )
         if alfabetic:
-            sentence += ' order by name asc'
+            sentence += " order by name asc"
         if limit != None and offset != None:
-            sentence += f' LIMIT {limit} OFFSET {offset}'
+            sentence += f" LIMIT {limit} OFFSET {offset}"
 
         sql_language_names = self.get_cur_db().execute(sentence).fetchall()
 
         results = []
         for language_name in sql_language_names:
             results.append(self.get_language_by_id(language_name[0]))
-        if results: return results
+        if results:
+            return results
+
     # GET BY NAME #
 
     # INSERT
-    def insert(self, obj: Union[Status, Type, Media, Group,
-                                Issue, Platform, ShareSite,
-                                Warehouse, Extension, Folder, App,
-                                Version, Encoder, Codec, Track,
-                                TrackLanguage, Poster, MediaPlatform]
-               ) -> None:
-        """ Adds an element to a DB table.
+    def insert(
+        self,
+        obj: Union[
+            Status,
+            Type,
+            Media,
+            Group,
+            Issue,
+            Platform,
+            ShareSite,
+            Warehouse,
+            Extension,
+            Folder,
+            App,
+            Version,
+            Encoder,
+            Codec,
+            Track,
+            TrackLanguage,
+            Poster,
+            MediaPlatform,
+        ],
+    ) -> None:
+        """Adds an element to a DB table.
         @ Input:
         ╚═  · obj   -   Any Entity Type
             └ Entity to insert in the DB.
@@ -1452,90 +1829,163 @@ class Sqlite(iModel):
         pass
 
     def insert_status(self, obj: Status) -> None:
-        self.get_cur_db().execute(f'insert into "{Status.table_name}" (active, name) values (?, ?)', (obj.active, obj.name))
+        self.get_cur_db().execute(
+            f'insert into "{Status.table_name}" (active, name) values (?, ?)',
+            (obj.active, obj.name),
+        )
 
     def insert_type(self, obj: Type) -> None:
-        self.get_cur_db().execute(f'insert into "{Type.table_name}" (active, name, groupable) values (?, ?, ?)', (obj.active, obj.name, obj.groupable))
+        self.get_cur_db().execute(
+            f'insert into "{Type.table_name}" (active, name, groupable) values (?, ?, ?)',
+            (obj.active, obj.name, obj.groupable),
+        )
 
     def insert_media(self, obj: Media) -> None:
-        self.get_cur_db().execute(f'insert into "{Media.table_name}" (active, name, date_start, date_end, id_type, id_status) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.date_start, obj.date_end, obj.type_.id_, obj.status.id_))
+        self.get_cur_db().execute(
+            f'insert into "{Media.table_name}" (active, name, date_start, date_end, id_type, id_status) values (?, ?, ?, ?, ?, ?)',
+            (obj.active, obj.name, obj.date_start, obj.date_end, obj.type_.id_, obj.status.id_),
+        )
 
     def insert_group(self, obj: Group) -> None:
-        self.get_cur_db().execute(f'insert into "{Group.table_name}" (active, name, number, date_start, date_end, id_media) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.number, obj.date_start, obj.date_end, obj.media.id_))
+        self.get_cur_db().execute(
+            f'insert into "{Group.table_name}" (active, name, number, date_start, date_end, id_media) values (?, ?, ?, ?, ?, ?)',
+            (obj.active, obj.name, obj.number, obj.date_start, obj.date_end, obj.media.id_),
+        )
 
     def insert_issue(self, obj: Group) -> None:
-        self.get_cur_db().execute(f'insert into "{Issue.table_name}" (active, position, name, date, id_media, id_group) values (?, ?, ?, ?, ?, ?)', (obj.active, obj.position, obj.name, obj.date, obj.media.id_, obj.group.id_))
+        self.get_cur_db().execute(
+            f'insert into "{Issue.table_name}" (active, position, name, date, id_media, id_group) values (?, ?, ?, ?, ?, ?)',
+            (obj.active, obj.position, obj.name, obj.date, obj.media.id_, obj.group.id_),
+        )
 
     def insert_platform(self, obj: Platform) -> None:
-        self.get_cur_db().execute(f'insert into "{Platform.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{Platform.table_name}" \
                 (active, acronym, name, name_long, link, id_type) values \
-                (?, ?, ?, ?, ?, ?)', (obj.active, obj.acronym, obj.name,
-                                      obj.name_long, obj.link, obj.type_.id_))
+                (?, ?, ?, ?, ?, ?)',
+            (obj.active, obj.acronym, obj.name, obj.name_long, obj.link, obj.type_.id_),
+        )
 
     def insert_sharesite(self, obj: ShareSite) -> None:
-        self.get_cur_db().execute(f'insert into "{ShareSite.table_name}" (active, in_platform_id, name, private, link, id_type, id_platform) values (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.in_platform_id, obj.name, obj.private, obj.link, obj.type_.id_, obj.platform.id_))
+        self.get_cur_db().execute(
+            f'insert into "{ShareSite.table_name}" (active, in_platform_id, name, private, link, id_type, id_platform) values (?, ?, ?, ?, ?, ?, ?)',
+            (
+                obj.active,
+                obj.in_platform_id,
+                obj.name,
+                obj.private,
+                obj.link,
+                obj.type_.id_,
+                obj.platform.id_,
+            ),
+        )
 
     def insert_sharesite_subs(self, obj: ShareSiteSubs) -> None:
-        self.get_cur_db().execute(f'insert into "{ShareSiteSubs.table_name}" (id_share_site, sub_num) values (?, ?)', (obj.share_site.id_, obj.sub_num))
+        self.get_cur_db().execute(
+            f'insert into "{ShareSiteSubs.table_name}" (id_share_site, sub_num) values (?, ?)',
+            (obj.share_site.id_, obj.sub_num),
+        )
 
     def insert_warehouse(self, obj: Warehouse) -> None:
-        self.get_cur_db().execute(f'insert into "{Warehouse.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{Warehouse.table_name}" \
                 (active, name, size, filled, content, id_type, health) values \
-                (?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.name, obj.size, obj.filled, \
-                obj.content, obj.type_.id_, obj.health))
+                (?, ?, ?, ?, ?, ?, ?)',
+            (obj.active, obj.name, obj.size, obj.filled, obj.content, obj.type_.id_, obj.health),
+        )
 
     def insert_extension(self, obj: Extension) -> None:
-        self.get_cur_db().execute(f'insert into "{Extension.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{Extension.table_name}" \
                 (active, name, format_name, format_name_long) values \
-                (?, ?, ?, ?)', (obj.active, obj.name, obj.format_name, obj.format_name_long))
+                (?, ?, ?, ?)',
+            (obj.active, obj.name, obj.format_name, obj.format_name_long),
+        )
 
     def insert_folder(self, obj: Folder) -> None:
-        self.get_cur_db().execute(f'insert into "{Folder.table_name}" \
-                (active, path) values (?, ?)', (obj.active, obj.path))
+        self.get_cur_db().execute(
+            f'insert into "{Folder.table_name}" \
+                (active, path) values (?, ?)',
+            (obj.active, obj.path),
+        )
 
     def insert_app(self, obj: App) -> None:
-        self.get_cur_db().execute(f'insert into "{App.table_name}" \
-                (active, name) values (?, ?)', (obj.active, obj.name))
+        self.get_cur_db().execute(
+            f'insert into "{App.table_name}" \
+                (active, name) values (?, ?)',
+            (obj.active, obj.name),
+        )
 
     def insert_version(self, obj: Version) -> None:
-        self.get_cur_db().execute(f'insert into "{Version.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{Version.table_name}" \
                 (active, id_app, number, name, num_bit_processor) \
-                values (?, ?, ?, ?, ?)', (obj.active, obj.app.id_, obj.number,
-                                          obj.name, obj.num_bit_processor))
+                values (?, ?, ?, ?, ?)',
+            (obj.active, obj.app.id_, obj.number, obj.name, obj.num_bit_processor),
+        )
 
     def insert_encoder(self, obj: Encoder) -> None:
-        self.get_cur_db().execute(f'insert into "{Encoder.table_name}" \
-                (active, name) values (?, ?)', (obj.active, obj.name))
+        self.get_cur_db().execute(
+            f'insert into "{Encoder.table_name}" \
+                (active, name) values (?, ?)',
+            (obj.active, obj.name),
+        )
 
     def insert_file(self, obj: File) -> None:
-        id_media=None
-        if obj.media: id_media=obj.media.id_
-        id_issue=None
-        if obj.issue: id_issue=obj.issue.id_
-        id_version=None
-        if obj.version: id_version=obj.version.id_
-        id_encoder=None
-        if obj.encoder: id_encoder=obj.encoder.id_
+        id_media = None
+        if obj.media:
+            id_media = obj.media.id_
+        id_issue = None
+        if obj.issue:
+            id_issue = obj.issue.id_
+        id_version = None
+        if obj.version:
+            id_version = obj.version.id_
+        id_encoder = None
+        if obj.encoder:
+            id_encoder = obj.encoder.id_
 
-        self.get_cur_db().execute(f'insert into "{File.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{File.table_name}" \
                 (active, hash, name, id_extension, id_warehouse, id_folder, id_media, \
                 id_issue, title, nb_streams, nb_programs, start, duration, \
                 size, bit_rate, probe_score, creation_ts, id_version, id_encoder, \
                 original_name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \
-                ?, ?, ?, ?, ?, ?, ?)', (obj.active, obj.hash_, obj.name, obj.extension.id_,
-                                     obj.warehouse.id_, obj.folder.id_, id_media,
-                                     id_issue, obj.title, obj.nb_streams,
-                                     obj.nb_programs, obj.start, obj.duration, obj.size,
-                                     obj.bit_rate, obj.probe_score, obj.creation_ts,
-                                     id_version, id_encoder, obj.original_name))
+                ?, ?, ?, ?, ?, ?, ?)',
+            (
+                obj.active,
+                obj.hash_,
+                obj.name,
+                obj.extension.id_,
+                obj.warehouse.id_,
+                obj.folder.id_,
+                id_media,
+                id_issue,
+                obj.title,
+                obj.nb_streams,
+                obj.nb_programs,
+                obj.start,
+                obj.duration,
+                obj.size,
+                obj.bit_rate,
+                obj.probe_score,
+                obj.creation_ts,
+                id_version,
+                id_encoder,
+                obj.original_name,
+            ),
+        )
 
     def insert_codec(self, obj: Codec) -> None:
-        self.get_cur_db().execute(f'insert into "{Codec.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{Codec.table_name}" \
                 (active, name, name_long, id_type) values (?, ?, ?, ?)',
-                                  (obj.active, obj.name, obj.name_long, obj.type_.id_))
+            (obj.active, obj.name, obj.name_long, obj.type_.id_),
+        )
 
     def insert_track(self, obj: Track) -> None:
-        self.get_cur_db().execute(f'insert into "{Track.table_name}" (active, \
+        self.get_cur_db().execute(
+            f'insert into "{Track.table_name}" (active, \
                 id_file, id_codec, index_, title, profile, quality, width, height, \
                 coded_width, coded_height, closed_captions, film_grain, has_b_frames, \
                 sample_aspect_ratio, display_aspect_ratio, pixel_format, level, color, \
@@ -1549,42 +1999,105 @@ class Sqlite(iModel):
                 frame_number, dmix_mode, text_subtitle) values (?, ?, ?, ?, ?, ?, ?, ?, ?\
                 , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\
                 , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\
-                , ?, ?, ?, ?, ?)', (obj.active, obj.file.id_, obj.codec.id_, obj.index,
-                                    obj.title, obj.profile, obj.quality, obj.width, obj.height,
-                                    obj.coded_width, obj.coded_height, obj.closed_captions, obj.film_grain,
-                                    obj.has_b_frames, obj.sample_aspect_ratio, obj.display_aspect_ratio,
-                                    obj.pixel_format, obj.level, obj.color, obj.color_range, obj.color_space,
-                                    obj.color_transfer, obj.color_primaries, obj.chroma_location,
-                                    obj.field_order, obj.refs, obj.is_avc, obj.nal_length_size,
-                                    obj.r_frame_rate, obj.avg_frame_rate, obj.time_base, obj.start_pts,
-                                    obj.bits_per_raw_sample, obj.bits_per_sample, obj.extradata_size,
-                                    obj.default, obj.dub, obj.original, obj.comment, obj.lyrics,
-                                    obj.karaoke, obj.forced, obj.hearing_impaired, obj.visual_impaired,
-                                    obj.clean_effects, obj.attached_pic, obj.timed_thumbnails, obj.captions,
-                                    obj.descriptions, obj.metadata, obj.dependent, obj.still_image,
-                                    obj.start, obj.duration, obj.size, obj.bit_rate, obj.sample_rate,
-                                    obj.sample_format, obj.channels, obj.channel_layout, obj.bps,
-                                    obj.frame_number, obj.dmix_mode, obj.text_subtitle))
+                , ?, ?, ?, ?, ?)',
+            (
+                obj.active,
+                obj.file.id_,
+                obj.codec.id_,
+                obj.index,
+                obj.title,
+                obj.profile,
+                obj.quality,
+                obj.width,
+                obj.height,
+                obj.coded_width,
+                obj.coded_height,
+                obj.closed_captions,
+                obj.film_grain,
+                obj.has_b_frames,
+                obj.sample_aspect_ratio,
+                obj.display_aspect_ratio,
+                obj.pixel_format,
+                obj.level,
+                obj.color,
+                obj.color_range,
+                obj.color_space,
+                obj.color_transfer,
+                obj.color_primaries,
+                obj.chroma_location,
+                obj.field_order,
+                obj.refs,
+                obj.is_avc,
+                obj.nal_length_size,
+                obj.r_frame_rate,
+                obj.avg_frame_rate,
+                obj.time_base,
+                obj.start_pts,
+                obj.bits_per_raw_sample,
+                obj.bits_per_sample,
+                obj.extradata_size,
+                obj.default,
+                obj.dub,
+                obj.original,
+                obj.comment,
+                obj.lyrics,
+                obj.karaoke,
+                obj.forced,
+                obj.hearing_impaired,
+                obj.visual_impaired,
+                obj.clean_effects,
+                obj.attached_pic,
+                obj.timed_thumbnails,
+                obj.captions,
+                obj.descriptions,
+                obj.metadata,
+                obj.dependent,
+                obj.still_image,
+                obj.start,
+                obj.duration,
+                obj.size,
+                obj.bit_rate,
+                obj.sample_rate,
+                obj.sample_format,
+                obj.channels,
+                obj.channel_layout,
+                obj.bps,
+                obj.frame_number,
+                obj.dmix_mode,
+                obj.text_subtitle,
+            ),
+        )
 
     def insert_track_language(self, obj: TrackLanguage) -> None:
-        self.get_cur_db().execute(f'insert into "{TrackLanguage.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{TrackLanguage.table_name}" \
                 (active, id_track, id_language) values (?, ?, ?)',
-                                  (obj.active, obj.track.id_, obj.language.id_))
+            (obj.active, obj.track.id_, obj.language.id_),
+        )
 
     def insert_poster(self, obj: Poster) -> None:
         media_id = group_id = issue_id = None
-        if obj.media is not None: media_id = obj.media.id_
-        if obj.group is not None: group_id = obj.group.id_
-        if obj.issue is not None: group_id = obj.issue.id_
+        if obj.media is not None:
+            media_id = obj.media.id_
+        if obj.group is not None:
+            group_id = obj.group.id_
+        if obj.issue is not None:
+            group_id = obj.issue.id_
 
-        self.get_cur_db().execute(f'insert into "{Poster.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{Poster.table_name}" \
                 (name, hash, id_media, id_group, id_issue, id_extension) values (?, ?, ?, ?, ?, ?)',
-                                  (obj.name, obj.hash_, media_id, group_id, issue_id, obj.extension.id_))
+            (obj.name, obj.hash_, media_id, group_id, issue_id, obj.extension.id_),
+        )
 
     def insert_media_platform(self, obj: MediaPlatform) -> None:
-        self.get_cur_db().execute(f'insert into "{MediaPlatform.table_name}" \
+        self.get_cur_db().execute(
+            f'insert into "{MediaPlatform.table_name}" \
                 (id_media, id_platform, link, in_platform_id, active) values (?, ?, ?, ?, ?)',
-                                  (obj.media.id_, obj.platform.id_, obj.link,
-                                   obj.in_platform_id, obj.active))
+            (obj.media.id_, obj.platform.id_, obj.link, obj.in_platform_id, obj.active),
+        )
+
     # INSERT #
+
+
 # ------------------------------------------------------------------------------

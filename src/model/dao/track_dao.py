@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/03/08 18:48:53.576098
-#+ Editado:	2023/03/17 23:38:08.213756
+# + Autor:  	Ran#
+# + Creado: 	2023/03/08 18:48:53.576098
+# + Editado:	2023/03/17 23:38:08.213756
 # ------------------------------------------------------------------------------
 from src.model import iModel
 
@@ -21,7 +21,7 @@ class TrackDao:
     def __get_type(self, type: Type) -> Type:
         """Bring the full data of the object from DB and insert it if new."""
         if type:
-            found_type=self.model.get_by_nk(type)
+            found_type = self.model.get_by_nk(type)
             if not found_type:
                 self.model.insert(type)
                 return self.__get_type(type)
@@ -30,8 +30,8 @@ class TrackDao:
     def __get_codec(self, codec: Codec) -> Codec:
         """Bring the full data of the object from DB and insert it if new."""
         if codec:
-            codec.type_=self.__get_type(codec.type_)
-            found_codec=self.model.get_by_nk(codec)
+            codec.type_ = self.__get_type(codec.type_)
+            found_codec = self.model.get_by_nk(codec)
             if not found_codec:
                 self.model.insert(codec)
                 return self.__get_codec(codec)
@@ -42,7 +42,7 @@ class TrackDao:
         if found_track:
             return found_track
 
-        track.codec=self.__get_codec(track.codec)
+        track.codec = self.__get_codec(track.codec)
 
         self.model.insert(track)
         return self.model.get_by_nk(track)
@@ -54,4 +54,6 @@ class TrackDao:
             else:
                 raise UnknownLanguageException(codename=track.language.name)
         """
+
+
 # ------------------------------------------------------------------------------

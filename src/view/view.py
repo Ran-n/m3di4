@@ -1,15 +1,17 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/01/11 22:40:21.798484
-#+ Editado:	2023/03/28 22:18:37.152236
+# + Autor:  	Ran#
+# + Creado: 	2023/01/11 22:40:21.798484
+# + Editado:	2023/03/28 22:18:37.152236
 # ------------------------------------------------------------------------------
-#* Context Class (Strategy Pattern)
+# * Context Class (Strategy Pattern)
 # ------------------------------------------------------------------------------
 from src.view import iView
+
 # ------------------------------------------------------------------------------
 from src.model import iModel
+
 # ------------------------------------------------------------------------------
 from src.exception import InheritException
 from src.utils import AddFileTerminalViewOutput
@@ -18,6 +20,8 @@ from src.model.entity import Media, Group, Issue
 from src.model.entity import Type, Status
 from src.model.entity import Platform, ShareSite
 from src.model.entity import Warehouse, MediaPlatform
+
+
 # ------------------------------------------------------------------------------
 class View:
     def __init__(self, strategy: iView, model: iModel) -> None:
@@ -30,7 +34,7 @@ class View:
 
             self.controller = None
         else:
-            raise InheritException(_(f'Must inherit from {iView.__name__}'))
+            raise InheritException(_(f"Must inherit from {iView.__name__}"))
 
     def start(self) -> None:
         return self.strategy.start()
@@ -48,7 +52,6 @@ class View:
     def download_posters(self) -> None:
         """"""
         self.strategy.download_posters()
-
 
     def add_type(self) -> Type:
         return self.strategy.add_type()
@@ -79,5 +82,6 @@ class View:
 
     def add_media_platform(self) -> MediaPlatform:
         return self.strategy.add_media_platform()
+
 
 # ------------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/03/24 17:37:25.316985
-#+ Editado:	2023/03/29 17:42:24.682338
+# + Autor:  	Ran#
+# + Creado: 	2023/03/24 17:37:25.316985
+# + Editado:	2023/03/29 17:42:24.682338
 # ------------------------------------------------------------------------------
 from blake3 import blake3
 import mmap
@@ -13,7 +13,9 @@ from pathlib import Path
 
 # ------------------------------------------------------------------------------
 def file_hash(filename: Path) -> str:
-    with filename.open('rb') as f:
+    with filename.open("rb") as f:
         with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
             return blake3(mm).hexdigest()
+
+
 # ------------------------------------------------------------------------------

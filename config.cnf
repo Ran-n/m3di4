@@ -41,7 +41,7 @@ tmdb_api_key =
 # What user interface do you wish to use
 # Accepted: terminal, customtkinter
 # Default: terminal
-user_interface = terminal
+user_interface = customtkinter
 
 # UI - TERMINAL
 # pagination

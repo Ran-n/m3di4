@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/01/27 18:43:19.591632
-#+ Editado:	2023/03/13 17:22:10.116922
+# + Autor:  	Ran#
+# + Creado: 	2023/01/27 18:43:19.591632
+# + Editado:	2023/03/13 17:22:10.116922
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,8 +17,8 @@ from src.model.entity import BaseEntity, File, Codec
 @dataclass
 class Track(BaseEntity):
     """Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('Track'))
+
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name("Track"))
     file: File
     codec: Codec
     index: int
@@ -83,4 +83,6 @@ class Track(BaseEntity):
     dmix_mode: Optional[int] = field(default=None)
     text_subtitle: Optional[int] = field(default=None)
     active: Optional[int] = field(default=1)
+
+
 # ------------------------------------------------------------------------------

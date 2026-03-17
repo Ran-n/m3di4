@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 00:01:54.400579
-#+ Editado:	2023/02/24 15:24:53.861285
+# + Autor:  	Ran#
+# + Creado: 	2023/01/05 00:01:54.400579
+# + Editado:	2023/02/24 15:24:53.861285
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,8 +17,8 @@ from src.model.entity import BaseEntity
 @dataclass
 class Country(BaseEntity):
     """Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('Country'))
+
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name("Country"))
     name: str
     nation: Optional[int] = field(default=None)
     state: Optional[int] = field(default=None)
@@ -30,4 +30,6 @@ class Country(BaseEntity):
 
     def __lt__(self, other) -> bool:
         return strip_accents(self.name) < strip_accents(other.name)
+
+
 # ------------------------------------------------------------------------------

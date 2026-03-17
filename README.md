@@ -2,8 +2,12 @@
 [//]: # ( ---------------------------------------------------------------------- )
 [//]: # (+ Autor:  	Ran# )
 [//]: # (+ Creado: 	2023/01/04 21:56:10.000000 )
-[//]: # (+ Editado:	2023/03/22 18:12:04.904479 )
+[//]: # (+ Editado:	2026/03/17 00:00:00.000000 )
 [//]: # ( ---------------------------------------------------------------------- )
+
+> **DEPRECATED** — This project is no longer actively maintained.
+> It is kept as a reference for the i18n/translation schema design and entity structure.
+> Consider [Jellyfin](https://jellyfin.org/) or [tinyMediaManager](https://www.tinymediamanager.org/) as alternatives.
 
 # M3di4
 Manager for your own personal media library.\

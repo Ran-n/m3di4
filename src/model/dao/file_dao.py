@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/17 16:32:00.388388
+# + Autor:  	Ran#
+# + Creado: 	2023/01/05 18:53:33.927294
+# + Editado:	2023/03/17 16:32:00.388388
 # ------------------------------------------------------------------------------
 from src.model import iModel
 
@@ -22,8 +22,9 @@ class FileDao:
         """Bring the full data of the object from DB or insert it."""
         if extension:
             # xFCR use nk
-            found_extension = self.model.get_by_name(table_name=Extension.table_name,
-                                                     name=extension.name)
+            found_extension = self.model.get_by_name(
+                table_name=Extension.table_name, name=extension.name
+            )
             if not found_extension:
                 self.model.insert(extension)
                 return self.__get_extension(extension)
@@ -33,8 +34,7 @@ class FileDao:
         """Bring the full data of the object from DB or insert it."""
         if folder:
             # xFCR use nk
-            found_folder = self.model.get_by_name(table_name=Folder.table_name,
-                                                  name=folder.path)
+            found_folder = self.model.get_by_name(table_name=Folder.table_name, name=folder.path)
             if not found_folder:
                 self.model.insert(folder)
                 return self.__get_folder(folder)
@@ -44,8 +44,7 @@ class FileDao:
         """Bring the full data of the object from DB or insert it."""
         if app:
             # xFCR use nk
-            found_app = self.model.get_by_name(table_name=App.table_name,
-                                                  name=app.name)
+            found_app = self.model.get_by_name(table_name=App.table_name, name=app.name)
             if not found_app:
                 self.model.insert(app)
                 return self.__get_app(app)
@@ -54,7 +53,7 @@ class FileDao:
     def __get_version(self, version: Version) -> Version:
         """Bring the full data of the object from DB or insert it."""
         if version:
-            version.app=self.__get_app(version.app)
+            version.app = self.__get_app(version.app)
             found_version = self.model.get_by_nk(version)
             if not found_version:
                 self.model.insert(version)
@@ -71,17 +70,19 @@ class FileDao:
             return found_encoder
 
     def save(self, file: File) -> File:
-        file.extension=self.__get_extension(file.extension)
-        file.folder=self.__get_folder(file.folder)
+        file.extension = self.__get_extension(file.extension)
+        file.folder = self.__get_folder(file.folder)
 
         # at this point it can already be check if it exists
         found_file = self.model.get_by_nk(file)
         if found_file:
             return found_file
 
-        file.version=self.__get_version(file.version)
-        file.encoder=self.__get_encoder(file.encoder)
+        file.version = self.__get_version(file.version)
+        file.encoder = self.__get_encoder(file.encoder)
 
         self.model.insert(file)
         return self.model.get_by_nk(file)
+
+
 # ------------------------------------------------------------------------------

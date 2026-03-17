@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/03/28 19:05:06.665609
-#+ Editado:	2023/04/11 22:23:18.434812
+# + Autor:  	Ran#
+# + Creado: 	2023/03/28 19:05:06.665609
+# + Editado:	2023/04/11 22:23:18.434812
 # ------------------------------------------------------------------------------
 import asyncio
 from pathlib import Path
@@ -32,14 +32,18 @@ class MetadataService:
 
         posters = []
         for link, path, media in zip(links, paths, [ele.media for ele in media_platforms]):
-            posters.append(Poster(extension=Extension(name=path.suffix), name=path.stem, media=media))
+            posters.append(
+                Poster(extension=Extension(name=path.suffix), name=path.stem, media=media)
+            )
         return posters
 
     def __download_poster_tmdb(self, links: List[str]) -> Tuple[List[str], List[Path]]:
         links = asyncio.run(TMDBService().get_poster_links(links=links))
-        paths = asyncio.run(download_images(folder=Config().poster_folder,
-                                            links=list(filter(lambda x: x, links))))
+        paths = asyncio.run(
+            download_images(folder=Config().poster_folder, links=list(filter(lambda x: x, links)))
+        )
 
         return links, paths
+
 
 # ------------------------------------------------------------------------------

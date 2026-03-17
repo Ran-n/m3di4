@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
-#+ Autor:  	Ran#
-#+ Creado: 	2023/01/05 18:53:33.927294
-#+ Editado:	2023/03/30 22:12:27.202999
+# + Autor:  	Ran#
+# + Creado: 	2023/01/05 18:53:33.927294
+# + Editado:	2023/03/30 22:12:27.202999
 # ------------------------------------------------------------------------------
 from dataclasses import dataclass, field
 import os
@@ -20,8 +20,8 @@ from src.model.entity import Extension, Encoder, Version
 @dataclass
 class File(BaseEntity):
     """Entity Object"""
-    table_name: str = field(init=False, repr=False,
-                            default=Config().get_table_name('File'))
+
+    table_name: str = field(init=False, repr=False, default=Config().get_table_name("File"))
     name: str
     extension: Extension
     warehouse: Warehouse
@@ -46,12 +46,14 @@ class File(BaseEntity):
     def __post_init__(self) -> None:
         # make either media or issue required on object creation
         if not any([self.media, self.issue]):
-            raise TypeError(f'{self.__class__.__name__}.__init__() missing \
-                    1 required positional argument: "media" or "issue"')
+            raise TypeError(
+                f'{self.__class__.__name__}.__init__() missing \
+                    1 required positional argument: "media" or "issue"'
+            )
 
         # xFCR change path in folder to Path
         if self.hash_ is None:
-            self.hash_ = file_hash(
-                    Path(self.folder.path)/f'{self.name}.{self.extension.name}'
-            )
+            self.hash_ = file_hash(Path(self.folder.path) / f"{self.name}.{self.extension.name}")
+
+
 # ------------------------------------------------------------------------------
